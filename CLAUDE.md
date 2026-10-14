@@ -18,14 +18,18 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 3. Testen: `npm test --prefix tests`. Alle vier Tests müssen grün sein (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“). Ändert sich gewolltes Verhalten, Tests anpassen und das offen sagen.
 4. In `ENTWICKLUNG.md` den nächsten Eintrag `## Version NN – Titel` anhängen: was, warum, Technik, Teststand und was nur auf einem echten iPhone prüfbar ist.
 5. Commit mit der Nachricht `Version NN – Titel` (darfst du selbst).
-6. **Push nur nach Vitos ausdrücklichem OK.** Ein Push auf `main` veröffentlicht die App. Vorher kurz sagen, was live geht.
-7. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
+6. **Push nach `entwicklung` darfst du selbst, ohne Nachfrage.** Das sichert die Version auf GitHub, verändert aber `main` nicht und veröffentlicht nichts.
+7. **Push nach `main` nur nach Vitos ausdrücklichem OK.** Das veröffentlicht die App. Vorher kurz sagen, was live geht.
+8. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
 
 ## Git-Regeln
 
-- Gearbeitet wird direkt auf `main`. Kein `git push --force`, kein `git reset --hard`, keine gelöschte Historie.
+- Gearbeitet wird auf dem Zweig `entwicklung`. Dorthin pushst du nach jeder fertigen, getesteten Version ohne Nachfrage, das ist nur eine Sicherung auf GitHub.
+- **Veröffentlicht wird nur über `main`.** Sagt Vito „jetzt aktualisieren“/„veröffentlichen“: `entwicklung` nach `main` mergen und pushen (schnelles Vorspulen, falls möglich). Das ist der einzige Push, der eine Bestätigung braucht.
+- Kein `git push --force`, kein `git reset --hard`, keine gelöschte Historie, auf keinem der beiden Zweige.
 - Alte Sicherungskopien (`data/*.bak.*`) braucht es nicht mehr, Git speichert jede Version. Die vorhandenen bleiben liegen.
-- Nach dem Push baut GitHub Actions die App erneut, führt die Tests aus und veröffentlicht nur, wenn alles grün ist (`.github/workflows/pages.yml`). Schlägt das fehl, bleibt die alte Version online.
+- Nach dem Push auf `main` baut GitHub Actions die App erneut, führt die Tests aus und veröffentlicht nur, wenn alles grün ist (`.github/workflows/pages.yml`). Schlägt das fehl, bleibt die alte Version online.
+- Arbeitet Vito zwischendurch auch in VS Code: dort vor dem Weitermachen `entwicklung` auschecken und synchronisieren (Pull), damit beide Seiten auf demselben Stand aufbauen.
 
 ## Wichtige Technik in Kürze
 
