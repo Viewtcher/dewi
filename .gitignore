@@ -1,0 +1,14 @@
+# Wird bei jedem Lauf neu erzeugt
+__pycache__/
+*.pyc
+tests/node_modules/
+node_modules/
+_site/
+
+# Persönliche Claude-Einstellungen (nur auf diesem Rechner)
+.claude/settings.local.json
+
+# Betriebssystem
+Thumbs.db
+desktop.ini
+.DS_Store

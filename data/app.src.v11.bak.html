@@ -1,0 +1,2284 @@
+<title>kata.vito</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap">
+<style>
+/* Layout: eine schmale Heftseite, unten Tab-Leiste. Farben: Indigo (nila) und Kurkuma (kunyit), wie beim Batik-Färben. */
+:root{
+  --bg:#0d1325; --surface:#141b33; --raised:#1b2444; --line:#27325a; --line-soft:#1e2748;
+  --text:#ece8dc; --muted:#a0aac9; --faint:#8490b4;
+  --accent:#ffc23d; --accent-ink:#1b1403; --accent-soft:rgba(255,194,61,.16);
+  --c-yellow:#ffc23d; --c-orange:#ff8a3d; --c-pink:#ff5c9d; --c-violet:#a888ff; --c-blue:#5aa9ff; --c-cyan:#35dcd2; --c-green:#6ee77a;
+  --lv0:#f2907f; --lv1:var(--c-blue); --lv2:var(--c-cyan); --lv3:var(--c-green); --lv4:var(--c-yellow); --lv5:var(--c-pink);
+  --rainbow:linear-gradient(90deg,var(--c-blue),var(--c-cyan),var(--c-green),var(--c-yellow),var(--c-orange),var(--c-pink));
+  --good:#5fd3a0; --good-soft:rgba(95,211,160,.12);
+  --bad:#f2907f; --bad-soft:rgba(242,144,127,.12);
+  --display:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+p{margin:0}
+h1{font:700 26px/1.15 var(--display);letter-spacing:-.015em;margin:0;text-wrap:balance}
+h2{font:700 18px/1.2 var(--display);margin:0}
+
+.app{max-width:480px;margin:0 auto;padding:18px 16px 104px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:9px;font:700 22px/1 var(--display);letter-spacing:-.01em}
+.brand i{width:10px;height:10px;background:linear-gradient(135deg,var(--c-yellow),var(--c-pink));transform:rotate(45deg)}
+.brand b{color:var(--c-pink);font-weight:700}
+.brand em{font-style:italic;font-weight:600;font-size:.82em;letter-spacing:0;color:var(--c-cyan)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.hint{color:var(--muted);font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;font-weight:600}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:14px}
+.plan{position:relative;overflow:hidden;background:linear-gradient(155deg,#1b2652 0%,#2b1f5e 100%);border-color:#3b3a82}
+.plan::after{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--rainbow)}
+.plan::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23e8b13a' stroke-opacity='.2' stroke-width='1'%3E%3Cellipse cx='22' cy='11' rx='5.5' ry='11'/%3E%3Cellipse cx='22' cy='33' rx='5.5' ry='11'/%3E%3Cellipse cx='11' cy='22' rx='11' ry='5.5'/%3E%3Cellipse cx='33' cy='22' rx='11' ry='5.5'/%3E%3C/g%3E%3C/svg%3E");
+  -webkit-mask-image:linear-gradient(100deg,transparent 40%,#000 100%);mask-image:linear-gradient(100deg,transparent 40%,#000 100%)}
+.plan>*{position:relative}
+.nums{display:flex;gap:30px;margin:10px 0 18px}
+.num b{display:block;font:700 46px/1 var(--display);font-variant-numeric:tabular-nums}
+.num span{font-size:13px;color:var(--muted)}
+.num:nth-child(1) b{color:var(--c-cyan)}
+.num:nth-child(2) b{color:var(--c-pink)}
+.plan h2{margin:8px 0 6px}
+
+.streak{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.sl{display:flex;align-items:flex-end;gap:10px}
+.streak b{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--c-orange)}
+.streak small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.fl{--sh:7px;width:46px;height:58px;flex:none;overflow:visible;filter:drop-shadow(0 0 var(--sh) rgba(255,150,60,.6))}
+.fl.big{--sh:13px;width:76px;height:96px}
+.fl:not(.off){animation:flhue 7s linear infinite}
+.fl.off{filter:none}
+.fl .em{transform-origin:0 0;opacity:0;animation:ember 2.2s ease-out infinite}
+.fl .e2{animation-delay:.7s}.fl .e3{animation-delay:1.4s}
+@keyframes flhue{from{filter:drop-shadow(0 0 var(--sh) rgba(255,150,60,.6)) hue-rotate(0deg)}to{filter:drop-shadow(0 0 var(--sh) rgba(255,150,60,.6)) hue-rotate(360deg)}}
+@keyframes ember{0%{opacity:0;transform:translateY(12px) scale(.5)}20%{opacity:1}100%{opacity:0;transform:translateY(-26px) scale(.35) rotate(25deg)}}
+.fl path{transform-origin:32px 77px}
+.fl:not(.off) .sway{transform-origin:32px 77px;animation:sway 2.3s ease-in-out infinite}
+.fl:not(.off) .f4{animation:corepulse 1s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:rotate(-2.2deg)}50%{transform:rotate(2.2deg)}}
+@keyframes corepulse{0%,100%{transform:scale(1);opacity:.92}50%{transform:scale(1.05,.97);opacity:1}}
+.week{display:flex;gap:8px}
+.day{display:grid;justify-items:center;gap:6px;font-size:11px;color:var(--faint)}
+.day i{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line)}
+.day.on i{background:var(--dc);border-color:var(--dc)}
+.day.now span{color:var(--text);font-weight:700}
+.day.now i{outline:2px solid var(--dc);outline-offset:2px}
+
+.stack{display:flex;gap:2px;height:10px;border-radius:999px;overflow:hidden;background:var(--raised);margin-top:12px}
+.stack i{display:block;height:100%}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:14px;font-size:13px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:8px;min-width:0}
+.legend em{width:9px;height:9px;border-radius:50%;flex:none}
+.legend b{margin-left:auto;color:var(--text);font-weight:600;font-variant-numeric:tabular-nums}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:12px;border:1px solid var(--line);background:var(--raised);font-weight:600;font-size:16px}
+.btn.primary{background:linear-gradient(135deg,var(--c-yellow),var(--c-orange));border-color:transparent;color:var(--accent-ink);box-shadow:0 4px 0 #b3560f;transition:transform .06s,box-shadow .06s}
+.btn.primary:active{transform:translateY(3px);box-shadow:0 1px 0 #b3560f}
+.btn.primary.pulse{animation:glow 2.2s ease-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 4px 0 #b3560f,0 0 0 0 rgba(255,194,61,.55)}50%{box-shadow:0 4px 0 #b3560f,0 0 0 12px rgba(255,194,61,0)}}
+.btn.ghost{background:transparent}
+.btn.light{background:#fff;border-color:#fff;color:#0d1325;box-shadow:0 4px 0 #b9bfd6;transition:transform .06s,box-shadow .06s}
+.btn.light:active{transform:translateY(3px);box-shadow:0 1px 0 #b9bfd6}
+.btn.block{display:flex;width:100%}
+.btn.danger{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+.btn:disabled{opacity:.45;cursor:default}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+
+.field{display:block;width:100%;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);padding:0 14px;font-size:16px}
+.field::placeholder{color:var(--faint)}
+textarea.field{padding:12px 14px;min-height:96px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 6px}
+.pill{flex:none;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:14px;font-weight:600}
+.pill[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+details.cat{border-bottom:1px solid var(--line)}
+details.cat summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:54px;cursor:pointer;font-weight:600}
+details.cat summary::-webkit-details-marker{display:none}
+details.cat summary::before{content:"";flex:none;width:7px;height:7px;border-right:3px solid var(--cc);border-bottom:3px solid var(--cc);transform:rotate(-45deg);transition:transform .15s}
+details.cat[open] summary::before{transform:rotate(45deg)}
+.cnt{margin-left:auto;font-size:13px;font-weight:500;color:var(--faint);font-variant-numeric:tabular-nums}
+ul.rows{list-style:none;margin:0 0 10px 3px;padding:0;border-left:3px solid var(--cc)}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0 10px 14px;border-top:1px solid var(--line-soft)}
+.row .w{flex:1;min-width:0;display:flex;flex-direction:column}
+.row .id{font:600 17px/1.25 var(--display);overflow-wrap:anywhere}
+.row .en{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.meta{display:grid;justify-items:end;gap:4px;flex:none}
+.pips{display:flex;gap:3px}
+.pips i{width:7px;height:7px;border-radius:2px;background:var(--line)}
+.pips i.f{background:var(--pc,var(--accent))}
+.tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c-orange)}
+.empty{padding:36px 0;text-align:center;color:var(--muted)}
+
+.set{display:grid;gap:14px}
+.seg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.seg button{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font:700 18px var(--display)}
+.seg button[aria-checked=true]{background:linear-gradient(135deg,var(--c-yellow),var(--c-orange));border-color:transparent;color:var(--accent-ink)}
+details.how summary{cursor:pointer;font-weight:600;min-height:32px}
+ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--muted)}
+.langrow{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px;border-radius:16px;border:1px solid var(--line);background:var(--surface)}
+.langrow .code{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--c-yellow),var(--c-pink));color:var(--accent-ink);font:700 18px var(--display);flex:none}
+.langrow b{display:block;font:700 18px/1.2 var(--display)}
+.flash{color:var(--good);font-size:14px;min-height:1.4em}
+
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs-in{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.tab{display:grid;justify-items:center;gap:2px;min-height:52px;padding:6px 4px;border:0;border-radius:12px;background:transparent;color:var(--faint);font-size:11px;font-weight:600}
+.tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[data-v=home]{--tc:var(--c-yellow)}
+.tab[data-v=book]{--tc:var(--c-cyan)}
+.tab[data-v=settings]{--tc:var(--c-pink)}
+.tab[aria-current=page]{color:var(--tc)}
+
+.sheet{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}
+.sin{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;gap:18px;padding:max(14px,env(safe-area-inset-top,0px)) 16px max(24px,env(safe-area-inset-bottom,0px))}
+.shead{display:flex;align-items:center;gap:14px}
+.iconbtn{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
+.iconbtn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.sbar{flex:1;height:6px;border-radius:999px;background:var(--raised);overflow:hidden}
+.sbar i{display:block;height:100%;background:var(--rainbow);background-size:calc(100% / var(--p,1)) 100%;border-radius:inherit;transition:width .3s}
+.scount{min-width:42px;text-align:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.smain{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;padding-bottom:40px;animation:rise .22s ease-out}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--k,var(--accent))}
+.bigword{font:700 clamp(34px,10vw,50px)/1.05 var(--display);letter-spacing:-.015em;overflow-wrap:anywhere;text-wrap:balance}
+.gloss{font:500 24px/1.25 var(--display);color:var(--muted)}
+.qform{display:grid;gap:10px;margin-top:6px}
+.qform .field{font-size:20px;min-height:58px}
+/* Puls beim Tippen: Ring pro Taste, Atem-Glühen solange Text im Feld steht */
+.inwrap{position:relative;--pc:var(--accent);--pcs:rgba(255,194,61,.27)}
+.inwrap .field{position:relative;z-index:1;transition:border-color .15s}
+.inwrap::after{content:"";position:absolute;inset:0;border-radius:12px;border:3px solid var(--pc);opacity:0;pointer-events:none}
+.inwrap.pulse::after{animation:ring .55s ease-out}
+.inwrap.typing .field{border-color:var(--pc);animation:breathe 1.3s ease-in-out infinite}
+@keyframes ring{0%{opacity:.95;transform:scale(1)}100%{opacity:0;transform:scale(1.06,1.4)}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 3px var(--pcs)}50%{box-shadow:0 0 0 9px rgba(0,0,0,0)}}
+.tries{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--faint)}
+.tries i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.tries i.x{background:var(--line)}
+.tries span{margin-left:4px}
+.fb{min-height:1.5em}
+.fb.bad{color:var(--bad)}
+.res{border-radius:14px;padding:14px 16px;border:1px solid var(--line)}
+.res.good{background:var(--good-soft);border-color:var(--good);animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.res.bad{background:var(--bad-soft);border-color:var(--bad);animation:shake .35s}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:none;opacity:1}}
+.confetti{position:fixed;width:0;height:0;pointer-events:none;z-index:80}
+.confetti i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;background:var(--cf);animation:fly .95s cubic-bezier(.15,.7,.3,1) forwards}
+@keyframes fly{0%{transform:translate(0,0) rotate(0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.3);opacity:0}}
+.endstreak{display:flex;align-items:flex-end;gap:14px;font-size:15px;color:var(--muted)}
+.endstreak b{font:700 40px/1 var(--display);color:var(--c-orange);margin-right:4px}
+.endstreak small{display:block;margin-top:4px;color:var(--c-yellow);font-weight:600}
+.endstreak.grew{animation:bounce .6s cubic-bezier(.3,1.5,.5,1)}
+@keyframes bounce{0%{transform:scale(.6);opacity:0}100%{transform:none;opacity:1}}
+.res .rl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.res.good .rl{color:var(--good)}
+.res.bad .rl{color:var(--bad)}
+.pair{font:600 22px/1.3 var(--display);margin-top:6px;overflow-wrap:anywhere}
+.pair em{font-style:normal;color:var(--faint);padding:0 6px}
+.missed{display:flex;flex-wrap:wrap;gap:8px}
+.missed span{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .3s}
+
+
+/* Serien-Karte: Regenbogen-Rahmen, leuchtende Zahl, Flammen-Akzent */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+.streakcard{position:relative}
+.streakcard.on{border:2px solid transparent;
+  background:linear-gradient(var(--surface),var(--surface)) padding-box,conic-gradient(from var(--ang),#ff5c9d,#ffc23d,#6ee77a,#35dcd2,#5aa9ff,#a888ff,#ff5c9d) border-box;
+  box-shadow:0 0 26px rgba(168,136,255,.22),0 0 12px rgba(255,138,61,.14);animation:ringspin 4.5s linear infinite}
+@keyframes ringspin{to{--ang:360deg}}
+.streakcard.on .streak b,.endstreak.on b{animation:numcolor 6s linear infinite;text-shadow:0 0 16px currentColor}
+@keyframes numcolor{0%,100%{color:#ff5c9d}16%{color:#ffc23d}33%{color:#6ee77a}50%{color:#35dcd2}66%{color:#5aa9ff}83%{color:#a888ff}}
+
+/* Level-up-Vollbild */
+.lvl{position:fixed;inset:0;z-index:70;display:grid;place-items:center;overflow:hidden;cursor:pointer;
+  background:radial-gradient(circle at 50% 44%,#2a1b6b 0%,#120f33 55%,#080c1e 100%);animation:lvlin .22s ease-out}
+.lvl.out{animation:lvlout .3s ease-in forwards}
+.lvl-rays{position:absolute;left:50%;top:44%;width:190vmax;height:190vmax;margin:-95vmax 0 0 -95vmax;opacity:.38;
+  background:repeating-conic-gradient(from 0deg,var(--c-pink) 0 6deg,transparent 6deg 18deg);
+  -webkit-mask-image:radial-gradient(circle,#000 0,transparent 42%);mask-image:radial-gradient(circle,#000 0,transparent 42%);
+  animation:lvlspin 18s linear infinite,lvlhue 3.5s linear infinite}
+.lvl-in{position:relative;display:grid;justify-items:center;gap:20px;padding:0 24px;text-align:center}
+.lvl-lab{font:800 30px/1 var(--display);letter-spacing:.14em;text-transform:uppercase;
+  background:linear-gradient(90deg,var(--c-yellow),var(--c-pink),var(--c-violet),var(--c-cyan),var(--c-green),var(--c-yellow));background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;animation:lvldrop .5s cubic-bezier(.2,1.6,.4,1),lvlslide 2.4s linear infinite}
+.lvl-badge{position:relative;width:168px;height:168px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(from 0deg,#ff5c9d,#ffc23d,#6ee77a,#35dcd2,#5aa9ff,#a888ff,#ff5c9d);
+  box-shadow:0 0 70px rgba(255,194,61,.45),0 0 0 6px rgba(255,255,255,.08);animation:lvlpop .7s cubic-bezier(.2,1.8,.4,1) both}
+.lvl-badge::before{content:"";position:absolute;inset:11px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#3a2a8c,#150f3d)}
+.lvl-badge span{position:relative;font:800 92px/1 var(--display);color:#fff;text-shadow:0 0 24px rgba(255,194,61,.8)}
+.lvl-pips{display:flex;gap:8px}
+.lvl-pips i{width:38px;height:12px;border-radius:6px;background:rgba(255,255,255,.14)}
+.lvl-pips i.on{background:var(--pc);box-shadow:0 0 14px var(--pc);animation:lvlfill .35s cubic-bezier(.2,1.8,.4,1) both;animation-delay:var(--d)}
+.lvl-word{font:700 26px/1.2 var(--display);animation:lvlrise .4s .45s ease-out both}
+.lvl-sub{color:var(--muted);font-size:15px;animation:lvlrise .4s .6s ease-out both}
+@keyframes lvlin{from{opacity:0}to{opacity:1}}
+@keyframes lvlout{to{opacity:0;transform:scale(1.04)}}
+@keyframes lvlspin{to{transform:rotate(360deg)}}
+@keyframes lvlhue{to{filter:hue-rotate(360deg)}}
+@keyframes lvlslide{to{background-position:200% 0}}
+@keyframes lvldrop{from{opacity:0;transform:translateY(-30px) scale(.7)}to{opacity:1;transform:none}}
+@keyframes lvlpop{0%{transform:scale(0) rotate(-40deg)}100%{transform:none}}
+@keyframes lvlfill{from{transform:scaleX(0);opacity:0}to{transform:none;opacity:1}}
+@keyframes lvlrise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* Fehlerliste, Satz-Übung, Bausteine */
+.num:nth-child(3) b{color:var(--c-orange)}
+.missed em{font-style:normal;color:var(--bad);margin-left:6px;font-size:12px;font-weight:700}
+.tag.err{color:var(--bad)}
+.ex{border-left:3px solid var(--c-cyan);padding:2px 0 2px 14px;display:grid;gap:4px}
+.ex .xi{font:600 20px/1.3 var(--display)}
+.ex .xi b{color:var(--c-yellow);font-weight:700}
+.ex .xe{color:var(--muted)}
+.ex .xe b{color:var(--c-cyan);font-weight:600}
+.sentbox{font:600 24px/1.35 var(--display);text-wrap:balance}
+.sentbox .slot{color:var(--c-yellow);border-bottom:3px solid var(--c-yellow);padding:0 2px}
+.opts{display:grid;gap:10px}
+.opt{min-height:54px;text-align:left;padding:0 16px;border-radius:12px;border:1.5px solid var(--line);border-bottom-width:3px;background:var(--surface);font-size:17px;font-weight:600}
+.opt:active:not(:disabled){transform:translateY(2px)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--good);background:var(--good-soft)}
+.opt.no{border-color:var(--bad);background:var(--bad-soft);animation:shake .35s}
+.ans{min-height:64px;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;align-content:flex-start;border-top:2px solid var(--line);border-bottom:2px solid var(--line)}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tile{min-height:44px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);border-bottom-width:3px;background:var(--raised);font:600 17px var(--body);color:var(--text)}
+.tile:active:not(:disabled){transform:translateY(2px)}
+.tile.ghost{display:inline-flex;align-items:center;background:var(--surface);border:1.5px dashed var(--line-soft);color:transparent}
+.ans.good .tile{border-color:var(--good);background:var(--good-soft)}
+.ans.bad .tile{border-color:var(--bad);background:var(--bad-soft)}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="app" id="app"></div>
+
+<nav class="tabs" id="tabs" aria-label="Hauptmenü" hidden>
+  <div class="tabs-in">
+    <button class="tab" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3.5v3M16 3.5v3"/></svg>Heute</button>
+    <button class="tab" data-v="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3V4.5Z"/><path d="M5 17a3 3 0 0 1 3-3h10"/></svg>Vokabelheft</button>
+    <button class="tab" data-v="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Einstellungen</button>
+  </div>
+</nav>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Abfrage"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Wortschatz ---------- */
+const INTERVALS=[1,3,7,14,30];   // Tage bis zur nächsten Wiederholung nach Stufe 1..5
+const STORE='kata.v1';
+
+const LANGS={id:{id:'id',name:'Indonesisch',native:'Bahasa Indonesia',code:'ID',cats:[
+['Begrüßung & Höflichkeit',`
+halo = hello
+selamat pagi = good morning
+selamat siang = good day
+selamat sore = good afternoon
+selamat malam = good evening / good night
+sampai jumpa = see you
+selamat tinggal = goodbye
+sampai besok = see you tomorrow
+terima kasih = thank you
+sama-sama = you are welcome
+tolong = please / help
+silakan = please go ahead
+maaf = sorry
+permisi = excuse me
+ya = yes
+tidak = no / not
+bukan = not (with nouns)
+apa kabar = how are you
+baik = good / fine
+nama = name
+senang bertemu = nice to meet you
+selamat makan = enjoy your meal
+selamat ulang tahun = happy birthday
+semoga berhasil = good luck
+tidak apa-apa = no problem
+`],
+['Pronomen & Fragewörter',`
+saya = I (formal)
+aku = I (informal)
+kamu = you (informal)
+Anda = you (formal)
+dia = he / she
+kami = we (without you)
+kita = we (with you)
+mereka = they
+ini = this
+itu = that
+apa = what
+siapa = who
+di mana = where
+kapan = when
+mengapa = why
+kenapa = why (informal)
+bagaimana = how
+berapa = how many
+yang mana = which
+yang = who / that
+`],
+['Zahlen',`
+nol = zero
+satu = one
+dua = two
+tiga = three
+empat = four
+lima = five
+enam = six
+tujuh = seven
+delapan = eight
+sembilan = nine
+sepuluh = ten
+sebelas = eleven
+dua belas = twelve
+dua puluh = twenty
+tiga puluh = thirty
+lima puluh = fifty
+seratus = one hundred
+seribu = one thousand
+sejuta = one million
+pertama = first
+terakhir = last
+setengah = half
+`],
+['Zeit & Wochentage',`
+hari = day
+hari ini = today
+besok = tomorrow
+kemarin = yesterday
+sekarang = now
+nanti = later
+segera = soon
+tadi = just now
+dulu = in the past
+minggu = week
+bulan = month / moon
+tahun = year
+jam = hour
+menit = minute
+detik = second (time)
+waktu = time
+pagi = morning
+siang = noon
+sore = late afternoon
+malam = night
+libur = day off
+Senin = Monday
+Selasa = Tuesday
+Rabu = Wednesday
+Kamis = Thursday
+Jumat = Friday
+Sabtu = Saturday
+hari Minggu = Sunday
+selalu = always
+sering = often
+kadang-kadang = sometimes
+jarang = rarely
+tidak pernah = never
+sudah = already
+belum = not yet
+akan = will
+masih = still
+lagi = again
+`],
+['Monate',`
+Januari = January
+Februari = February
+Maret = March
+April = April
+Mei = May (month)
+Juni = June
+Juli = July
+Agustus = August
+September = September
+Oktober = October
+November = November
+Desember = December
+`],
+['Familie & Menschen',`
+keluarga = family
+ibu = mother
+ayah = father
+orang tua = parents
+anak = child
+kakak = older sibling
+adik = younger sibling
+saudara = relative
+suami = husband
+istri = wife
+nenek = grandmother
+kakek = grandfather
+paman = uncle
+bibi = aunt
+sepupu = cousin
+teman = friend
+sahabat = best friend
+pacar = boyfriend / girlfriend
+orang = person
+laki-laki = man
+perempuan = woman
+anak laki-laki = boy
+anak perempuan = girl
+bayi = baby
+bapak = sir
+tetangga = neighbor
+tamu = guest
+guru = teacher
+murid = pupil
+dokter = doctor
+polisi = police
+penjual = seller
+pembeli = buyer
+petani = farmer
+nelayan = fisherman
+sopir = driver
+koki = chef
+turis = tourist
+orang asing = foreigner
+`],
+['Essen & Trinken',`
+makan = to eat
+minum = to drink
+makanan = food
+minuman = drink
+air = water
+nasi = cooked rice
+beras = raw rice
+nasi goreng = fried rice
+roti = bread
+daging = meat
+ayam = chicken
+ikan = fish
+udang = shrimp
+telur = egg
+tempe = tempeh
+sate = satay
+sayur = vegetables
+buah = fruit
+apel = apple
+pisang = banana
+jeruk = orange
+mangga = mango
+nanas = pineapple
+semangka = watermelon
+kopi = coffee
+teh = tea
+susu = milk
+jus = juice
+bir = beer
+es = ice
+gula = sugar
+garam = salt
+pedas = spicy
+manis = sweet
+asin = salty
+asam = sour
+pahit = bitter
+lapar = hungry
+haus = thirsty
+kenyang = full (stomach)
+enak = tasty
+sarapan = breakfast
+makan siang = lunch
+makan malam = dinner
+restoran = restaurant
+warung = small eatery
+piring = plate
+mangkuk = bowl
+sendok = spoon
+garpu = fork
+pisau = knife
+gelas = glass
+mie = noodles
+sup = soup
+goreng = fried
+rebus = boiled
+bakar = grilled
+bawang putih = garlic
+bawang merah = shallot
+cabai = chili
+kentang = potato
+tomat = tomato
+kelapa = coconut
+kue = cake
+permen = candy
+makanan ringan = snack
+bungkus = takeaway
+`],
+['Verben',`
+pergi = to go
+datang = to come
+pulang = to go home
+masuk = to enter
+keluar = to go out
+tidur = to sleep
+bangun = to wake up
+duduk = to sit
+berdiri = to stand
+berjalan = to walk
+lari = to run
+jatuh = to fall
+bicara = to speak
+berkata = to say
+bertanya = to ask
+menjawab = to answer
+melihat = to see
+mendengar = to hear
+membaca = to read
+menulis = to write
+belajar = to study
+mengajar = to teach
+bekerja = to work
+bermain = to play
+membeli = to buy
+menjual = to sell
+membayar = to pay
+mengambil = to take
+memberi = to give
+membawa = to bring
+membuka = to open
+menutup = to close
+mulai = to start
+selesai = to finish
+menunggu = to wait
+mencari = to look for
+menemukan = to find
+mengerti = to understand
+tahu = to know
+ingat = to remember
+lupa = to forget
+suka = to like
+cinta = to love
+mau = to want
+bisa = can
+harus = must
+boleh = is allowed
+punya = to have
+ada = there is
+menjadi = to become
+memakai = to wear
+menggunakan = to use
+membuat = to make
+melakukan = to do
+mandi = to bathe
+mencuci = to wash
+memasak = to cook
+naik = to go up
+turun = to go down
+berhenti = to stop
+tinggal = to live
+hidup = to be alive
+mati = to die
+lahir = to be born
+menikah = to marry
+membantu = to help
+berpikir = to think
+merasa = to feel
+tertawa = to laugh
+menangis = to cry
+tersenyum = to smile
+menelepon = to call
+mengirim = to send
+menerima = to receive
+mengunjungi = to visit
+bertemu = to meet
+istirahat = to rest
+menyanyi = to sing
+menari = to dance
+berenang = to swim
+menyetir = to drive
+terbang = to fly
+memilih = to choose
+mencoba = to try
+berharap = to hope
+membersihkan = to clean
+berubah = to change
+menjaga = to look after
+menyimpan = to keep
+`],
+['Adjektive & Mengenwörter',`
+besar = big
+kecil = small
+panjang = long
+pendek = short
+tinggi = tall
+rendah = low
+baru = new
+lama = old (not new)
+tua = old (people)
+muda = young
+bagus = nice
+jelek = ugly
+buruk = bad
+mudah = easy
+sulit = difficult
+murah = cheap
+mahal = expensive
+panas = hot
+dingin = cold
+hangat = warm
+sejuk = cool
+bersih = clean
+kotor = dirty
+cepat = fast
+lambat = slow
+pelan-pelan = slowly
+benar = correct
+salah = wrong
+penuh = full (not empty)
+kosong = empty
+berat = heavy
+ringan = light (weight)
+kaya = rich
+miskin = poor
+senang = happy
+sedih = sad
+marah = angry
+takut = afraid
+lelah = tired
+sakit = sick
+sehat = healthy
+cantik = beautiful
+tampan = handsome
+pintar = smart
+bodoh = stupid
+lucu = funny
+penting = important
+sibuk = busy
+bebas = free
+dekat = near
+jauh = far
+terang = bright
+gelap = dark
+kuat = strong
+lemah = weak
+aman = safe
+berbahaya = dangerous
+ramai = crowded
+sepi = quiet
+sama = same
+berbeda = different
+lain = other
+semua = all
+banyak = many
+sedikit = a little
+beberapa = some
+cukup = enough
+sangat = very
+terlalu = too
+lebih = more
+paling = most
+juga = also
+hanya = only
+`],
+['Orte & Gebäude',`
+rumah = house
+kamar = room
+dapur = kitchen
+kamar mandi = bathroom
+kamar tidur = bedroom
+ruang tamu = living room
+pintu = door
+jendela = window
+kota = city
+desa = village
+negara = country
+jalan = street
+pasar = market
+toko = shop
+supermarket = supermarket
+bank = bank
+rumah sakit = hospital
+sekolah = school
+universitas = university
+kantor = office
+bandara = airport
+stasiun = station
+pantai = beach
+gunung = mountain
+laut = sea
+sungai = river
+danau = lake
+hutan = forest
+taman = park
+masjid = mosque
+gereja = church
+pulau = island
+toilet = toilet
+`],
+['Richtungen',`
+kiri = left
+kanan = right
+lurus = straight ahead
+depan = front
+belakang = back
+atas = above
+bawah = below
+luar = outside
+tengah = middle
+samping = beside
+utara = north
+selatan = south
+timur = east
+barat = west
+sini = here
+situ = there
+sana = over there
+`],
+['Reisen & Verkehr',`
+mobil = car
+motor = motorcycle
+sepeda = bicycle
+bus = bus
+kereta api = train
+pesawat = airplane
+kapal = ship
+taksi = taxi
+ojek = motorbike taxi
+tiket = ticket
+bensin = petrol
+parkir = parking
+macet = traffic jam
+peta = map
+perjalanan = journey
+paspor = passport
+koper = suitcase
+hotel = hotel
+liburan = vacation
+alamat = address
+`],
+['Körper & Gesundheit',`
+kepala = head
+mata = eye
+telinga = ear
+hidung = nose
+mulut = mouth
+gigi = tooth
+lidah = tongue
+leher = neck
+bahu = shoulder
+lengan = arm
+tangan = hand
+jari = finger
+kaki = foot
+lutut = knee
+perut = stomach
+punggung = back (body part)
+rambut = hair
+wajah = face
+badan = body
+kulit = skin
+hati = heart (feelings)
+darah = blood
+obat = medicine
+demam = fever
+flu = flu
+batuk = cough
+sakit kepala = headache
+pusing = dizzy
+luka = wound
+alergi = allergy
+apotek = pharmacy
+`],
+['Kleidung & Farben',`
+baju = shirt
+pakaian = clothes
+celana = trousers
+rok = skirt
+jaket = jacket
+kaos = T-shirt
+kaus kaki = socks
+sepatu = shoe
+sandal = sandals
+topi = hat
+tas = bag
+kacamata = glasses
+jam tangan = wristwatch
+cincin = ring
+dompet = wallet
+payung = umbrella
+warna = color
+merah = red
+biru = blue
+hijau = green
+kuning = yellow
+hitam = black
+putih = white
+cokelat = brown
+abu-abu = gray
+oranye = orange (color)
+ungu = purple
+merah muda = pink
+`],
+['Natur, Wetter & Tiere',`
+cuaca = weather
+hujan = rain
+matahari = sun
+bintang = star
+langit = sky
+angin = wind
+awan = cloud
+salju = snow
+badai = storm
+petir = lightning
+pelangi = rainbow
+banjir = flood
+gempa bumi = earthquake
+api = fire
+bumi = earth
+tanah = soil
+batu = stone
+pasir = sand
+pohon = tree
+daun = leaf
+bunga = flower
+rumput = grass
+hewan = animal
+anjing = dog
+kucing = cat
+burung = bird
+sapi = cow
+kuda = horse
+kambing = goat
+bebek = duck
+tikus = mouse
+nyamuk = mosquito
+semut = ant
+cicak = gecko
+kodok = frog
+harimau = tiger
+gajah = elephant
+monyet = monkey
+buaya = crocodile
+ular = snake
+kupu-kupu = butterfly
+`],
+['Haus & Alltag',`
+meja = table
+kursi = chair
+tempat tidur = bed
+lemari = cupboard
+cermin = mirror
+lampu = lamp
+televisi = television
+kunci = key
+lantai = floor
+dinding = wall
+atap = roof
+tangga = stairs
+kebun = garden
+sabun = soap
+handuk = towel
+sikat gigi = toothbrush
+selimut = blanket
+kipas angin = fan
+listrik = electricity
+sampah = trash
+barang = thing
+hadiah = gift
+foto = photo
+musik = music
+film = film
+permainan = game
+`],
+['Geld & Einkaufen',`
+uang = money
+harga = price
+tunai = cash
+kartu = card
+kembalian = change
+diskon = discount
+menawar = to bargain
+belanja = to shop
+kasir = cashier
+gratis = free of charge
+tagihan = bill
+`],
+['Arbeit & Schule',`
+pekerjaan = job
+gaji = salary
+bos = boss
+rapat = meeting
+kelas = class
+ujian = exam
+pelajaran = lesson
+bahasa = language
+kata = word
+kalimat = sentence
+pertanyaan = question
+jawaban = answer
+masalah = problem
+ide = idea
+buku = book
+pena = pen
+kertas = paper
+surat = letter
+kamus = dictionary
+komputer = computer
+internet = internet
+ponsel = mobile phone
+telepon = telephone
+pesan = message
+email = email
+`],
+['Kleine Wörter',`
+dan = and
+atau = or
+tetapi = but
+tapi = but (informal)
+karena = because
+jika = if
+kalau = if (informal)
+dengan = with
+tanpa = without
+untuk = for
+dari = from
+ke = to
+di = in
+pada = at
+dalam = inside
+oleh = by
+antara = between
+sebelum = before
+sesudah = after
+sampai = until
+sambil = while
+bahwa = that (conjunction)
+agar = so that
+tentang = about
+seperti = like
+kira-kira = approximately
+mungkin = maybe
+pasti = surely
+tentu = of course
+memang = indeed
+saja = just
+`],
+['Sätze für den Alltag',`
+saya mengerti = I understand
+saya tidak mengerti = I do not understand
+saya tidak tahu = I do not know
+siapa nama kamu = what is your name
+nama saya = my name is
+saya dari Jerman = I am from Germany
+saya mau makan = I want to eat
+saya suka kopi = I like coffee
+saya lapar = I am hungry
+saya haus = I am thirsty
+saya sakit = I am sick
+saya tersesat = I am lost
+apa ini = what is this
+berapa harganya = how much is it
+di mana toilet = where is the toilet
+bisa bicara bahasa Inggris = can you speak English
+tolong ulangi = please repeat
+bicara pelan-pelan = speak slowly
+tolong tagihannya = the bill please
+satu lagi = one more
+tidak pedas = not spicy
+sudah cukup = that is enough
+sudah makan = have you eaten
+ayo = let us go
+hati-hati = be careful
+awas = watch out
+sebentar = a moment
+tidak ada = there is none
+ke mana = where to
+dari mana = where from
+`]
+]}};
+
+Object.values(LANGS).forEach(L=>{
+  L.words=[];L.catCount=L.cats.map(()=>0);
+  L.cats.forEach((c,ci)=>c[1].split('\n').forEach(line=>{
+    const i=line.indexOf(' = ');if(i<1)return;
+    const id=line.slice(0,i).trim(),en=line.slice(i+3).trim();if(!id||!en)return;
+    L.words.push({k:id.toLowerCase(),id,en,cat:ci});L.catCount[ci]++;
+  }));
+});
+
+
+/* Beispielsätze: Wort | indonesischer Satz | englischer Satz, [Klammer] = englisches Gegenstück des Wortes */
+const SENT_RAW=`
+halo | Halo, nama saya Vito. | [Hello], my name is Vito.
+selamat pagi | Selamat pagi, Bu. | [Good morning], madam.
+selamat siang | Selamat siang, Pak. | [Good day], sir.
+selamat sore | Selamat sore, semuanya. | [Good afternoon], everyone.
+selamat malam | Selamat malam, tidur yang nyenyak. | [Good night], sleep well.
+sampai jumpa | Sampai jumpa lagi. | [See you] again.
+selamat tinggal | Selamat tinggal, teman-teman. | [Goodbye], friends.
+sampai besok | Sampai besok di sekolah. | [See you tomorrow] at school.
+terima kasih | Terima kasih banyak. | [Thank you] very much.
+sama-sama | Sama-sama, senang membantu. | [You are welcome], happy to help.
+tolong | Tolong bantu saya. | [Please] help me.
+silakan | Silakan duduk. | [Please go ahead] and sit down.
+maaf | Maaf, saya terlambat. | [Sorry], I am late.
+permisi | Permisi, boleh lewat? | [Excuse me], may I pass?
+ya | Ya, saya mau. | [Yes], I want to.
+tidak | Tidak, terima kasih. | [No], thank you.
+bukan | Ini bukan kopi. | This is [not] coffee.
+apa kabar | Hai, apa kabar? | Hi, [how are you]?
+baik | Saya baik, terima kasih. | I am [fine], thank you.
+nama | Nama saya Dewi. | My [name] is Dewi.
+senang bertemu | Senang bertemu dengan Anda. | [Nice to meet you].
+selamat makan | Selamat makan, semuanya. | [Enjoy your meal], everyone.
+selamat ulang tahun | Selamat ulang tahun, Rina! | [Happy birthday], Rina!
+semoga berhasil | Semoga berhasil besok. | [Good luck] tomorrow.
+tidak apa-apa | Tidak apa-apa, jangan khawatir. | [No problem], do not worry.
+saya | Saya suka kopi. | [I] like coffee.
+aku | Aku lapar sekali. | [I] am very hungry.
+kamu | Kamu mau ke mana? | Where do [you] want to go?
+Anda | Apakah Anda dokter? | Are [you] a doctor?
+dia | Dia guru saya. | [She] is my teacher.
+kami | Kami tinggal di Jakarta. | [We] live in Jakarta.
+kita | Ayo, kita pergi sekarang. | Come on, [we] go now.
+mereka | Mereka sedang makan. | [They] are eating.
+ini | Ini rumah saya. | [This] is my house.
+itu | Itu mobil baru. | [That] is a new car.
+apa | Apa ini? | [What] is this?
+siapa | Siapa dia? | [Who] is he?
+di mana | Di mana kamar mandi? | [Where] is the bathroom?
+kapan | Kapan kamu pulang? | [When] do you go home?
+mengapa | Mengapa kamu sedih? | [Why] are you sad?
+kenapa | Kenapa terlambat? | [Why] are you late?
+bagaimana | Bagaimana cara ke sana? | [How] do I get there?
+berapa | Berapa umur kamu? | [How many] years old are you?
+yang mana | Yang mana milik kamu? | [Which] one is yours?
+yang | Orang yang di sana adalah ayah saya. | The man [who] is over there is my father.
+nol | Nomor saya nol delapan. | My number is [zero] eight.
+satu | Saya punya satu kakak. | I have [one] older sibling.
+dua | Dia punya dua anak. | She has [two] children.
+tiga | Tiga teman datang. | [Three] friends came.
+empat | Ada empat kursi. | There are [four] chairs.
+lima | Saya beli lima apel. | I bought [five] apples.
+enam | Sekarang jam enam. | It is [six] o'clock now.
+tujuh | Seminggu ada tujuh hari. | A week has [seven] days.
+delapan | Dia bangun jam delapan. | He wakes up at [eight].
+sembilan | Anak itu berumur sembilan tahun. | That child is [nine] years old.
+sepuluh | Saya tunggu sepuluh menit. | I wait [ten] minutes.
+sebelas | Ada sebelas pemain. | There are [eleven] players.
+dua belas | Bulan Desember adalah bulan kedua belas. | December is month number [twelve].
+dua puluh | Dia berumur dua puluh tahun. | She is [twenty] years old.
+tiga puluh | Kami tunggu tiga puluh menit. | We waited [thirty] minutes.
+lima puluh | Harganya lima puluh ribu. | The price is [fifty] thousand.
+seratus | Ada seratus orang di sini. | There are [one hundred] people here.
+seribu | Permen ini seribu rupiah. | This candy is [one thousand] rupiah.
+sejuta | Dia punya sejuta mimpi. | He has [one million] dreams.
+pertama | Ini hari pertama saya. | This is my [first] day.
+terakhir | Ini kali terakhir. | This is the [last] time.
+setengah | Saya makan setengah apel. | I ate [half] an apple.
+hari | Hari ini hari yang indah. | Today is a beautiful [day].
+hari ini | Hari ini saya libur. | [Today] I have a day off.
+besok | Besok kita belajar. | [Tomorrow] we study.
+kemarin | Kemarin saya sakit. | [Yesterday] I was sick.
+sekarang | Saya makan sekarang. | I eat [now].
+nanti | Nanti saya telepon. | I will call you [later].
+segera | Dia akan segera datang. | He will come [soon].
+tadi | Tadi saya bertemu dia. | I met him [just now].
+dulu | Dulu saya tinggal di desa. | [In the past] I lived in a village.
+minggu | Saya libur satu minggu. | I have a one-[week] holiday.
+bulan | Satu bulan ada tiga puluh hari. | One [month] has thirty days.
+tahun | Tahun ini saya pergi ke Bali. | This [year] I am going to Bali.
+jam | Saya tunggu satu jam. | I waited one [hour].
+menit | Tunggu lima menit lagi. | Wait five more [minutes].
+detik | Tunggu satu detik. | Wait one [second].
+waktu | Saya tidak punya waktu. | I do not have [time].
+pagi | Saya olahraga setiap pagi. | I exercise every [morning].
+siang | Kami makan di siang hari. | We eat at [noon].
+sore | Saya jalan-jalan di sore hari. | I go for a walk in the [late afternoon].
+malam | Saya tidur malam ini. | I sleep tonight, at [night].
+libur | Hari Minggu saya libur. | On Sunday I have a [day off].
+Senin | Hari Senin saya kerja. | On [Monday] I work.
+Selasa | Hari Selasa saya belajar. | On [Tuesday] I study.
+Rabu | Hari Rabu kami rapat. | On [Wednesday] we have a meeting.
+Kamis | Hari Kamis saya olahraga. | On [Thursday] I exercise.
+Jumat | Hari Jumat kami salat. | On [Friday] we pray.
+Sabtu | Hari Sabtu saya bermain. | On [Saturday] I play.
+hari Minggu | Hari Minggu saya istirahat. | On [Sunday] I rest.
+selalu | Dia selalu tersenyum. | She [always] smiles.
+sering | Saya sering minum kopi. | I [often] drink coffee.
+kadang-kadang | Kadang-kadang saya naik bus. | [Sometimes] I take the bus.
+jarang | Saya jarang makan daging. | I [rarely] eat meat.
+tidak pernah | Saya tidak pernah terlambat. | I am [never] late.
+sudah | Saya sudah makan. | I have [already] eaten.
+belum | Saya belum makan. | I have [not yet] eaten.
+akan | Saya akan pergi besok. | I [will] go tomorrow.
+masih | Dia masih tidur. | He is [still] sleeping.
+lagi | Tolong katakan lagi. | Please say it [again].
+Januari | Bulan Januari musim hujan. | [January] is the rainy season.
+Februari | Ulang tahun saya bulan Februari. | My birthday is in [February].
+Maret | Bulan Maret masih hujan. | In [March] it still rains.
+April | Bulan April saya pergi. | In [April] I go away.
+Mei | Bulan Mei ada hari libur. | In [May] there is a holiday.
+Juni | Bulan Juni sangat panas. | [June] is very hot.
+Juli | Bulan Juli kami liburan. | In [July] we go on holiday.
+Agustus | Tanggal tujuh belas Agustus hari kemerdekaan. | The seventeenth of [August] is Independence Day.
+September | Bulan September sekolah mulai. | In [September] school starts.
+Oktober | Bulan Oktober saya bekerja. | In [October] I work.
+November | Bulan November sering hujan. | In [November] it often rains.
+Desember | Bulan Desember dingin di Eropa. | [December] is cold in Europe.
+keluarga | Keluarga saya besar. | My [family] is big.
+ibu | Ibu memasak di dapur. | [Mother] cooks in the kitchen.
+ayah | Ayah bekerja di kantor. | [Father] works in the office.
+orang tua | Orang tua saya tinggal di desa. | My [parents] live in a village.
+anak | Anak itu bermain di taman. | The [child] plays in the park.
+kakak | Kakak saya sudah kuliah. | My [older sibling] is already at university.
+adik | Adik saya masih sekolah. | My [younger sibling] is still at school.
+saudara | Saya punya banyak saudara. | I have many [relatives].
+suami | Suami saya bekerja di bank. | My [husband] works at a bank.
+istri | Istri saya suka memasak. | My [wife] likes cooking.
+nenek | Nenek membuat kue. | [Grandmother] bakes a cake.
+kakek | Kakek membaca koran. | [Grandfather] reads the newspaper.
+paman | Paman saya tinggal di Bandung. | My [uncle] lives in Bandung.
+bibi | Bibi membawa buah. | [Aunt] brings fruit.
+sepupu | Sepupu saya datang hari ini. | My [cousin] comes today.
+teman | Teman saya baik hati. | My [friend] is kind-hearted.
+sahabat | Dia sahabat saya sejak kecil. | She is my [best friend] since childhood.
+pacar | Pacar saya sangat baik. | My [girlfriend] is very nice.
+orang | Ada orang di depan pintu. | There is a [person] at the door.
+laki-laki | Laki-laki itu tinggi. | That [man] is tall.
+perempuan | Perempuan itu sedang membaca. | That [woman] is reading.
+anak laki-laki | Anak laki-laki itu bermain bola. | The [boy] plays football.
+anak perempuan | Anak perempuan itu menyanyi. | The [girl] sings.
+bayi | Bayi itu sedang tidur. | The [baby] is sleeping.
+bapak | Bapak mau minum apa? | What would you like to drink, [sir]?
+tetangga | Tetangga saya ramah. | My [neighbor] is friendly.
+tamu | Tamu kami sudah datang. | Our [guest] has arrived.
+guru | Guru saya sangat sabar. | My [teacher] is very patient.
+murid | Murid itu rajin belajar. | The [pupil] studies diligently.
+dokter | Dokter memeriksa pasien. | The [doctor] examines the patient.
+polisi | Polisi menjaga jalan. | The [police] guard the road.
+penjual | Penjual itu ramah. | The [seller] is friendly.
+pembeli | Pembeli menawar harga. | The [buyer] haggles over the price.
+petani | Petani bekerja di sawah. | The [farmer] works in the rice field.
+nelayan | Nelayan pergi ke laut. | The [fisherman] goes to sea.
+sopir | Sopir itu mengemudi dengan hati-hati. | The [driver] drives carefully.
+koki | Koki memasak nasi goreng. | The [chef] cooks fried rice.
+turis | Turis itu suka pantai. | The [tourist] likes the beach.
+orang asing | Orang asing itu bertanya jalan. | The [foreigner] asks for directions.
+makan | Saya mau makan sekarang. | I want to [eat] now.
+minum | Saya mau minum air. | I want to [drink] water.
+makanan | Makanan ini enak. | This [food] is tasty.
+minuman | Minuman ini dingin. | This [drink] is cold.
+air | Saya minum air putih. | I drink white [water].
+nasi | Saya makan nasi setiap hari. | I eat [cooked rice] every day.
+beras | Ibu membeli beras di pasar. | Mother buys [raw rice] at the market.
+nasi goreng | Saya suka nasi goreng. | I like [fried rice].
+roti | Saya makan roti dengan telur. | I eat [bread] with egg.
+daging | Dia tidak makan daging. | He does not eat [meat].
+ayam | Saya pesan ayam goreng. | I order fried [chicken].
+ikan | Ikan ini segar. | This [fish] is fresh.
+udang | Udang ini besar. | This [shrimp] is big.
+telur | Saya makan dua telur. | I eat two [eggs].
+tempe | Tempe murah dan sehat. | [Tempeh] is cheap and healthy.
+sate | Saya mau sate ayam. | I want chicken [satay].
+sayur | Anak harus makan sayur. | Children must eat [vegetables].
+buah | Saya suka buah segar. | I like fresh [fruit].
+apel | Apel ini manis. | This [apple] is sweet.
+pisang | Monyet suka pisang. | Monkeys like [bananas].
+jeruk | Saya minum jus jeruk. | I drink [orange] juice.
+mangga | Mangga ini sangat manis. | This [mango] is very sweet.
+nanas | Nanas rasanya asam. | [Pineapple] tastes sour.
+semangka | Semangka cocok saat panas. | [Watermelon] is good when it is hot.
+kopi | Saya minum kopi pagi hari. | I drink [coffee] in the morning.
+teh | Dia suka teh hangat. | She likes warm [tea].
+susu | Bayi minum susu. | The baby drinks [milk].
+jus | Saya pesan jus mangga. | I order mango [juice].
+bir | Dia minum bir dingin. | He drinks a cold [beer].
+es | Saya mau es teh. | I want iced tea, with [ice].
+gula | Kopi saya pakai gula. | My coffee has [sugar].
+garam | Sup ini kurang garam. | This soup needs more [salt].
+pedas | Makanan ini terlalu pedas. | This food is too [spicy].
+manis | Teh ini manis. | This tea is [sweet].
+asin | Ikan ini asin. | This fish is [salty].
+asam | Jeruk ini asam. | This orange is [sour].
+pahit | Kopi ini pahit. | This coffee is [bitter].
+lapar | Saya lapar sekali. | I am very [hungry].
+haus | Saya haus, mau minum. | I am [thirsty], I want a drink.
+kenyang | Saya sudah kenyang. | I am already [full].
+enak | Nasi gorengnya enak. | The fried rice is [tasty].
+sarapan | Saya sarapan jam tujuh. | I eat [breakfast] at seven.
+makan siang | Kami makan siang di warung. | We have [lunch] at a small eatery.
+makan malam | Kami makan malam bersama. | We have [dinner] together.
+restoran | Restoran itu ramai. | That [restaurant] is busy.
+warung | Kami makan di warung. | We eat at a [small eatery].
+piring | Tolong ambil piring. | Please get a [plate].
+mangkuk | Saya mau satu mangkuk sup. | I want one [bowl] of soup.
+sendok | Saya butuh sendok. | I need a [spoon].
+garpu | Dia makan pakai garpu. | He eats with a [fork].
+pisau | Pisau ini tajam. | This [knife] is sharp.
+gelas | Tolong beri saya satu gelas air. | Please give me one [glass] of water.
+mie | Saya pesan mie goreng. | I order fried [noodles].
+sup | Sup ini panas. | This [soup] is hot.
+goreng | Saya suka pisang goreng. | I like [fried] bananas.
+rebus | Saya makan telur rebus. | I eat [boiled] eggs.
+bakar | Saya suka ikan bakar. | I like [grilled] fish.
+bawang putih | Ibu menambah bawang putih. | Mother adds [garlic].
+bawang merah | Saya iris bawang merah. | I slice the [shallot].
+cabai | Dia suka cabai. | He likes [chili].
+kentang | Saya goreng kentang. | I fry [potatoes].
+tomat | Tomat ini merah. | This [tomato] is red.
+kelapa | Saya minum air kelapa. | I drink [coconut] water.
+kue | Nenek membuat kue. | Grandmother bakes a [cake].
+permen | Anak itu makan permen. | The child eats [candy].
+makanan ringan | Saya beli makanan ringan. | I buy a [snack].
+bungkus | Nasi goreng satu, bungkus. | One fried rice, [takeaway].
+pergi | Saya mau pergi ke pasar. | I want to [go] to the market.
+datang | Teman saya akan datang besok. | My friend will [come] tomorrow.
+pulang | Saya mau pulang sekarang. | I want to [go home] now.
+masuk | Silakan masuk. | Please [come in].
+keluar | Dia keluar dari kamar. | He [goes out] of the room.
+tidur | Saya mau tidur. | I want to [sleep].
+bangun | Saya bangun jam enam. | I [wake up] at six.
+duduk | Silakan duduk di sini. | Please [sit] here.
+berdiri | Dia berdiri di depan pintu. | He [stands] in front of the door.
+berjalan | Kami berjalan ke sekolah. | We [walk] to school.
+lari | Anak itu lari di taman. | The child [runs] in the park.
+jatuh | Hati-hati, jangan jatuh. | Be careful, do not [fall].
+bicara | Dia bisa bicara bahasa Inggris. | He can [speak] English.
+berkata | Ibu berkata dia lapar. | Mother [says] she is hungry.
+bertanya | Saya mau bertanya. | I want to [ask] something.
+menjawab | Tolong jawab pertanyaan ini. | Please [answer] this question.
+melihat | Saya melihat burung. | I [see] a bird.
+mendengar | Saya mendengar musik. | I [hear] music.
+membaca | Saya suka membaca buku. | I like to [read] books.
+menulis | Dia menulis surat. | She [writes] a letter.
+belajar | Saya belajar bahasa Indonesia. | I [study] Indonesian.
+mengajar | Dia mengajar di sekolah. | She [teaches] at a school.
+bekerja | Ayah bekerja di kantor. | Father [works] at the office.
+bermain | Anak-anak bermain di taman. | The children [play] in the park.
+membeli | Saya mau membeli roti. | I want to [buy] bread.
+menjual | Dia menjual buah. | He [sells] fruit.
+membayar | Saya mau membayar sekarang. | I want to [pay] now.
+mengambil | Tolong ambil buku itu. | Please [take] that book.
+memberi | Dia memberi saya hadiah. | She [gives] me a gift.
+membawa | Saya membawa tas. | I [bring] a bag.
+membuka | Tolong buka pintu. | Please [open] the door.
+menutup | Tolong tutup jendela. | Please [close] the window.
+mulai | Pelajaran mulai jam delapan. | The lesson [starts] at eight.
+selesai | Saya sudah selesai. | I have [finished].
+menunggu | Saya menunggu bus. | I [wait] for the bus.
+mencari | Saya mencari kunci. | I [look for] my key.
+menemukan | Saya menemukan dompet. | I [find] a wallet.
+mengerti | Saya mengerti sekarang. | I [understand] now.
+tahu | Saya tidak tahu. | I do not [know].
+ingat | Saya ingat nama kamu. | I [remember] your name.
+lupa | Saya lupa kata itu. | I [forget] that word.
+suka | Saya suka kopi. | I [like] coffee.
+cinta | Saya cinta keluarga saya. | I [love] my family.
+mau | Saya mau makan. | I [want] to eat.
+bisa | Saya bisa berenang. | I [can] swim.
+harus | Saya harus pergi. | I [must] go.
+boleh | Boleh saya duduk di sini? | [Is it allowed] for me to sit here?
+punya | Saya punya satu kakak. | I [have] one older sibling.
+ada | Ada kopi di meja. | [There is] coffee on the table.
+menjadi | Dia mau menjadi dokter. | He wants to [become] a doctor.
+memakai | Dia memakai baju merah. | She [wears] a red shirt.
+menggunakan | Saya menggunakan telepon. | I [use] a phone.
+membuat | Ibu membuat kue. | Mother [makes] a cake.
+melakukan | Apa yang kamu lakukan? | What are you [doing]?
+mandi | Saya mandi setiap pagi. | I [bathe] every morning.
+mencuci | Saya mencuci piring. | I [wash] the plates.
+memasak | Ibu memasak nasi. | Mother [cooks] rice.
+naik | Saya naik bus ke kantor. | I [go up] on the bus to the office.
+turun | Dia turun dari bus. | He [goes down] from the bus.
+berhenti | Bus berhenti di sini. | The bus [stops] here.
+tinggal | Saya tinggal di Berlin. | I [live] in Berlin.
+hidup | Nenek masih hidup. | Grandmother is still [alive].
+mati | Bunga itu mati. | That flower [dies].
+lahir | Saya lahir di bulan Mei. | I was [born] in May.
+menikah | Mereka mau menikah. | They want to [marry].
+membantu | Dia membantu ibunya. | She [helps] her mother.
+berpikir | Saya berpikir dulu. | I [think] first.
+merasa | Saya merasa senang. | I [feel] happy.
+tertawa | Anak itu tertawa. | The child [laughs].
+menangis | Bayi itu menangis. | The baby [cries].
+tersenyum | Dia tersenyum kepada saya. | She [smiles] at me.
+menelepon | Saya menelepon ibu. | I [call] mother.
+mengirim | Saya mengirim surat. | I [send] a letter.
+menerima | Saya menerima hadiah. | I [receive] a gift.
+mengunjungi | Kami mengunjungi nenek. | We [visit] grandmother.
+bertemu | Kami bertemu di kafe. | We [meet] at the cafe.
+istirahat | Saya mau istirahat. | I want to [rest].
+menyanyi | Dia suka menyanyi. | She likes to [sing].
+menari | Mereka menari di panggung. | They [dance] on the stage.
+berenang | Saya berenang di laut. | I [swim] in the sea.
+menyetir | Ayah menyetir mobil. | Father [drives] the car.
+terbang | Burung itu terbang. | The bird [flies].
+memilih | Saya memilih teh. | I [choose] tea.
+mencoba | Saya mau mencoba sate. | I want to [try] satay.
+berharap | Saya berharap kamu sehat. | I [hope] you are healthy.
+membersihkan | Saya membersihkan kamar. | I [clean] the room.
+berubah | Cuaca berubah. | The weather [changes].
+menjaga | Kakak menjaga adik. | Older sister [looks after] her younger sibling.
+menyimpan | Saya menyimpan uang. | I [keep] the money.
+besar | Rumah itu besar. | That house is [big].
+kecil | Kucing itu kecil. | That cat is [small].
+panjang | Jalan ini panjang. | This road is [long].
+pendek | Rambut dia pendek. | Her hair is [short].
+tinggi | Gunung itu tinggi. | That mountain is [tall].
+rendah | Meja ini rendah. | This table is [low].
+baru | Saya punya mobil baru. | I have a [new] car.
+lama | Buku ini sudah lama. | This book is already [old].
+tua | Kakek saya sudah tua. | My grandfather is already [old].
+muda | Dia masih muda. | She is still [young].
+bagus | Rumah itu bagus. | That house is [nice].
+jelek | Baju ini jelek. | This shirt is [ugly].
+buruk | Cuaca hari ini buruk. | The weather today is [bad].
+mudah | Soal ini mudah. | This question is [easy].
+sulit | Bahasa ini sulit. | This language is [difficult].
+murah | Baju ini murah. | This shirt is [cheap].
+mahal | Hotel itu mahal. | That hotel is [expensive].
+panas | Kopi ini panas. | This coffee is [hot].
+dingin | Air ini dingin. | This water is [cold].
+hangat | Teh ini hangat. | This tea is [warm].
+sejuk | Udara pagi sejuk. | The morning air is [cool].
+bersih | Kamar ini bersih. | This room is [clean].
+kotor | Baju ini kotor. | This shirt is [dirty].
+cepat | Mobil itu cepat. | That car is [fast].
+lambat | Bus itu lambat. | That bus is [slow].
+pelan-pelan | Tolong bicara pelan-pelan. | Please speak [slowly].
+benar | Jawaban kamu benar. | Your answer is [correct].
+salah | Jawaban saya salah. | My answer is [wrong].
+penuh | Gelas ini penuh. | This glass is [full].
+kosong | Piring itu kosong. | That plate is [empty].
+berat | Tas ini berat. | This bag is [heavy].
+ringan | Buku ini ringan. | This book is [light].
+kaya | Orang itu kaya. | That person is [rich].
+miskin | Keluarga itu miskin. | That family is [poor].
+senang | Saya senang hari ini. | I am [happy] today.
+sedih | Dia sedih sekali. | She is very [sad].
+marah | Ayah marah. | Father is [angry].
+takut | Saya takut anjing. | I am [afraid] of dogs.
+lelah | Saya lelah hari ini. | I am [tired] today.
+sakit | Adik saya sakit. | My younger sibling is [sick].
+sehat | Kakek saya sehat. | My grandfather is [healthy].
+cantik | Bunga itu cantik. | That flower is [beautiful].
+tampan | Dia pria yang tampan. | He is a [handsome] man.
+pintar | Anak itu pintar. | That child is [smart].
+bodoh | Saya merasa bodoh. | I feel [stupid].
+lucu | Film itu lucu. | That film is [funny].
+penting | Ini sangat penting. | This is very [important].
+sibuk | Hari ini saya sibuk. | Today I am [busy].
+bebas | Besok saya bebas. | Tomorrow I am [free].
+dekat | Rumah saya dekat. | My house is [near].
+jauh | Sekolah saya jauh. | My school is [far].
+terang | Kamar ini terang. | This room is [bright].
+gelap | Malam ini gelap. | Tonight is [dark].
+kuat | Dia sangat kuat. | He is very [strong].
+lemah | Bayi itu lemah. | The baby is [weak].
+aman | Kota ini aman. | This city is [safe].
+berbahaya | Jalan ini berbahaya. | This road is [dangerous].
+ramai | Pasar itu ramai. | That market is [crowded].
+sepi | Desa ini sepi. | This village is [quiet].
+sama | Kita punya buku yang sama. | We have the [same] book.
+berbeda | Warna kita berbeda. | Our colors are [different].
+lain | Saya mau yang lain. | I want the [other] one.
+semua | Semua orang datang. | [All] people came.
+banyak | Ada banyak orang di sini. | There are [many] people here.
+sedikit | Saya mau sedikit gula. | I want [a little] sugar.
+beberapa | Saya punya beberapa teman. | I have [some] friends.
+cukup | Makanan ini cukup. | This food is [enough].
+sangat | Rumah itu sangat besar. | That house is [very] big.
+terlalu | Kopi ini terlalu panas. | This coffee is [too] hot.
+lebih | Saya mau lebih banyak. | I want [more].
+paling | Ini yang paling enak. | This is the [most] tasty.
+juga | Saya juga mau. | I [also] want it.
+hanya | Saya hanya punya satu. | I [only] have one.
+rumah | Rumah saya kecil. | My [house] is small.
+kamar | Kamar saya bersih. | My [room] is clean.
+dapur | Ibu ada di dapur. | Mother is in the [kitchen].
+kamar mandi | Di mana kamar mandi? | Where is the [bathroom]?
+kamar tidur | Kamar tidur saya kecil. | My [bedroom] is small.
+ruang tamu | Tamu duduk di ruang tamu. | The guests sit in the [living room].
+pintu | Tolong buka pintu. | Please open the [door].
+jendela | Jendela itu besar. | That [window] is big.
+kota | Jakarta adalah kota besar. | Jakarta is a big [city].
+desa | Nenek tinggal di desa. | Grandmother lives in a [village].
+negara | Indonesia adalah negara besar. | Indonesia is a big [country].
+jalan | Jalan ini panjang. | This [street] is long.
+pasar | Ibu pergi ke pasar. | Mother goes to the [market].
+toko | Toko itu buka. | That [shop] is open.
+supermarket | Saya belanja di supermarket. | I shop at the [supermarket].
+bank | Saya pergi ke bank. | I go to the [bank].
+rumah sakit | Dia di rumah sakit. | He is in the [hospital].
+sekolah | Anak saya di sekolah. | My child is at [school].
+universitas | Kakak saya di universitas. | My older sibling is at the [university].
+kantor | Ayah ada di kantor. | Father is at the [office].
+bandara | Kami pergi ke bandara. | We go to the [airport].
+stasiun | Kereta ada di stasiun. | The train is at the [station].
+pantai | Kami main di pantai. | We play on the [beach].
+gunung | Gunung itu tinggi. | That [mountain] is tall.
+laut | Laut itu biru. | The [sea] is blue.
+sungai | Sungai itu panjang. | That [river] is long.
+danau | Kami berenang di danau. | We swim in the [lake].
+hutan | Harimau tinggal di hutan. | Tigers live in the [forest].
+taman | Anak-anak bermain di taman. | The children play in the [park].
+masjid | Masjid itu besar. | That [mosque] is big.
+gereja | Gereja itu tua. | That [church] is old.
+pulau | Bali adalah pulau yang indah. | Bali is a beautiful [island].
+toilet | Di mana toilet? | Where is the [toilet]?
+kiri | Belok kiri di sini. | Turn [left] here.
+kanan | Belok kanan di sana. | Turn [right] over there.
+lurus | Jalan lurus saja. | Just go [straight ahead].
+depan | Toko ada di depan. | The shop is in [front].
+belakang | Dapur ada di belakang. | The kitchen is at the [back].
+atas | Buku ada di atas meja. | The book is [above] the table.
+bawah | Kucing ada di bawah kursi. | The cat is [below] the chair.
+luar | Anak-anak bermain di luar. | The children play [outside].
+tengah | Meja ada di tengah kamar. | The table is in the [middle] of the room.
+samping | Bank ada di samping toko. | The bank is [beside] the shop.
+utara | Medan ada di utara. | Medan is in the [north].
+selatan | Bali ada di selatan. | Bali is in the [south].
+timur | Matahari terbit di timur. | The sun rises in the [east].
+barat | Matahari terbenam di barat. | The sun sets in the [west].
+sini | Silakan duduk di sini. | Please sit [here].
+situ | Buku ada di situ. | The book is [there].
+sana | Rumah saya ada di sana. | My house is [over there].
+mobil | Ayah punya mobil baru. | Father has a new [car].
+motor | Saya naik motor. | I ride a [motorcycle].
+sepeda | Saya pergi naik sepeda. | I go by [bicycle].
+bus | Saya naik bus ke kantor. | I take the [bus] to the office.
+kereta api | Kami naik kereta api ke Bandung. | We take the [train] to Bandung.
+pesawat | Pesawat terbang tinggi. | The [airplane] flies high.
+kapal | Kapal itu besar. | That [ship] is big.
+taksi | Kami naik taksi ke hotel. | We take a [taxi] to the hotel.
+ojek | Saya naik ojek ke pasar. | I take a [motorbike taxi] to the market.
+tiket | Saya beli dua tiket. | I buy two [tickets].
+bensin | Mobil ini butuh bensin. | This car needs [petrol].
+parkir | Di sini tidak ada parkir. | There is no [parking] here.
+macet | Jalan ini macet. | This road has a [traffic jam].
+peta | Saya lihat peta. | I look at the [map].
+perjalanan | Perjalanan kami panjang. | Our [journey] is long.
+paspor | Saya punya paspor. | I have a [passport].
+koper | Koper saya berat. | My [suitcase] is heavy.
+hotel | Hotel ini bersih. | This [hotel] is clean.
+liburan | Kami liburan di Bali. | We are on [vacation] in Bali.
+alamat | Apa alamat kamu? | What is your [address]?
+kepala | Kepala saya sakit. | My [head] hurts.
+mata | Mata dia biru. | Her [eyes] are blue.
+telinga | Telinga saya sakit. | My [ear] hurts.
+hidung | Hidung dia mancung. | His [nose] is pointed.
+mulut | Buka mulut kamu. | Open your [mouth].
+gigi | Gigi saya sakit. | My [tooth] hurts.
+lidah | Lidah saya terbakar. | My [tongue] is burning.
+leher | Leher saya sakit. | My [neck] hurts.
+bahu | Bahu saya sakit. | My [shoulder] hurts.
+lengan | Lengan saya kuat. | My [arm] is strong.
+tangan | Cuci tangan kamu. | Wash your [hands].
+jari | Jari saya luka. | My [finger] is hurt.
+kaki | Kaki saya sakit. | My [foot] hurts.
+lutut | Lutut saya sakit. | My [knee] hurts.
+perut | Perut saya sakit. | My [stomach] hurts.
+punggung | Punggung saya sakit. | My [back] hurts.
+rambut | Rambut dia panjang. | Her [hair] is long.
+wajah | Wajah dia cantik. | Her [face] is beautiful.
+badan | Badan saya lelah. | My [body] is tired.
+kulit | Kulit saya kering. | My [skin] is dry.
+hati | Dia berhati baik. | She has a kind [heart].
+darah | Ada darah di tangan. | There is [blood] on the hand.
+obat | Saya minum obat. | I take [medicine].
+demam | Anak saya demam. | My child has a [fever].
+flu | Saya kena flu. | I have the [flu].
+batuk | Saya batuk. | I [cough].
+sakit kepala | Saya sakit kepala. | I have a [headache].
+pusing | Saya pusing. | I am [dizzy].
+luka | Luka di kaki saya besar. | The [wound] on my foot is big.
+alergi | Saya alergi udang. | I have an [allergy] to shrimp.
+apotek | Apotek itu buka. | That [pharmacy] is open.
+baju | Baju ini bagus. | This [shirt] is nice.
+pakaian | Pakaian saya kotor. | My [clothes] are dirty.
+celana | Celana ini panjang. | These [trousers] are long.
+rok | Rok dia merah. | Her [skirt] is red.
+jaket | Jaket ini hangat. | This [jacket] is warm.
+kaos | Saya pakai kaos putih. | I wear a white [T-shirt].
+kaus kaki | Kaus kaki saya basah. | My [socks] are wet.
+sepatu | Sepatu ini baru. | These [shoes] are new.
+sandal | Saya pakai sandal. | I wear [sandals].
+topi | Dia pakai topi. | He wears a [hat].
+tas | Tas saya berat. | My [bag] is heavy.
+kacamata | Kakek pakai kacamata. | Grandfather wears [glasses].
+jam tangan | Jam tangan ini mahal. | This [wristwatch] is expensive.
+cincin | Cincin ini cantik. | This [ring] is beautiful.
+dompet | Dompet saya hilang. | My [wallet] is lost.
+payung | Bawa payung, hujan! | Bring an [umbrella], it is raining!
+warna | Warna apa ini? | What [color] is this?
+merah | Apel ini merah. | This apple is [red].
+biru | Langit itu biru. | The sky is [blue].
+hijau | Daun itu hijau. | The leaf is [green].
+kuning | Pisang itu kuning. | The banana is [yellow].
+hitam | Kucing itu hitam. | The cat is [black].
+putih | Nasi itu putih. | The rice is [white].
+cokelat | Tas saya cokelat. | My bag is [brown].
+abu-abu | Awan itu abu-abu. | The cloud is [gray].
+oranye | Jeruk itu oranye. | The orange is [orange].
+ungu | Bunga itu ungu. | The flower is [purple].
+merah muda | Rok dia merah muda. | Her skirt is [pink].
+cuaca | Cuaca hari ini bagus. | The [weather] today is nice.
+hujan | Hari ini hujan. | Today there is [rain].
+matahari | Matahari bersinar. | The [sun] shines.
+bintang | Bintang itu terang. | That [star] is bright.
+langit | Langit itu biru. | The [sky] is blue.
+angin | Angin bertiup kencang. | The [wind] blows hard.
+awan | Awan itu putih. | The [cloud] is white.
+salju | Salju turun di gunung. | [Snow] falls on the mountain.
+badai | Badai datang malam ini. | A [storm] comes tonight.
+petir | Petir itu keras. | The [lightning] is loud.
+pelangi | Ada pelangi di langit. | There is a [rainbow] in the sky.
+banjir | Ada banjir di kota. | There is a [flood] in the city.
+gempa bumi | Ada gempa bumi kemarin. | There was an [earthquake] yesterday.
+api | Api itu panas. | The [fire] is hot.
+bumi | Bumi itu bulat. | The [earth] is round.
+tanah | Tanah ini basah. | This [soil] is wet.
+batu | Batu ini berat. | This [stone] is heavy.
+pasir | Pasir di pantai putih. | The [sand] on the beach is white.
+pohon | Pohon itu tinggi. | That [tree] is tall.
+daun | Daun itu hijau. | The [leaf] is green.
+bunga | Bunga itu wangi. | That [flower] smells good.
+rumput | Rumput itu hijau. | The [grass] is green.
+hewan | Saya suka hewan. | I like [animals].
+anjing | Anjing saya lucu. | My [dog] is cute.
+kucing | Kucing itu tidur. | The [cat] is sleeping.
+burung | Burung itu terbang. | The [bird] flies.
+sapi | Sapi makan rumput. | The [cow] eats grass.
+kuda | Kuda itu cepat. | The [horse] is fast.
+kambing | Kambing itu kecil. | The [goat] is small.
+bebek | Bebek berenang di danau. | The [duck] swims in the lake.
+tikus | Ada tikus di dapur. | There is a [mouse] in the kitchen.
+nyamuk | Ada nyamuk di kamar. | There is a [mosquito] in the room.
+semut | Ada semut di meja. | There are [ants] on the table.
+cicak | Ada cicak di dinding. | There is a [gecko] on the wall.
+kodok | Kodok melompat ke air. | The [frog] jumps into the water.
+harimau | Harimau itu kuat. | The [tiger] is strong.
+gajah | Gajah itu besar. | The [elephant] is big.
+monyet | Monyet suka pisang. | The [monkey] likes bananas.
+buaya | Buaya tinggal di sungai. | The [crocodile] lives in the river.
+ular | Ular itu panjang. | The [snake] is long.
+kupu-kupu | Kupu-kupu itu cantik. | The [butterfly] is beautiful.
+meja | Buku ada di meja. | The book is on the [table].
+kursi | Kursi ini nyaman. | This [chair] is comfortable.
+tempat tidur | Tempat tidur saya besar. | My [bed] is big.
+lemari | Baju ada di lemari. | The clothes are in the [cupboard].
+cermin | Cermin itu bersih. | The [mirror] is clean.
+lampu | Lampu itu terang. | The [lamp] is bright.
+televisi | Televisi itu baru. | The [television] is new.
+kunci | Di mana kunci saya? | Where is my [key]?
+lantai | Lantai ini bersih. | This [floor] is clean.
+dinding | Dinding itu putih. | The [wall] is white.
+atap | Atap rumah itu merah. | The [roof] of that house is red.
+tangga | Naik tangga pelan-pelan. | Go up the [stairs] slowly.
+kebun | Kebun kami besar. | Our [garden] is big.
+sabun | Saya pakai sabun. | I use [soap].
+handuk | Handuk ini basah. | This [towel] is wet.
+sikat gigi | Saya lupa sikat gigi. | I forgot my [toothbrush].
+selimut | Selimut ini hangat. | This [blanket] is warm.
+kipas angin | Kipas angin itu mati. | The [fan] is off.
+listrik | Listrik mati. | The [electricity] is out.
+sampah | Buang sampah di sini. | Throw the [trash] here.
+barang | Barang ini mahal. | This [thing] is expensive.
+hadiah | Ini hadiah untuk kamu. | This is a [gift] for you.
+foto | Saya ambil foto. | I take a [photo].
+musik | Saya suka musik. | I like [music].
+film | Film itu lucu. | That [film] is funny.
+permainan | Permainan itu seru. | That [game] is fun.
+uang | Saya tidak punya uang. | I do not have [money].
+harga | Berapa harga ini? | What is the [price] of this?
+tunai | Saya bayar tunai. | I pay with [cash].
+kartu | Saya bayar pakai kartu. | I pay with a [card].
+kembalian | Ini kembalian Anda. | Here is your [change].
+diskon | Ada diskon hari ini. | There is a [discount] today.
+menawar | Saya mau menawar harga. | I want to [bargain] the price.
+belanja | Ibu belanja di pasar. | Mother [shops] at the market.
+kasir | Kasir itu ramah. | The [cashier] is friendly.
+gratis | Teh ini gratis. | This tea is [free of charge].
+tagihan | Tolong, tagihannya. | The [bill], please.
+pekerjaan | Pekerjaan saya sulit. | My [job] is difficult.
+gaji | Gaji saya cukup. | My [salary] is enough.
+bos | Bos saya baik. | My [boss] is nice.
+rapat | Kami ada rapat hari ini. | We have a [meeting] today.
+kelas | Kelas saya besar. | My [class] is big.
+ujian | Besok ada ujian. | Tomorrow there is an [exam].
+pelajaran | Pelajaran ini mudah. | This [lesson] is easy.
+bahasa | Saya belajar bahasa Indonesia. | I study the Indonesian [language].
+kata | Saya lupa kata itu. | I forgot that [word].
+kalimat | Kalimat ini panjang. | This [sentence] is long.
+pertanyaan | Saya punya satu pertanyaan. | I have one [question].
+jawaban | Jawaban kamu benar. | Your [answer] is correct.
+masalah | Tidak ada masalah. | There is no [problem].
+ide | Itu ide bagus. | That is a good [idea].
+buku | Saya baca buku. | I read a [book].
+pena | Saya butuh pena. | I need a [pen].
+kertas | Kertas ini putih. | This [paper] is white.
+surat | Saya tulis surat. | I write a [letter].
+kamus | Saya buka kamus. | I open the [dictionary].
+komputer | Komputer saya baru. | My [computer] is new.
+internet | Internet di sini lambat. | The [internet] here is slow.
+ponsel | Ponsel saya mati. | My [mobile phone] is off.
+telepon | Telepon berbunyi. | The [telephone] rings.
+pesan | Saya kirim pesan. | I send a [message].
+email | Saya kirim email. | I send an [email].
+dan | Saya makan nasi dan ikan. | I eat rice [and] fish.
+atau | Teh atau kopi? | Tea [or] coffee?
+tetapi | Saya mau, tetapi tidak bisa. | I want to, [but] I cannot.
+tapi | Murah, tapi bagus. | Cheap, [but] nice.
+karena | Saya pulang karena lelah. | I go home [because] I am tired.
+jika | Jika hujan, saya di rumah. | [If] it rains, I stay home.
+kalau | Kalau lapar, makanlah. | [If] you are hungry, eat.
+dengan | Saya pergi dengan teman. | I go [with] a friend.
+tanpa | Kopi tanpa gula. | Coffee [without] sugar.
+untuk | Ini untuk kamu. | This is [for] you.
+dari | Saya dari Jerman. | I am [from] Germany.
+ke | Saya pergi ke pasar. | I go [to] the market.
+di | Saya tinggal di Berlin. | I live [in] Berlin.
+pada | Kami bertemu pada hari Senin. | We meet [on] Monday.
+dalam | Buku ada dalam tas. | The book is [inside] the bag.
+oleh | Kue ini dibuat oleh ibu. | This cake was made [by] mother.
+antara | Bank ada antara toko dan sekolah. | The bank is [between] the shop and the school.
+sebelum | Cuci tangan sebelum makan. | Wash your hands [before] eating.
+sesudah | Sesudah makan, saya minum teh. | [After] eating, I drink tea.
+sampai | Tunggu sampai jam lima. | Wait [until] five o'clock.
+sambil | Dia makan sambil membaca. | He eats [while] reading.
+bahwa | Saya tahu bahwa kamu lapar. | I know [that] you are hungry.
+agar | Belajar agar pintar. | Study [so that] you become smart.
+tentang | Buku ini tentang Bali. | This book is [about] Bali.
+seperti | Dia seperti ibunya. | She is [like] her mother.
+kira-kira | Kira-kira lima menit. | [Approximately] five minutes.
+mungkin | Mungkin besok hujan. | [Maybe] it rains tomorrow.
+pasti | Saya pasti datang. | I will [surely] come.
+tentu | Tentu saja boleh. | [Of course] it is allowed.
+memang | Memang benar. | [Indeed] it is true.
+saja | Itu saja, terima kasih. | That is [just] it, thank you.
+ayo | Ayo, kita makan! | [Let us go], let us eat!
+hati-hati | Hati-hati di jalan. | [Be careful] on the road.
+awas | Awas, ada mobil! | [Watch out], there is a car!
+sebentar | Tunggu sebentar. | Wait [a moment].
+`;
+const SENT={};
+SENT_RAW.split('\n').forEach(l=>{
+  const q=l.split(' | ');if(q.length<3)return;
+  const m=q[2].match(/\[([^\]]+)\]/);if(!m)return;
+  SENT[q[0].trim().toLowerCase()]={id:q[1].trim(),tpl:q[2].trim(),en:q[2].replace(/[\[\]]/g,'').trim(),slot:m[1]};
+});
+
+/* ---------- Hilfsfunktionen ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fold=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const normId=s=>fold(s).replace(/[^a-z0-9]/g,'');
+function normEn(s){
+  s=fold(s).replace(/\([^)]*\)/g,' ').replace(/[’‘`]/g,"'");
+  s=s.replace(/cannot/g,'can not').replace(/can't/g,'can not').replace(/won't/g,'will not').replace(/n't\b/g,' not')
+     .replace(/\bi'm\b/g,'i am').replace(/\b(it|that|what|there|he|she|here)'s\b/g,'$1 is').replace(/'re\b/g,' are');
+  s=s.replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  return s.replace(/^(to|a|an|the) (?=\S)/,'');
+}
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const a=s.split('-').map(Number);return new Date(a[0],a[1]-1,a[2],12)};
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ymd(d)};
+const dayName=(s,o)=>parse(s).toLocaleDateString('de-DE',o);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+
+/* ---------- Zustand ---------- */
+const FAR='9999-12-31';   // Fälligkeit für Wörter auf der Fehlerliste: nie automatisch fällig
+const defaults=()=>({v:2,lang:null,newPerDay:1,dayOffset:0,progress:{},list:null,daily:{date:'',newCount:0,extra:0,lt:[]},done:{}});
+let state=load();migrate();
+function load(){try{const raw=localStorage.getItem(STORE);if(raw)return Object.assign(defaults(),JSON.parse(raw));}catch(e){}return defaults();}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
+function today(){const d=new Date();d.setDate(d.getDate()+(state.dayOffset||0));return ymd(d)}
+function daily(){const t=today();if(state.daily.date!==t)state.daily={date:t,newCount:0,extra:0,lt:[]};if(!state.daily.lt)state.daily.lt=[];return state.daily}
+/* Version 2: Fehlerliste. Alte Daten: Wörter auf Stufe 0 wandern in die Liste. */
+function migrate(){
+  if(!state.list){
+    state.list={};
+    const y=addDays(today(),-1);
+    Object.keys(state.progress||{}).forEach(lg=>{
+      const m=state.list[lg]=state.list[lg]||{},pr=state.progress[lg];
+      Object.keys(pr).forEach(k=>{if(pr[k].l===0){m[k]={n:1,s:y};pr[k].d=FAR;}});
+    });
+  }
+  if(!state.daily)state.daily={date:'',newCount:0,extra:0,lt:[]};
+  if(!state.daily.lt)state.daily.lt=[];
+  state.v=2;
+  save();
+}
+const listOf=()=>{const m=state.list||(state.list={});return m[state.lang]||(m[state.lang]={});};
+function listWords(){
+  const L=curLang(),m=listOf();
+  return L.words.filter(w=>m[w.k]).sort((a,b)=>(m[b.k].n-m[a.k].n)||(m[a.k].s<m[b.k].s?-1:m[a.k].s>m[b.k].s?1:0)||(a.k<b.k?-1:1));
+}
+const curLang=()=>LANGS[state.lang];
+
+function plan(){
+  const L=curLang(),t=today(),prog=state.progress[L.id]||{},lm=listOf(),dq=daily();
+  const due=shuffle(L.words.filter(w=>prog[w.k]&&prog[w.k].d<=t&&!lm[w.k])).sort((a,b)=>prog[a.k].d<prog[b.k].d?-1:prog[a.k].d>prog[b.k].d?1:0);
+  const need=Math.max(0,state.newPerDay+dq.extra-dq.newCount);
+  const fresh=L.words.filter(w=>!prog[w.k]).slice(0,need);
+  const vol=listWords().filter(w=>dq.lt.indexOf(w.k)<0);          // Fehlerliste, heute noch nicht geübt
+  const mand=dq.lt.length===0?(vol.find(w=>lm[w.k].s<t)||null):null; // Pflichtwort: meiste Fehler, bei Gleichstand das älteste
+  return {due,fresh,mand,vol};
+}
+function streak(){
+  const t=today();let d=state.done[t]?t:addDays(t,-1),n=0;
+  while(state.done[d]){n++;d=addDays(d,-1);}
+  return n;
+}
+function record(w,ok,type){
+  const L=curLang(),prog=state.progress[L.id]||(state.progress[L.id]={}),lm=listOf();
+  const prev=prog[w.k],dq=daily();
+  let res;
+  if(ok){
+    const level=type==='list'?1:Math.min((prev?prev.l:0)+1,5);
+    const days=INTERVALS[level-1];
+    prog[w.k]={l:level,d:addDays(today(),days)};
+    delete lm[w.k];
+    res={level,days};
+  }else{
+    const e=lm[w.k]||(lm[w.k]={n:0,s:today()});
+    e.n++;
+    prog[w.k]={l:0,d:FAR};
+    res={n:e.n};
+  }
+  if(!prev)dq.newCount++;
+  if(type==='list')dq.lt.push(w.k);
+  save();
+  return res;
+}
+
+/* ---------- Farben & Effekte ---------- */
+const PAL=['#ffc23d','#ff8a3d','#ff5c9d','#a888ff','#5aa9ff','#35dcd2','#6ee77a'];
+const CATCOL=['var(--c-yellow)','var(--c-pink)','var(--c-cyan)','var(--c-violet)','var(--c-green)','var(--c-orange)','var(--c-blue)'];
+const WDCOL=['var(--c-violet)','var(--c-blue)','var(--c-cyan)','var(--c-green)','var(--c-yellow)','var(--c-orange)','var(--c-pink)']; // So bis Sa
+const LVCOL=['var(--lv0)','var(--lv1)','var(--lv2)','var(--lv3)','var(--lv4)','var(--lv5)'];
+const reduceMotion=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}};
+
+/* Flamme im Duolingo-Stil: vier Schichten desselben Umrisses, von innen nach außen dunkler.
+   Jede Schicht wackelt in eigenem Takt. Bei 0 Tagen ist sie grau und ruhig. */
+/* Feuer: vier Schichten mit eigenen Umrissen (außen breit mit Seitenzunge, innen kleiner), Spitze wiegt sich per Formverlauf,
+   dazu drei losgelöste Funken. Außen Regenbogen, nach innen immer heller bis weißglühend. */
+const FLAME_PATHS=[
+ 'M32 77C18 77 8 68 8 54C8 46 11 40 13 32C14 38 16 42 20 44C19 34 24 24 30 14C33 9 34 5 33 2C37 12 52 24 55 46C56 56 52 66 44 73C40 76 36 77 32 77Z',
+ 'M32 74C21 74 14 67 14 57C14 51 17 47 20 43C21 47 23 49 26 50C25 41 29 33 33 25C35 34 46 41 48 55C49 65 42 74 32 74Z',
+ 'M32 72C24 72 20 66 20 59C20 53 24 50 27 45C28 49 30 51 32 51C33 47 34 43 36 39C40 47 44 53 43 61C42 68 38 72 32 72Z',
+ 'M32 72C26 72 24 68 25 63C26 58 30 55 32 51C34 55 38 58 39 63C40 68 38 72 32 72Z'
+];
+function wob(d,amp,ph){
+  // Punkte weichen seitlich und leicht auf/ab aus, je höher desto stärker; der Fuß bleibt stehen. Pro Punkt andere Phase: die Zungen lecken gegeneinander.
+  const nums=d.match(/-?\d+(\.\d+)?/g).map(Number);let i=0;
+  return d.replace(/-?\d+(\.\d+)?/g,()=>{
+    const k=i++,pair=k>>1,h=Math.max(0,1-nums[k%2?k:k+1]/80);let v=nums[k];
+    if(k%2===0)v+=Math.sin(pair*2.1+ph)*amp*h*2;
+    else v+=Math.cos(pair*1.3+ph*1.7)*amp*h*.9;
+    return v.toFixed(1);
+  });
+}
+let flameN=0;
+function flameSvg(streak,big){
+  const on=streak>0,id='fg'+(++flameN),calm=reduceMotion();
+  const grad=(n,stops)=>`<linearGradient id="${id}${n}" gradientUnits="userSpaceOnUse" x1="0" y1="2" x2="0" y2="77">${stops.map((c,i)=>`<stop offset="${(i/(stops.length-1)).toFixed(2)}" stop-color="${c}"/>`).join('')}</linearGradient>`;
+  const defs=on?'<defs>'+grad(1,['#a888ff','#5aa9ff','#35dcd2','#6ee77a','#ffc23d','#ff8a3d','#ff3d7f'])
+    +grad(2,['#b79bff','#79b8ff','#4fe8dc','#86f08e','#ffd45c','#ffa14d','#ff6b9b'])
+    +grad(3,['#e2d5ff','#bfe0ff','#aef9ee','#d2ffc4','#ffee8a','#ffd27a','#ffb3cf'])+'</defs>':'';
+  const fills=on?['url(#'+id+'1)','url(#'+id+'2)','url(#'+id+'3)','#fffef2']:['#3b4670','#4a5686','#5e6a9b','#7681b0'];
+  const durs=[1.9,1.5,1.2,.95],amps=[3.4,3,2.4,1.5];
+  const anim=(vals,dur,begin)=>(on&&!calm)?`<animate attributeName="d" dur="${dur}s" begin="-${begin}s" repeatCount="indefinite" values="${vals.join(';')}"/>`:'';
+  const layers=FLAME_PATHS.map((d,i)=>{
+    const v=[d,wob(d,amps[i],i*1.9+.4),d,wob(d,amps[i],i*1.9+2.6),wob(d,amps[i]*.7,i*1.9+4.1),d];
+    return `<path class="f${i+1}" d="${d}" fill="${fills[i]}">${anim(v,durs[i],i*.37)}</path>`;
+  }).join('');
+  const em='M0 -5C2.6 -1.4 3.2 1.6 0 5C-3.2 1.6 -2.6 -1.4 0 -5Z';
+  const embers=on?[[19,6,'#ff9fd0','e1'],[10,22,'#ffe27a','e2'],[45,10,'#7ff0ff','e3']].map(e=>`<g transform="translate(${e[0]} ${e[1]})"><path class="em ${e[3]}" d="${em}" fill="${e[2]}"/></g>`).join(''):'';
+  return `<svg class="fl${big?' big':''}${on?'':' off'}" viewBox="0 0 64 80" role="img" aria-label="Flamme: ${streak} ${streak===1?'Tag':'Tage'} in Folge">${defs}<g class="sway">${layers}</g>${embers}</svg>`;
+}
+function burst(el,n){
+  if(reduceMotion()||!el)return;
+  const r=el.getBoundingClientRect(),box=document.createElement('div');
+  box.className='confetti';box.style.left=(r.left+r.width/2)+'px';box.style.top=(r.top+r.height/2)+'px';
+  for(let i=0;i<n;i++){
+    const p=document.createElement('i'),a=Math.random()*Math.PI*2,s=70+Math.random()*140;
+    p.style.setProperty('--dx',Math.round(Math.cos(a)*s)+'px');p.style.setProperty('--dy',Math.round(Math.sin(a)*s-40)+'px');
+    p.style.setProperty('--r',Math.round(Math.random()*360)+'deg');p.style.setProperty('--cf',PAL[i%PAL.length]);
+    p.style.animationDelay=(Math.random()*90|0)+'ms';box.appendChild(p);
+  }
+  document.body.appendChild(box);setTimeout(()=>box.remove(),1200);
+}
+
+/* ---------- Oberfläche ---------- */
+let view='home',bookQ='',bookQraw='',bookF='all';
+const openCats=new Set();
+const app=$('#app'),tabs=$('#tabs'),sheet=$('#sheet');
+
+function render(){
+  if(!state.lang||!LANGS[state.lang]){tabs.hidden=true;app.innerHTML=langView();$$('[data-lang]',app).forEach(b=>b.onclick=()=>{state.lang=b.dataset.lang;save();view='home';render();});return;}
+  tabs.hidden=false;
+  $$('.tab',tabs).forEach(b=>{if(b.dataset.v===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  if(view==='home'){app.innerHTML=homeView();bindHome();}
+  else if(view==='book'){app.innerHTML=bookView();bindBook();}
+  else{app.innerHTML=settingsView();bindSettings();}
+}
+function go(v){view=v;render();try{window.scrollTo(0,0);}catch(e){}}
+$$('.tab',tabs).forEach(b=>b.onclick=()=>go(b.dataset.v));
+
+function langView(){
+  return `<div class="top"><div class="brand"><i></i><span>kata<b>.</b><em>vito</em></span></div></div>
+  <h1>Welche Sprache lernst du?</h1>
+  <p class="hint" style="margin:8px 0 18px">„Kata“ heißt auf Indonesisch „Wort“. Dein Fortschritt bleibt auf diesem Gerät.</p>
+  ${Object.values(LANGS).map(L=>`<button class="langrow" data-lang="${L.id}"><span class="code">${L.code}</span><span><b>${esc(L.name)}</b><span class="hint">${esc(L.native)} · ${L.words.length} Wörter</span></span></button>`).join('')}
+  <p class="hint" style="margin-top:16px">Weitere Sprachen lassen sich später ergänzen.</p>`;
+}
+
+function homeView(){
+  const L=curLang(),t=today(),p=plan(),prog=state.progress[L.id]||{};
+  const n1=p.due.length,n2=p.fresh.length,n3=p.mand?1:0,total=n1+n2+n3,doneToday=!!state.done[t],st=streak();
+  let week='';
+  for(let i=6;i>=0;i--){
+    const d=addDays(t,-i),on=!!state.done[d];
+    week+=`<div class="day${on?' on':''}${i===0?' now':''}" style="--dc:${WDCOL[parse(d).getDay()]}" aria-label="${esc(dayName(d,{weekday:'long',day:'numeric',month:'long'}))}: ${on?'erledigt':'offen'}"><i></i><span>${dayName(d,{weekday:'narrow'})}</span></div>`;
+  }
+  const tomorrow=addDays(t,1);
+  const nTomorrow=L.words.filter(w=>prog[w.k]&&prog[w.k].d===tomorrow).length;
+  const unseen=L.words.filter(w=>!prog[w.k]).length;
+  let planHtml;
+  if(total>0){
+    planHtml=`<div class="eyebrow">Heute dran</div>
+      <div class="nums"><div class="num"><b>${n1}</b><span>${n1===1?'Wiederholung':'Wiederholungen'}</span></div><div class="num"><b>${n2}</b><span>${n2===1?'neue Vokabel':'neue Vokabeln'}</span></div>${n3?'<div class="num"><b>1</b><span>aus der Fehlerliste</span></div>':''}</div>
+      <button class="btn primary block pulse" id="start">Abfrage starten</button>`;
+  }else{
+    planHtml=`<div class="eyebrow">Heute</div>
+      <h2>${doneToday?'Für heute geschafft.':'Heute ist nichts fällig.'}</h2>
+      <p class="hint">${nTomorrow>0?'Morgen kommen '+nTomorrow+(nTomorrow===1?' Wiederholung':' Wiederholungen')+' dran.':'Morgen steht noch keine Wiederholung an.'}</p>
+      ${unseen>0?'<div class="btns" style="margin-top:14px"><button class="btn block light" id="extra">Noch eine neue Vokabel</button></div>':''}`;
+  }
+  const lw=listWords(),lm=listOf(),dq=daily();
+  const listHtml=lw.length?`<section class="card"><div class="eyebrow">Fehlerliste</div>
+    <p style="margin-top:6px"><b>${lw.length}</b> ${lw.length===1?'Wort':'Wörter'} zum Wiederholen. ${p.mand?'Eins davon ist heute Pflicht.':dq.lt.length?'Die Pflicht für heute ist erledigt.':'Ab morgen ist täglich ein Wort daraus Pflicht.'}</p>
+    <div class="missed" style="margin-top:12px">${lw.slice(0,8).map(w=>`<span>${esc(w.id)}<em>×${lm[w.k].n}</em></span>`).join('')}${lw.length>8?`<span>+${lw.length-8}</span>`:''}</div>
+    ${!p.mand&&p.vol.length?'<div class="btns" style="margin-top:14px"><button class="btn block" id="vol">Freiwillig weiter üben</button></div>':''}</section>`:'';
+  const lv=[0,0,0,0,0,0];let nNew=0;
+  L.words.forEach(w=>{const q=prog[w.k];if(!q)nNew++;else lv[q.l]++;});
+  const N=L.words.length;
+  const parts=[5,4,3,2,1,0].map(n=>({c:LVCOL[n],n:lv[n],l:n===0?'Fehlerliste':'Stufe '+n})).concat([{c:'var(--raised)',n:nNew,l:'Noch neu'}]);
+  const seg=parts.filter(p=>p.n>0).map(p=>`<i style="width:${(p.n/N*100).toFixed(2)}%;background:${p.c}"></i>`).join('');
+  const legend=parts.map(p=>`<span><em style="background:${p.c}${p.l==='Noch neu'?';border:1px solid var(--line)':''}"></em>${p.l}<b>${p.n}</b></span>`).join('');
+  return `<div class="top"><div class="brand"><i></i><span>kata<b>.</b><em>vito</em></span></div><button class="chip" id="chlang" aria-label="Sprache wechseln">${esc(L.name)}</button></div>
+  <h1>${esc(dayName(t,{weekday:'long',day:'numeric',month:'long'}))}</h1>
+  <section class="card plan">${planHtml}</section>
+  ${listHtml}
+  <section class="card streakcard${st>0?' on':''}"><div class="streak"><div class="sl">${flameSvg(st,false)}<div><b>${st}</b><small>${st===1?'Tag':'Tage'} in Folge</small></div></div><div class="week">${week}</div></div></section>
+  <section class="card"><div class="eyebrow">Fortschritt</div>
+    <p style="margin-top:6px"><b>${N-nNew}</b> von ${N} Wörtern begonnen</p>
+    <div class="stack" role="img" aria-label="${parts.map(p=>p.n+' '+p.l).join(', ')}">${seg}</div>
+    <div class="legend">${legend}</div></section>`;
+}
+function bindHome(){
+  const s=$('#start');if(s)s.onclick=()=>startSession();
+  const v=$('#vol');if(v)v.onclick=()=>startSession('vol');
+  const e=$('#extra');if(e)e.onclick=()=>{daily().extra++;save();startSession();};
+  $('#chlang').onclick=()=>{state.lang=null;save();render();};
+}
+
+function bookView(){
+  const L=curLang();
+  return `<div class="top"><h1>Vokabelheft</h1><span class="hint">${L.words.length} Wörter</span></div>
+  <input id="q" class="field" type="search" placeholder="Suchen auf Indonesisch oder Englisch" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Suchen" value="${esc(bookQraw)}">
+  <div class="chips" role="group" aria-label="Filter">${[['all','Alle'],['due','Fällig'],['learned','Gelernt'],['new','Neu'],['err','Fehlerliste']].map(f=>`<button class="pill" data-f="${f[0]}" aria-pressed="${bookF===f[0]}">${f[1]}</button>`).join('')}</div>
+  <div id="vlist"></div>`;
+}
+function bindBook(){
+  $('#q').oninput=e=>{bookQraw=e.target.value;bookQ=fold(bookQraw.trim());renderList();};
+  $$('.pill',app).forEach(b=>b.onclick=()=>{bookF=b.dataset.f;$$('.pill',app).forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===bookF)));renderList();});
+  $('#vlist').addEventListener('toggle',e=>{
+    if(bookQ||bookF!=='all')return;
+    const d=e.target;if(!d.dataset||d.dataset.c===undefined)return;
+    if(d.open)openCats.add(d.dataset.c);else openCats.delete(d.dataset.c);
+  },true);
+  renderList();
+}
+function renderList(){
+  const L=curLang(),t=today(),prog=state.progress[L.id]||{},lm=listOf();
+  const groups=L.cats.map(()=>[]);
+  L.words.forEach(w=>{
+    const pr=prog[w.k];
+    if(bookF==='due'&&!(pr&&pr.d<=t))return;
+    if(bookF==='learned'&&!(pr&&pr.l>=1))return;
+    if(bookF==='new'&&pr)return;
+    if(bookF==='err'&&!lm[w.k])return;
+    if(bookQ&&!(fold(w.id).includes(bookQ)||fold(w.en).includes(bookQ)))return;
+    groups[w.cat].push(w);
+  });
+  const force=!!bookQ||bookF!=='all';
+  let html='';
+  groups.forEach((items,ci)=>{
+    if(!items.length)return;
+    const learned=L.words.filter(w=>w.cat===ci&&prog[w.k]&&prog[w.k].l>=1).length;
+    html+=`<details class="cat" style="--cc:${CATCOL[ci%CATCOL.length]}" data-c="${ci}"${force||openCats.has(String(ci))?' open':''}><summary>${esc(L.cats[ci][0])}<span class="cnt">${force?items.length+' Treffer':learned+' / '+L.catCount[ci]}</span></summary><ul class="rows">${items.map(w=>{
+      const pr=prog[w.k],due=pr&&pr.d<=t&&!lm[w.k],err=lm[w.k];
+      return `<li class="row"><div class="w"><span class="id" lang="${L.code.toLowerCase()}">${esc(w.id)}</span><span class="en" lang="en">${esc(w.en)}</span></div><div class="meta"><div class="pips" style="--pc:${LVCOL[pr?pr.l:0]}" role="img" aria-label="Stufe ${pr?pr.l:0} von 5">${[1,2,3,4,5].map(n=>`<i${pr&&pr.l>=n?' class="f"':''}></i>`).join('')}</div>${err?'<span class="tag err">Fehlerliste ×'+err.n+'</span>':due?'<span class="tag">fällig</span>':''}</div></li>`;
+    }).join('')}</ul></details>`;
+  });
+  $('#vlist').innerHTML=html||'<div class="empty">Nichts gefunden.</div>';
+}
+
+function settingsView(){
+  const L=curLang(),t=today();
+  return `<div class="top"><h1>Einstellungen</h1></div>
+  <section class="card set"><div><div class="eyebrow">Neue Vokabeln pro Tag</div>
+    <div class="seg" role="radiogroup" aria-label="Neue Vokabeln pro Tag">${[1,2,3,4,5].map(n=>`<button role="radio" data-n="${n}" aria-checked="${state.newPerDay===n}">${n}</button>`).join('')}</div></div>
+    <p class="hint">Dazu kommen immer alle fälligen Wiederholungen und ein Wort aus der Fehlerliste.</p></section>
+  <section class="card set"><div class="eyebrow">Tägliche Erinnerung</div>
+    <p class="hint">Eine Web-App kann sich nicht selbst melden. Das übernimmt dein iPhone, die Uhrzeit stellst du dort ein.</p>
+    <details class="how"><summary>So richtest du sie ein</summary><ol class="steps">
+      <li>Kurzbefehle-App öffnen, Tab „Automation“, „+“, „Tageszeit“.</li>
+      <li>Uhrzeit wählen, „Täglich“, „Sofort ausführen“.</li>
+      <li>Aktion „URL öffnen“ mit der Adresse dieser App hinzufügen.</li>
+      <li>Je nach iOS-Version musst du die Mitteilung antippen oder das iPhone entsperren, damit sich die Seite öffnet.</li>
+      <li>Alternative: In der Erinnerungen-App eine tägliche Erinnerung mit der Adresse als Link anlegen.</li></ol></details></section>
+  <section class="card set"><div class="eyebrow">Sicherung</div>
+    <p class="hint">Kopiere den Text in eine Notiz. Zum Wiederherstellen fügst du ihn unten ein.</p>
+    <div class="btns"><button class="btn" id="exp">Sicherung erstellen</button><button class="btn ghost" id="copy" hidden>Kopieren</button></div>
+    <textarea class="field" id="expbox" readonly hidden aria-label="Sicherung" rows="4"></textarea><div class="flash" id="flash1" role="status"></div>
+    <textarea class="field" id="impbox" placeholder="Sicherung hier einfügen" aria-label="Sicherung einfügen" rows="3"></textarea>
+    <div class="btns"><button class="btn" id="imp">Sicherung einspielen</button></div><div class="flash" id="flash2" role="status"></div></section>
+  <section class="card set"><div class="eyebrow">Sprache</div>
+    <div class="btns"><button class="btn" id="chlang2">${esc(L.name)} ändern</button></div></section>
+  <section class="card set"><div class="eyebrow">Testen</div>
+    <p class="hint">Simuliert einen späteren Tag, damit du die Wiederholungen siehst. Aktuelles Datum in der App: <b>${esc(dayName(t,{weekday:'short',day:'numeric',month:'short'}))}</b>${state.dayOffset?' (+'+state.dayOffset+')':''}</p>
+    <div class="btns"><button class="btn" id="skip">Einen Tag vorspulen</button><button class="btn ghost" id="unskip"${state.dayOffset?'':' disabled'}>Zurück auf heute</button></div>
+    <div class="btns"><button class="btn" id="reset">Alles zurücksetzen</button></div></section>`;
+}
+function twoStep(btn,armed,fn){
+  const orig=btn.textContent;let on=false,timer;
+  btn.onclick=()=>{
+    if(!on){on=true;btn.textContent=armed;btn.classList.add('danger');timer=setTimeout(()=>{on=false;btn.textContent=orig;btn.classList.remove('danger');},4000);}
+    else{clearTimeout(timer);on=false;btn.textContent=orig;btn.classList.remove('danger');fn();}
+  };
+}
+function bindSettings(){
+  $$('.seg button',app).forEach(b=>b.onclick=()=>{state.newPerDay=+b.dataset.n;save();$$('.seg button',app).forEach(x=>x.setAttribute('aria-checked',String(x===b)));});
+  $('#exp').onclick=()=>{
+    const data=JSON.stringify({app:'kata',v:1,exported:new Date().toISOString(),data:{lang:state.lang,newPerDay:state.newPerDay,progress:state.progress,list:state.list,daily:state.daily,done:state.done}});
+    const box=$('#expbox');box.value=data;box.hidden=false;$('#copy').hidden=false;box.select();$('#flash1').textContent='';
+  };
+  $('#copy').onclick=()=>{
+    const box=$('#expbox');
+    const ok=()=>{$('#flash1').textContent='Kopiert.';};
+    const fallback=()=>{box.select();$('#flash1').textContent='Text ist markiert. Jetzt manuell kopieren.';};
+    try{navigator.clipboard.writeText(box.value).then(ok,fallback);}catch(e){fallback();}
+  };
+  twoStep($('#imp'),'Wirklich ersetzen? Nochmal tippen',()=>{
+    try{
+      const o=JSON.parse($('#impbox').value);
+      if(!o||o.app!=='kata'||!o.data||typeof o.data.progress!=='object')throw new Error('x');
+      state=Object.assign(defaults(),o.data,{dayOffset:0});migrate();save();render();
+    }catch(e){$('#flash2').style.color='var(--bad)';$('#flash2').textContent='Das ist keine gültige Sicherung.';render_keep();}
+  });
+  $('#chlang2').onclick=()=>{state.lang=null;save();render();};
+  $('#skip').onclick=()=>{state.dayOffset=(state.dayOffset||0)+1;save();render();};
+  $('#unskip').onclick=()=>{state.dayOffset=0;save();render();};
+  twoStep($('#reset'),'Wirklich alles löschen? Nochmal tippen',()=>{state=defaults();migrate();save();view='home';render();});
+}
+function render_keep(){/* Fehlermeldung bleibt stehen, Ansicht wird nicht neu gebaut */}
+
+/* ---------- Abfrage ---------- */
+let S=null;
+function startSession(mode){
+  const p=plan();
+  let items;
+  if(mode==='vol')items=p.vol.slice(0,5).map(w=>({w,type:'list'}));
+  else{
+    items=p.due.map(w=>({w,type:'review'})).concat(p.fresh.map(w=>({w,type:'new'})));
+    if(p.mand)items.push({w:p.mand,type:'list'});
+  }
+  if(!items.length)return;
+  S={items,i:0,right:0,wrong:0,missed:[],cleared:[],cur:null,streak0:streak()};
+  sheet.hidden=false;document.body.style.overflow='hidden';
+  showItem();
+}
+function closeSheet(){sheet.hidden=true;sheet.innerHTML='';document.body.style.overflow='';S=null;render();}
+function sheetBody(inner){
+  const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
+  sheet.innerHTML=`<div class="sin"><div class="shead"><button class="iconbtn" id="quit" aria-label="Abfrage beenden"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div></div>${inner}</div>`;
+  $('#quit').onclick=closeSheet;
+  sheet.scrollTop=0;
+}
+
+/* Schritte pro Wort: neu = Kennenlernen, Satz-Übung, Tippen. Stufe 1-2 und Fehlerliste = Satz-Übung, Tippen. Ab Stufe 3 nur Tippen. */
+function stepsFor(type,lvl){
+  if(type==='new')return ['intro','sent','type'];
+  if(type==='list')return ['sent','type'];
+  return lvl<=2?['sent','type']:['type'];
+}
+function showItem(){
+  const it=S.items[S.i];
+  if(!it)return showEnd();
+  const L=curLang(),key=normEn(it.w.en);
+  const same=L.words.filter(x=>normEn(x.en)===key);
+  const pr=(state.progress[L.id]||{})[it.w.k];
+  const lvl=pr?pr.l:0;
+  S.cur={w:it.w,type:it.type,lvl,tries:0,ok:true,steps:stepsFor(it.type,lvl),si:0,dir:Math.random()<.5?'id2en':'en2id',accept:same.map(x=>normId(x.id)),alts:same.filter(x=>x.k!==it.w.k).map(x=>x.id)};
+  nextStep();
+}
+function nextStep(){
+  const c=S.cur,st=c.steps[c.si++];
+  if(st==='intro')showIntro();else if(st==='sent')showSentence();else showQuestion();
+}
+function kicker(c,step,extra){
+  const names={intro:'Kennenlernen',sent:'Satz-Übung',type:'Tippen'};
+  let base,col;
+  if(c.type==='new'){base='Neue Vokabel · Phase '+(c.steps.indexOf(step)+1)+' von '+c.steps.length;col='var(--c-violet)';}
+  else if(c.type==='list'){base='Fehlerliste';col='var(--lv0)';}
+  else{base='Wiederholung · Stufe '+c.lvl;col=LVCOL[c.lvl];}
+  return `<div class="kicker" style="--k:${col}">${base} · ${extra||names[step]}</div>`;
+}
+
+/* Hervorhebung: Wort im Satz finden (nur ganze Wörter) */
+function hlId(text,word){
+  const lt=text.toLowerCase(),lw=word.toLowerCase(),isL=ch=>!!ch&&/[a-z]/i.test(ch);
+  let i=lt.indexOf(lw);
+  while(i>-1&&(isL(lt[i-1])||isL(lt[i+lw.length])))i=lt.indexOf(lw,i+1);
+  if(i<0)return esc(text);
+  return esc(text.slice(0,i))+'<b>'+esc(text.slice(i,i+lw.length))+'</b>'+esc(text.slice(i+lw.length));
+}
+function hlSlot(tpl,repl,cls){
+  const m=tpl.match(/\[([^\]]+)\]/);
+  if(!m)return esc(tpl);
+  const i=m.index;
+  return esc(tpl.slice(0,i))+`<${cls?'span class="'+cls+'"':'b'}>`+esc(repl==null?m[1]:repl)+`</${cls?'span':'b'}>`+esc(tpl.slice(i+m[0].length));
+}
+
+function showIntro(){
+  const c=S.cur,w=c.w,L=curLang(),s=SENT[w.k];
+  const ex=s?`<div class="ex"><div class="xi" lang="${L.code.toLowerCase()}">${hlId(s.id,w.id)}</div><div class="xe" lang="en">${hlSlot(s.tpl)}</div></div>`:'';
+  sheetBody(`<div class="smain">${kicker(c,'intro')}
+    <div class="bigword" lang="${L.code.toLowerCase()}">${esc(w.id)}</div><div class="gloss" lang="en">${esc(w.en)}</div>
+    <div class="eyebrow" style="margin-top:4px">${esc(L.cats[w.cat][0])}</div>${ex}
+    <p class="hint">Präg dir das Wort und den Satz ein. Gleich wendest du es an.</p>
+    <button class="btn primary block" id="go">Weiter</button></div>`);
+  $('#go').onclick=nextStep;
+}
+
+/* ---- Satz-Übung ---- */
+const PROPER_EXTRA='Indonesia Bali Jakarta Germany Berlin Bandung Medan Vito Dewi Rina Indonesian English Independence Day Monday Tuesday Wednesday Thursday Friday Saturday Sunday January February March April May June July August September October November December'.split(' ');
+let PROPER=null,POOL={};
+function tokensOf(text){return text.replace(/[.,!?;:"“”]/g,' ').split(/\s+/).filter(Boolean);}
+function isProper(t){
+  if(!PROPER){
+    PROPER=new Set(PROPER_EXTRA);
+    Object.keys(SENT).forEach(k=>{[SENT[k].id,SENT[k].en].forEach(tx=>tokensOf(tx).forEach((t,i)=>{if(i>0&&/^[A-ZÄÖÜ]/.test(t))PROPER.add(t);}));});
+    Object.values(LANGS).forEach(L=>L.words.forEach(w=>{if(/^[A-Z]/.test(w.id))w.id.split(' ').forEach(t=>PROPER.add(t));}));
+  }
+  return /^I($|')/.test(t)||PROPER.has(t);
+}
+const tileText=(t,i)=>(i===0&&!isProper(t))?t.charAt(0).toLowerCase()+t.slice(1):t;
+function tilesOf(text){return tokensOf(text).map(tileText);}
+function poolOf(lang){
+  if(!POOL[lang]){const set=new Set();Object.values(SENT).forEach(s=>tilesOf(lang==='id'?s.id:s.en).forEach(t=>set.add(t)));POOL[lang]=Array.from(set);}
+  return POOL[lang];
+}
+function distractors(target,lang,n){
+  const have=new Set(target.map(normId)),out=[];
+  for(const t of shuffle(poolOf(lang).slice())){
+    const k=normId(t);if(!k||have.has(k))continue;
+    have.add(k);out.push(t);if(out.length>=n)break;
+  }
+  return out;
+}
+function choiceOptions(w){
+  const L=curLang(),right=w.en.split(' / ')[0].trim(),bad=new Set(w.en.split(' / ').map(normEn)),out=[right];
+  const pool=shuffle(L.words.filter(x=>x.k!==w.k));
+  const pri=pool.filter(x=>x.cat===w.cat).concat(pool.filter(x=>x.cat!==w.cat));
+  for(const x of pri){
+    const g=x.en.split(' / ')[0].trim(),n=normEn(g);
+    if(!n||bad.has(n))continue;
+    bad.add(n);out.push(g);if(out.length>=4)break;
+  }
+  return shuffle(out);
+}
+/* Quelle für Bausteine: Beispielsatz des Wortes, bei Alltagssätzen der Eintrag selbst */
+function buildPair(w){
+  const s=SENT[w.k];
+  const pair=s?{id:s.id,en:s.en}:{id:w.id,en:w.en.split(' / ')[0].trim()};
+  return (tokensOf(pair.id).length>=2&&tokensOf(pair.en).length>=2)?pair:null;
+}
+function showSentence(){
+  const c=S.cur,w=c.w,pair=buildPair(w),s=SENT[w.k];
+  if(s&&(!pair||Math.random()<.5))return showChoice();
+  if(pair)return showBuild(pair);
+  nextStep();
+}
+function showChoice(){
+  const c=S.cur,w=c.w,L=curLang(),s=SENT[w.k],opts=choiceOptions(w),right=opts.indexOf(w.en.split(' / ')[0].trim());
+  sheetBody(`<div class="smain">${kicker(c,'sent')}
+    <p class="hint">Was bedeutet das markierte Wort?</p>
+    <div class="sentbox" lang="en">${hlSlot(s.tpl,w.id,'slot')}</div>
+    <div class="opts" id="opts">${opts.map((o,i)=>`<button class="opt" data-i="${i}" lang="en">${esc(o)}</button>`).join('')}</div>
+    <div id="exfb"></div></div>`);
+  $$('.opt',sheet).forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i,good=i===right;
+    $$('.opt',sheet).forEach(x=>x.disabled=true);
+    b.classList.add(good?'ok':'no');
+    if(!good)$$('.opt',sheet)[right].classList.add('ok');
+    c.ok=c.ok&&good;
+    $('#exfb').innerHTML=`<div class="res ${good?'good':'bad'}" role="status"><div class="rl">${good?'Richtig':'Nicht ganz'}</div>
+      <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="en">${esc(w.en)}</span></div>
+      <p class="hint" style="margin-top:8px" lang="${L.code.toLowerCase()}">${hlId(s.id,w.id)}</p></div>
+      <button class="btn primary block" id="nx" style="margin-top:12px">Weiter</button>`;
+    $('#nx').onclick=nextStep;
+    try{$('#nx').focus({preventScroll:true});}catch(e){}
+    if(good)burst($('.res'),18);
+  });
+}
+function showBuild(pair){
+  const c=S.cur,w=c.w,L=curLang();
+  const dir=Math.random()<.5?'id2en':'en2id',toLang=dir==='id2en'?'en':'id';
+  const from=dir==='id2en'?pair.id:pair.en,to=dir==='id2en'?pair.en:pair.id;
+  const target=tilesOf(to),want=target.map(normId).join('|');
+  const tiles=shuffle(target.concat(distractors(target,toLang,2)));
+  let ans=[],done=false;
+  sheetBody(`<div class="smain">${kicker(c,'sent','Bausteine · '+(dir==='id2en'?'ins Englische':'ins Indonesische'))}
+    <p class="hint">Setze den Satz aus den Bausteinen zusammen. Du hast einen Versuch.</p>
+    <div class="sentbox" lang="${dir==='id2en'?L.code.toLowerCase():'en'}">${esc(from)}</div>
+    <div class="ans" id="ans2" aria-label="Dein Satz" lang="${toLang}"></div>
+    <div class="bank" id="bank" lang="${toLang}"></div>
+    <div id="exfb"></div>
+    <button class="btn primary block" id="chk" disabled>Prüfen</button></div>`);
+  const A=$('#ans2'),B=$('#bank'),chk=$('#chk');
+  function paint(){
+    A.innerHTML=ans.map(i=>`<button class="tile" data-i="${i}">${esc(tiles[i])}</button>`).join('');
+    B.innerHTML=tiles.map((t,i)=>ans.indexOf(i)>-1?`<span class="tile ghost" aria-hidden="true">${esc(t)}</span>`:`<button class="tile" data-i="${i}">${esc(t)}</button>`).join('');
+    chk.disabled=!ans.length;
+  }
+  A.onclick=e=>{const b=e.target.closest('button');if(!b||done)return;ans.splice(ans.indexOf(+b.dataset.i),1);paint();};
+  B.onclick=e=>{const b=e.target.closest('button');if(!b||done)return;ans.push(+b.dataset.i);paint();};
+  chk.onclick=()=>{
+    if(done){nextStep();return;}
+    done=true;
+    const good=ans.map(i=>normId(tiles[i])).join('|')===want;
+    c.ok=c.ok&&good;
+    A.classList.add(good?'good':'bad');
+    $$('.tile',sheet).forEach(x=>{if(x.tagName==='BUTTON')x.disabled=true;});
+    $('#exfb').innerHTML=`<div class="res ${good?'good':'bad'}" role="status"><div class="rl">${good?'Richtig':'Nicht ganz'}</div>
+      <div class="pair" lang="${toLang}">${esc(to)}</div></div>`;
+    chk.textContent='Weiter';chk.disabled=false;
+    try{chk.focus({preventScroll:true});}catch(e){}
+    if(good)burst($('.res'),18);
+  };
+  paint();
+}
+
+/* ---- Tippen ---- */
+function hintFor(c){
+  let t=c.dir==='id2en'?c.w.en.split('/')[0]:c.w.id;
+  t=t.replace(/\([^)]*\)/g,'').replace(/^\s*to\s+(?=\S)/i,'').trim();
+  return t.slice(0,2);
+}
+function isCorrect(c,val){
+  if(c.dir==='id2en'){const a=normEn(val);return !!a&&c.w.en.split('/').map(normEn).indexOf(a)>-1;}
+  const a=normId(val);return !!a&&c.accept.indexOf(a)>-1;
+}
+function dots(n){return [0,1,2].map(i=>`<i class="${i<n?'':'x'}"></i>`).join('')}
+function showQuestion(){
+  const c=S.cur,w=c.w,L=curLang(),id2en=c.dir==='id2en';
+  c.tries=0;
+  sheetBody(`<div class="smain">${kicker(c,'type','Tippen · '+(id2en?'ins Englische':'ins Indonesische'))}
+    <div class="bigword" lang="${id2en?L.code.toLowerCase():'en'}">${esc(id2en?w.id:w.en)}</div>
+    <form class="qform" id="qf" autocomplete="off"><div class="inwrap" id="iw"><input class="field" id="ans" type="text" aria-label="Deine Antwort" placeholder="Antwort tippen" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="done"></div>
+    <button class="btn primary block" type="submit">Prüfen</button></form>
+    <div class="tries" id="tries">${dots(3)}<span>Versuche übrig</span></div>
+    <p class="fb" id="fb" role="status" aria-live="polite"></p></div>`);
+  const inp=$('#ans'),iw=$('#iw');let keys=0;
+  inp.addEventListener('input',()=>{
+    const col=PAL[++keys%PAL.length];
+    iw.style.setProperty('--pc',col);iw.style.setProperty('--pcs',col+'44');
+    iw.classList.toggle('typing',inp.value.length>0);
+    iw.classList.remove('pulse');void iw.offsetWidth;iw.classList.add('pulse');
+  });
+  $('#qf').onsubmit=e=>{
+    e.preventDefault();
+    const val=inp.value;
+    if(!val.trim()){inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');return;}
+    c.tries++;
+    if(isCorrect(c,val))return finish(true);
+    if(c.tries>=3)return finish(false);
+    const left=3-c.tries,fb=$('#fb');
+    fb.className='fb bad';
+    fb.textContent='Nicht ganz. Noch '+left+(left===1?' Versuch.':' Versuche.')+(c.tries===2?' Tipp: beginnt mit „'+hintFor(c)+'“.':'');
+    $('#tries').innerHTML=dots(left)+'<span>Versuche übrig</span>';
+    inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');inp.select();
+  };
+  try{inp.focus({preventScroll:true});}catch(e){inp.focus();}
+}
+function finish(typedOk){
+  const c=S.cur,w=c.w,ok=c.ok&&typedOk,type=c.type,r=record(w,ok,type);
+  if(ok)S.right++;else S.wrong++;
+  if(!ok&&type!=='list')S.missed.push(w);
+  if(ok&&type==='list')S.cleared.push(w);
+  const L=curLang();
+  const alts=c.dir==='en2id'&&c.alts.length?`<p class="hint" style="margin-top:6px">Auch richtig: ${c.alts.map(esc).join(', ')}</p>`:'';
+  let when;
+  if(ok&&type==='list')when='Geschafft. Das Wort verlässt die Fehlerliste und kommt morgen wieder (Stufe 1).';
+  else if(ok)when='Stufe '+r.level+' von 5. Nächste Wiederholung '+(r.days===1?'morgen':'in '+r.days+' Tagen')+'.';
+  else if(type==='list')when='Das Wort bleibt auf der Fehlerliste (Fehler: '+r.n+').';
+  else when=(typedOk?'Eine Übung davor war falsch. ':'')+'Das Wort kommt auf die Fehlerliste.';
+  sheetBody(`<div class="smain"><div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?'Richtig':'Leider falsch'}</div>
+    <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="en">${esc(w.en)}</span></div>${alts}</div>
+    <p class="hint">${when}</p><button class="btn primary block" id="next">Weiter</button></div>`);
+  const n=$('#next');n.onclick=()=>{S.i++;showItem();};
+  try{n.focus({preventScroll:true});}catch(e){}
+  if(ok)levelUp(c,r);
+}
+/* Vollbild-Animation bei richtigem Wort: Strahlen, Level-Abzeichen, Stufenleiste */
+function levelUp(c,r){
+  if(reduceMotion())return;
+  const w=c.w,type=c.type,old=$('.lvl');if(old)old.remove();
+  const lab=type==='list'?'Gerettet!':type==='new'?'Neues Wort!':(r.level>c.lvl?'Level up!':'Stufe gehalten');
+  const el=document.createElement('div');el.className='lvl';el.setAttribute('role','status');
+  el.innerHTML=`<div class="lvl-rays"></div><div class="lvl-in"><div class="lvl-lab">${lab}</div>
+    <div class="lvl-badge"><span>${r.level}</span></div>
+    <div class="lvl-pips">${[1,2,3,4,5].map(i=>`<i class="${i<=r.level?'on':''}" style="--d:${300+i*110}ms;--pc:${LVCOL[i]}"></i>`).join('')}</div>
+    <div class="lvl-word">${esc(w.id)} = ${esc(w.en)}</div>
+    <div class="lvl-sub">Stufe ${r.level} von 5 · nächste Wiederholung ${r.days===1?'morgen':'in '+r.days+' Tagen'}</div></div>`;
+  document.body.appendChild(el);
+  let gone=false;
+  const close=()=>{if(gone)return;gone=true;el.classList.add('out');setTimeout(()=>el.remove(),300);};
+  el.onclick=close;setTimeout(close,1900);
+  burst($('.lvl-badge',el),46);
+}
+function showEnd(){
+  const t=today();
+  S.i=S.items.length;
+  const p=plan();
+  if(!p.due.length&&!p.fresh.length&&!p.mand)state.done[t]=true;
+  Object.keys(state.done).forEach(k=>{if(k<addDays(t,-120))delete state.done[k];});
+  save();
+  const total=S.items.length,st=streak();
+  const chips=(arr,txt)=>arr.length?`<div><p class="hint" style="margin-bottom:8px">${txt}</p><div class="missed">${arr.map(w=>`<span>${esc(w.id)}</span>`).join('')}</div></div>`:'';
+  const grew=st>S.streak0;
+  sheetBody(`<div class="smain"><div class="kicker" style="--k:var(--c-pink)">Abfrage beendet</div>
+    <div class="bigword">${S.right} von ${total}</div><p class="hint">komplett richtig beantwortet</p>
+    <div class="endstreak${grew?' grew':''}${st>0?' on':''}">${flameSvg(st,true)}<div><b>${st}</b>${st===1?'Tag':'Tage'} in Folge<small>${grew?'Serie verlängert!':'Die Serie läuft weiter.'}</small></div></div>
+    ${chips(S.cleared,'Von der Fehlerliste gestrichen:')}${chips(S.missed,'Neu auf der Fehlerliste:')}
+    <button class="btn primary block" id="fin">Fertig</button></div>`);
+  $('#fin').onclick=closeSheet;
+  if(grew)burst($('.endstreak'),44);else if(S.right===total)burst($('.bigword'),32);
+}
+
+render();
+})();
+</script>

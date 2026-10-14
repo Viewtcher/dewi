@@ -1,0 +1,1969 @@
+id:halo:en | 2 1 1 3 | 2 1 1 1 3 | ok
+id:halo:de | 2 1 1 3 | 2 1 1 1 3 | ok
+id:selamat pagi:en | 1 1 0 | 1 1 0 | offen
+id:selamat pagi:de | 1 1 0 | 1 1 0 0 | offen
+id:selamat siang:en | 1 1 0 | 1 1 0 | offen
+id:selamat siang:de | 1 1 0 | 1 1 0 0 | offen
+id:selamat sore:en | 1 1 2 | 1 1 2 | ok
+id:selamat sore:de | 1 1 0 | 1 1 0 | offen
+id:selamat malam:en | 1 1 2 0 0 | 1 1 2 0 | offen
+id:selamat malam:de | 1 1 2 0 0 | 1 1 2 0 | offen
+id:sampai jumpa:en | 1 1 2 | 1 1 2 | ok
+id:sampai jumpa:de | 1 1 2 | 1 1 2 | ok
+id:selamat tinggal:en | 1 1 0 | 1 0 | offen
+id:selamat tinggal:de | 1 1 0 | 1 1 0 | offen
+id:sampai besok:en | 1 1 2 3 | 1 1 1 2 3 | ok
+id:sampai besok:de | 1 1 2 3 | 1 1 2 0 3 | ok
+id:terima kasih:en | 1 1 2 | 1 1 0 2 | offen
+id:terima kasih:de | 0 0 1 | 1 0 | offen
+id:sama-sama:en | 0 2 1 | 0 0 0 2 1 1 | offen
+id:sama-sama:de | 1 0 2 | 1 1 0 2 0 | offen
+id:tolong:en | 1 3 2 | 1 3 2 | ok
+id:tolong:de | 1 0 2 | 1 0 2 | offen
+id:silakan:en | 1 2 | 1 1 1 0 2 0 | offen
+id:silakan:de | 1 0 | 1 1 0 0 | offen
+id:maaf:en | 1 2 0 | 1 2 0 0 | offen
+id:maaf:de | 1 2 0 | 1 2 0 0 0 | offen
+id:permisi:en | 1 2 0 | 1 1 2 0 0 | offen
+id:permisi:de | 1 2 0 | 1 2 0 0 | offen
+id:ya:en | 1 2 3 | 1 2 3 0 | ok
+id:ya:de | 1 2 3 | 1 2 3 | ok
+id:tidak:en | 2 1 1 | 2 1 1 | ok
+id:tidak:de | 2 1 1 | 2 1 | ok
+id:bukan:en | 1 2 3 | 1 0 2 3 | ok
+id:bukan:de | 0 1 2 | 0 0 1 2 | ok
+id:apa kabar:en | 0 1 1 | 0 1 1 1 | offen
+id:apa kabar:de | 0 1 0 | 0 1 0 0 0 | offen
+id:baik:en | 2 3 1 1 | 2 0 3 1 1 | ok
+id:baik:de | 2 3 1 1 | 2 0 0 3 1 | offen
+id:nama:en | 1 1 2 | 1 1 1 2 | ok
+id:nama:de | 1 1 2 | 1 1 1 2 | ok
+id:senang bertemu:en | 0 1 0 2 | 0 1 1 2 | offen
+id:senang bertemu:de | 1 1 0 2 | 1 1 2 0 | offen
+id:selamat makan:en | 1 1 2 | 1 1 1 2 | ok
+id:selamat makan:de | 1 1 0 | 1 1 0 | offen
+id:selamat ulang tahun:en | 1 1 1 2 | 1 1 2 | ok
+id:selamat ulang tahun:de | 0 0 0 1 | 0 0 0 0 1 | offen
+id:semoga berhasil:en | 1 1 2 | 1 1 2 | ok
+id:semoga berhasil:de | 1 1 2 | 1 1 2 | ok
+id:tidak apa-apa:en | 1 0 2 0 | 1 0 2 1 0 | offen
+id:tidak apa-apa:de | 1 1 0 0 | 1 1 0 0 0 0 | offen
+id:saya:en | 1 1 1 | 1 1 1 | ok
+id:saya:de | 1 1 1 | 1 1 1 | ok
+id:aku:en | 1 2 3 | 1 0 3 2 | ok
+id:aku:de | 1 2 0 | 1 0 0 2 | offen
+id:kamu:en | 1 2 3 4 | 4 0 1 2 3 0 | offen
+id:kamu:de | 2 3 1 1 | 1 3 2 0 | offen
+id:anda:en | 0 1 2 | 0 1 0 2 | offen
+id:anda:de | 0 1 2 | 0 1 2 | offen
+id:dia:en | 1 2 3 | 1 0 3 2 | ok
+id:dia:de | 1 3 2 | 1 0 2 3 | ok
+id:kami:en | 1 2 3 4 | 1 2 3 4 | ok
+id:kami:de | 1 2 3 4 | 1 2 3 4 | ok
+id:kita:en | 0 1 2 3 | 0 0 1 2 3 | offen
+id:kita:de | 0 1 2 3 | 0 1 2 3 | offen
+id:mereka:en | 1 2 3 | 1 2 3 | ok
+id:mereka:de | 1 2 3 | 1 3 2 | ok
+id:ini:en | 1 2 3 | 1 0 3 2 | ok
+id:ini:de | 1 2 3 | 1 1 0 3 2 | ok
+id:itu:en | 1 2 3 | 1 0 0 3 2 | ok
+id:itu:de | 1 2 3 | 1 0 0 3 2 | ok
+id:apa:en | 1 1 | 1 1 1 | ok
+id:apa:de | 1 1 | 1 1 1 | ok
+id:siapa:en | 1 2 | 1 0 2 | ok
+id:siapa:de | 1 2 | 1 0 2 | ok
+id:di mana:en | 1 1 2 2 | 1 0 0 2 | ok
+id:di mana:de | 1 1 2 2 | 1 0 0 2 | ok
+id:kapan:en | 2 3 1 | 2 0 3 1 1 | ok
+id:kapan:de | 1 2 0 | 1 0 2 0 0 | offen
+id:mengapa:en | 1 2 3 | 1 0 2 3 | ok
+id:mengapa:de | 1 2 3 | 1 0 2 3 | ok
+id:kenapa:en | 1 0 | 1 0 0 0 | offen
+id:kenapa:de | 0 0 | 0 0 0 0 0 | offen
+id:bagaimana:en | 1 0 0 2 | 1 0 0 0 2 | offen
+id:bagaimana:de | 1 0 0 0 | 1 0 0 0 | offen
+id:berapa:en | 1 0 2 | 1 1 0 0 0 2 | offen
+id:berapa:de | 1 0 2 | 1 1 0 0 0 2 | offen
+id:yang mana:en | 1 1 0 2 | 1 0 0 2 | offen
+id:yang mana:de | 2 2 0 1 | 2 0 1 | offen
+id:yang:en | 2 3 0 1 4 5 6 | 0 2 3 4 1 1 4 6 5 | ok
+id:yang:de | 1 2 0 3 4 5 6 | 2 1 2 3 0 4 6 5 | offen
+id:nol:en | 0 1 2 3 | 1 0 0 2 3 | offen
+id:nol:de | 0 1 2 3 | 1 0 0 2 3 | offen
+id:satu:en | 2 3 4 1 | 2 3 4 1 1 | ok
+id:satu:de | 1 2 3 0 | 1 2 3 0 0 | offen
+id:dua:en | 1 2 3 0 | 1 2 3 0 | offen
+id:dua:de | 1 2 3 4 | 1 2 3 4 | ok
+id:tiga:en | 1 2 0 | 1 2 0 | offen
+id:tiga:de | 1 2 0 | 1 2 0 | offen
+id:empat:en | 1 2 3 | 1 1 2 3 | ok
+id:empat:de | 1 2 3 | 1 1 2 3 | ok
+id:lima:en | 1 0 2 3 | 1 0 2 3 | offen
+id:lima:de | 1 0 2 3 | 1 0 2 3 0 | offen
+id:enam:en | 1 2 3 | 0 0 3 2 1 | ok
+id:enam:de | 1 2 3 | 0 0 1 3 2 | ok
+id:tujuh:en | 3 1 2 4 | 0 3 1 2 4 | ok
+id:tujuh:de | 4 1 2 3 | 0 4 1 2 3 | ok
+id:delapan:en | 1 0 0 2 | 1 0 0 0 2 | offen
+id:delapan:de | 1 0 0 2 | 1 0 0 2 0 | offen
+id:sembilan:en | 1 2 0 3 4 | 2 1 0 3 4 0 | offen
+id:sembilan:de | 1 2 0 3 4 | 2 1 0 3 4 0 | offen
+id:sepuluh:en | 1 0 2 3 | 1 0 2 3 | offen
+id:sepuluh:de | 1 0 2 3 | 1 0 2 3 | offen
+id:sebelas:en | 1 2 0 | 1 1 2 0 | offen
+id:sebelas:de | 1 2 0 | 1 1 2 0 | offen
+id:dua belas:en | 1 2 3 1 0 0 | 2 3 1 0 0 | offen
+id:dua belas:de | 1 2 3 1 0 0 | 0 2 3 0 0 1 | offen
+id:dua puluh:en | 2 0 1 1 3 | 2 0 1 3 0 | offen
+id:dua puluh:de | 2 0 1 1 3 | 2 0 1 3 0 | offen
+id:tiga puluh:en | 2 0 1 1 3 | 2 0 1 3 | offen
+id:tiga puluh:de | 2 0 1 1 3 | 2 0 1 3 0 | offen
+id:lima puluh:en | 2 1 1 0 | 0 2 0 1 0 | offen
+id:lima puluh:de | 2 1 1 3 | 0 2 0 1 3 | ok
+id:seratus:en | 2 1 3 2 4 | 2 2 1 1 3 4 | ok
+id:seratus:de | 1 2 3 0 4 | 4 1 2 3 | ok
+id:seribu:en | 2 3 1 4 | 3 2 0 1 1 4 | ok
+id:seribu:de | 1 2 3 4 | 2 1 0 3 4 | offen
+id:sejuta:en | 2 3 1 0 | 2 3 1 1 0 | offen
+id:sejuta:de | 2 3 1 0 | 2 3 1 1 0 | offen
+id:pertama:en | 1 2 3 4 | 1 0 4 3 2 | ok
+id:pertama:de | 0 1 3 2 | 0 0 2 3 1 | ok
+id:terakhir:en | 1 2 3 | 1 0 0 3 2 | ok
+id:terakhir:de | 0 1 2 | 0 0 0 2 1 | ok
+id:setengah:en | 1 0 2 3 | 1 0 2 0 3 | offen
+id:setengah:de | 1 0 3 2 | 1 0 0 3 2 0 | offen
+id:hari:en | 1 1 2 0 0 | 1 0 0 0 2 | offen
+id:hari:de | 1 1 2 0 0 | 1 0 0 0 2 | offen
+id:hari ini:en | 1 1 3 2 | 1 3 0 0 2 2 | offen
+id:hari ini:de | 1 1 2 3 | 1 0 2 3 | ok
+id:besok:en | 1 2 3 | 1 2 3 | ok
+id:besok:de | 1 2 3 | 1 3 2 | ok
+id:kemarin:en | 1 2 3 | 1 2 0 3 | ok
+id:kemarin:de | 1 2 3 | 1 0 2 3 | ok
+id:sekarang:en | 1 2 3 | 1 2 3 | ok
+id:sekarang:de | 1 3 2 | 1 3 2 | ok
+id:nanti:en | 1 2 0 | 2 0 0 0 1 | offen
+id:nanti:de | 1 2 0 | 2 0 0 1 0 | offen
+id:segera:en | 1 2 3 4 | 1 2 4 3 | ok
+id:segera:de | 1 0 2 3 | 1 3 2 | offen
+id:tadi:en | 1 2 0 0 | 2 0 0 1 1 | offen
+id:tadi:de | 1 2 0 0 | 2 0 0 1 0 | offen
+id:dulu:en | 1 2 0 3 4 | 1 1 1 2 0 3 0 4 | offen
+id:dulu:de | 1 2 5 3 4 | 1 0 2 3 4 5 | ok
+id:minggu:en | 1 2 0 0 | 1 0 0 0 2 | offen
+id:minggu:de | 1 3 4 2 | 1 0 4 2 3 | ok
+id:bulan:en | 2 3 4 1 1 5 | 2 3 4 1 5 | ok
+id:bulan:de | 5 2 3 1 1 4 | 5 2 3 1 4 | ok
+id:tahun:en | 1 2 3 0 4 5 | 2 1 3 0 0 4 5 | offen
+id:tahun:de | 1 2 3 0 4 5 | 2 1 0 3 4 5 | offen
+id:jam:en | 1 0 2 3 | 1 0 2 3 | offen
+id:jam:de | 1 0 3 2 | 1 0 3 2 0 | offen
+id:menit:en | 0 1 3 2 | 0 1 2 3 | offen
+id:menit:de | 0 1 2 0 | 0 0 1 2 | offen
+id:detik:en | 0 1 0 | 0 1 0 | offen
+id:detik:de | 0 2 1 | 0 2 1 | offen
+id:waktu:en | 1 2 3 4 | 1 2 2 3 4 | ok
+id:waktu:de | 1 2 3 4 | 1 3 2 4 | ok
+id:pagi:en | 1 0 2 3 | 1 0 2 3 | offen
+id:pagi:de | 1 0 2 3 | 1 0 2 3 0 | offen
+id:siang:en | 1 2 3 4 0 | 1 2 3 4 | offen
+id:siang:de | 1 2 3 4 0 | 1 2 3 4 | offen
+id:sore:en | 2 0 3 1 0 | 2 0 0 0 0 3 0 1 1 | offen
+id:sore:de | 1 0 2 0 0 | 1 0 2 0 0 0 | offen
+id:malam:en | 1 2 3 0 | 1 2 0 0 3 | offen
+id:malam:de | 1 3 2 0 | 1 3 0 2 | offen
+id:libur:en | 1 1 3 2 | 0 1 3 0 0 2 2 | offen
+id:libur:de | 1 1 2 3 | 0 1 0 2 0 3 0 | offen
+id:senin:en | 0 1 2 0 | 0 1 2 0 | offen
+id:senin:de | 0 1 2 0 | 0 1 0 2 | offen
+id:selasa:en | 0 1 2 3 | 0 1 2 3 | offen
+id:selasa:de | 0 1 2 3 | 0 1 3 2 | offen
+id:rabu:en | 0 1 2 3 | 0 1 2 0 0 3 | offen
+id:rabu:de | 0 1 2 3 | 0 1 0 2 0 3 | offen
+id:kamis:en | 0 1 2 0 | 0 1 2 0 | offen
+id:kamis:de | 0 1 2 0 | 0 1 0 2 0 | offen
+id:jumat:en | 0 1 2 0 | 0 1 2 0 | offen
+id:jumat:de | 0 1 2 0 | 0 1 0 2 | offen
+id:sabtu:en | 0 1 2 3 | 0 1 2 3 | offen
+id:sabtu:de | 0 1 2 3 | 0 1 3 2 | offen
+id:hari minggu:en | 1 1 2 3 | 0 1 2 3 | offen
+id:hari minggu:de | 1 1 2 0 | 0 1 0 2 2 0 | offen
+id:selalu:en | 1 2 3 | 1 2 3 | ok
+id:selalu:de | 1 2 3 | 1 3 2 | ok
+id:sering:en | 1 2 3 4 | 1 2 3 4 | ok
+id:sering:de | 1 2 4 3 | 1 4 2 3 | ok
+id:kadang-kadang:en | 0 1 2 3 | 0 1 2 0 3 | offen
+id:kadang-kadang:de | 1 2 3 4 | 1 3 2 0 4 | ok
+id:jarang:en | 1 2 3 4 | 1 2 3 4 | ok
+id:jarang:de | 1 2 4 3 | 1 4 2 3 | ok
+id:tidak pernah:en | 2 1 1 0 | 2 0 1 0 | offen
+id:tidak pernah:de | 2 1 1 0 | 2 0 1 0 0 | offen
+id:sudah:en | 1 2 0 | 1 2 2 0 | offen
+id:sudah:de | 1 2 0 | 1 2 2 0 | offen
+id:belum:en | 2 1 0 | 2 0 1 1 0 | offen
+id:belum:de | 2 1 0 | 2 0 1 1 0 | offen
+id:akan:en | 1 2 3 4 | 1 2 3 4 | ok
+id:akan:de | 1 4 2 3 | 1 4 3 2 | ok
+id:masih:en | 1 2 3 | 1 0 2 3 | ok
+id:masih:de | 1 2 3 | 1 3 2 | ok
+id:lagi:en | 1 3 2 | 1 3 0 2 | ok
+id:lagi:de | 1 0 0 | 1 0 0 0 0 | offen
+id:januari:en | 0 1 0 0 | 1 0 0 0 0 | offen
+id:januari:de | 0 1 0 0 | 0 1 0 0 | offen
+id:februari:en | 0 0 1 0 2 | 1 0 0 0 2 | offen
+id:februari:de | 0 0 1 0 2 | 1 0 0 0 2 | offen
+id:maret:en | 0 1 2 3 | 0 1 0 2 3 | offen
+id:maret:de | 0 1 2 0 | 0 1 0 0 2 | offen
+id:april:en | 0 1 2 3 | 0 1 2 3 0 | offen
+id:april:de | 0 1 2 0 | 0 1 0 2 | offen
+id:mei:en | 0 0 1 0 2 | 0 0 1 1 0 2 | offen
+id:mei:de | 0 1 2 0 0 | 0 1 2 2 0 0 | offen
+id:juni:en | 0 1 2 3 | 1 0 2 3 | offen
+id:juni:de | 0 1 2 3 | 0 1 0 2 3 | offen
+id:juli:en | 0 1 2 3 | 0 1 2 0 0 3 | offen
+id:juli:de | 0 1 2 3 | 0 1 0 2 3 | offen
+id:agustus:en | 0 0 0 1 2 0 | 0 0 0 1 0 0 2 | offen
+id:agustus:de | 0 0 0 1 0 0 | 0 0 1 0 0 0 | offen
+id:september:en | 0 1 2 3 | 0 1 2 3 | offen
+id:september:de | 0 1 2 0 | 0 1 0 0 2 | offen
+id:oktober:en | 0 1 2 3 | 0 1 2 3 | offen
+id:oktober:de | 0 1 2 3 | 0 1 3 2 | offen
+id:november:en | 0 1 2 3 | 0 1 0 2 3 | offen
+id:november:de | 0 1 2 0 | 0 1 0 0 2 | offen
+id:desember:en | 0 1 2 3 0 | 1 0 2 3 0 | offen
+id:desember:de | 0 1 2 3 0 | 0 1 0 2 3 0 | offen
+id:keluarga:en | 1 2 3 | 2 1 0 3 | ok
+id:keluarga:de | 1 2 3 | 2 1 0 3 | ok
+id:ibu:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:ibu:de | 1 2 3 4 | 1 2 3 0 4 | ok
+id:ayah:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:ayah:de | 1 4 2 3 | 1 4 2 3 | ok
+id:orang tua:en | 1 1 2 3 4 5 | 2 1 3 4 0 5 | ok
+id:orang tua:de | 1 1 2 3 4 5 | 2 1 3 4 0 5 | ok
+id:anak:en | 1 2 5 3 4 | 2 1 5 3 2 4 | ok
+id:anak:de | 1 2 5 3 4 | 2 1 5 3 4 | ok
+id:kakak:en | 1 2 3 0 | 2 1 1 0 3 0 0 | offen
+id:kakak:de | 1 2 3 0 | 2 1 1 0 3 | offen
+id:adik:en | 1 2 3 4 | 2 1 1 0 3 0 4 | offen
+id:adik:de | 1 2 3 4 | 2 1 1 0 3 0 4 | offen
+id:saudara:en | 1 2 3 4 | 1 2 3 4 | ok
+id:saudara:de | 1 2 3 4 | 1 2 3 4 | ok
+id:suami:en | 1 2 5 3 4 | 2 1 5 3 0 4 | ok
+id:suami:de | 1 2 5 3 4 | 2 1 5 3 0 4 | ok
+id:istri:en | 1 2 3 4 | 2 1 3 4 | ok
+id:istri:de | 1 2 3 4 | 2 1 4 3 | ok
+id:nenek:en | 1 0 2 | 1 0 0 2 | offen
+id:nenek:de | 0 0 1 | 0 0 0 1 | offen
+id:kakek:en | 1 2 0 | 1 2 0 0 | offen
+id:kakek:de | 0 0 0 | 0 0 0 0 | offen
+id:paman:en | 1 2 5 3 4 | 2 1 5 3 4 | ok
+id:paman:de | 1 2 5 3 4 | 2 1 5 3 4 | ok
+id:bibi:en | 1 3 2 | 1 3 2 | ok
+id:bibi:de | 1 2 3 | 1 2 3 0 | offen
+id:sepupu:en | 2 3 4 1 1 | 3 2 4 1 | ok
+id:sepupu:de | 2 3 4 1 1 | 3 2 4 1 | ok
+id:teman:en | 1 2 0 0 | 2 1 0 0 | offen
+id:teman:de | 1 2 0 0 | 2 1 0 0 | offen
+id:sahabat:en | 2 1 3 0 0 | 2 0 3 1 1 0 0 | offen
+id:sahabat:de | 1 0 2 0 0 | 1 0 1 0 0 2 0 0 | offen
+id:pacar:en | 1 2 3 0 | 2 1 0 3 0 | offen
+id:pacar:de | 3 1 2 0 | 1 3 0 2 0 | offen
+id:orang:en | 1 2 3 0 4 | 1 1 0 2 3 0 4 | offen
+id:orang:de | 1 2 0 4 3 | 0 1 0 2 4 0 3 | ok
+id:laki-laki:en | 0 1 2 | 1 0 0 2 | offen
+id:laki-laki:de | 1 2 0 | 2 1 0 0 | offen
+id:perempuan:en | 1 2 3 4 | 2 1 3 4 | ok
+id:perempuan:de | 1 2 3 0 | 2 1 0 3 | offen
+id:anak laki-laki:en | 0 0 1 2 0 | 1 0 2 0 | offen
+id:anak laki-laki:de | 1 1 2 3 0 | 2 1 3 0 | offen
+id:anak perempuan:en | 1 1 2 3 | 2 1 3 | ok
+id:anak perempuan:de | 1 1 2 3 | 2 1 3 | ok
+id:bayi:en | 1 2 3 4 | 2 1 3 4 | ok
+id:bayi:de | 1 2 0 3 | 2 1 3 | offen
+id:bapak:en | 2 0 1 3 | 3 0 0 0 1 1 2 | offen
+id:bapak:de | 1 4 2 3 | 3 4 0 2 0 1 | offen
+id:tetangga:en | 1 2 0 | 2 1 0 0 | offen
+id:tetangga:de | 1 2 0 | 2 1 0 0 | offen
+id:tamu:en | 1 2 3 0 | 2 1 3 0 | offen
+id:tamu:de | 1 2 0 0 | 2 1 0 0 | offen
+id:guru:en | 1 2 3 0 | 2 1 0 3 0 | offen
+id:guru:de | 1 2 3 0 | 2 1 0 3 0 | offen
+id:murid:en | 1 2 0 3 | 2 1 3 0 | offen
+id:murid:de | 1 2 0 3 | 2 1 3 0 | offen
+id:dokter:en | 1 0 0 | 0 1 0 0 0 | offen
+id:dokter:de | 1 0 0 | 0 1 0 0 0 | offen
+id:polisi:en | 1 0 0 | 0 1 0 0 0 | offen
+id:polisi:de | 1 0 2 | 0 1 0 0 2 | offen
+id:penjual:en | 1 2 0 | 2 1 0 0 | offen
+id:penjual:de | 1 2 0 | 2 1 0 0 | offen
+id:pembeli:en | 1 0 2 | 0 1 0 0 0 2 | offen
+id:pembeli:de | 1 3 2 | 0 1 3 0 0 2 | offen
+id:petani:en | 1 3 2 0 | 0 1 3 2 0 0 0 | offen
+id:petani:de | 1 3 2 0 | 0 1 3 2 0 0 | offen
+id:nelayan:en | 1 0 2 3 | 0 1 0 2 3 | offen
+id:nelayan:de | 1 0 0 2 | 0 1 0 0 2 | offen
+id:sopir:en | 1 2 0 0 0 | 2 1 0 0 | offen
+id:sopir:de | 1 2 0 0 0 | 2 1 1 0 | offen
+id:koki:en | 2 3 1 1 | 0 2 3 1 1 | ok
+id:koki:de | 1 2 0 3 | 0 1 2 3 0 | offen
+id:turis:en | 1 2 3 4 | 2 1 3 2 4 | ok
+id:turis:de | 1 2 3 4 | 2 1 3 0 4 | ok
+id:orang asing:en | 1 1 2 3 0 | 2 1 3 0 0 | offen
+id:orang asing:de | 1 1 2 3 0 | 2 1 3 0 0 0 | offen
+id:makan:en | 2 3 1 4 | 2 3 1 1 4 | ok
+id:makan:de | 1 2 3 4 | 1 2 4 3 | ok
+id:minum:en | 2 3 1 4 | 2 3 1 1 4 | ok
+id:minum:de | 1 2 3 4 | 1 2 4 3 | ok
+id:makanan:en | 1 2 3 | 2 1 0 3 | ok
+id:makanan:de | 1 2 3 | 2 1 0 3 | ok
+id:minuman:en | 1 2 3 | 2 1 0 3 | ok
+id:minuman:de | 1 2 3 | 2 1 0 3 | ok
+id:air:en | 1 2 3 4 | 1 2 4 3 | ok
+id:air:de | 1 3 2 0 | 1 3 0 2 | offen
+id:nasi:en | 2 3 1 4 5 | 2 3 1 1 4 5 | ok
+id:nasi:de | 1 4 0 2 3 | 1 4 2 3 0 | offen
+id:beras:en | 2 5 1 3 4 | 2 5 1 1 3 0 4 | ok
+id:beras:de | 1 4 0 2 3 | 1 4 0 2 0 3 | offen
+id:nasi goreng:en | 2 3 1 1 | 2 3 1 1 | ok
+id:nasi goreng:de | 1 2 0 3 | 1 2 3 0 | offen
+id:roti:en | 1 2 3 4 5 | 1 2 3 4 5 | ok
+id:roti:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+id:daging:en | 1 2 3 4 | 1 2 2 3 4 | ok
+id:daging:de | 1 2 0 3 | 1 0 2 3 | offen
+id:ayam:en | 1 0 2 3 | 1 0 3 2 | offen
+id:ayam:de | 1 0 2 3 | 1 0 3 2 | offen
+id:ikan:en | 1 2 0 | 2 1 0 0 | offen
+id:ikan:de | 1 2 0 | 2 1 0 0 | offen
+id:udang:en | 1 2 3 | 2 1 0 3 | ok
+id:udang:de | 1 2 3 | 2 1 0 3 | ok
+id:telur:en | 1 2 3 4 | 1 2 3 4 | ok
+id:telur:de | 1 3 2 0 | 1 3 2 0 | offen
+id:tempe:en | 1 2 3 4 | 1 0 2 3 4 | ok
+id:tempe:de | 1 2 3 4 | 1 0 2 3 4 | ok
+id:sate:en | 1 2 3 4 | 1 2 4 3 | ok
+id:sate:de | 1 2 0 0 | 1 2 0 | offen
+id:sayur:en | 0 1 2 3 | 0 1 2 3 | offen
+id:sayur:de | 4 1 2 3 | 4 1 3 2 | ok
+id:buah:en | 1 2 3 0 | 1 2 0 3 | offen
+id:buah:de | 1 2 3 0 | 1 2 0 3 | offen
+id:apel:en | 1 2 3 | 2 1 0 3 | ok
+id:apel:de | 1 2 3 | 2 1 0 3 | ok
+id:pisang:en | 2 1 3 | 2 1 3 | ok
+id:pisang:de | 2 1 3 | 2 1 3 | ok
+id:jeruk:en | 1 2 3 4 | 1 2 4 3 | ok
+id:jeruk:de | 1 2 0 0 | 1 2 0 | offen
+id:mangga:en | 1 2 3 4 | 2 1 0 3 4 | ok
+id:mangga:de | 1 2 3 4 | 2 1 0 3 4 | ok
+id:nanas:en | 1 0 2 | 1 0 2 | offen
+id:nanas:de | 1 0 2 | 1 0 2 | offen
+id:semangka:en | 1 0 0 2 | 1 0 0 0 0 0 2 | offen
+id:semangka:de | 1 0 0 2 | 1 0 0 0 0 2 0 | offen
+id:kopi:en | 1 2 3 4 0 | 1 2 3 0 0 4 | offen
+id:kopi:de | 1 3 2 4 0 | 1 3 4 2 | offen
+id:teh:en | 1 2 3 4 | 1 2 4 3 | ok
+id:teh:de | 1 2 3 4 | 1 2 4 3 | ok
+id:susu:en | 1 3 2 | 0 1 3 2 | ok
+id:susu:de | 1 3 2 | 0 1 3 2 | ok
+id:jus:en | 1 0 2 3 | 1 0 3 2 | offen
+id:jus:de | 1 0 0 0 | 1 0 0 | offen
+id:bir:en | 1 4 2 3 | 1 4 0 3 2 | ok
+id:bir:de | 1 3 2 4 | 1 3 0 4 2 | ok
+id:es:en | 1 2 3 4 | 1 2 0 4 0 3 | offen
+id:es:de | 1 2 3 0 | 1 2 0 0 0 3 | offen
+id:gula:en | 1 2 3 4 | 2 1 3 4 | ok
+id:gula:de | 1 2 3 4 | 2 1 0 3 4 | ok
+id:garam:en | 1 2 0 3 | 2 1 0 0 3 | offen
+id:garam:de | 1 2 0 3 | 2 1 0 3 | offen
+id:pedas:en | 1 2 3 4 | 2 1 0 3 4 | ok
+id:pedas:de | 1 2 3 4 | 2 1 0 3 4 | ok
+id:manis:en | 1 2 3 | 2 1 0 3 | ok
+id:manis:de | 1 2 3 | 2 1 0 3 | ok
+id:asin:en | 1 2 3 | 2 1 0 3 | ok
+id:asin:de | 1 2 3 | 2 1 0 3 | ok
+id:asam:en | 1 2 3 | 2 1 0 3 | ok
+id:asam:de | 1 2 3 | 2 1 0 3 | ok
+id:pahit:en | 1 2 3 | 2 1 0 3 | ok
+id:pahit:de | 1 2 3 | 2 1 0 3 | ok
+id:lapar:en | 1 2 3 | 1 0 3 2 | ok
+id:lapar:de | 1 2 0 | 1 0 0 2 | offen
+id:haus:en | 1 1 2 3 | 1 1 1 0 2 0 3 | offen
+id:haus:de | 1 2 3 4 | 1 0 2 1 3 0 4 | offen
+id:kenyang:en | 1 2 0 | 1 0 2 0 | offen
+id:kenyang:de | 1 2 3 | 1 0 2 3 | ok
+id:enak:en | 0 2 1 | 0 2 0 0 1 | offen
+id:enak:de | 0 2 1 | 0 2 0 0 1 | offen
+id:sarapan:en | 1 2 0 3 | 1 0 2 0 3 | offen
+id:sarapan:de | 1 2 0 3 | 1 0 0 3 2 | offen
+id:makan siang:en | 3 1 1 4 2 | 3 0 1 4 0 2 2 | offen
+id:makan siang:de | 1 2 3 4 0 | 1 2 4 0 3 | offen
+id:makan malam:en | 2 1 1 0 | 2 0 1 0 | offen
+id:makan malam:de | 1 2 0 0 | 1 2 0 0 | offen
+id:restoran:en | 1 2 0 | 2 1 0 0 | offen
+id:restoran:de | 1 2 0 | 2 1 0 0 | offen
+id:warung:en | 2 3 4 1 | 2 3 4 0 1 1 | ok
+id:warung:de | 1 2 3 0 | 1 2 3 0 | offen
+id:piring:en | 1 0 2 | 1 0 0 2 | offen
+id:piring:de | 1 0 2 | 1 0 0 2 | offen
+id:mangkuk:en | 1 2 3 4 5 | 1 2 3 4 0 5 | ok
+id:mangkuk:de | 1 2 5 3 4 | 1 2 5 3 4 | ok
+id:sendok:en | 1 0 2 | 1 0 0 2 | offen
+id:sendok:de | 1 0 2 | 1 0 0 2 | offen
+id:garpu:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:garpu:de | 1 0 2 3 | 1 0 2 0 3 | offen
+id:pisau:en | 1 2 0 | 2 1 0 0 | offen
+id:pisau:de | 1 2 0 | 2 1 0 0 | offen
+id:gelas:en | 1 6 2 3 4 5 | 1 6 2 3 4 0 5 | ok
+id:gelas:de | 1 0 2 5 3 4 | 1 0 2 5 3 4 | offen
+id:mie:en | 1 0 2 3 | 1 0 3 2 | offen
+id:mie:de | 1 0 2 3 | 1 0 3 2 | offen
+id:sup:en | 1 2 3 | 2 1 0 3 | ok
+id:sup:de | 1 2 3 | 2 1 0 3 | ok
+id:goreng:en | 1 2 4 3 | 1 2 3 4 | ok
+id:goreng:de | 1 2 3 4 | 1 2 4 3 | ok
+id:rebus:en | 1 2 4 3 | 1 2 3 4 | ok
+id:rebus:de | 1 2 0 3 | 1 2 3 0 | offen
+id:bakar:en | 1 2 3 4 | 1 2 4 3 | ok
+id:bakar:de | 1 2 3 4 | 1 2 4 3 | ok
+id:bawang putih:en | 2 0 1 1 | 2 0 1 | offen
+id:bawang putih:de | 2 0 1 1 | 2 0 1 0 | offen
+id:bawang merah:en | 2 0 1 1 | 2 0 0 1 | offen
+id:bawang merah:de | 2 0 1 1 | 2 0 0 1 | offen
+id:cabai:en | 1 2 3 | 1 2 3 | ok
+id:cabai:de | 1 2 3 | 1 2 3 | ok
+id:kentang:en | 1 0 2 | 1 0 2 | offen
+id:kentang:de | 1 2 3 | 1 2 3 | ok
+id:tomat:en | 1 2 3 | 2 1 0 3 | ok
+id:tomat:de | 1 2 3 | 2 1 0 3 | ok
+id:kelapa:en | 1 2 3 4 | 1 2 4 3 | ok
+id:kelapa:de | 1 2 0 0 | 1 2 0 | offen
+id:kue:en | 1 0 2 | 1 0 0 2 | offen
+id:kue:de | 0 0 1 | 0 0 0 1 | offen
+id:permen:en | 1 2 4 3 | 2 1 4 3 | ok
+id:permen:de | 1 2 0 3 | 2 1 0 0 3 | offen
+id:makanan ringan:en | 2 3 1 1 | 2 3 0 1 | ok
+id:makanan ringan:de | 2 0 1 1 | 2 0 0 1 | offen
+id:bungkus:en | 1 1 2 3 | 2 1 1 3 | ok
+id:bungkus:de | 1 1 0 2 | 0 1 1 2 2 | offen
+id:pergi:en | 2 3 1 4 5 | 2 3 1 1 4 0 5 | ok
+id:pergi:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+id:datang:en | 1 2 3 4 5 | 2 1 3 4 5 | ok
+id:datang:de | 1 2 3 4 5 | 2 1 3 5 4 | ok
+id:pulang:en | 2 3 1 4 | 2 3 1 1 1 4 | ok
+id:pulang:de | 2 3 1 4 | 2 3 4 1 1 1 | ok
+id:masuk:en | 0 0 | 0 0 0 | offen
+id:masuk:de | 0 0 | 0 0 0 | offen
+id:keluar:en | 1 0 2 3 | 1 0 0 2 0 3 | offen
+id:keluar:de | 1 2 3 4 | 1 0 3 0 4 2 | offen
+id:tidur:en | 2 3 1 | 2 3 1 1 | ok
+id:tidur:de | 1 2 3 | 1 2 3 | ok
+id:bangun:en | 2 1 0 3 | 2 1 1 0 3 | offen
+id:bangun:de | 1 2 0 3 | 1 0 0 3 2 | offen
+id:duduk:en | 0 1 0 2 | 0 1 2 | offen
+id:duduk:de | 0 0 0 1 | 0 0 0 1 | offen
+id:berdiri:en | 1 5 2 3 4 | 1 5 2 3 0 0 4 | ok
+id:berdiri:de | 1 3 0 4 2 | 1 3 4 0 2 | ok
+id:berjalan:en | 1 2 3 4 | 1 2 3 4 | ok
+id:berjalan:de | 1 0 2 3 | 1 0 2 0 2 3 | offen
+id:lari:en | 1 2 5 3 4 | 2 1 5 3 2 4 | ok
+id:lari:de | 1 2 5 3 4 | 2 1 5 3 4 | ok
+id:jatuh:en | 0 1 2 | 0 0 1 1 2 | offen
+id:jatuh:de | 1 2 3 | 1 2 3 | ok
+id:bicara:en | 1 2 3 0 0 | 1 2 3 0 | offen
+id:bicara:de | 1 2 3 0 0 | 1 2 0 3 | offen
+id:berkata:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:berkata:de | 1 3 2 0 | 1 3 2 0 0 | offen
+id:bertanya:en | 2 3 1 | 2 3 1 1 0 | offen
+id:bertanya:de | 1 2 3 | 1 2 0 3 | offen
+id:menjawab:en | 1 4 2 3 | 1 4 3 2 | ok
+id:menjawab:de | 1 4 2 3 | 1 4 0 3 2 | offen
+id:melihat:en | 1 2 3 | 1 2 0 3 | ok
+id:melihat:de | 1 3 2 | 1 3 0 2 | ok
+id:mendengar:en | 1 2 3 | 1 2 3 | ok
+id:mendengar:de | 1 3 2 | 1 3 2 | ok
+id:membaca:en | 2 3 1 4 | 2 3 1 1 4 | ok
+id:membaca:de | 1 2 3 4 | 1 3 2 4 | ok
+id:menulis:en | 1 3 2 | 1 3 0 2 | ok
+id:menulis:de | 1 3 2 | 1 3 0 2 | ok
+id:belajar:en | 1 2 0 0 | 1 2 0 | offen
+id:belajar:de | 1 2 0 0 | 1 2 0 | offen
+id:mengajar:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:mengajar:de | 1 4 2 3 | 1 4 2 0 3 | ok
+id:bekerja:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:bekerja:de | 1 4 2 3 | 1 4 2 3 | ok
+id:bermain:en | 0 1 2 3 | 0 0 1 2 0 3 | offen
+id:bermain:de | 0 1 2 3 | 0 0 1 2 3 | offen
+id:membeli:en | 2 3 1 4 | 2 3 1 1 4 | ok
+id:membeli:de | 1 2 3 4 | 1 2 4 3 | ok
+id:menjual:en | 1 3 2 | 1 3 2 | ok
+id:menjual:de | 1 3 2 | 1 3 2 | ok
+id:membayar:en | 2 3 1 4 | 2 3 1 1 4 | ok
+id:membayar:de | 1 2 3 4 | 1 2 4 3 | ok
+id:mengambil:en | 1 4 2 3 | 1 4 3 2 | ok
+id:mengambil:de | 1 0 2 3 | 1 0 3 2 | offen
+id:memberi:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:memberi:de | 1 0 2 3 | 1 0 2 0 3 | offen
+id:membawa:en | 1 2 3 | 1 2 0 3 | ok
+id:membawa:de | 1 2 3 | 1 0 0 3 2 | offen
+id:membuka:en | 1 3 2 | 1 3 0 2 | ok
+id:membuka:de | 1 0 2 | 1 0 0 2 | offen
+id:menutup:en | 1 0 2 | 1 0 0 2 | offen
+id:menutup:de | 1 0 2 | 1 0 0 2 | offen
+id:mulai:en | 1 3 0 2 | 0 1 3 0 2 | offen
+id:mulai:de | 0 1 0 2 | 0 0 0 0 2 1 | offen
+id:selesai:en | 1 2 3 | 1 2 3 | ok
+id:selesai:de | 1 2 0 | 1 0 2 0 | offen
+id:menunggu:en | 1 2 3 | 1 2 0 0 3 | offen
+id:menunggu:de | 1 3 2 | 1 3 0 0 2 | offen
+id:mencari:en | 2 1 3 | 2 1 1 2 3 | ok
+id:mencari:de | 1 3 2 | 1 3 1 2 | ok
+id:menemukan:en | 1 2 3 | 1 2 0 3 | ok
+id:menemukan:de | 1 3 2 | 1 3 0 2 | ok
+id:mengerti:en | 1 1 2 | 1 1 2 | ok
+id:mengerti:de | 1 1 2 | 1 1 2 | ok
+id:tahu:en | 1 2 3 | 1 2 2 3 | ok
+id:tahu:de | 1 2 0 | 1 0 0 2 | offen
+id:ingat:en | 1 2 3 4 | 1 2 4 3 | ok
+id:ingat:de | 1 0 2 3 | 1 0 1 0 3 2 | offen
+id:lupa:en | 1 2 3 4 | 1 2 4 3 | ok
+id:lupa:de | 1 3 2 0 | 1 3 0 2 | offen
+id:suka:en | 1 1 1 | 1 1 1 | ok
+id:suka:de | 1 1 1 | 1 1 1 | ok
+id:cinta:en | 1 2 3 4 | 1 2 4 3 | ok
+id:cinta:de | 1 4 2 3 | 1 4 3 2 | ok
+id:mau:en | 2 3 1 | 2 3 1 1 | ok
+id:mau:de | 1 2 3 | 1 2 3 | ok
+id:bisa:en | 1 2 3 | 1 2 3 | ok
+id:bisa:de | 1 2 3 | 1 2 3 | ok
+id:harus:en | 1 2 3 | 1 2 3 | ok
+id:harus:de | 1 2 3 | 1 2 3 | ok
+id:boleh:en | 0 2 1 0 3 | 0 0 0 0 2 1 1 3 | offen
+id:boleh:de | 1 2 3 0 4 | 1 2 4 3 | ok
+id:punya:en | 2 3 4 1 | 2 3 4 1 1 | ok
+id:punya:de | 2 3 4 1 | 2 3 4 1 1 | ok
+id:ada:en | 1 2 3 4 | 1 1 2 3 0 4 | ok
+id:ada:de | 1 2 3 4 | 3 0 4 1 1 2 | ok
+id:menjadi:en | 2 4 1 3 | 2 4 1 1 0 3 | ok
+id:menjadi:de | 1 2 3 4 | 1 2 4 3 | ok
+id:memakai:en | 1 4 2 3 | 1 4 0 3 2 | ok
+id:memakai:de | 1 3 2 4 | 1 3 0 4 2 | ok
+id:menggunakan:en | 1 2 0 | 1 2 0 0 | offen
+id:menggunakan:de | 1 3 2 | 1 3 0 2 | ok
+id:membuat:en | 1 3 2 | 1 3 0 2 | ok
+id:membuat:de | 1 3 2 | 1 3 0 2 | ok
+id:melakukan:en | 1 0 2 0 | 1 0 2 0 | offen
+id:melakukan:de | 1 0 2 0 | 1 0 2 | offen
+id:mandi:en | 1 2 3 4 | 1 2 3 4 | ok
+id:mandi:de | 1 4 2 3 | 1 4 2 3 | ok
+id:mencuci:en | 1 2 3 | 1 2 0 3 | ok
+id:mencuci:de | 1 3 2 | 1 3 0 2 | ok
+id:memasak:en | 1 2 0 | 1 2 0 | offen
+id:memasak:de | 1 2 0 | 1 2 0 | offen
+id:naik:en | 2 1 3 4 5 | 2 1 1 0 0 3 4 0 5 | offen
+id:naik:de | 1 2 3 0 4 | 1 2 0 0 3 0 4 | offen
+id:turun:en | 1 0 2 3 | 1 0 0 2 0 3 | offen
+id:turun:de | 1 2 3 4 | 1 0 3 0 4 2 | offen
+id:berhenti:en | 1 3 0 2 | 0 1 3 2 | ok
+id:berhenti:de | 1 2 0 3 | 0 1 0 3 2 | offen
+id:tinggal:en | 1 2 3 4 | 1 2 3 4 | ok
+id:tinggal:de | 1 4 2 3 | 1 4 2 3 | ok
+id:hidup:en | 1 2 0 | 1 0 2 0 | offen
+id:hidup:de | 0 1 2 | 0 2 1 | offen
+id:mati:en | 1 2 3 | 2 1 3 | ok
+id:mati:de | 1 0 0 | 0 1 0 | offen
+id:lahir:en | 1 0 2 0 0 | 1 0 0 2 0 | offen
+id:lahir:de | 1 0 2 0 3 | 1 0 2 3 0 | offen
+id:menikah:en | 2 3 1 | 2 3 1 1 | ok
+id:menikah:de | 1 2 3 | 1 2 3 | ok
+id:membantu:en | 1 2 3 | 1 2 1 3 | ok
+id:membantu:de | 1 0 2 | 1 0 1 2 | offen
+id:berpikir:en | 1 2 0 | 1 2 0 | offen
+id:berpikir:de | 1 2 0 | 1 2 0 0 | offen
+id:merasa:en | 1 2 3 | 1 2 3 | ok
+id:merasa:de | 1 3 2 | 1 3 1 2 | ok
+id:tertawa:en | 1 2 3 | 2 1 3 | ok
+id:tertawa:de | 1 2 3 | 2 1 3 | ok
+id:menangis:en | 1 2 3 | 2 1 3 | ok
+id:menangis:de | 1 2 3 | 2 1 3 | ok
+id:tersenyum:en | 1 3 4 2 | 1 3 4 2 | ok
+id:tersenyum:de | 1 3 4 2 | 1 3 2 4 | ok
+id:menelepon:en | 1 2 3 | 1 2 3 | ok
+id:menelepon:de | 1 2 3 | 1 0 3 2 | offen
+id:mengirim:en | 1 2 3 | 1 2 0 3 | ok
+id:mengirim:de | 1 3 2 | 1 3 0 2 | ok
+id:menerima:en | 1 2 3 | 1 2 0 3 | ok
+id:menerima:de | 1 3 2 | 1 3 0 2 | ok
+id:mengunjungi:en | 1 2 3 | 1 2 3 | ok
+id:mengunjungi:de | 1 2 0 | 1 2 0 | offen
+id:bertemu:en | 1 2 3 0 | 1 2 3 0 0 | offen
+id:bertemu:de | 1 2 3 0 | 1 2 1 3 0 | offen
+id:istirahat:en | 2 3 1 | 2 3 1 1 | ok
+id:istirahat:de | 1 2 0 | 1 2 1 0 | offen
+id:menyanyi:en | 2 3 1 | 2 3 1 1 | ok
+id:menyanyi:de | 1 2 3 | 1 3 2 | ok
+id:menari:en | 1 2 3 0 | 1 2 3 0 0 | offen
+id:menari:de | 1 2 3 0 | 1 2 3 0 0 | offen
+id:berenang:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:berenang:de | 1 4 2 3 | 1 4 2 3 | ok
+id:menyetir:en | 1 3 2 | 1 3 0 2 | ok
+id:menyetir:de | 1 0 2 | 1 0 0 2 | offen
+id:terbang:en | 1 2 3 | 2 1 3 | ok
+id:terbang:de | 1 2 3 | 2 1 3 | ok
+id:memilih:en | 1 2 3 | 1 2 3 | ok
+id:memilih:de | 1 3 2 | 1 3 2 | ok
+id:mencoba:en | 2 3 1 4 | 2 3 1 1 4 | ok
+id:mencoba:de | 1 2 3 4 | 1 2 4 3 | ok
+id:berharap:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:berharap:de | 1 4 2 3 | 1 4 2 0 3 | ok
+id:membersihkan:en | 1 2 3 | 1 2 0 3 | ok
+id:membersihkan:de | 1 3 2 | 1 3 0 2 | ok
+id:berubah:en | 1 2 | 0 1 2 | ok
+id:berubah:de | 1 0 | 0 1 0 0 | offen
+id:menjaga:en | 0 0 1 | 0 0 0 0 0 1 1 | offen
+id:menjaga:de | 0 1 0 | 0 0 0 0 0 0 0 1 | offen
+id:menyimpan:en | 1 2 3 | 1 2 0 3 | ok
+id:menyimpan:de | 1 2 3 | 1 0 0 3 2 | offen
+id:besar:en | 1 2 3 | 2 1 0 3 | ok
+id:besar:de | 1 2 3 | 2 1 0 3 | ok
+id:kecil:en | 1 2 3 | 2 1 0 3 | ok
+id:kecil:de | 1 2 3 | 2 1 0 3 | ok
+id:panjang:en | 0 1 2 | 1 0 0 2 | offen
+id:panjang:de | 1 2 3 | 2 1 0 3 | ok
+id:pendek:en | 1 2 3 | 2 1 0 3 | ok
+id:pendek:de | 3 1 2 | 1 3 0 2 | ok
+id:tinggi:en | 1 2 3 | 2 1 0 3 | ok
+id:tinggi:de | 1 2 3 | 2 1 0 3 | ok
+id:rendah:en | 1 2 3 | 2 1 0 3 | ok
+id:rendah:de | 1 2 3 | 2 1 0 3 | ok
+id:baru:en | 1 2 3 4 | 1 2 0 4 3 | ok
+id:baru:de | 1 2 3 4 | 1 2 0 4 3 | ok
+id:lama:en | 1 2 3 0 | 2 1 0 3 0 | offen
+id:lama:de | 1 2 3 0 | 2 1 0 3 0 | offen
+id:tua:en | 1 2 3 0 | 2 1 0 3 0 | offen
+id:tua:de | 1 2 3 0 | 2 1 0 3 0 | offen
+id:muda:en | 1 2 3 | 1 0 2 3 | ok
+id:muda:de | 1 2 3 | 1 0 2 3 | ok
+id:bagus:en | 1 2 3 | 2 1 0 3 | ok
+id:bagus:de | 1 2 3 | 2 1 0 3 | ok
+id:jelek:en | 1 2 3 | 2 1 0 3 | ok
+id:jelek:de | 1 2 3 | 2 1 0 3 | ok
+id:buruk:en | 2 1 1 3 | 0 2 1 0 3 | ok
+id:buruk:de | 2 1 1 3 | 0 2 1 0 3 | ok
+id:mudah:en | 0 1 2 | 1 0 0 2 | offen
+id:mudah:de | 0 1 2 | 1 0 0 2 | offen
+id:sulit:en | 1 2 3 | 2 1 0 3 | ok
+id:sulit:de | 1 2 3 | 2 1 0 3 | ok
+id:murah:en | 1 2 3 | 2 1 0 3 | ok
+id:murah:de | 1 2 3 | 2 1 0 3 | ok
+id:mahal:en | 1 2 3 | 2 1 0 3 | ok
+id:mahal:de | 1 2 3 | 2 1 0 3 | ok
+id:panas:en | 1 2 3 | 2 1 0 3 | ok
+id:panas:de | 1 2 3 | 2 1 0 3 | ok
+id:dingin:en | 1 2 3 | 2 1 0 3 | ok
+id:dingin:de | 1 2 3 | 2 1 0 3 | ok
+id:hangat:en | 1 2 3 | 2 1 0 3 | ok
+id:hangat:de | 1 2 3 | 2 1 0 3 | ok
+id:sejuk:en | 0 1 2 | 0 1 0 0 2 | offen
+id:sejuk:de | 0 0 1 | 0 0 0 1 | offen
+id:bersih:en | 1 2 3 | 2 1 0 3 | ok
+id:bersih:de | 1 2 3 | 2 1 0 3 | ok
+id:kotor:en | 1 2 3 | 2 1 0 3 | ok
+id:kotor:de | 1 2 3 | 2 1 0 3 | ok
+id:cepat:en | 1 2 3 | 2 1 0 3 | ok
+id:cepat:de | 1 2 3 | 2 1 0 3 | ok
+id:lambat:en | 1 2 3 | 2 1 0 3 | ok
+id:lambat:de | 1 2 3 | 2 1 0 3 | ok
+id:pelan-pelan:en | 1 2 0 | 1 2 0 | offen
+id:pelan-pelan:de | 2 1 1 | 2 1 1 | ok
+id:benar:en | 1 2 3 | 2 1 0 3 | ok
+id:benar:de | 1 2 3 | 2 1 0 3 | ok
+id:salah:en | 1 2 3 | 2 1 0 3 | ok
+id:salah:de | 1 2 3 | 2 1 0 3 | ok
+id:penuh:en | 1 2 0 | 2 1 0 0 | offen
+id:penuh:de | 1 2 3 | 2 1 0 3 | ok
+id:kosong:en | 1 2 3 | 2 1 0 3 | ok
+id:kosong:de | 1 0 2 | 0 1 0 2 | offen
+id:berat:en | 1 2 3 | 2 1 0 3 | ok
+id:berat:de | 1 2 3 | 2 1 0 3 | ok
+id:ringan:en | 1 2 0 | 2 1 0 0 | offen
+id:ringan:de | 1 2 3 | 2 1 0 3 | ok
+id:kaya:en | 1 2 3 | 2 1 0 3 | ok
+id:kaya:de | 1 0 2 | 0 1 0 2 | offen
+id:miskin:en | 1 2 3 | 2 1 0 3 | ok
+id:miskin:de | 1 0 2 | 0 1 0 2 | offen
+id:senang:en | 2 3 1 1 | 2 0 3 1 | ok
+id:senang:de | 2 3 1 1 | 2 0 1 3 | ok
+id:sedih:en | 1 2 3 | 1 0 3 2 | ok
+id:sedih:de | 1 2 0 | 1 0 0 2 | offen
+id:marah:en | 1 2 | 1 0 2 | ok
+id:marah:de | 1 2 | 1 0 2 | ok
+id:takut:en | 1 2 3 | 1 0 2 0 3 | ok
+id:takut:de | 1 0 2 | 1 0 0 0 2 | offen
+id:lelah:en | 2 3 1 1 | 2 0 3 1 | ok
+id:lelah:de | 2 3 1 1 | 2 0 1 3 | ok
+id:sakit:en | 1 2 3 | 2 1 1 0 3 | ok
+id:sakit:de | 1 2 3 | 2 1 1 0 3 | ok
+id:sehat:en | 1 2 3 | 2 1 0 3 | ok
+id:sehat:de | 1 2 3 | 2 1 0 3 | ok
+id:cantik:en | 1 2 3 | 2 1 0 3 | ok
+id:cantik:de | 1 0 0 | 0 1 0 0 | offen
+id:tampan:en | 1 0 0 2 | 1 0 0 2 0 | offen
+id:tampan:de | 1 0 0 2 | 1 0 0 2 0 | offen
+id:pintar:en | 1 2 3 | 2 1 0 3 | ok
+id:pintar:de | 1 0 2 | 0 1 0 2 | offen
+id:bodoh:en | 1 2 3 | 1 2 3 | ok
+id:bodoh:de | 1 3 2 | 1 3 1 2 | ok
+id:lucu:en | 1 2 3 | 2 1 0 3 | ok
+id:lucu:de | 1 2 3 | 2 1 0 3 | ok
+id:penting:en | 1 2 3 | 1 0 2 3 | ok
+id:penting:de | 0 1 2 | 0 0 1 2 | ok
+id:sibuk:en | 1 1 2 3 | 1 2 0 3 | ok
+id:sibuk:de | 1 1 2 3 | 1 0 2 3 | ok
+id:bebas:en | 1 2 3 | 1 2 0 3 | ok
+id:bebas:de | 1 2 3 | 1 0 2 3 | ok
+id:dekat:en | 1 2 3 | 2 1 0 3 | ok
+id:dekat:de | 1 2 3 | 2 1 0 3 | ok
+id:jauh:en | 1 2 3 | 2 1 0 3 | ok
+id:jauh:de | 1 2 3 | 2 1 0 3 | ok
+id:terang:en | 1 2 3 | 2 1 0 3 | ok
+id:terang:de | 1 2 3 | 2 1 0 3 | ok
+id:gelap:en | 0 0 1 | 0 0 1 | offen
+id:gelap:de | 1 0 2 | 0 1 0 0 2 | offen
+id:kuat:en | 1 2 3 | 1 0 2 3 | ok
+id:kuat:de | 1 2 3 | 1 0 2 3 | ok
+id:lemah:en | 1 2 3 | 2 1 0 3 | ok
+id:lemah:de | 1 2 3 | 2 1 0 3 | ok
+id:aman:en | 1 2 3 | 2 1 0 3 | ok
+id:aman:de | 1 2 3 | 2 1 0 3 | ok
+id:berbahaya:en | 0 1 2 | 1 0 0 2 | offen
+id:berbahaya:de | 1 2 3 | 2 1 0 3 | ok
+id:ramai:en | 1 2 3 | 2 1 0 3 | ok
+id:ramai:de | 1 0 2 | 0 1 0 2 | offen
+id:sepi:en | 1 2 3 | 2 1 0 3 | ok
+id:sepi:de | 1 2 3 | 2 1 0 3 | ok
+id:sama:en | 1 2 3 0 4 | 1 2 0 4 3 | ok
+id:sama:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+id:berbeda:en | 3 1 2 | 1 3 0 2 | ok
+id:berbeda:de | 3 1 2 | 1 3 0 2 | ok
+id:lain:en | 1 2 0 3 | 1 2 0 3 0 | offen
+id:lain:de | 1 2 3 4 | 1 2 3 4 | ok
+id:semua:en | 1 2 0 | 1 2 0 | offen
+id:semua:de | 1 2 0 | 1 2 0 | offen
+id:banyak:en | 1 2 3 1 4 | 1 1 2 3 4 | ok
+id:banyak:de | 1 2 3 0 4 | 4 1 2 3 | ok
+id:sedikit:en | 2 3 1 4 | 2 3 1 1 4 | ok
+id:sedikit:de | 2 3 1 4 | 2 3 1 1 4 | ok
+id:beberapa:en | 1 2 3 4 | 1 2 3 4 | ok
+id:beberapa:de | 1 2 3 4 | 1 2 3 4 | ok
+id:cukup:en | 1 2 3 | 2 1 0 3 | ok
+id:cukup:de | 1 2 3 | 2 1 0 3 | ok
+id:sangat:en | 1 2 3 4 | 2 1 0 3 4 | ok
+id:sangat:de | 1 2 3 4 | 2 1 0 3 4 | ok
+id:terlalu:en | 1 2 3 4 | 2 1 0 3 4 | ok
+id:terlalu:de | 1 2 3 4 | 2 1 0 3 4 | ok
+id:lebih:en | 1 2 3 0 | 1 2 3 | offen
+id:lebih:de | 1 2 3 0 | 1 2 3 | offen
+id:paling:en | 1 0 2 3 | 1 0 0 2 3 | ok
+id:paling:de | 0 1 0 2 | 1 0 1 2 | offen
+id:juga:en | 1 2 3 | 1 2 3 0 | ok
+id:juga:de | 1 2 3 | 1 3 2 | ok
+id:hanya:en | 1 2 3 4 | 1 2 3 4 | ok
+id:hanya:de | 1 2 3 4 | 1 3 2 4 | ok
+id:rumah:en | 1 2 3 | 2 1 0 3 | ok
+id:rumah:de | 1 2 3 | 2 1 0 3 | ok
+id:kamar:en | 1 2 3 | 2 1 0 3 | ok
+id:kamar:de | 1 2 3 | 2 1 0 3 | ok
+id:dapur:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:dapur:de | 1 2 3 4 | 1 2 3 0 4 | ok
+id:kamar mandi:en | 1 1 2 2 | 1 0 0 2 | ok
+id:kamar mandi:de | 1 1 2 2 | 1 0 0 2 | ok
+id:kamar tidur:en | 1 1 2 3 | 2 1 0 3 | ok
+id:kamar tidur:de | 1 1 2 3 | 2 1 0 3 | ok
+id:ruang tamu:en | 4 2 3 1 1 | 0 4 2 3 0 1 1 | ok
+id:ruang tamu:de | 4 2 3 1 1 | 0 4 2 3 1 | ok
+id:pintu:en | 1 3 2 | 1 3 0 2 | ok
+id:pintu:de | 1 0 2 | 1 0 0 2 | offen
+id:jendela:en | 1 2 3 | 2 1 0 3 | ok
+id:jendela:de | 1 0 2 | 0 1 0 2 | offen
+id:kota:en | 1 2 3 4 | 1 2 0 4 3 | ok
+id:kota:de | 1 2 3 4 | 1 2 0 4 3 | ok
+id:desa:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:desa:de | 0 3 1 2 | 0 3 1 0 2 | offen
+id:negara:en | 1 2 3 4 | 1 2 0 4 3 | ok
+id:negara:de | 0 1 2 3 | 0 1 0 3 2 | offen
+id:jalan:en | 1 2 3 | 2 1 0 3 | ok
+id:jalan:de | 1 2 3 | 2 1 0 3 | ok
+id:pasar:en | 1 0 2 3 | 1 0 2 0 3 | offen
+id:pasar:de | 1 4 2 3 | 1 4 2 3 | ok
+id:toko:en | 1 2 3 | 2 1 0 3 | ok
+id:toko:de | 1 2 0 | 2 1 0 0 | offen
+id:supermarket:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:supermarket:de | 1 0 2 3 | 1 0 2 3 0 | offen
+id:bank:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:bank:de | 1 4 2 3 | 1 4 2 3 | ok
+id:rumah sakit:en | 2 3 1 1 | 2 0 3 0 1 | ok
+id:rumah sakit:de | 2 3 1 1 | 2 0 3 1 | ok
+id:sekolah:en | 1 2 3 4 | 2 1 0 3 4 | ok
+id:sekolah:de | 1 2 3 4 | 2 1 0 3 0 4 | ok
+id:universitas:en | 1 2 3 4 | 2 1 1 0 3 0 4 | ok
+id:universitas:de | 1 2 3 4 | 2 1 1 0 3 0 4 | ok
+id:kantor:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:kantor:de | 1 2 3 4 | 1 2 3 4 | ok
+id:bandara:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:bandara:de | 1 0 2 3 | 1 0 2 3 | offen
+id:stasiun:en | 0 1 2 3 | 0 0 1 2 0 3 | offen
+id:stasiun:de | 0 1 2 3 | 0 0 1 2 3 | offen
+id:pantai:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:pantai:de | 1 4 2 3 | 1 4 2 3 | ok
+id:gunung:en | 1 2 3 | 2 1 0 3 | ok
+id:gunung:de | 1 2 3 | 2 1 0 3 | ok
+id:laut:en | 1 2 3 | 2 1 0 3 | ok
+id:laut:de | 1 2 3 | 2 1 0 3 | ok
+id:sungai:en | 1 2 3 | 2 1 0 3 | ok
+id:sungai:de | 1 2 3 | 2 1 0 3 | ok
+id:danau:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:danau:de | 1 2 3 4 | 1 2 3 4 | ok
+id:hutan:en | 4 1 2 3 | 4 1 2 0 3 | ok
+id:hutan:de | 1 0 2 3 | 1 0 2 3 | offen
+id:taman:en | 0 1 2 3 | 0 0 1 2 0 3 | offen
+id:taman:de | 0 1 2 3 | 0 0 1 2 3 | offen
+id:masjid:en | 1 2 3 | 2 1 0 3 | ok
+id:masjid:de | 1 2 3 | 2 1 0 3 | ok
+id:gereja:en | 1 2 0 | 2 1 0 0 | offen
+id:gereja:de | 1 2 0 | 2 1 0 0 | offen
+id:pulau:en | 1 2 3 0 0 | 1 2 0 0 3 | offen
+id:pulau:de | 1 2 3 0 0 | 1 2 0 0 3 | offen
+id:toilet:en | 1 1 2 | 1 0 0 2 | ok
+id:toilet:de | 1 1 2 | 1 0 0 2 | ok
+id:kiri:en | 0 1 0 2 | 0 1 2 | offen
+id:kiri:de | 0 1 0 2 | 0 2 1 0 | offen
+id:kanan:en | 0 2 0 1 | 0 2 1 1 | offen
+id:kanan:de | 0 1 0 2 | 0 2 1 0 | offen
+id:lurus:en | 0 1 2 | 2 0 1 1 | offen
+id:lurus:de | 0 1 2 | 0 2 1 | offen
+id:depan:en | 1 2 3 4 | 0 1 2 3 4 | ok
+id:depan:de | 1 2 0 3 | 0 1 2 3 | ok
+id:belakang:en | 1 2 3 4 | 0 1 2 3 0 4 | ok
+id:belakang:de | 1 2 0 3 | 0 1 2 3 | ok
+id:atas:en | 1 2 0 3 4 | 0 1 2 3 0 4 | ok
+id:atas:de | 1 0 2 3 4 | 0 1 0 3 2 0 4 | offen
+id:bawah:en | 1 2 0 3 4 | 0 1 2 3 0 4 | ok
+id:bawah:de | 1 2 0 4 3 | 0 1 2 4 0 3 | ok
+id:luar:en | 0 1 0 2 | 0 0 1 2 | offen
+id:luar:de | 0 1 0 2 | 0 0 1 2 | offen
+id:tengah:en | 1 2 3 4 5 | 0 1 2 3 0 4 0 0 5 | ok
+id:tengah:de | 1 0 2 3 4 | 0 1 0 2 0 3 0 4 | offen
+id:samping:en | 1 2 0 3 4 | 0 1 2 3 0 4 | ok
+id:samping:de | 1 2 0 3 4 | 0 1 2 3 0 4 | ok
+id:utara:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:utara:de | 1 0 2 3 | 1 0 2 3 | offen
+id:selatan:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:selatan:de | 1 0 2 3 | 1 0 2 3 | offen
+id:timur:en | 1 0 2 3 | 0 1 0 2 0 3 | offen
+id:timur:de | 1 0 2 3 | 0 1 0 2 3 2 | offen
+id:barat:en | 1 0 2 3 | 0 1 0 2 0 3 | offen
+id:barat:de | 1 0 2 3 | 0 1 0 2 3 0 | offen
+id:sini:en | 0 1 0 2 | 0 1 2 | offen
+id:sini:de | 0 0 0 1 | 0 0 0 1 | offen
+id:situ:en | 1 2 3 3 | 0 1 2 3 | ok
+id:situ:de | 1 2 0 3 | 0 1 2 3 | ok
+id:sana:en | 2 3 4 0 1 | 3 2 4 1 1 | ok
+id:sana:de | 2 3 4 0 1 | 3 2 4 1 1 | ok
+id:mobil:en | 1 2 3 4 | 1 2 0 4 3 | ok
+id:mobil:de | 1 2 3 4 | 1 2 0 4 3 | ok
+id:motor:en | 1 2 3 | 1 2 0 3 | ok
+id:motor:de | 1 2 3 | 1 2 3 | ok
+id:sepeda:en | 1 2 2 3 | 1 2 0 3 | offen
+id:sepeda:de | 1 0 2 3 | 1 2 0 0 3 | offen
+id:bus:en | 1 2 3 4 5 | 1 2 0 3 4 0 5 | ok
+id:bus:de | 1 2 3 4 5 | 1 2 0 3 4 5 | ok
+id:kereta api:en | 2 3 1 1 4 5 | 2 3 0 1 4 5 | ok
+id:kereta api:de | 2 3 1 1 4 5 | 2 3 0 1 4 5 | ok
+id:pesawat:en | 1 2 0 | 0 1 2 0 | offen
+id:pesawat:de | 1 3 2 | 0 1 3 2 | ok
+id:kapal:en | 1 2 3 | 2 1 0 3 | ok
+id:kapal:de | 1 2 3 | 2 1 0 3 | ok
+id:taksi:en | 1 2 3 4 5 | 1 2 0 3 4 0 5 | ok
+id:taksi:de | 1 2 3 4 5 | 1 2 0 3 4 5 | ok
+id:ojek:en | 2 3 1 4 5 | 2 3 0 1 1 4 0 5 | ok
+id:ojek:de | 1 2 3 4 5 | 1 2 0 3 4 5 | ok
+id:tiket:en | 1 3 2 4 | 1 3 2 4 | ok
+id:tiket:de | 1 0 2 3 | 1 0 2 3 | offen
+id:bensin:en | 1 2 0 3 | 2 1 0 3 | offen
+id:bensin:de | 1 2 0 3 | 2 1 0 3 | offen
+id:parkir:en | 0 2 3 1 4 | 1 1 3 4 2 | ok
+id:parkir:de | 0 1 4 2 3 | 1 2 2 4 3 | ok
+id:macet:en | 0 2 1 | 2 0 0 0 1 1 | offen
+id:macet:de | 1 2 3 | 0 2 1 0 3 | offen
+id:peta:en | 1 0 2 | 1 0 0 0 2 | offen
+id:peta:de | 1 0 2 | 1 0 0 0 2 | offen
+id:perjalanan:en | 1 2 3 | 2 1 0 3 | ok
+id:perjalanan:de | 1 2 3 | 2 1 0 3 | ok
+id:paspor:en | 1 2 3 | 1 2 0 3 | ok
+id:paspor:de | 1 2 3 | 1 2 0 3 | ok
+id:koper:en | 1 2 3 | 2 1 0 3 | ok
+id:koper:de | 1 2 3 | 2 1 0 3 | ok
+id:hotel:en | 1 2 3 | 2 1 0 3 | ok
+id:hotel:de | 1 2 3 | 2 1 0 3 | ok
+id:liburan:en | 1 2 3 4 | 1 0 3 2 3 4 | ok
+id:liburan:de | 1 2 3 4 | 1 0 3 4 3 2 | ok
+id:alamat:en | 1 2 3 | 1 0 3 2 | ok
+id:alamat:de | 3 1 2 | 3 0 2 1 | offen
+id:kepala:en | 1 2 3 | 2 1 3 | ok
+id:kepala:de | 1 2 3 | 2 1 0 3 | offen
+id:mata:en | 3 1 2 | 1 3 0 2 | ok
+id:mata:de | 3 1 2 | 1 3 0 2 | ok
+id:telinga:en | 1 2 3 | 2 1 3 | ok
+id:telinga:de | 1 2 3 | 2 1 0 3 | offen
+id:hidung:en | 1 2 0 | 2 1 0 0 | offen
+id:hidung:de | 1 2 0 | 2 1 0 0 | offen
+id:mulut:en | 3 1 2 | 3 2 1 | ok
+id:mulut:de | 0 1 2 | 0 2 1 | offen
+id:gigi:en | 1 2 3 | 2 1 3 | ok
+id:gigi:de | 1 2 3 | 2 1 0 3 | offen
+id:lidah:en | 1 2 0 | 2 1 0 0 | offen
+id:lidah:de | 1 2 0 | 2 1 0 | offen
+id:leher:en | 1 2 3 | 2 1 3 | ok
+id:leher:de | 1 2 3 | 2 1 0 3 | offen
+id:bahu:en | 1 2 3 | 2 1 3 | ok
+id:bahu:de | 1 2 3 | 2 1 0 3 | offen
+id:lengan:en | 1 2 3 | 2 1 0 3 | ok
+id:lengan:de | 1 2 3 | 2 1 0 3 | ok
+id:tangan:en | 2 3 1 | 2 1 3 | ok
+id:tangan:de | 0 2 1 | 0 1 2 | offen
+id:jari:en | 1 2 0 | 2 1 0 0 | offen
+id:jari:de | 1 2 0 | 2 1 0 0 | offen
+id:kaki:en | 1 2 3 | 2 1 3 | ok
+id:kaki:de | 1 2 3 | 2 1 0 3 | offen
+id:lutut:en | 1 2 3 | 2 1 3 | ok
+id:lutut:de | 1 2 3 | 2 1 0 3 | offen
+id:perut:en | 1 2 3 | 2 1 3 | ok
+id:perut:de | 1 2 3 | 2 1 0 3 | offen
+id:punggung:en | 0 1 2 | 1 0 2 | offen
+id:punggung:de | 1 2 3 | 2 1 0 3 | offen
+id:rambut:en | 1 2 3 | 2 1 0 3 | ok
+id:rambut:de | 3 1 2 | 1 3 0 2 | ok
+id:wajah:en | 1 2 3 | 2 1 0 3 | ok
+id:wajah:de | 1 2 0 | 2 1 0 0 | offen
+id:badan:en | 1 2 3 | 2 1 0 3 | ok
+id:badan:de | 1 2 3 | 2 1 0 3 | ok
+id:kulit:en | 1 2 0 | 2 1 0 0 | offen
+id:kulit:de | 1 2 0 | 2 1 0 0 | offen
+id:hati:en | 1 0 0 | 1 0 0 0 0 | offen
+id:hati:de | 1 2 3 | 1 0 0 3 2 | ok
+id:darah:en | 1 2 3 4 | 1 1 2 3 0 4 | ok
+id:darah:de | 1 2 3 4 | 3 0 4 1 2 | ok
+id:obat:en | 1 0 2 | 1 0 2 | offen
+id:obat:de | 1 0 2 | 1 0 2 | offen
+id:demam:en | 1 2 3 | 2 1 0 0 3 | offen
+id:demam:de | 1 2 3 | 2 1 0 3 | ok
+id:flu:en | 1 0 2 | 1 0 0 2 | offen
+id:flu:de | 1 0 2 | 1 0 0 2 | offen
+id:batuk:en | 1 2 | 1 2 | ok
+id:batuk:de | 1 2 | 1 0 2 | ok
+id:sakit kepala:en | 2 1 1 | 2 0 0 1 | offen
+id:sakit kepala:de | 2 1 1 | 2 0 1 | ok
+id:pusing:en | 1 2 | 1 0 2 | ok
+id:pusing:de | 1 2 | 1 0 2 | ok
+id:luka:en | 1 2 3 4 5 | 0 1 2 4 3 0 5 | ok
+id:luka:de | 1 2 3 5 4 | 0 1 2 5 3 0 4 | ok
+id:alergi:en | 1 2 3 | 1 0 0 2 0 3 | offen
+id:alergi:de | 1 2 3 | 1 0 0 2 0 3 | offen
+id:apotek:en | 1 2 3 | 2 1 0 3 | ok
+id:apotek:de | 1 2 0 | 2 1 0 0 | offen
+id:baju:en | 1 2 3 | 2 1 0 3 | ok
+id:baju:de | 1 2 3 | 2 1 0 3 | ok
+id:pakaian:en | 1 2 3 | 2 1 0 3 | ok
+id:pakaian:de | 1 2 3 | 2 1 0 3 | ok
+id:celana:en | 1 2 3 | 2 1 0 3 | ok
+id:celana:de | 1 2 3 | 2 1 0 3 | ok
+id:rok:en | 1 2 3 | 2 1 0 3 | ok
+id:rok:de | 1 2 3 | 2 1 0 3 | ok
+id:jaket:en | 1 2 3 | 2 1 0 3 | ok
+id:jaket:de | 1 2 3 | 2 1 0 3 | ok
+id:kaos:en | 1 0 2 3 | 1 0 0 3 2 | offen
+id:kaos:de | 1 0 2 3 | 1 0 0 3 2 | offen
+id:kaus kaki:en | 1 1 2 0 | 2 1 0 0 | offen
+id:kaus kaki:de | 1 1 2 0 | 2 1 0 0 | offen
+id:sepatu:en | 3 1 2 | 1 3 0 2 | ok
+id:sepatu:de | 3 1 2 | 1 3 0 2 | ok
+id:sandal:en | 1 0 2 | 1 0 2 | offen
+id:sandal:de | 1 0 2 | 1 0 2 | offen
+id:topi:en | 1 0 2 | 1 0 0 2 | offen
+id:topi:de | 1 0 2 | 1 0 0 2 | offen
+id:tas:en | 1 2 3 | 2 1 0 3 | ok
+id:tas:de | 1 2 3 | 2 1 0 3 | ok
+id:kacamata:en | 1 0 2 | 1 0 2 | offen
+id:kacamata:de | 0 0 1 | 0 0 0 1 | offen
+id:jam tangan:en | 1 1 2 3 | 2 1 0 3 | ok
+id:jam tangan:de | 1 1 2 3 | 2 1 0 3 | ok
+id:cincin:en | 1 2 3 | 2 1 0 3 | ok
+id:cincin:de | 1 2 0 | 2 1 0 0 | offen
+id:dompet:en | 1 2 0 | 2 1 0 0 | offen
+id:dompet:de | 1 2 0 | 2 1 0 0 | offen
+id:payung:en | 2 1 3 | 2 0 1 0 0 3 | ok
+id:payung:de | 0 1 0 | 0 0 1 0 0 0 | offen
+id:warna:en | 1 2 3 | 2 1 0 3 | ok
+id:warna:de | 1 0 0 | 0 1 0 0 | offen
+id:merah:en | 1 2 3 | 2 1 0 3 | ok
+id:merah:de | 1 2 3 | 2 1 0 3 | ok
+id:biru:en | 1 2 3 | 2 1 0 3 | ok
+id:biru:de | 1 2 3 | 2 1 0 3 | ok
+id:hijau:en | 1 2 3 | 2 1 0 3 | ok
+id:hijau:de | 1 2 3 | 2 1 0 3 | ok
+id:kuning:en | 1 2 3 | 2 1 0 3 | ok
+id:kuning:de | 1 2 3 | 2 1 0 3 | ok
+id:hitam:en | 1 2 3 | 2 1 0 3 | ok
+id:hitam:de | 1 2 3 | 2 1 0 3 | ok
+id:putih:en | 0 1 2 | 1 0 0 2 | offen
+id:putih:de | 0 1 2 | 1 0 0 2 | offen
+id:cokelat:en | 1 2 3 | 2 1 0 3 | ok
+id:cokelat:de | 1 2 3 | 2 1 0 3 | ok
+id:abu-abu:en | 1 2 0 | 2 1 0 0 | offen
+id:abu-abu:de | 1 2 3 | 2 1 0 3 | ok
+id:oranye:en | 1 2 0 | 2 1 0 1 | offen
+id:oranye:de | 1 2 0 | 2 1 0 1 | offen
+id:ungu:en | 1 2 3 | 2 1 0 3 | ok
+id:ungu:de | 1 2 3 | 2 1 0 3 | ok
+id:merah muda:en | 2 3 1 1 | 3 2 0 1 | ok
+id:merah muda:de | 2 3 1 1 | 3 2 0 1 | ok
+id:cuaca:en | 2 1 1 3 | 0 2 1 0 3 | ok
+id:cuaca:de | 2 1 1 3 | 0 2 0 1 3 | ok
+id:hujan:en | 1 1 2 | 1 0 0 2 | ok
+id:hujan:de | 1 1 2 | 1 0 0 2 | offen
+id:matahari:en | 1 0 | 0 1 0 | offen
+id:matahari:de | 1 0 | 0 1 0 | offen
+id:bintang:en | 1 2 3 | 2 1 0 3 | ok
+id:bintang:de | 1 0 2 | 0 1 0 2 | offen
+id:langit:en | 1 2 3 | 2 1 0 3 | ok
+id:langit:de | 1 2 3 | 2 1 0 3 | ok
+id:angin:en | 1 0 0 | 0 1 0 0 | offen
+id:angin:de | 1 0 0 | 0 1 0 0 | offen
+id:awan:en | 1 2 3 | 2 1 0 3 | ok
+id:awan:de | 1 2 3 | 2 1 0 3 | ok
+id:salju:en | 1 0 2 3 | 1 0 2 0 3 | offen
+id:salju:de | 1 0 2 3 | 1 0 2 0 3 | offen
+id:badai:en | 1 2 0 0 | 0 1 2 0 | offen
+id:badai:de | 1 3 2 0 | 0 2 3 0 1 | offen
+id:petir:en | 1 2 0 | 2 1 0 0 | offen
+id:petir:de | 1 2 0 | 2 1 0 0 | offen
+id:pelangi:en | 1 2 3 4 | 1 1 0 2 3 0 4 | ok
+id:pelangi:de | 1 2 3 4 | 3 4 1 0 2 | ok
+id:banjir:en | 1 2 3 4 | 1 1 0 2 3 0 4 | ok
+id:banjir:de | 1 2 3 4 | 3 0 4 1 1 0 2 | ok
+id:gempa bumi:en | 2 1 1 3 | 2 0 0 1 3 | ok
+id:gempa bumi:de | 2 1 1 3 | 3 0 2 0 1 | offen
+id:api:en | 1 2 3 | 2 1 0 3 | ok
+id:api:de | 1 2 3 | 2 1 0 3 | ok
+id:bumi:en | 1 2 0 | 2 1 0 0 | offen
+id:bumi:de | 1 2 0 | 2 1 0 0 | offen
+id:tanah:en | 1 2 0 | 2 1 0 0 | offen
+id:tanah:de | 1 2 0 | 2 1 0 0 | offen
+id:batu:en | 1 2 3 | 2 1 0 3 | ok
+id:batu:de | 1 2 3 | 2 1 0 3 | ok
+id:pasir:en | 1 2 3 4 | 0 1 2 0 3 0 4 | ok
+id:pasir:de | 1 2 3 4 | 0 1 2 3 0 4 | ok
+id:pohon:en | 1 2 3 | 2 1 0 3 | ok
+id:pohon:de | 1 0 2 | 0 1 0 2 | offen
+id:daun:en | 1 2 3 | 2 1 0 3 | ok
+id:daun:de | 1 2 3 | 2 1 0 3 | ok
+id:bunga:en | 1 2 0 | 2 1 0 0 | offen
+id:bunga:de | 1 0 0 | 0 1 0 0 | offen
+id:rumput:en | 1 2 3 | 2 1 0 3 | ok
+id:rumput:de | 1 2 3 | 2 1 0 3 | ok
+id:hewan:en | 1 2 3 | 1 2 3 | ok
+id:hewan:de | 1 2 3 | 1 2 3 | ok
+id:anjing:en | 1 2 0 | 2 1 0 0 | offen
+id:anjing:de | 1 2 0 | 2 1 0 0 | offen
+id:kucing:en | 1 2 3 | 2 1 0 3 | ok
+id:kucing:de | 1 2 3 | 2 1 3 | ok
+id:burung:en | 1 2 3 | 2 1 3 | ok
+id:burung:de | 1 2 3 | 2 1 3 | ok
+id:sapi:en | 1 3 2 | 0 1 3 2 | ok
+id:sapi:de | 1 0 2 | 0 1 0 2 | offen
+id:kuda:en | 1 2 3 | 2 1 0 3 | ok
+id:kuda:de | 1 2 3 | 2 1 0 3 | ok
+id:kambing:en | 1 2 3 | 2 1 0 3 | ok
+id:kambing:de | 1 2 3 | 2 1 0 3 | ok
+id:bebek:en | 1 4 2 3 | 0 1 4 2 0 3 | ok
+id:bebek:de | 1 4 2 3 | 0 1 4 2 3 | ok
+id:tikus:en | 1 2 3 4 | 1 1 0 2 3 0 4 | ok
+id:tikus:de | 1 2 3 4 | 3 0 4 1 0 2 | ok
+id:nyamuk:en | 1 2 3 4 | 1 1 0 2 3 0 4 | ok
+id:nyamuk:de | 1 2 3 4 | 3 4 1 0 2 | ok
+id:semut:en | 1 4 2 3 | 1 1 4 2 0 3 | ok
+id:semut:de | 1 4 2 3 | 2 0 3 1 4 | ok
+id:cicak:en | 1 2 3 4 | 1 1 0 2 3 0 4 | ok
+id:cicak:de | 1 2 3 4 | 3 0 4 1 0 2 | ok
+id:kodok:en | 1 0 0 2 | 0 1 0 0 0 2 | offen
+id:kodok:de | 1 0 0 2 | 0 1 0 0 2 | offen
+id:harimau:en | 1 2 3 | 2 1 0 3 | ok
+id:harimau:de | 1 2 3 | 2 1 0 3 | ok
+id:gajah:en | 1 2 3 | 2 1 0 3 | ok
+id:gajah:de | 1 2 3 | 2 1 0 3 | ok
+id:monyet:en | 1 2 3 | 0 1 2 3 | ok
+id:monyet:de | 1 2 3 | 0 1 2 3 | ok
+id:buaya:en | 1 4 2 3 | 0 1 4 2 0 3 | ok
+id:buaya:de | 1 0 2 3 | 0 1 0 2 3 | offen
+id:ular:en | 1 2 3 | 2 1 0 3 | ok
+id:ular:de | 1 2 3 | 2 1 0 3 | ok
+id:kupu-kupu:en | 0 1 2 | 1 0 0 2 | offen
+id:kupu-kupu:de | 1 2 0 | 2 1 0 0 | offen
+id:meja:en | 1 2 3 4 | 0 1 2 3 0 4 | ok
+id:meja:de | 1 0 2 3 | 0 1 0 2 0 3 | offen
+id:kursi:en | 1 2 0 | 2 1 0 0 | offen
+id:kursi:de | 1 2 0 | 2 1 0 0 | offen
+id:tempat tidur:en | 1 1 2 3 | 2 1 0 3 | ok
+id:tempat tidur:de | 1 1 2 3 | 2 1 0 3 | ok
+id:lemari:en | 0 1 2 3 | 0 0 1 2 0 3 | offen
+id:lemari:de | 0 1 2 3 | 0 0 1 2 3 | offen
+id:cermin:en | 1 2 3 | 2 1 0 3 | ok
+id:cermin:de | 1 2 3 | 2 1 0 3 | ok
+id:lampu:en | 1 2 3 | 2 1 0 3 | ok
+id:lampu:de | 1 2 3 | 2 1 0 3 | ok
+id:televisi:en | 1 2 3 | 2 1 0 3 | ok
+id:televisi:de | 1 2 3 | 2 1 0 3 | ok
+id:kunci:en | 1 1 2 3 | 1 0 3 2 | ok
+id:kunci:de | 1 1 2 3 | 1 0 3 2 | ok
+id:lantai:en | 1 2 3 | 2 1 0 3 | ok
+id:lantai:de | 0 1 2 | 1 0 0 2 | offen
+id:dinding:en | 1 2 3 | 2 1 0 3 | ok
+id:dinding:de | 1 2 3 | 2 1 0 3 | ok
+id:atap:en | 1 2 3 4 | 3 1 0 3 2 0 4 | ok
+id:atap:de | 1 4 2 3 | 2 1 0 4 0 3 | ok
+id:tangga:en | 1 2 0 | 1 1 0 2 0 | offen
+id:tangga:de | 0 1 0 | 0 0 1 0 0 | offen
+id:kebun:en | 1 2 3 | 2 1 0 3 | ok
+id:kebun:de | 1 2 3 | 2 1 0 3 | ok
+id:sabun:en | 1 2 3 | 1 2 3 | ok
+id:sabun:de | 1 3 2 | 1 3 2 | ok
+id:handuk:en | 1 2 0 | 2 1 0 0 | offen
+id:handuk:de | 1 2 0 | 2 1 0 0 | offen
+id:sikat gigi:en | 2 0 1 1 | 2 0 2 1 | offen
+id:sikat gigi:de | 2 3 1 1 | 2 0 2 1 3 | ok
+id:selimut:en | 1 2 3 | 2 1 0 3 | ok
+id:selimut:de | 1 2 3 | 2 1 0 3 | ok
+id:kipas angin:en | 1 1 2 0 | 2 1 0 0 | offen
+id:kipas angin:de | 1 1 2 0 | 2 1 0 0 | offen
+id:listrik:en | 1 0 | 0 1 0 0 | offen
+id:listrik:de | 1 0 | 0 1 0 0 | offen
+id:sampah:en | 0 1 0 2 | 0 0 1 2 | offen
+id:sampah:de | 0 1 0 2 | 0 0 1 2 | offen
+id:barang:en | 1 2 3 | 2 1 0 3 | ok
+id:barang:de | 1 2 3 | 2 1 0 3 | ok
+id:hadiah:en | 1 2 3 4 | 1 0 0 2 3 4 | ok
+id:hadiah:de | 0 1 2 3 | 0 0 0 1 2 3 | ok
+id:foto:en | 1 3 2 | 1 3 0 2 | ok
+id:foto:de | 1 0 2 | 1 0 0 2 | offen
+id:musik:en | 1 2 3 | 1 2 3 | ok
+id:musik:de | 1 2 3 | 1 2 3 | ok
+id:film:en | 1 2 3 | 2 1 0 3 | ok
+id:film:de | 1 2 3 | 2 1 0 3 | ok
+id:permainan:en | 1 2 0 | 2 1 0 0 | offen
+id:permainan:de | 1 2 0 | 2 1 0 0 | offen
+id:uang:en | 1 2 3 4 | 1 2 2 3 4 | ok
+id:uang:de | 1 2 3 4 | 1 3 2 4 | ok
+id:harga:en | 3 1 2 | 3 0 0 1 0 2 | ok
+id:harga:de | 1 2 0 | 1 0 0 0 2 0 | offen
+id:tunai:en | 1 3 2 | 1 3 0 2 | offen
+id:tunai:de | 1 0 2 | 1 0 2 | offen
+id:kartu:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:kartu:de | 1 0 2 3 | 1 0 2 3 | offen
+id:kembalian:en | 0 1 2 | 0 0 2 1 | offen
+id:kembalian:de | 1 2 3 | 1 0 3 2 | ok
+id:diskon:en | 1 3 2 2 | 1 1 0 3 2 | ok
+id:diskon:de | 2 3 1 1 | 1 2 2 3 | ok
+id:menawar:en | 2 3 1 4 | 2 3 1 1 0 4 | ok
+id:menawar:de | 1 2 3 4 | 1 2 0 0 4 3 | offen
+id:belanja:en | 1 4 2 3 | 1 4 2 0 3 | ok
+id:belanja:de | 1 2 3 4 | 1 0 3 0 4 2 | offen
+id:kasir:en | 1 2 0 | 2 1 0 0 | offen
+id:kasir:de | 1 2 0 | 2 1 0 0 | offen
+id:gratis:en | 2 3 1 | 3 2 0 1 1 1 | ok
+id:gratis:de | 1 2 3 | 2 1 0 3 | ok
+id:tagihan:en | 1 1 | 1 1 1 | ok
+id:tagihan:de | 1 1 | 1 1 1 | ok
+id:pekerjaan:en | 1 2 3 | 2 1 0 3 | ok
+id:pekerjaan:de | 1 2 3 | 2 1 0 3 | ok
+id:gaji:en | 1 2 3 | 2 1 0 3 | ok
+id:gaji:de | 1 2 0 | 2 1 0 | offen
+id:bos:en | 1 2 0 | 2 1 0 0 | offen
+id:bos:de | 1 2 0 | 2 1 0 0 | offen
+id:rapat:en | 2 3 4 1 1 | 2 3 0 4 1 | ok
+id:rapat:de | 2 0 3 1 1 | 2 0 1 0 3 | ok
+id:kelas:en | 1 2 3 | 2 1 0 3 | ok
+id:kelas:de | 1 2 3 | 2 1 0 3 | ok
+id:ujian:en | 2 1 3 | 2 1 1 0 3 | ok
+id:ujian:de | 1 2 3 | 1 2 0 3 | ok
+id:pelajaran:en | 1 2 3 | 2 1 0 3 | ok
+id:pelajaran:de | 0 1 0 | 1 0 0 0 | offen
+id:bahasa:en | 1 2 3 0 | 1 2 0 0 3 | offen
+id:bahasa:de | 1 3 2 0 | 1 3 0 0 2 | offen
+id:kata:en | 1 0 2 3 | 1 0 3 2 | offen
+id:kata:de | 1 2 3 0 | 1 0 0 3 2 | offen
+id:kalimat:en | 1 2 3 | 2 1 0 3 | ok
+id:kalimat:de | 1 2 3 | 2 1 0 3 | ok
+id:pertanyaan:en | 1 2 3 4 | 1 2 3 4 | ok
+id:pertanyaan:de | 1 2 4 3 | 1 2 4 3 | ok
+id:jawaban:en | 1 2 3 | 2 1 0 3 | ok
+id:jawaban:de | 1 2 3 | 2 1 0 3 | ok
+id:masalah:en | 2 1 3 | 1 1 2 3 | ok
+id:masalah:de | 2 1 3 | 1 1 2 3 | ok
+id:ide:en | 1 2 0 | 1 0 0 0 2 | offen
+id:ide:de | 1 2 3 | 1 0 0 3 2 | ok
+id:buku:en | 1 3 2 | 1 3 0 2 | ok
+id:buku:de | 1 0 2 | 1 0 0 2 | offen
+id:pena:en | 1 0 2 | 1 0 0 2 | offen
+id:pena:de | 1 0 2 | 1 0 0 2 | offen
+id:kertas:en | 1 2 3 | 2 1 0 3 | ok
+id:kertas:de | 1 2 3 | 2 1 0 3 | ok
+id:surat:en | 1 0 2 | 1 0 0 2 | offen
+id:surat:de | 1 0 2 | 1 0 0 2 | offen
+id:kamus:en | 1 3 2 | 1 3 0 2 | ok
+id:kamus:de | 1 0 2 | 1 0 0 2 0 | offen
+id:komputer:en | 1 2 3 | 2 1 0 3 | ok
+id:komputer:de | 1 2 3 | 2 1 0 3 | ok
+id:internet:en | 1 0 2 3 | 0 1 2 0 3 | ok
+id:internet:de | 1 0 2 3 | 0 1 0 2 3 | ok
+id:ponsel:en | 1 2 0 | 2 1 1 0 0 | offen
+id:ponsel:de | 1 2 0 | 2 1 0 0 | offen
+id:telepon:en | 1 0 | 0 1 0 | offen
+id:telepon:de | 1 0 | 0 1 0 | offen
+id:pesan:en | 1 0 2 | 1 0 0 2 | offen
+id:pesan:de | 1 0 2 | 1 0 0 2 | offen
+id:email:en | 1 0 2 | 1 0 0 2 | offen
+id:email:de | 1 0 2 | 1 0 0 2 | offen
+id:dan:en | 1 2 0 3 4 | 1 2 0 3 4 | offen
+id:dan:de | 1 4 0 2 3 | 1 4 0 2 3 | offen
+id:atau:en | 1 2 3 | 1 2 3 | ok
+id:atau:de | 1 2 3 | 1 2 3 | ok
+id:tetapi:en | 1 2 3 0 0 | 1 2 0 3 1 0 | offen
+id:tetapi:de | 1 2 3 4 5 | 1 2 3 1 5 4 | ok
+id:tapi:en | 1 2 3 | 1 2 3 | ok
+id:tapi:de | 1 2 3 | 1 2 3 | ok
+id:karena:en | 2 1 3 4 | 2 1 1 3 2 0 4 | ok
+id:karena:de | 1 0 2 3 | 1 0 0 0 2 1 3 0 | offen
+id:jika:en | 1 3 2 0 0 | 1 0 3 2 0 0 | offen
+id:jika:de | 1 0 2 3 4 | 1 0 0 0 2 3 4 | offen
+id:kalau:en | 1 2 3 | 1 0 0 2 3 | offen
+id:kalau:de | 1 0 0 | 1 0 0 0 0 | offen
+id:dengan:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:dengan:de | 1 4 2 3 | 1 4 2 0 3 | ok
+id:tanpa:en | 1 2 3 | 1 2 3 | ok
+id:tanpa:de | 1 2 3 | 1 2 3 | ok
+id:untuk:en | 1 2 3 | 1 0 2 3 | ok
+id:untuk:de | 0 1 2 | 0 0 1 2 | ok
+id:dari:en | 1 2 0 | 1 0 2 0 | offen
+id:dari:de | 1 2 0 | 1 0 2 0 | offen
+id:ke:en | 1 2 3 4 | 1 2 3 0 4 | ok
+id:ke:de | 1 4 2 3 | 1 4 2 3 | ok
+id:di:en | 1 2 3 4 | 1 2 3 4 | ok
+id:di:de | 1 4 2 3 | 1 4 2 3 | ok
+id:pada:en | 1 2 3 0 4 | 1 2 3 4 | offen
+id:pada:de | 1 2 3 0 4 | 1 2 1 3 4 | offen
+id:dalam:en | 1 2 3 4 | 0 1 2 3 0 4 | ok
+id:dalam:de | 1 2 3 4 | 0 1 2 3 0 4 | ok
+id:oleh:en | 1 2 0 3 4 | 2 1 0 0 3 4 | offen
+id:oleh:de | 1 2 0 3 4 | 2 1 0 3 4 0 | offen
+id:antara:en | 1 2 3 4 5 6 | 0 1 2 3 0 4 5 0 6 | ok
+id:antara:de | 1 2 3 4 5 6 | 0 1 2 3 0 4 5 0 6 | ok
+id:sebelum:en | 2 3 1 4 | 2 0 3 1 4 | offen
+id:sebelum:de | 0 3 1 2 | 0 0 0 3 1 0 2 | offen
+id:sesudah:en | 1 5 2 3 4 | 1 5 2 3 4 | ok
+id:sesudah:de | 1 2 3 5 4 | 1 0 2 5 3 4 | ok
+id:sampai:en | 0 1 2 3 | 0 1 3 2 | offen
+id:sampai:de | 0 1 2 3 | 0 1 3 2 | offen
+id:sambil:en | 1 3 2 4 | 1 3 2 4 | ok
+id:sambil:de | 1 0 2 0 | 1 0 2 1 0 | offen
+id:bahwa:en | 1 2 0 3 4 | 1 2 0 3 0 4 | offen
+id:bahwa:de | 1 0 2 3 0 | 1 0 2 3 0 0 | offen
+id:agar:en | 2 1 3 | 2 1 1 0 0 3 | offen
+id:agar:de | 3 1 2 | 3 1 0 2 0 | offen
+id:tentang:en | 1 2 3 4 | 2 1 0 3 4 | ok
+id:tentang:de | 1 2 0 3 | 2 1 0 0 3 | offen
+id:seperti:en | 1 2 3 | 1 0 2 1 3 | ok
+id:seperti:de | 1 2 3 | 1 0 2 1 3 | ok
+id:kira-kira:en | 0 1 2 | 0 1 2 | offen
+id:kira-kira:de | 1 2 3 | 1 2 3 | ok
+id:mungkin:en | 1 2 3 | 1 0 3 2 | ok
+id:mungkin:de | 1 2 0 | 1 0 0 2 | offen
+id:pasti:en | 1 2 3 | 1 0 2 3 | offen
+id:pasti:de | 1 2 3 | 1 3 2 | ok
+id:tentu:en | 1 0 2 | 1 1 0 2 2 | offen
+id:tentu:de | 1 0 0 | 1 0 0 0 | offen
+id:memang:en | 1 0 | 1 0 0 0 | offen
+id:memang:de | 1 0 | 1 0 0 | offen
+id:saja:en | 2 3 1 1 | 2 0 3 0 1 1 | ok
+id:saja:de | 2 0 1 1 | 2 0 0 1 | offen
+id:ayo:en | 1 2 3 | 1 1 1 0 2 3 | offen
+id:ayo:de | 1 2 3 | 1 2 3 | ok
+id:hati-hati:en | 0 1 0 | 0 0 1 0 0 | offen
+id:hati-hati:de | 1 2 3 | 1 2 0 3 | ok
+id:awas:en | 1 2 3 | 1 1 2 2 0 3 | ok
+id:awas:de | 1 0 2 | 1 0 2 | ok
+id:sebentar:en | 0 1 | 0 1 1 | offen
+id:sebentar:de | 0 1 | 0 1 1 | offen
+en:hello:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:hi:de | 1 2 3 4 | 1 2 3 0 4 | ok
+en:good morning:de | 1 1 2 | 1 1 2 | ok
+en:good afternoon:de | 1 1 2 3 | 1 1 2 3 | ok
+en:good evening:de | 1 1 2 3 4 | 1 1 0 2 3 4 | offen
+en:good night:de | 1 1 3 2 | 1 1 3 2 | ok
+en:goodbye:de | 1 2 3 | 1 1 2 3 | ok
+en:bye:de | 1 2 0 3 | 1 2 3 | offen
+en:see you later:de | 1 1 1 0 2 | 1 1 0 0 2 | offen
+en:see you tomorrow:de | 1 1 1 2 3 | 1 1 2 0 3 | ok
+en:please:de | 1 1 2 | 1 1 2 | ok
+en:thank you:de | 1 1 2 2 | 1 2 | ok
+en:thanks:de | 1 2 3 4 | 1 2 3 4 | ok
+en:you are welcome:de | 1 1 1 2 0 0 0 3 | 1 1 2 3 0 | offen
+en:sorry:de | 1 2 3 4 | 1 2 3 4 4 | ok
+en:excuse me:de | 1 1 3 4 0 2 | 1 1 3 4 2 2 | ok
+en:yes:de | 1 0 2 3 | 1 3 2 0 | offen
+en:no:de | 2 1 1 | 2 1 | ok
+en:how are you:de | 1 2 3 4 | 1 2 0 3 4 | ok
+en:fine:de | 0 0 2 1 1 | 0 0 0 2 1 | offen
+en:nice to meet you:de | 1 0 0 0 2 | 1 0 2 | offen
+en:welcome:de | 1 2 4 3 | 1 2 4 3 | ok
+en:enjoy your meal:de | 1 1 1 2 | 1 1 2 | ok
+en:happy birthday:de | 1 1 2 | 1 1 1 1 2 | ok
+en:good luck:de | 1 1 2 3 4 | 1 1 2 3 4 | ok
+en:no problem:de | 1 1 2 3 4 5 | 1 1 2 3 5 4 | ok
+en:I:de | 1 2 3 4 | 1 2 3 4 | ok
+en:you:de | 1 2 3 4 | 1 2 3 4 | ok
+en:he:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:she:de | 1 2 3 4 | 1 2 3 4 | ok
+en:it:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:we:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:they:de | 2 3 1 1 | 2 3 1 1 | ok
+en:my:de | 1 2 3 4 | 1 2 3 4 | ok
+en:your:de | 1 2 3 4 | 1 2 3 4 | ok
+en:this:de | 1 2 3 4 | 1 1 2 3 4 | ok
+en:that:de | 1 2 3 5 4 | 1 1 2 3 5 4 | ok
+en:what:de | 1 2 3 | 1 2 3 | ok
+en:who:de | 1 2 3 4 | 1 2 3 4 | ok
+en:where:de | 2 3 0 1 | 2 3 1 1 | ok
+en:when:de | 1 0 2 3 | 1 3 2 | ok
+en:why:de | 1 2 3 4 | 1 2 3 4 | ok
+en:how:de | 1 0 0 2 3 | 1 2 2 3 | offen
+en:how many:de | 1 1 2 3 4 | 1 1 2 3 4 | ok
+en:which:de | 1 1 0 2 3 | 1 3 2 | ok
+en:whose:de | 1 2 3 4 | 1 2 3 4 | ok
+en:zero:de | 1 2 3 4 | 1 2 3 4 | ok
+en:one:de | 1 2 4 3 | 1 2 4 3 | ok
+en:two:de | 1 2 3 4 | 1 2 3 4 | ok
+en:three:de | 1 2 3 4 | 1 2 3 4 | ok
+en:four:de | 1 1 2 3 | 1 1 2 3 | ok
+en:five:de | 1 2 3 4 | 1 2 3 4 | ok
+en:six:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:seven:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:eight:de | 0 1 4 2 3 | 1 1 4 2 3 | ok
+en:nine:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:ten:de | 1 2 3 4 | 1 2 3 4 | ok
+en:eleven:de | 0 1 2 3 4 | 1 1 2 3 4 2 | ok
+en:twelve:de | 1 1 2 3 | 1 1 2 3 | ok
+en:twenty:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:thirty:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:fifty:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:one hundred:de | 2 3 1 1 4 | 2 3 1 4 | ok
+en:one thousand:de | 0 1 3 2 2 4 | 1 1 3 2 4 | ok
+en:one million:de | 0 2 3 1 1 4 | 2 2 3 1 1 4 | ok
+en:first:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:last:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:half:de | 2 3 1 4 4 5 | 2 3 1 1 4 5 | ok
+en:day:de | 1 2 3 4 | 1 2 3 4 | ok
+en:today:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:tomorrow:de | 1 2 3 | 1 2 3 | ok
+en:yesterday:de | 2 3 1 1 4 | 2 3 4 1 1 | ok
+en:now:de | 1 0 3 2 | 1 3 2 | ok
+en:later:de | 1 0 2 3 4 | 1 2 3 4 2 | offen
+en:soon:de | 0 1 2 3 | 1 1 2 3 | ok
+en:morning:de | 1 2 3 0 0 4 | 1 2 0 4 3 | offen
+en:afternoon:de | 1 2 0 0 3 | 1 2 0 0 3 | offen
+en:evening:de | 1 3 0 0 2 | 1 3 0 2 | offen
+en:night:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:noon:de | 1 2 0 3 4 | 1 2 3 4 3 4 | offen
+en:midnight:de | 1 2 0 3 4 | 1 2 0 3 4 | offen
+en:week:de | 1 2 3 5 0 4 | 1 2 3 5 0 0 4 | offen
+en:weekend:de | 1 0 2 0 3 | 1 0 0 2 3 0 | offen
+en:month:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:year:de | 1 2 3 4 5 | 1 2 4 3 5 | ok
+en:hour:de | 1 2 5 3 4 | 1 2 5 3 4 | ok
+en:minute:de | 1 2 3 4 | 1 2 3 4 | ok
+en:second:de | 1 2 3 4 | 1 4 2 3 | ok
+en:time:de | 1 2 3 4 5 | 1 2 5 3 4 | ok
+en:always:de | 1 2 3 4 | 1 3 2 4 | ok
+en:often:de | 1 2 3 4 | 1 3 2 4 | ok
+en:sometimes:de | 1 2 5 3 4 | 1 5 2 3 0 3 4 | offen
+en:never:de | 1 2 3 4 | 1 3 2 4 | ok
+en:already:de | 1 2 3 4 | 4 3 1 2 | ok
+en:still:de | 1 2 3 4 5 | 1 2 3 4 0 5 | ok
+en:early:de | 1 2 3 4 | 1 2 4 3 | ok
+en:late:de | 0 1 2 3 | 1 1 2 3 | ok
+en:Monday:de | 1 2 3 4 5 6 | 1 2 4 3 5 6 | ok
+en:Tuesday:de | 1 2 3 4 0 | 1 2 4 3 0 | offen
+en:Wednesday:de | 1 2 3 4 | 1 2 0 3 4 | offen
+en:Thursday:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:Friday:de | 1 2 3 4 5 | 1 2 4 3 5 | ok
+en:Saturday:de | 1 2 3 4 5 | 1 2 4 3 5 | ok
+en:Sunday:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:January:de | 1 2 3 4 | 0 1 2 3 4 | ok
+en:February:de | 1 2 3 4 5 | 0 1 2 3 4 5 | ok
+en:March:de | 2 3 0 1 4 5 | 2 3 4 1 1 5 | ok
+en:April:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:May:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:June:de | 1 0 2 3 | 1 0 2 3 | offen
+en:July:de | 1 2 3 4 | 0 1 2 4 3 | ok
+en:August:de | 1 0 2 3 | 1 1 0 2 3 | offen
+en:September:de | 1 0 0 2 3 | 1 0 0 2 3 | offen
+en:October:de | 1 2 3 5 4 | 0 1 2 3 5 4 | ok
+en:November:de | 1 2 3 4 5 | 0 1 2 3 4 5 | ok
+en:December:de | 1 0 2 3 | 1 0 2 3 | offen
+en:family:de | 1 4 2 3 | 1 4 2 3 | ok
+en:mother:de | 1 2 4 3 | 1 2 4 3 | ok
+en:father:de | 1 2 6 3 4 5 | 1 2 6 3 4 5 | ok
+en:parents:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:child:de | 0 1 3 2 | 1 1 3 2 | ok
+en:son:de | 1 2 3 4 6 5 | 1 2 3 4 6 5 | ok
+en:daughter:de | 1 2 3 4 | 1 2 3 4 | ok
+en:brother:de | 1 2 3 0 | 1 2 3 0 | offen
+en:sister:de | 1 2 3 0 4 | 1 2 3 4 | ok
+en:grandmother:de | 1 2 4 3 0 | 1 2 4 3 0 | offen
+en:grandfather:de | 1 2 6 3 4 5 | 1 2 6 3 4 5 | ok
+en:uncle:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:aunt:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:cousin:de | 1 2 5 3 4 | 1 2 5 3 4 | ok
+en:husband:de | 1 2 3 0 4 | 1 2 3 4 | ok
+en:wife:de | 2 3 4 1 1 | 2 3 4 1 1 | ok
+en:baby:de | 0 1 3 2 | 1 1 3 2 | ok
+en:boy:de | 0 1 3 2 | 1 1 3 2 | ok
+en:girl:de | 0 1 4 2 3 | 1 1 4 2 3 | ok
+en:man:de | 2 1 4 3 2 0 0 | 1 1 4 3 2 0 | offen
+en:woman:de | 0 1 3 2 | 1 1 3 2 | ok
+en:people:de | 1 2 3 4 | 1 2 3 4 | ok
+en:person:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:friend:de | 1 2 3 0 4 | 1 2 3 0 4 | offen
+en:neighbor:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:boyfriend:de | 1 0 2 0 3 | 1 0 2 3 | offen
+en:girlfriend:de | 1 0 4 2 3 | 1 0 4 2 3 | offen
+en:guest:de | 1 2 3 4 5 | 1 2 5 3 4 | ok
+en:teacher:de | 0 1 2 3 | 1 1 2 3 | ok
+en:student:de | 0 1 4 2 3 | 1 1 4 2 3 | ok
+en:doctor:de | 2 1 4 2 3 | 1 1 4 2 3 | ok
+en:nurse:de | 0 1 3 2 2 | 1 1 3 2 | ok
+en:police officer:de | 0 1 1 3 2 | 1 1 3 2 | ok
+en:driver:de | 0 1 3 2 | 1 1 3 2 | ok
+en:farmer:de | 2 1 4 3 2 0 | 1 1 4 3 2 0 | offen
+en:cook:de | 0 1 2 3 | 1 1 2 3 | ok
+en:waiter:de | 0 1 3 0 2 | 1 1 3 2 2 | ok
+en:boss:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:eat:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:drink:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:food:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:water:de | 1 2 3 4 0 5 | 1 2 3 4 5 | ok
+en:tea:de | 1 2 4 3 | 1 2 4 3 | ok
+en:coffee:de | 1 2 3 0 0 4 | 1 2 0 4 3 | offen
+en:milk:de | 0 1 3 2 | 1 1 3 2 | ok
+en:juice:de | 1 2 0 0 | 1 2 0 | offen
+en:beer:de | 1 4 2 5 3 | 1 4 2 5 3 | ok
+en:wine:de | 1 2 4 3 | 1 2 4 3 | ok
+en:bread:de | 1 2 0 3 | 1 2 0 3 | offen
+en:rice:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:egg:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:meat:de | 1 0 2 3 4 | 1 3 2 4 | ok
+en:chicken:de | 1 2 3 4 | 1 2 4 4 3 | ok
+en:beef:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:pork:de | 1 2 3 4 | 1 3 2 4 | ok
+en:fish:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:soup:de | 0 1 2 3 | 1 1 2 3 | ok
+en:salad:de | 1 2 3 4 5 6 | 1 2 5 6 3 4 | ok
+en:vegetable:de | 1 2 3 4 | 1 2 3 4 | ok
+en:fruit:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:apple:de | 1 2 3 4 5 6 | 1 2 5 6 3 4 | ok
+en:banana:de | 0 1 2 3 | 1 1 2 3 | ok
+en:orange:de | 1 2 3 4 | 1 2 3 4 | ok
+en:lemon:de | 1 0 2 3 4 5 | 1 0 2 3 4 5 | offen
+en:potato:de | 1 6 2 3 4 5 | 1 6 2 3 4 5 | ok
+en:tomato:de | 0 1 2 3 | 1 1 2 3 | ok
+en:onion:de | 2 3 0 1 | 2 3 1 1 | ok
+en:garlic:de | 1 2 3 4 0 5 | 1 2 3 4 5 | offen
+en:carrot:de | 0 1 4 2 3 | 1 1 4 2 3 | ok
+en:cheese:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:butter:de | 1 0 2 4 0 3 | 1 0 2 4 3 | offen
+en:sugar:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:salt:de | 2 0 0 1 | 2 0 0 1 1 | offen
+en:pepper:de | 1 0 0 0 2 | 1 0 0 2 0 | offen
+en:oil:de | 1 3 2 0 0 | 1 3 2 0 | offen
+en:noodles:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:pasta:de | 1 2 3 4 | 1 2 4 4 3 | ok
+en:pizza:de | 1 0 2 3 4 | 1 0 2 3 4 | offen
+en:sandwich:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:cake:de | 1 0 2 3 | 1 0 2 3 | offen
+en:chocolate:de | 0 1 2 3 | 1 1 2 3 | ok
+en:ice cream:de | 2 3 4 1 1 | 2 3 4 1 | ok
+en:breakfast:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:lunch:de | 1 2 3 4 0 | 1 2 4 0 3 | offen
+en:dinner:de | 1 2 3 | 1 1 2 3 | ok
+en:snack:de | 1 2 3 4 5 6 | 1 2 5 6 3 4 | ok
+en:meal:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:restaurant:de | 1 2 0 3 4 | 1 2 0 3 4 | offen
+en:menu:de | 2 3 4 0 1 5 | 2 3 5 1 1 4 | ok
+en:bill:de | 1 1 1 | 1 1 1 | ok
+en:table:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:plate:de | 2 1 0 3 2 4 | 1 1 0 3 2 4 | offen
+en:glass:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:cup:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+en:bottle:de | 1 2 3 4 0 5 | 1 2 3 4 5 | ok
+en:spoon:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:fork:de | 3 1 0 2 2 3 4 | 1 1 0 2 3 4 | offen
+en:knife:de | 0 1 2 3 0 | 1 1 2 3 0 | offen
+en:hungry:de | 1 2 3 4 | 1 2 3 4 | ok
+en:thirsty:de | 1 2 3 4 5 0 | 1 2 4 5 0 3 | offen
+en:delicious:de | 0 1 2 3 | 1 1 2 3 | ok
+en:sweet:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:spicy:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:sour:de | 0 1 2 3 | 1 1 2 3 | ok
+en:bitter:de | 0 1 2 3 | 1 1 2 3 | ok
+en:go:de | 1 2 3 4 5 6 | 1 2 5 0 6 3 4 | ok
+en:come:de | 1 2 3 | 1 2 3 | ok
+en:return:de | 1 2 3 4 5 6 | 1 2 5 6 5 4 3 | ok
+en:enter:de | 1 2 3 0 | 1 2 0 3 0 | offen
+en:leave:de | 0 1 2 3 4 5 | 1 1 2 4 5 3 | ok
+en:arrive:de | 1 2 0 3 | 1 2 3 0 0 | offen
+en:stay:de | 2 4 1 1 3 | 2 4 3 1 1 | ok
+en:walk:de | 1 4 2 3 | 1 4 2 0 2 3 | offen
+en:run:de | 0 1 2 3 4 5 | 1 1 2 4 5 3 | ok
+en:sit:de | 1 0 2 | 1 0 0 2 | offen
+en:stand:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:sleep:de | 1 2 3 4 | 1 2 3 4 | ok
+en:wake up:de | 1 0 0 2 3 | 1 0 2 3 | offen
+en:get up:de | 2 1 1 3 | 2 0 3 1 | offen
+en:see:de | 1 2 3 4 | 1 2 3 4 | ok
+en:look:de | 3 0 1 2 | 3 0 1 2 | offen
+en:watch:de | 1 2 3 4 | 1 0 3 4 2 | offen
+en:hear:de | 1 3 2 0 | 1 3 2 0 | offen
+en:listen:de | 1 2 0 3 | 1 0 3 2 | offen
+en:speak:de | 1 4 2 0 3 | 1 4 2 0 3 | offen
+en:say:de | 1 0 2 3 | 1 3 2 | ok
+en:tell:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+en:ask:de | 1 2 3 4 | 1 2 3 4 | ok
+en:answer:de | 2 0 0 1 | 2 0 1 1 | offen
+en:call:de | 1 2 3 4 | 1 0 3 4 2 | offen
+en:talk:de | 2 3 4 0 1 | 2 3 4 1 1 | ok
+en:read:de | 1 2 3 4 5 6 | 1 2 5 6 3 4 | ok
+en:write:de | 1 4 2 3 | 1 4 2 3 | ok
+en:learn:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:study:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+en:teach:de | 1 2 3 | 1 2 3 | ok
+en:understand:de | 1 1 0 2 | 1 1 2 2 | ok
+en:know:de | 1 2 4 3 | 1 2 4 3 | ok
+en:think:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:remember:de | 1 0 2 3 | 1 0 0 0 2 3 | offen
+en:forget:de | 0 1 0 2 3 | 0 2 3 1 | offen
+en:want:de | 1 2 3 4 0 5 | 1 2 3 4 5 | ok
+en:need:de | 1 2 3 4 | 1 2 3 4 | ok
+en:like:de | 1 2 3 0 | 1 2 3 0 | offen
+en:love:de | 1 4 2 3 | 1 4 2 3 | ok
+en:hate:de | 1 2 3 | 1 2 3 | ok
+en:have:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:give:de | 2 3 4 0 1 | 2 3 4 1 1 | ok
+en:take:de | 1 2 3 4 | 1 2 3 4 | ok
+en:bring:de | 1 2 3 | 1 2 3 2 | ok
+en:put:de | 2 3 4 1 5 4 6 | 2 3 1 1 5 4 6 | ok
+en:get:de | 1 2 3 4 5 | 1 2 5 3 4 | ok
+en:buy:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:sell:de | 1 2 0 3 | 1 2 0 3 | offen
+en:pay:de | 1 2 0 0 | 1 2 0 | offen
+en:cost:de | 0 1 2 3 4 | 0 1 3 4 2 | offen
+en:use:de | 1 4 2 3 0 0 | 1 4 2 3 0 | offen
+en:make:de | 2 3 1 | 2 3 1 1 | ok
+en:do:de | 1 3 2 3 | 1 3 2 | ok
+en:work:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:play:de | 1 2 3 4 | 1 2 3 4 | ok
+en:wash:de | 1 2 3 4 | 1 2 3 4 | ok
+en:clean:de | 2 3 0 1 | 2 3 1 1 | ok
+en:open:de | 2 3 0 1 | 2 3 1 1 | ok
+en:close:de | 2 3 0 1 | 2 3 1 1 | ok
+en:start:de | 0 1 2 0 3 4 | 1 1 2 3 4 0 | offen
+en:finish:de | 1 5 2 3 4 | 1 5 0 2 3 4 | ok
+en:stop:de | 0 1 2 0 3 | 1 1 2 3 0 | offen
+en:wait:de | 1 2 0 3 4 | 1 2 0 3 4 | offen
+en:help:de | 1 2 3 4 | 1 2 4 3 | ok
+en:try:de | 1 2 3 | 1 2 0 3 3 | ok
+en:find:de | 1 2 3 4 | 1 2 3 4 | ok
+en:lose:de | 1 2 3 5 4 | 1 2 4 3 5 | ok
+en:meet:de | 1 2 3 6 4 5 | 1 2 3 6 4 5 | ok
+en:live:de | 1 2 3 4 | 1 2 3 4 | ok
+en:sing:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:dance:de | 1 2 0 3 4 | 1 2 0 3 4 | offen
+en:swim:de | 1 4 2 0 3 | 1 4 2 3 | ok
+en:fly:de | 3 1 0 0 2 | 3 1 0 2 | offen
+en:drive:de | 1 2 3 4 | 1 2 0 0 0 3 4 | offen
+en:ride:de | 1 4 0 0 2 3 | 1 4 0 0 0 2 3 | offen
+en:travel:de | 1 2 3 0 | 1 2 3 0 | offen
+en:visit:de | 1 2 3 4 | 1 2 3 4 | ok
+en:send:de | 1 2 3 0 0 4 5 | 1 2 4 5 3 0 | offen
+en:receive:de | 1 5 2 3 4 | 1 5 4 2 3 | ok
+en:show:de | 1 2 3 4 5 0 | 1 2 4 5 0 3 | offen
+en:choose:de | 1 4 2 5 3 | 1 4 2 5 3 | ok
+en:change:de | 1 4 2 3 | 1 4 2 3 | ok
+en:carry:de | 1 4 2 5 3 | 1 4 2 5 3 | ok
+en:wear:de | 1 0 0 2 3 5 4 | 1 0 3 5 4 2 | offen
+en:cut:de | 2 3 0 1 | 2 3 1 1 | ok
+en:break:de | 0 2 0 0 1 | 0 1 1 2 | offen
+en:build:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:good:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:bad:de | 0 1 2 3 4 | 1 1 2 4 3 | ok
+en:big:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:small:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:long:de | 1 0 2 3 4 | 1 0 2 3 4 | offen
+en:short:de | 1 2 3 4 | 1 2 3 4 | ok
+en:tall:de | 1 2 3 4 | 1 2 3 4 | ok
+en:high:de | 0 1 2 3 | 1 1 2 3 | ok
+en:low:de | 0 1 2 3 | 1 1 2 3 | ok
+en:new:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:old:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:young:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:hot:de | 0 1 2 3 | 1 1 2 3 | ok
+en:cold:de | 0 1 2 3 | 1 1 2 3 | ok
+en:warm:de | 0 1 2 3 | 1 1 2 3 | ok
+en:cool:de | 0 1 2 3 | 1 1 2 3 | ok
+en:fast:de | 0 1 2 3 | 1 1 2 3 | ok
+en:slow:de | 0 1 2 3 | 1 1 2 3 | ok
+en:easy:de | 1 2 3 4 | 1 2 3 4 | ok
+en:difficult:de | 0 1 2 3 | 1 1 2 3 | ok
+en:heavy:de | 0 1 2 3 | 1 1 2 3 | ok
+en:light:de | 0 1 2 3 | 1 1 2 3 | ok
+en:cheap:de | 1 2 3 4 | 1 2 3 4 | ok
+en:expensive:de | 0 1 2 3 | 1 1 2 3 | ok
+en:beautiful:de | 0 1 2 3 | 1 1 2 3 | ok
+en:pretty:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:ugly:de | 0 1 2 3 | 1 1 2 3 | ok
+en:tidy:de | 0 1 2 3 | 1 1 2 3 | ok
+en:dirty:de | 1 4 2 3 | 1 4 2 3 | ok
+en:happy:de | 1 2 3 4 | 1 2 4 3 | ok
+en:sad:de | 0 1 2 3 | 1 1 2 3 | ok
+en:tired:de | 1 2 3 4 | 1 2 3 4 | ok
+en:angry:de | 1 2 3 | 1 2 3 | ok
+en:afraid:de | 1 2 3 | 1 2 3 | ok
+en:busy:de | 1 2 3 4 | 1 2 4 3 | ok
+en:free:de | 0 1 2 3 4 5 | 1 1 2 4 5 3 | ok
+en:ready:de | 1 2 3 | 1 1 2 3 | ok
+en:sick:de | 1 2 3 4 | 1 2 3 4 | ok
+en:healthy:de | 1 2 3 | 1 2 3 | ok
+en:strong:de | 1 2 3 4 | 1 2 3 4 | ok
+en:weak:de | 0 1 2 3 | 1 1 2 3 | ok
+en:rich:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:poor:de | 1 2 3 | 1 2 3 | ok
+en:full:de | 0 1 2 3 | 1 1 2 3 | ok
+en:empty:de | 0 1 2 3 | 1 1 2 3 | ok
+en:closed:de | 0 1 2 3 | 1 1 2 3 | ok
+en:correct:de | 1 2 3 4 | 1 2 3 4 | ok
+en:wrong:de | 1 2 3 4 | 1 2 3 4 | ok
+en:true:de | 1 0 2 3 | 1 0 2 3 | offen
+en:same:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:different:de | 1 0 4 2 3 | 1 0 4 2 3 | offen
+en:important:de | 1 2 3 | 1 2 3 | ok
+en:interesting:de | 1 2 3 4 | 1 2 3 4 | ok
+en:boring:de | 1 0 2 3 | 1 0 2 3 | offen
+en:funny:de | 1 0 2 3 | 1 0 2 3 | offen
+en:quiet:de | 0 1 2 3 | 1 1 2 3 | ok
+en:loud:de | 1 2 3 4 | 1 2 3 4 | ok
+en:dark:de | 0 1 2 3 | 1 1 2 3 | ok
+en:bright:de | 0 1 2 3 | 1 1 2 3 | ok
+en:wet:de | 1 2 0 3 | 1 2 0 3 | ok
+en:dry:de | 0 1 2 3 | 1 1 2 3 | ok
+en:many:de | 1 2 3 4 | 1 2 3 4 | ok
+en:much:de | 1 0 2 3 4 5 | 1 3 2 4 5 | ok
+en:few:de | 1 2 3 4 | 1 2 3 4 | ok
+en:some:de | 1 2 3 4 | 1 2 3 4 | ok
+en:all:de | 1 0 2 3 4 | 1 2 3 4 | ok
+en:every:de | 1 4 2 3 | 1 4 2 3 0 0 | offen
+en:more:de | 1 2 3 4 | 1 2 3 4 | ok
+en:less:de | 1 2 3 4 | 1 2 3 4 | ok
+en:enough:de | 1 2 3 4 | 1 2 3 4 | ok
+en:only:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:other:de | 1 2 3 4 0 | 1 2 3 4 | offen
+en:house:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:home:de | 2 3 1 1 | 2 3 1 1 | ok
+en:apartment:de | 1 0 2 3 4 | 1 0 2 3 4 | offen
+en:room:de | 1 2 3 4 | 1 2 3 4 | ok
+en:kitchen:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:bathroom:de | 0 1 2 3 | 1 1 2 3 | ok
+en:bedroom:de | 0 1 2 3 | 1 1 2 3 | ok
+en:garden:de | 0 1 2 3 | 1 1 2 3 | ok
+en:street:de | 0 1 2 3 | 1 1 2 3 | ok
+en:road:de | 1 0 2 3 | 1 0 2 3 | offen
+en:city:de | 1 2 3 4 6 5 | 1 2 3 4 6 5 | ok
+en:town:de | 0 1 2 3 | 1 1 2 3 | ok
+en:village:de | 1 2 6 3 4 5 | 1 2 6 3 4 5 | ok
+en:country:de | 4 1 0 2 3 | 3 4 1 0 2 | offen
+en:school:de | 2 1 3 4 0 | 1 1 3 0 2 4 | offen
+en:university:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+en:hospital:de | 0 1 2 3 | 1 1 2 3 | ok
+en:shop:de | 0 1 4 2 3 | 1 1 4 2 3 | ok
+en:market:de | 1 2 3 0 4 5 | 1 2 3 0 4 5 | offen
+en:supermarket:de | 0 1 2 3 | 1 1 2 3 | ok
+en:bank:de | 0 1 2 3 | 1 1 2 3 | ok
+en:post office:de | 0 1 1 4 2 3 | 1 1 4 2 3 | ok
+en:church:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:museum:de | 0 1 2 3 | 1 1 2 3 | ok
+en:library:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:park:de | 1 2 3 4 1 5 | 1 2 3 4 5 | ok
+en:beach:de | 1 2 3 0 4 | 1 2 3 4 0 | offen
+en:hotel:de | 0 1 2 3 | 1 1 2 3 | ok
+en:office:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:factory:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+en:farm:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:bridge:de | 0 1 2 3 | 1 1 2 3 | ok
+en:place:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:building:de | 0 1 2 0 | 1 1 2 0 | offen
+en:left:de | 0 1 2 | 0 2 1 0 | offen
+en:right:de | 0 1 2 3 4 | 0 2 3 4 1 0 | offen
+en:straight:de | 1 2 0 | 1 2 | offen
+en:here:de | 2 3 1 | 2 1 3 | ok
+en:there:de | 0 1 2 0 3 | 1 1 2 3 0 | offen
+en:near:de | 0 1 2 3 | 1 1 2 3 | ok
+en:far:de | 0 1 2 3 | 1 1 2 3 | ok
+en:up:de | 4 1 5 2 3 | 4 5 1 0 2 3 | offen
+en:down:de | 1 0 0 | 1 0 0 0 | offen
+en:in front of:de | 3 2 0 1 1 1 3 4 | 2 2 0 1 3 4 | offen
+en:behind:de | 2 1 3 4 2 5 | 1 1 3 4 2 5 | ok
+en:next to:de | 3 1 4 2 2 3 5 | 1 1 4 2 3 5 | ok
+en:between:de | 2 1 3 4 5 6 7 2 8 | 1 1 3 4 2 6 7 5 8 | ok
+en:inside:de | 0 1 2 3 | 1 1 2 3 | ok
+en:outside:de | 1 2 3 4 | 1 2 3 4 | ok
+en:north:de | 0 1 2 3 0 4 | 1 1 2 3 4 | ok
+en:south:de | 1 2 3 4 5 | 1 2 4 5 4 0 3 | ok
+en:car:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:bus:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:train:de | 0 1 2 3 | 1 1 2 3 | ok
+en:bicycle:de | 1 5 0 2 3 4 | 1 5 0 0 2 3 4 | offen
+en:motorcycle:de | 1 2 3 4 | 1 2 3 4 | ok
+en:taxi:de | 1 2 3 4 5 | 1 2 3 4 0 5 | offen
+en:plane:de | 0 1 0 0 | 1 1 0 0 | offen
+en:boat:de | 1 0 2 3 4 5 | 1 0 2 3 4 2 5 | offen
+en:ship:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:station:de | 0 1 2 3 | 1 1 2 3 | ok
+en:airport:de | 0 1 2 3 4 5 | 1 1 2 3 4 5 | ok
+en:ticket:de | 1 2 3 4 | 1 2 3 4 | ok
+en:passport:de | 1 2 3 4 | 1 2 3 4 | ok
+en:luggage:de | 1 2 3 4 | 1 2 3 4 | ok
+en:suitcase:de | 1 0 2 3 | 1 0 2 3 | offen
+en:map:de | 1 2 3 4 5 5 6 | 1 2 3 4 5 6 | ok
+en:trip:de | 1 0 2 3 0 0 4 | 1 0 2 3 0 4 | offen
+en:holiday:de | 1 2 0 3 | 1 2 0 3 | offen
+en:tourist:de | 2 1 3 0 2 0 | 1 1 3 0 2 0 | offen
+en:journey:de | 0 1 3 2 4 | 1 1 3 2 4 | ok
+en:body:de | 0 1 3 2 | 1 1 3 2 | ok
+en:head:de | 1 2 3 | 1 2 3 3 | ok
+en:hair:de | 1 2 3 4 | 1 2 3 4 | ok
+en:face:de | 1 2 3 | 1 2 3 | ok
+en:eye:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:ear:de | 1 2 3 | 1 2 3 3 | ok
+en:nose:de | 0 1 2 3 4 5 | 1 1 2 3 4 5 | ok
+en:mouth:de | 3 1 2 | 3 1 2 | ok
+en:tooth:de | 1 2 3 0 4 | 1 2 3 0 4 | offen
+en:neck:de | 1 2 3 | 1 2 3 3 | ok
+en:shoulder:de | 1 2 3 | 1 2 3 3 | ok
+en:arm:de | 1 0 0 2 | 1 0 0 0 2 0 | offen
+en:hand:de | 1 2 3 4 | 1 2 3 4 | ok
+en:finger:de | 1 0 0 2 | 1 0 0 0 0 2 0 | offen
+en:back:de | 1 2 3 | 1 2 3 3 | ok
+en:stomach:de | 1 2 3 | 1 2 3 3 | ok
+en:leg:de | 1 2 3 | 1 2 3 3 | ok
+en:knee:de | 1 2 3 | 1 2 3 3 | ok
+en:foot:de | 1 2 3 4 | 1 2 3 4 | ok
+en:heart:de | 1 2 3 4 | 1 2 3 4 | ok
+en:skin:de | 1 2 3 0 | 1 2 3 0 | offen
+en:blood:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:medicine:de | 1 2 3 0 0 4 | 1 2 0 0 4 3 | offen
+en:pain:de | 1 2 3 4 5 0 6 | 1 2 3 4 5 6 | offen
+en:fever:de | 0 1 2 0 3 | 1 1 2 3 | ok
+en:flu:de | 2 3 0 1 | 2 3 1 1 | ok
+en:cough:de | 1 2 3 0 4 | 1 2 3 0 4 | offen
+en:headache:de | 1 2 0 3 | 1 2 3 | ok
+en:bone:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:pill:de | 1 2 3 2 4 | 1 2 3 0 4 | offen
+en:health:de | 1 2 3 | 1 2 3 | ok
+en:hurt:de | 1 2 3 | 1 2 3 | ok
+en:clothes:de | 1 2 3 4 | 1 2 3 4 | ok
+en:shirt:de | 1 4 2 5 3 | 1 4 2 5 3 | ok
+en:dress:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:skirt:de | 1 4 2 5 3 | 1 4 2 5 3 | ok
+en:trousers:de | 1 2 3 4 | 1 2 0 3 4 | ok
+en:jacket:de | 1 2 3 | 1 2 3 | ok
+en:coat:de | 1 2 3 4 5 6 | 1 2 3 4 5 6 | ok
+en:sweater:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:shoe:de | 1 2 3 4 | 1 0 3 4 2 | ok
+en:sock:de | 1 2 3 4 | 1 2 3 4 | ok
+en:hat:de | 1 4 2 5 3 | 1 4 2 5 3 | ok
+en:bag:de | 1 2 3 4 | 1 2 3 4 | ok
+en:glasses:de | 1 2 3 4 | 1 2 3 4 | ok
+en:ring:de | 1 4 2 5 3 | 1 4 2 5 3 | ok
+en:umbrella:de | 1 2 3 | 1 2 3 0 | offen
+en:color:de | 0 1 0 2 3 | 0 1 0 2 3 | offen
+en:red:de | 0 1 2 3 | 1 1 2 3 | ok
+en:blue:de | 0 1 2 3 | 1 1 2 3 | ok
+en:green:de | 0 1 2 3 | 1 1 2 3 | ok
+en:yellow:de | 0 1 2 3 | 1 1 2 3 | ok
+en:black:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:white:de | 0 1 2 3 | 1 1 2 3 | ok
+en:brown:de | 0 1 2 3 | 1 1 2 3 | ok
+en:gray:de | 0 1 2 3 4 | 1 1 2 4 3 | ok
+en:pink:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:purple:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+en:gold:de | 0 1 2 3 | 1 1 2 0 3 | offen
+en:silver:de | 0 1 2 3 | 1 1 2 0 3 | offen
+en:sun:de | 0 1 2 3 | 1 1 2 3 | ok
+en:moon:de | 0 1 2 3 4 | 1 1 2 4 0 3 | offen
+en:star:de | 1 2 3 4 | 1 2 3 4 | ok
+en:sky:de | 0 1 2 3 | 1 1 2 3 | ok
+en:cloud:de | 1 2 3 4 0 0 5 | 1 2 3 4 0 5 | offen
+en:rain:de | 0 1 2 0 | 1 1 2 0 | offen
+en:snow:de | 0 1 2 3 | 1 1 2 3 | ok
+en:wind:de | 0 1 2 3 | 1 1 2 3 | ok
+en:storm:de | 1 2 3 4 | 4 0 3 1 2 | offen
+en:weather:de | 0 1 2 3 4 | 1 1 2 4 3 | ok
+en:fog:de | 1 1 2 0 3 | 0 3 1 1 2 | offen
+en:ice:de | 0 1 2 0 | 1 1 2 0 | offen
+en:fire:de | 0 1 2 3 | 1 1 2 3 | ok
+en:earth:de | 0 1 2 0 | 1 1 2 0 | offen
+en:sea:de | 0 1 2 0 | 1 1 2 0 | offen
+en:ocean:de | 0 1 2 0 | 1 1 2 0 | offen
+en:river:de | 0 1 2 3 | 1 1 2 3 | ok
+en:lake:de | 1 2 3 0 4 | 1 2 3 4 | ok
+en:mountain:de | 0 1 2 3 | 1 1 2 3 | ok
+en:forest:de | 1 2 3 0 4 | 1 2 3 4 0 | offen
+en:tree:de | 0 1 2 3 | 1 1 2 3 | ok
+en:flower:de | 1 4 2 3 | 1 4 2 3 | ok
+en:grass:de | 0 1 2 3 | 1 1 2 3 | ok
+en:leaf:de | 0 1 2 3 | 1 1 2 3 | ok
+en:stone:de | 0 1 2 3 | 1 1 2 3 | ok
+en:sand:de | 0 1 2 3 | 1 1 2 3 | ok
+en:animal:de | 1 2 0 3 4 | 1 2 4 3 | ok
+en:dog:de | 1 2 3 4 | 1 2 3 4 | ok
+en:cat:de | 2 1 5 3 2 4 | 1 1 5 3 2 4 | ok
+en:bird:de | 1 2 6 3 4 5 | 1 2 6 3 4 5 | ok
+en:horse:de | 0 1 3 2 | 1 1 3 2 | ok
+en:cow:de | 0 1 3 2 | 1 1 3 2 | ok
+en:pig:de | 2 1 3 4 2 5 | 1 1 3 4 2 5 | ok
+en:sheep:de | 0 1 3 2 | 1 1 3 2 | ok
+en:mouse:de | 0 1 4 2 3 | 1 1 4 2 3 | ok
+en:rabbit:de | 0 1 4 2 3 | 1 1 4 2 3 | ok
+en:snake:de | 1 0 0 2 2 3 | 1 0 0 0 2 3 | offen
+en:insect:de | 1 2 0 3 4 5 | 1 2 0 3 4 5 | offen
+en:elephant:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:monkey:de | 0 1 2 3 | 1 1 2 3 | ok
+en:door:de | 2 3 0 1 | 2 3 1 1 | ok
+en:window:de | 3 0 1 2 | 3 2 1 1 | ok
+en:wall:de | 0 1 2 3 | 1 1 2 3 | ok
+en:floor:de | 0 1 2 3 | 1 1 2 3 | ok
+en:roof:de | 0 1 2 3 | 1 1 2 3 | ok
+en:stairs:de | 0 1 0 0 | 1 1 0 0 | offen
+en:bed:de | 0 1 2 0 | 1 1 2 0 | offen
+en:chair:de | 1 2 3 4 | 1 2 3 4 | ok
+en:sofa:de | 2 1 5 3 2 4 | 1 1 5 3 2 4 | ok
+en:lamp:de | 2 3 0 1 | 2 1 1 3 | ok
+en:key:de | 1 2 3 4 | 1 0 3 4 2 | ok
+en:phone:de | 1 2 3 4 | 1 2 3 4 | ok
+en:computer:de | 1 6 2 3 4 5 | 1 6 4 0 5 2 3 | ok
+en:television:de | 1 0 2 0 0 | 1 0 0 2 | offen
+en:radio:de | 1 0 0 0 2 | 1 0 2 | offen
+en:book:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:newspaper:de | 2 3 0 1 | 2 3 1 1 | ok
+en:letter:de | 1 4 2 3 | 1 4 2 3 | ok
+en:picture:de | 0 1 2 3 | 1 1 2 3 | ok
+en:towel:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:soap:de | 4 1 2 3 | 4 1 2 3 | ok
+en:shower:de | 1 2 3 4 0 0 5 | 1 2 5 3 4 | offen
+en:toilet:de | 2 3 0 1 | 2 3 1 1 | ok
+en:mirror:de | 2 1 0 3 2 4 | 1 1 0 3 2 4 | offen
+en:box:de | 0 1 2 3 | 1 1 2 3 | ok
+en:thing:de | 1 2 3 4 | 1 2 3 4 | ok
+en:money:de | 1 2 3 | 1 2 3 | ok
+en:price:de | 2 3 0 1 | 2 3 1 1 | ok
+en:cash:de | 1 2 3 0 | 1 2 3 0 | offen
+en:card:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:coin:de | 1 2 3 4 | 1 2 3 4 | ok
+en:euro:de | 1 2 3 4 | 1 2 3 4 | ok
+en:discount:de | 1 2 3 4 | 1 2 3 4 | ok
+en:shopping:de | 1 2 3 4 5 | 1 2 4 5 3 | ok
+en:customer:de | 0 1 0 2 | 1 1 2 | ok
+en:gift:de | 1 2 3 4 5 6 7 | 1 2 3 4 5 6 7 | ok
+en:wallet:de | 1 2 3 4 | 1 0 3 4 2 | ok
+en:job:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:colleague:de | 1 2 4 3 | 1 2 4 3 | ok
+en:meeting:de | 0 1 0 2 3 | 1 1 0 2 3 | offen
+en:company:de | 1 6 2 3 4 5 | 1 6 2 3 4 5 | ok
+en:salary:de | 0 1 2 3 | 1 1 2 3 | ok
+en:class:de | 0 1 2 3 | 1 1 2 3 | ok
+en:lesson:de | 0 1 2 3 | 1 1 2 3 | ok
+en:homework:de | 1 2 3 4 | 1 2 3 4 | ok
+en:exam:de | 1 2 3 4 5 | 1 2 5 3 4 | ok
+en:question:de | 1 2 3 4 | 1 2 3 4 | ok
+en:word:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:sentence:de | 3 1 2 | 3 1 2 | ok
+en:language:de | 1 2 3 5 4 | 1 2 3 5 4 | ok
+en:pen:de | 1 2 3 4 | 1 2 3 4 | ok
+en:paper:de | 1 2 3 0 0 4 | 1 2 3 0 4 | offen
+en:notebook:de | 1 5 2 3 4 | 1 5 2 3 4 | ok
+en:email:de | 1 4 2 3 | 1 4 2 3 | ok
+en:project:de | 0 1 2 3 | 1 1 2 3 | ok
+en:task:de | 1 2 3 4 | 1 2 3 4 | ok
+en:problem:de | 1 2 3 4 | 1 2 3 4 | ok
+en:idea:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:clock:de | 2 1 0 3 2 4 | 1 1 0 3 2 4 | offen
+en:and:de | 1 2 3 | 1 2 3 | ok
+en:or:de | 1 2 3 | 1 2 3 | ok
+en:but:de | 1 1 1 2 3 | 1 1 1 2 3 | ok
+en:because:de | 1 7 2 3 4 5 6 | 1 7 0 2 3 4 6 5 | ok
+en:if:de | 1 2 3 4 6 5 | 1 2 1 3 4 5 6 | ok
+en:so:de | 2 3 4 5 6 1 1 | 2 3 4 5 3 6 1 1 | ok
+en:with:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:without:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:for:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:from:de | 1 0 2 0 | 1 0 2 0 | offen
+en:to:de | 1 2 3 4 | 1 2 3 4 | ok
+en:at:de | 1 2 3 0 4 | 1 2 3 4 | ok
+en:in:de | 2 1 3 4 2 5 | 1 1 3 4 2 5 | ok
+en:on:de | 2 1 0 3 2 4 | 1 1 0 3 2 4 | offen
+en:under:de | 2 1 3 4 2 5 | 1 1 3 4 2 5 | ok
+en:about:de | 2 3 4 0 1 | 2 3 4 1 1 | ok
+en:after:de | 1 2 3 4 | 1 2 3 0 4 | ok
+en:before:de | 1 2 3 6 4 5 | 1 2 3 6 4 0 5 | ok
+en:then:de | 4 1 2 3 | 4 1 2 3 | ok
+en:again:de | 1 4 2 3 | 4 2 1 3 3 | ok
+en:also:de | 1 2 3 4 | 1 3 2 4 | ok
+en:very:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:too:de | 0 1 2 3 4 | 1 1 2 3 4 | ok
+en:just:de | 1 2 3 4 5 | 1 2 3 4 5 | ok
+en:not:de | 1 2 3 4 | 1 2 3 4 | ok
+en:take care:de | 0 0 | 0 0 0 0 | offen
+en:i do not know:de | 1 0 2 3 | 1 3 2 | ok
+en:i understand:de | 1 1 | 1 1 | ok
+en:i do not understand:de | 1 0 2 3 | 1 3 2 | ok
+en:say it again:de | 1 4 2 3 | 1 4 2 3 3 | ok
+en:speak slowly:de | 2 1 1 | 2 1 1 | ok
+en:how much is it:de | 0 0 0 1 | 0 0 1 | offen
+en:where is the toilet:de | 2 3 0 1 | 2 3 1 1 | ok
+en:what is your name:de | 0 0 0 1 | 0 1 0 | offen
+en:my name is:de | 1 1 1 2 | 1 1 2 | ok
+en:i am hungry:de | 1 1 1 | 1 1 1 | ok
+en:i am thirsty:de | 1 1 1 | 1 1 1 | ok
+en:i am tired:de | 1 1 1 | 1 1 1 | ok
+en:i am lost:de | 1 0 0 | 1 0 0 0 | offen
+en:i need help:de | 1 1 1 | 1 1 1 | ok
+en:can you help me:de | 1 2 3 4 | 1 2 4 3 | ok
+en:i would like:de | 1 1 1 2 3 | 1 1 2 3 | ok
+en:the bill please:de | 1 1 1 | 1 1 1 | ok
+en:i am sorry:de | 0 0 1 | 0 1 1 1 | offen
+en:no worries:de | 1 1 | 1 1 | ok
+en:what time is it:de | 0 0 1 2 | 0 0 1 2 | offen
+en:what does it mean:de | 1 0 2 0 | 1 0 2 | offen
+en:i love you:de | 1 1 1 | 1 1 1 | ok
+en:how is the weather:de | 2 3 0 1 4 | 2 3 1 1 4 | ok
+en:i am fine:de | 0 0 1 2 | 0 0 0 1 2 | offen
+en:have a nice day:de | 0 0 2 1 | 2 1 0 | offen
+en:welcome home:de | 1 1 | 1 1 1 | ok
+en:cheers:de | 1 2 3 | 1 2 3 | ok
+en:bless you:de | 1 1 | 1 | ok

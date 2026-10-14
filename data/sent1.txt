@@ -1,0 +1,223 @@
+halo | Halo, nama saya Vito. | [Hello], my name is Vito.
+selamat pagi | Selamat pagi, Bu. | [Good morning], madam.
+selamat siang | Selamat siang, Pak. | [Good day], sir.
+selamat sore | Selamat sore, semuanya. | [Good afternoon], everyone.
+selamat malam | Selamat malam, tidur yang nyenyak. | [Good night], sleep well.
+sampai jumpa | Sampai jumpa lagi. | [See you] again.
+selamat tinggal | Selamat tinggal, teman-teman. | [Goodbye], friends.
+sampai besok | Sampai besok di sekolah. | [See you tomorrow] at school.
+terima kasih | Terima kasih banyak. | [Thank you] very much.
+sama-sama | Sama-sama, senang membantu. | [You are welcome], happy to help.
+tolong | Tolong bantu saya. | [Please] help me.
+silakan | Silakan duduk. | [Please go ahead] and sit down.
+maaf | Maaf, saya terlambat. | [Sorry], I am late.
+permisi | Permisi, boleh lewat? | [Excuse me], may I pass?
+ya | Ya, saya mau. | [Yes], I want to.
+tidak | Tidak, terima kasih. | [No], thank you.
+bukan | Ini bukan kopi. | This is [not] coffee.
+apa kabar | Hai, apa kabar? | Hi, [how are you]?
+baik | Saya baik, terima kasih. | I am [fine], thank you.
+nama | Nama saya Dewi. | My [name] is Dewi.
+senang bertemu | Senang bertemu dengan Anda. | [Nice to meet you].
+selamat makan | Selamat makan, semuanya. | [Enjoy your meal], everyone.
+selamat ulang tahun | Selamat ulang tahun, Rina! | [Happy birthday], Rina!
+semoga berhasil | Semoga berhasil besok. | [Good luck] tomorrow.
+tidak apa-apa | Tidak apa-apa, jangan khawatir. | [No problem], do not worry.
+saya | Saya suka kopi. | [I] like coffee.
+aku | Aku lapar sekali. | [I] am very hungry.
+kamu | Kamu mau ke mana? | Where do [you] want to go?
+Anda | Apakah Anda dokter? | Are [you] a doctor?
+dia | Dia guru saya. | [She] is my teacher.
+kami | Kami tinggal di Jakarta. | [We] live in Jakarta.
+kita | Ayo, kita pergi sekarang. | Come on, [we] go now.
+mereka | Mereka sedang makan. | [They] are eating.
+ini | Ini rumah saya. | [This] is my house.
+itu | Itu mobil baru. | [That] is a new car.
+apa | Apa ini? | [What] is this?
+siapa | Siapa dia? | [Who] is he?
+di mana | Di mana kamar mandi? | [Where] is the bathroom?
+kapan | Kapan kamu pulang? | [When] do you go home?
+mengapa | Mengapa kamu sedih? | [Why] are you sad?
+kenapa | Kenapa terlambat? | [Why] are you late?
+bagaimana | Bagaimana cara ke sana? | [How] do I get there?
+berapa | Berapa umur kamu? | [How many] years old are you?
+yang mana | Yang mana milik kamu? | [Which] one is yours?
+yang | Orang yang di sana adalah ayah saya. | The man [who] is over there is my father.
+nol | Nomor saya nol delapan. | My number is [zero] eight.
+satu | Saya punya satu kakak. | I have [one] older sibling.
+dua | Dia punya dua anak. | She has [two] children.
+tiga | Tiga teman datang. | [Three] friends came.
+empat | Ada empat kursi. | There are [four] chairs.
+lima | Saya beli lima apel. | I bought [five] apples.
+enam | Sekarang jam enam. | It is [six] o'clock now.
+tujuh | Seminggu ada tujuh hari. | A week has [seven] days.
+delapan | Dia bangun jam delapan. | He wakes up at [eight].
+sembilan | Anak itu berumur sembilan tahun. | That child is [nine] years old.
+sepuluh | Saya tunggu sepuluh menit. | I wait [ten] minutes.
+sebelas | Ada sebelas pemain. | There are [eleven] players.
+dua belas | Bulan Desember adalah bulan kedua belas. | December is month number [twelve].
+dua puluh | Dia berumur dua puluh tahun. | She is [twenty] years old.
+tiga puluh | Kami tunggu tiga puluh menit. | We waited [thirty] minutes.
+lima puluh | Harganya lima puluh ribu. | The price is [fifty] thousand.
+seratus | Ada seratus orang di sini. | There are [one hundred] people here.
+seribu | Permen ini seribu rupiah. | This candy is [one thousand] rupiah.
+sejuta | Dia punya sejuta mimpi. | He has [one million] dreams.
+pertama | Ini hari pertama saya. | This is my [first] day.
+terakhir | Ini kali terakhir. | This is the [last] time.
+setengah | Saya makan setengah apel. | I ate [half] an apple.
+hari | Hari ini hari yang indah. | Today is a beautiful [day].
+hari ini | Hari ini saya libur. | [Today] I have a day off.
+besok | Besok kita belajar. | [Tomorrow] we study.
+kemarin | Kemarin saya sakit. | [Yesterday] I was sick.
+sekarang | Saya makan sekarang. | I eat [now].
+nanti | Nanti saya telepon. | I will call you [later].
+segera | Dia akan segera datang. | He will come [soon].
+tadi | Tadi saya bertemu dia. | I met him [just now].
+dulu | Dulu saya tinggal di desa. | [In the past] I lived in a village.
+minggu | Saya libur satu minggu. | I have a one-[week] holiday.
+bulan | Satu bulan ada tiga puluh hari. | One [month] has thirty days.
+tahun | Tahun ini saya pergi ke Bali. | This [year] I am going to Bali.
+jam | Saya tunggu satu jam. | I waited one [hour].
+menit | Tunggu lima menit lagi. | Wait five more [minutes].
+detik | Tunggu satu detik. | Wait one [second].
+waktu | Saya tidak punya waktu. | I do not have [time].
+pagi | Saya olahraga setiap pagi. | I exercise every [morning].
+siang | Kami makan di siang hari. | We eat at [noon].
+sore | Saya jalan-jalan di sore hari. | I go for a walk in the [late afternoon].
+malam | Saya tidur malam ini. | I sleep tonight, at [night].
+libur | Hari Minggu saya libur. | On Sunday I have a [day off].
+Senin | Hari Senin saya kerja. | On [Monday] I work.
+Selasa | Hari Selasa saya belajar. | On [Tuesday] I study.
+Rabu | Hari Rabu kami rapat. | On [Wednesday] we have a meeting.
+Kamis | Hari Kamis saya olahraga. | On [Thursday] I exercise.
+Jumat | Hari Jumat kami salat. | On [Friday] we pray.
+Sabtu | Hari Sabtu saya bermain. | On [Saturday] I play.
+hari Minggu | Hari Minggu saya istirahat. | On [Sunday] I rest.
+selalu | Dia selalu tersenyum. | She [always] smiles.
+sering | Saya sering minum kopi. | I [often] drink coffee.
+kadang-kadang | Kadang-kadang saya naik bus. | [Sometimes] I take the bus.
+jarang | Saya jarang makan daging. | I [rarely] eat meat.
+tidak pernah | Saya tidak pernah terlambat. | I am [never] late.
+sudah | Saya sudah makan. | I have [already] eaten.
+belum | Saya belum makan. | I have [not yet] eaten.
+akan | Saya akan pergi besok. | I [will] go tomorrow.
+masih | Dia masih tidur. | He is [still] sleeping.
+lagi | Tolong katakan lagi. | Please say it [again].
+Januari | Bulan Januari musim hujan. | [January] is the rainy season.
+Februari | Ulang tahun saya bulan Februari. | My birthday is in [February].
+Maret | Bulan Maret masih hujan. | In [March] it still rains.
+April | Bulan April saya pergi. | In [April] I go away.
+Mei | Bulan Mei ada hari libur. | In [May] there is a holiday.
+Juni | Bulan Juni sangat panas. | [June] is very hot.
+Juli | Bulan Juli kami liburan. | In [July] we go on holiday.
+Agustus | Tanggal tujuh belas Agustus hari kemerdekaan. | The seventeenth of [August] is Independence Day.
+September | Bulan September sekolah mulai. | In [September] school starts.
+Oktober | Bulan Oktober saya bekerja. | In [October] I work.
+November | Bulan November sering hujan. | In [November] it often rains.
+Desember | Bulan Desember dingin di Eropa. | [December] is cold in Europe.
+keluarga | Keluarga saya besar. | My [family] is big.
+ibu | Ibu memasak di dapur. | [Mother] cooks in the kitchen.
+ayah | Ayah bekerja di kantor. | [Father] works in the office.
+orang tua | Orang tua saya tinggal di desa. | My [parents] live in a village.
+anak | Anak itu bermain di taman. | The [child] plays in the park.
+kakak | Kakak saya sudah kuliah. | My [older sibling] is already at university.
+adik | Adik saya masih sekolah. | My [younger sibling] is still at school.
+saudara | Saya punya banyak saudara. | I have many [relatives].
+suami | Suami saya bekerja di bank. | My [husband] works at a bank.
+istri | Istri saya suka memasak. | My [wife] likes cooking.
+nenek | Nenek membuat kue. | [Grandmother] bakes a cake.
+kakek | Kakek membaca koran. | [Grandfather] reads the newspaper.
+paman | Paman saya tinggal di Bandung. | My [uncle] lives in Bandung.
+bibi | Bibi membawa buah. | [Aunt] brings fruit.
+sepupu | Sepupu saya datang hari ini. | My [cousin] comes today.
+teman | Teman saya baik hati. | My [friend] is kind-hearted.
+sahabat | Dia sahabat saya sejak kecil. | She is my [best friend] since childhood.
+pacar | Pacar saya sangat baik. | My [girlfriend] is very nice.
+orang | Ada orang di depan pintu. | There is a [person] at the door.
+laki-laki | Laki-laki itu tinggi. | That [man] is tall.
+perempuan | Perempuan itu sedang membaca. | That [woman] is reading.
+anak laki-laki | Anak laki-laki itu bermain bola. | The [boy] plays football.
+anak perempuan | Anak perempuan itu menyanyi. | The [girl] sings.
+bayi | Bayi itu sedang tidur. | The [baby] is sleeping.
+bapak | Bapak mau minum apa? | What would you like to drink, [sir]?
+tetangga | Tetangga saya ramah. | My [neighbor] is friendly.
+tamu | Tamu kami sudah datang. | Our [guest] has arrived.
+guru | Guru saya sangat sabar. | My [teacher] is very patient.
+murid | Murid itu rajin belajar. | The [pupil] studies diligently.
+dokter | Dokter memeriksa pasien. | The [doctor] examines the patient.
+polisi | Polisi menjaga jalan. | The [police] guard the road.
+penjual | Penjual itu ramah. | The [seller] is friendly.
+pembeli | Pembeli menawar harga. | The [buyer] haggles over the price.
+petani | Petani bekerja di sawah. | The [farmer] works in the rice field.
+nelayan | Nelayan pergi ke laut. | The [fisherman] goes to sea.
+sopir | Sopir itu mengemudi dengan hati-hati. | The [driver] drives carefully.
+koki | Koki memasak nasi goreng. | The [chef] cooks fried rice.
+turis | Turis itu suka pantai. | The [tourist] likes the beach.
+orang asing | Orang asing itu bertanya jalan. | The [foreigner] asks for directions.
+makan | Saya mau makan sekarang. | I want to [eat] now.
+minum | Saya mau minum air. | I want to [drink] water.
+makanan | Makanan ini enak. | This [food] is tasty.
+minuman | Minuman ini dingin. | This [drink] is cold.
+air | Saya minum air putih. | I drink white [water].
+nasi | Saya makan nasi setiap hari. | I eat [cooked rice] every day.
+beras | Ibu membeli beras di pasar. | Mother buys [raw rice] at the market.
+nasi goreng | Saya suka nasi goreng. | I like [fried rice].
+roti | Saya makan roti dengan telur. | I eat [bread] with egg.
+daging | Dia tidak makan daging. | He does not eat [meat].
+ayam | Saya pesan ayam goreng. | I order fried [chicken].
+ikan | Ikan ini segar. | This [fish] is fresh.
+udang | Udang ini besar. | This [shrimp] is big.
+telur | Saya makan dua telur. | I eat two [eggs].
+tempe | Tempe murah dan sehat. | [Tempeh] is cheap and healthy.
+sate | Saya mau sate ayam. | I want chicken [satay].
+sayur | Anak harus makan sayur. | Children must eat [vegetables].
+buah | Saya suka buah segar. | I like fresh [fruit].
+apel | Apel ini manis. | This [apple] is sweet.
+pisang | Monyet suka pisang. | Monkeys like [bananas].
+jeruk | Saya minum jus jeruk. | I drink [orange] juice.
+mangga | Mangga ini sangat manis. | This [mango] is very sweet.
+nanas | Nanas rasanya asam. | [Pineapple] tastes sour.
+semangka | Semangka cocok saat panas. | [Watermelon] is good when it is hot.
+kopi | Saya minum kopi pagi hari. | I drink [coffee] in the morning.
+teh | Dia suka teh hangat. | She likes warm [tea].
+susu | Bayi minum susu. | The baby drinks [milk].
+jus | Saya pesan jus mangga. | I order mango [juice].
+bir | Dia minum bir dingin. | He drinks a cold [beer].
+es | Saya mau es teh. | I want iced tea, with [ice].
+gula | Kopi saya pakai gula. | My coffee has [sugar].
+garam | Sup ini kurang garam. | This soup needs more [salt].
+pedas | Makanan ini terlalu pedas. | This food is too [spicy].
+manis | Teh ini manis. | This tea is [sweet].
+asin | Ikan ini asin. | This fish is [salty].
+asam | Jeruk ini asam. | This orange is [sour].
+pahit | Kopi ini pahit. | This coffee is [bitter].
+lapar | Saya lapar sekali. | I am very [hungry].
+haus | Saya haus, mau minum. | I am [thirsty], I want a drink.
+kenyang | Saya sudah kenyang. | I am already [full].
+enak | Nasi gorengnya enak. | The fried rice is [tasty].
+sarapan | Saya sarapan jam tujuh. | I eat [breakfast] at seven.
+makan siang | Kami makan siang di warung. | We have [lunch] at a small eatery.
+makan malam | Kami makan malam bersama. | We have [dinner] together.
+restoran | Restoran itu ramai. | That [restaurant] is busy.
+warung | Kami makan di warung. | We eat at a [small eatery].
+piring | Tolong ambil piring. | Please get a [plate].
+mangkuk | Saya mau satu mangkuk sup. | I want one [bowl] of soup.
+sendok | Saya butuh sendok. | I need a [spoon].
+garpu | Dia makan pakai garpu. | He eats with a [fork].
+pisau | Pisau ini tajam. | This [knife] is sharp.
+gelas | Tolong beri saya satu gelas air. | Please give me one [glass] of water.
+mie | Saya pesan mie goreng. | I order fried [noodles].
+sup | Sup ini panas. | This [soup] is hot.
+goreng | Saya suka pisang goreng. | I like [fried] bananas.
+rebus | Saya makan telur rebus. | I eat [boiled] eggs.
+bakar | Saya suka ikan bakar. | I like [grilled] fish.
+bawang putih | Ibu menambah bawang putih. | Mother adds [garlic].
+bawang merah | Saya iris bawang merah. | I slice the [shallot].
+cabai | Dia suka cabai. | He likes [chili].
+kentang | Saya goreng kentang. | I fry [potatoes].
+tomat | Tomat ini merah. | This [tomato] is red.
+kelapa | Saya minum air kelapa. | I drink [coconut] water.
+kue | Nenek membuat kue. | Grandmother bakes a [cake].
+permen | Anak itu makan permen. | The child eats [candy].
+makanan ringan | Saya beli makanan ringan. | I buy a [snack].
+bungkus | Nasi goreng satu, bungkus. | One fried rice, [takeaway].

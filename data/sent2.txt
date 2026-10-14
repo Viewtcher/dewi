@@ -1,0 +1,187 @@
+pergi | Saya mau pergi ke pasar. | I want to [go] to the market.
+datang | Teman saya akan datang besok. | My friend will [come] tomorrow.
+pulang | Saya mau pulang sekarang. | I want to [go home] now.
+masuk | Silakan masuk. | Please [come in].
+keluar | Dia keluar dari kamar. | He [goes out] of the room.
+tidur | Saya mau tidur. | I want to [sleep].
+bangun | Saya bangun jam enam. | I [wake up] at six.
+duduk | Silakan duduk di sini. | Please [sit] here.
+berdiri | Dia berdiri di depan pintu. | He [stands] in front of the door.
+berjalan | Kami berjalan ke sekolah. | We [walk] to school.
+lari | Anak itu lari di taman. | The child [runs] in the park.
+jatuh | Hati-hati, jangan jatuh. | Be careful, do not [fall].
+bicara | Dia bisa bicara bahasa Inggris. | He can [speak] English.
+berkata | Ibu berkata dia lapar. | Mother [says] she is hungry.
+bertanya | Saya mau bertanya. | I want to [ask] something.
+menjawab | Tolong jawab pertanyaan ini. | Please [answer] this question.
+melihat | Saya melihat burung. | I [see] a bird.
+mendengar | Saya mendengar musik. | I [hear] music.
+membaca | Saya suka membaca buku. | I like to [read] books.
+menulis | Dia menulis surat. | She [writes] a letter.
+belajar | Saya belajar bahasa Indonesia. | I [study] Indonesian.
+mengajar | Dia mengajar di sekolah. | She [teaches] at a school.
+bekerja | Ayah bekerja di kantor. | Father [works] at the office.
+bermain | Anak-anak bermain di taman. | The children [play] in the park.
+membeli | Saya mau membeli roti. | I want to [buy] bread.
+menjual | Dia menjual buah. | He [sells] fruit.
+membayar | Saya mau membayar sekarang. | I want to [pay] now.
+mengambil | Tolong ambil buku itu. | Please [take] that book.
+memberi | Dia memberi saya hadiah. | She [gives] me a gift.
+membawa | Saya membawa tas. | I [bring] a bag.
+membuka | Tolong buka pintu. | Please [open] the door.
+menutup | Tolong tutup jendela. | Please [close] the window.
+mulai | Pelajaran mulai jam delapan. | The lesson [starts] at eight.
+selesai | Saya sudah selesai. | I have [finished].
+menunggu | Saya menunggu bus. | I [wait] for the bus.
+mencari | Saya mencari kunci. | I [look for] my key.
+menemukan | Saya menemukan dompet. | I [find] a wallet.
+mengerti | Saya mengerti sekarang. | I [understand] now.
+tahu | Saya tidak tahu. | I do not [know].
+ingat | Saya ingat nama kamu. | I [remember] your name.
+lupa | Saya lupa kata itu. | I [forget] that word.
+suka | Saya suka kopi. | I [like] coffee.
+cinta | Saya cinta keluarga saya. | I [love] my family.
+mau | Saya mau makan. | I [want] to eat.
+bisa | Saya bisa berenang. | I [can] swim.
+harus | Saya harus pergi. | I [must] go.
+boleh | Boleh saya duduk di sini? | [Is it allowed] for me to sit here?
+punya | Saya punya satu kakak. | I [have] one older sibling.
+ada | Ada kopi di meja. | [There is] coffee on the table.
+menjadi | Dia mau menjadi dokter. | He wants to [become] a doctor.
+memakai | Dia memakai baju merah. | She [wears] a red shirt.
+menggunakan | Saya menggunakan telepon. | I [use] a phone.
+membuat | Ibu membuat kue. | Mother [makes] a cake.
+melakukan | Apa yang kamu lakukan? | What are you [doing]?
+mandi | Saya mandi setiap pagi. | I [bathe] every morning.
+mencuci | Saya mencuci piring. | I [wash] the plates.
+memasak | Ibu memasak nasi. | Mother [cooks] rice.
+naik | Saya naik bus ke kantor. | I [go up] on the bus to the office.
+turun | Dia turun dari bus. | He [goes down] from the bus.
+berhenti | Bus berhenti di sini. | The bus [stops] here.
+tinggal | Saya tinggal di Berlin. | I [live] in Berlin.
+hidup | Nenek masih hidup. | Grandmother is still [alive].
+mati | Bunga itu mati. | That flower [dies].
+lahir | Saya lahir di bulan Mei. | I was [born] in May.
+menikah | Mereka mau menikah. | They want to [marry].
+membantu | Dia membantu ibunya. | She [helps] her mother.
+berpikir | Saya berpikir dulu. | I [think] first.
+merasa | Saya merasa senang. | I [feel] happy.
+tertawa | Anak itu tertawa. | The child [laughs].
+menangis | Bayi itu menangis. | The baby [cries].
+tersenyum | Dia tersenyum kepada saya. | She [smiles] at me.
+menelepon | Saya menelepon ibu. | I [call] mother.
+mengirim | Saya mengirim surat. | I [send] a letter.
+menerima | Saya menerima hadiah. | I [receive] a gift.
+mengunjungi | Kami mengunjungi nenek. | We [visit] grandmother.
+bertemu | Kami bertemu di kafe. | We [meet] at the cafe.
+istirahat | Saya mau istirahat. | I want to [rest].
+menyanyi | Dia suka menyanyi. | She likes to [sing].
+menari | Mereka menari di panggung. | They [dance] on the stage.
+berenang | Saya berenang di laut. | I [swim] in the sea.
+menyetir | Ayah menyetir mobil. | Father [drives] the car.
+terbang | Burung itu terbang. | The bird [flies].
+memilih | Saya memilih teh. | I [choose] tea.
+mencoba | Saya mau mencoba sate. | I want to [try] satay.
+berharap | Saya berharap kamu sehat. | I [hope] you are healthy.
+membersihkan | Saya membersihkan kamar. | I [clean] the room.
+berubah | Cuaca berubah. | The weather [changes].
+menjaga | Kakak menjaga adik. | Older sister [looks after] her younger sibling.
+menyimpan | Saya menyimpan uang. | I [keep] the money.
+besar | Rumah itu besar. | That house is [big].
+kecil | Kucing itu kecil. | That cat is [small].
+panjang | Jalan ini panjang. | This road is [long].
+pendek | Rambut dia pendek. | Her hair is [short].
+tinggi | Gunung itu tinggi. | That mountain is [tall].
+rendah | Meja ini rendah. | This table is [low].
+baru | Saya punya mobil baru. | I have a [new] car.
+lama | Buku ini sudah lama. | This book is already [old].
+tua | Kakek saya sudah tua. | My grandfather is already [old].
+muda | Dia masih muda. | She is still [young].
+bagus | Rumah itu bagus. | That house is [nice].
+jelek | Baju ini jelek. | This shirt is [ugly].
+buruk | Cuaca hari ini buruk. | The weather today is [bad].
+mudah | Soal ini mudah. | This question is [easy].
+sulit | Bahasa ini sulit. | This language is [difficult].
+murah | Baju ini murah. | This shirt is [cheap].
+mahal | Hotel itu mahal. | That hotel is [expensive].
+panas | Kopi ini panas. | This coffee is [hot].
+dingin | Air ini dingin. | This water is [cold].
+hangat | Teh ini hangat. | This tea is [warm].
+sejuk | Udara pagi sejuk. | The morning air is [cool].
+bersih | Kamar ini bersih. | This room is [clean].
+kotor | Baju ini kotor. | This shirt is [dirty].
+cepat | Mobil itu cepat. | That car is [fast].
+lambat | Bus itu lambat. | That bus is [slow].
+pelan-pelan | Tolong bicara pelan-pelan. | Please speak [slowly].
+benar | Jawaban kamu benar. | Your answer is [correct].
+salah | Jawaban saya salah. | My answer is [wrong].
+penuh | Gelas ini penuh. | This glass is [full].
+kosong | Piring itu kosong. | That plate is [empty].
+berat | Tas ini berat. | This bag is [heavy].
+ringan | Buku ini ringan. | This book is [light].
+kaya | Orang itu kaya. | That person is [rich].
+miskin | Keluarga itu miskin. | That family is [poor].
+senang | Saya senang hari ini. | I am [happy] today.
+sedih | Dia sedih sekali. | She is very [sad].
+marah | Ayah marah. | Father is [angry].
+takut | Saya takut anjing. | I am [afraid] of dogs.
+lelah | Saya lelah hari ini. | I am [tired] today.
+sakit | Adik saya sakit. | My younger sibling is [sick].
+sehat | Kakek saya sehat. | My grandfather is [healthy].
+cantik | Bunga itu cantik. | That flower is [beautiful].
+tampan | Dia pria yang tampan. | He is a [handsome] man.
+pintar | Anak itu pintar. | That child is [smart].
+bodoh | Saya merasa bodoh. | I feel [stupid].
+lucu | Film itu lucu. | That film is [funny].
+penting | Ini sangat penting. | This is very [important].
+sibuk | Hari ini saya sibuk. | Today I am [busy].
+bebas | Besok saya bebas. | Tomorrow I am [free].
+dekat | Rumah saya dekat. | My house is [near].
+jauh | Sekolah saya jauh. | My school is [far].
+terang | Kamar ini terang. | This room is [bright].
+gelap | Malam ini gelap. | Tonight is [dark].
+kuat | Dia sangat kuat. | He is very [strong].
+lemah | Bayi itu lemah. | The baby is [weak].
+aman | Kota ini aman. | This city is [safe].
+berbahaya | Jalan ini berbahaya. | This road is [dangerous].
+ramai | Pasar itu ramai. | That market is [crowded].
+sepi | Desa ini sepi. | This village is [quiet].
+sama | Kita punya buku yang sama. | We have the [same] book.
+berbeda | Warna kita berbeda. | Our colors are [different].
+lain | Saya mau yang lain. | I want the [other] one.
+semua | Semua orang datang. | [All] people came.
+banyak | Ada banyak orang di sini. | There are [many] people here.
+sedikit | Saya mau sedikit gula. | I want [a little] sugar.
+beberapa | Saya punya beberapa teman. | I have [some] friends.
+cukup | Makanan ini cukup. | This food is [enough].
+sangat | Rumah itu sangat besar. | That house is [very] big.
+terlalu | Kopi ini terlalu panas. | This coffee is [too] hot.
+lebih | Saya mau lebih banyak. | I want [more].
+paling | Ini yang paling enak. | This is the [most] tasty.
+juga | Saya juga mau. | I [also] want it.
+hanya | Saya hanya punya satu. | I [only] have one.
+rumah | Rumah saya kecil. | My [house] is small.
+kamar | Kamar saya bersih. | My [room] is clean.
+dapur | Ibu ada di dapur. | Mother is in the [kitchen].
+kamar mandi | Di mana kamar mandi? | Where is the [bathroom]?
+kamar tidur | Kamar tidur saya kecil. | My [bedroom] is small.
+ruang tamu | Tamu duduk di ruang tamu. | The guests sit in the [living room].
+pintu | Tolong buka pintu. | Please open the [door].
+jendela | Jendela itu besar. | That [window] is big.
+kota | Jakarta adalah kota besar. | Jakarta is a big [city].
+desa | Nenek tinggal di desa. | Grandmother lives in a [village].
+negara | Indonesia adalah negara besar. | Indonesia is a big [country].
+jalan | Jalan ini panjang. | This [street] is long.
+pasar | Ibu pergi ke pasar. | Mother goes to the [market].
+toko | Toko itu buka. | That [shop] is open.
+supermarket | Saya belanja di supermarket. | I shop at the [supermarket].
+bank | Saya pergi ke bank. | I go to the [bank].
+rumah sakit | Dia di rumah sakit. | He is in the [hospital].
+sekolah | Anak saya di sekolah. | My child is at [school].
+universitas | Kakak saya di universitas. | My older sibling is at the [university].
+kantor | Ayah ada di kantor. | Father is at the [office].
+bandara | Kami pergi ke bandara. | We go to the [airport].
+stasiun | Kereta ada di stasiun. | The train is at the [station].
+pantai | Kami main di pantai. | We play on the [beach].
+gunung | Gunung itu tinggi. | That [mountain] is tall.
+laut | Laut itu biru. | The [sea] is blue.

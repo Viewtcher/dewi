@@ -1,0 +1,84 @@
+# Bauen, testen und auf GitHub Pages veröffentlichen.
+# Läuft bei jedem Push auf "main" und auf Knopfdruck (Reiter "Actions" > "Run workflow").
+# Schlägt ein Test fehl, wird NICHT veröffentlicht. Die alte Version bleibt online.
+name: Bauen, testen, veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Kommen zwei Pushes schnell hintereinander, gewinnt der neuere.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Bauen und testen
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Code holen
+        uses: actions/checkout@v4
+
+      - name: Python einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: index.html bauen (build.py)
+        run: python build.py
+
+      - name: Prüfen, ob die hochgeladene index.html aktuell war
+        run: |
+          if ! git diff --quiet -- index.html; then
+            echo "::warning::Die index.html im Repository war nicht frisch gebaut. Veröffentlicht wird trotzdem die frisch gebaute Version."
+          fi
+
+      - name: Node einrichten
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: tests/package-lock.json
+
+      - name: Test-Werkzeug installieren (jsdom)
+        working-directory: tests
+        run: npm ci
+
+      - name: Test 2
+        run: node tests/test2.js
+      - name: Test 3
+        run: node tests/test3.js
+      - name: Test 4
+        run: node tests/test4.js
+      - name: Test 5
+        run: node tests/test5.js
+
+      - name: Webseite zusammenstellen (nur index.html und icon.png)
+        run: |
+          mkdir _site
+          cp index.html icon.png _site/
+
+      - name: Webseite für Pages bereitstellen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    name: Veröffentlichen
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Auf GitHub Pages veröffentlichen
+        id: deployment
+        uses: actions/deploy-pages@v4

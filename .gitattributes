@@ -1,0 +1,8 @@
+# Zeilenenden immer als LF speichern, auch unter Windows.
+# Warum: build.py und die Tests lesen Dateien Zeile für Zeile; Windows-Zeilenenden (CRLF) würden dort stören.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.zip binary
+*.mp3 binary
+*.wav binary

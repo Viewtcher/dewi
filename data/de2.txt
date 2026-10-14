@@ -1,0 +1,187 @@
+pergi | gehen | Ich will zum Markt [gehen].
+datang | kommen | Mein Freund wird morgen [kommen].
+pulang | nach Hause gehen | Ich will jetzt [nach Hause gehen].
+masuk | hereinkommen | Bitte [komm herein].
+keluar | hinausgehen | Er will aus dem Zimmer [hinausgehen].
+tidur | schlafen | Ich will [schlafen].
+bangun | aufstehen | Ich will um sechs [aufstehen].
+duduk | sitzen | Bitte [setz dich] hierher.
+berdiri | stehen | Er [steht] vor der Tür.
+berjalan | zu Fuß gehen | Wir [gehen zu Fuß] zur Schule.
+lari | rennen | Das Kind [rennt] im Park.
+jatuh | fallen | Vorsicht, nicht [fallen].
+bicara | sprechen | Er kann Englisch [sprechen].
+berkata | sagen | Mutter [sagt], sie hat Hunger.
+bertanya | fragen | Ich möchte etwas [fragen].
+menjawab | antworten | Bitte [antworte] auf diese Frage.
+melihat | sehen | Ich [sehe] einen Vogel.
+mendengar | hören | Ich [höre] Musik.
+membaca | lesen | Ich [lese] gern Bücher.
+menulis | schreiben | Sie [schreibt] einen Brief.
+belajar | lernen | Ich [lerne] Indonesisch.
+mengajar | unterrichten | Sie [unterrichtet] an einer Schule.
+bekerja | arbeiten | Vater [arbeitet] im Büro.
+bermain | spielen | Die Kinder [spielen] im Park.
+membeli | kaufen | Ich will Brot [kaufen].
+menjual | verkaufen | Er [verkauft] Obst.
+membayar | bezahlen | Ich will jetzt [bezahlen].
+mengambil | nehmen | Bitte [nimm] das Buch.
+memberi | geben | Sie [gibt] mir ein Geschenk.
+membawa | mitbringen | Ich will eine Tasche [mitbringen].
+membuka | öffnen | Bitte [öffne] die Tür.
+menutup | schließen | Bitte [schließe] das Fenster.
+mulai | anfangen | Der Unterricht soll um acht [anfangen].
+selesai | fertig sein | Ich bin schon [fertig].
+menunggu | warten | Ich [warte] auf den Bus.
+mencari | suchen | Ich [suche] meinen Schlüssel.
+menemukan | finden | Ich [finde] eine Geldbörse.
+mengerti | verstehen | Ich [verstehe] jetzt.
+tahu | wissen | Ich [weiß] es nicht.
+ingat | sich erinnern | Ich [erinnere mich] an deinen Namen.
+lupa | vergessen | Ich [vergesse] dieses Wort.
+suka | mögen | Ich [mag] Kaffee.
+cinta | lieben | Ich [liebe] meine Familie.
+mau | wollen | Ich [will] essen.
+bisa | können | Ich [kann] schwimmen.
+harus | müssen | Ich [muss] gehen.
+boleh | dürfen | [Darf] ich hier sitzen?
+punya | haben | Ich [habe] ein älteres Geschwister.
+ada | es gibt | Auf dem Tisch [gibt es] Kaffee.
+menjadi | werden | Er will Arzt [werden].
+memakai | tragen | Sie [trägt] ein rotes Hemd.
+menggunakan | benutzen | Ich [benutze] ein Telefon.
+membuat | machen | Mutter [macht] einen Kuchen.
+melakukan | tun | Was [tust] du?
+mandi | baden | Ich [bade] jeden Morgen.
+mencuci | waschen | Ich [wasche] die Teller.
+memasak | kochen | Mutter [kocht] Reis.
+naik | hinauffahren | Ich [fahre] mit dem Bus ins Büro.
+turun | aussteigen / hinuntergehen | Er will aus dem Bus [aussteigen].
+berhenti | anhalten | Der Bus will hier [anhalten].
+tinggal | wohnen | Ich [wohne] in Berlin.
+hidup | leben | Oma [lebt] noch.
+mati | sterben | Diese Blume [stirbt].
+lahir | geboren werden | Ich bin im Mai [geboren].
+menikah | heiraten | Sie wollen [heiraten].
+membantu | helfen | Sie [hilft] ihrer Mutter.
+berpikir | denken | Ich [denke] erst nach.
+merasa | fühlen | Ich [fühle] mich glücklich.
+tertawa | lachen | Das Kind [lacht].
+menangis | weinen | Das Baby [weint].
+tersenyum | lächeln | Sie [lächelt] mich an.
+menelepon | anrufen | Ich will Mutter [anrufen].
+mengirim | schicken | Ich [schicke] einen Brief.
+menerima | erhalten | Ich [erhalte] ein Geschenk.
+mengunjungi | besuchen | Wir [besuchen] Oma.
+bertemu | treffen | Wir [treffen] uns im Café.
+istirahat | sich ausruhen | Ich will mich [ausruhen].
+menyanyi | singen | Sie [singt] gern.
+menari | tanzen | Sie [tanzen] auf der Bühne.
+berenang | schwimmen | Ich [schwimme] im Meer.
+menyetir | fahren (Auto) | Vater [fährt] das Auto.
+terbang | fliegen | Der Vogel [fliegt].
+memilih | wählen | Ich [wähle] Tee.
+mencoba | probieren | Ich will Saté [probieren].
+berharap | hoffen | Ich [hoffe], du bist gesund.
+membersihkan | putzen | Ich [putze] das Zimmer.
+berubah | sich ändern | Das Wetter [ändert sich].
+menjaga | aufpassen | Die ältere Schwester muss auf ihr Geschwisterchen [aufpassen].
+menyimpan | aufbewahren | Ich will das Geld [aufbewahren].
+besar | groß | Das Haus ist [groß].
+kecil | klein | Die Katze ist [klein].
+panjang | lang | Diese Straße ist [lang].
+pendek | kurz | Ihre Haare sind [kurz].
+tinggi | hoch | Der Berg ist [hoch].
+rendah | niedrig | Dieser Tisch ist [niedrig].
+baru | neu | Ich habe ein [neues] Auto.
+lama | alt (nicht neu) | Dieses Buch ist schon [alt].
+tua | alt (Menschen) | Mein Großvater ist schon [alt].
+muda | jung | Sie ist noch [jung].
+bagus | schön / gut | Das Haus ist [schön].
+jelek | hässlich | Dieses Hemd ist [hässlich].
+buruk | schlecht | Das Wetter heute ist [schlecht].
+mudah | einfach | Diese Aufgabe ist [einfach].
+sulit | schwierig | Diese Sprache ist [schwierig].
+murah | billig | Dieses Hemd ist [billig].
+mahal | teuer | Das Hotel ist [teuer].
+panas | heiß | Dieser Kaffee ist [heiß].
+dingin | kalt | Dieses Wasser ist [kalt].
+hangat | warm | Dieser Tee ist [warm].
+sejuk | kühl | Die Morgenluft ist [kühl].
+bersih | sauber | Dieses Zimmer ist [sauber].
+kotor | schmutzig | Dieses Hemd ist [schmutzig].
+cepat | schnell | Das Auto ist [schnell].
+lambat | langsam | Der Bus ist [langsam].
+pelan-pelan | langsam (Art und Weise) | Bitte sprich [langsam].
+benar | richtig | Deine Antwort ist [richtig].
+salah | falsch | Meine Antwort ist [falsch].
+penuh | voll | Dieses Glas ist [voll].
+kosong | leer | Dieser Teller ist [leer].
+berat | schwer | Diese Tasche ist [schwer].
+ringan | leicht | Dieses Buch ist [leicht].
+kaya | reich | Diese Person ist [reich].
+miskin | arm | Diese Familie ist [arm].
+senang | glücklich | Ich bin heute [glücklich].
+sedih | traurig | Sie ist sehr [traurig].
+marah | wütend | Vater ist [wütend].
+takut | ängstlich | Ich habe [Angst] vor Hunden.
+lelah | müde | Ich bin heute [müde].
+sakit | krank | Mein jüngeres Geschwister ist [krank].
+sehat | gesund | Mein Großvater ist [gesund].
+cantik | schön (Frauen, Dinge) | Diese Blume ist [schön].
+tampan | gutaussehend | Er ist ein [gutaussehender] Mann.
+pintar | klug | Dieses Kind ist [klug].
+bodoh | dumm | Ich fühle mich [dumm].
+lucu | lustig | Der Film ist [lustig].
+penting | wichtig | Das ist sehr [wichtig].
+sibuk | beschäftigt | Heute bin ich [beschäftigt].
+bebas | frei | Morgen bin ich [frei].
+dekat | nah | Mein Haus ist [nah].
+jauh | weit | Meine Schule ist [weit].
+terang | hell | Dieses Zimmer ist [hell].
+gelap | dunkel | Heute Nacht ist es [dunkel].
+kuat | stark | Er ist sehr [stark].
+lemah | schwach | Das Baby ist [schwach].
+aman | sicher | Diese Stadt ist [sicher].
+berbahaya | gefährlich | Diese Straße ist [gefährlich].
+ramai | belebt | Dieser Markt ist [belebt].
+sepi | ruhig | Dieses Dorf ist [ruhig].
+sama | gleich | Wir haben das [gleiche] Buch.
+berbeda | unterschiedlich | Unsere Farben sind [unterschiedlich].
+lain | andere | Ich will das [andere].
+semua | alle | [Alle] Leute kamen.
+banyak | viele | Hier sind [viele] Leute.
+sedikit | ein bisschen | Ich möchte [ein bisschen] Zucker.
+beberapa | einige | Ich habe [einige] Freunde.
+cukup | genug | Dieses Essen ist [genug].
+sangat | sehr | Das Haus ist [sehr] groß.
+terlalu | zu | Dieser Kaffee ist [zu] heiß.
+lebih | mehr | Ich möchte [mehr].
+paling | am meisten | Das ist das [leckerste].
+juga | auch | Ich will [auch].
+hanya | nur | Ich habe [nur] eins.
+rumah | Haus | Mein [Haus] ist klein.
+kamar | Zimmer | Mein [Zimmer] ist sauber.
+dapur | Küche | Mutter ist in der [Küche].
+kamar mandi | Badezimmer | Wo ist das [Badezimmer]?
+kamar tidur | Schlafzimmer | Mein [Schlafzimmer] ist klein.
+ruang tamu | Wohnzimmer | Die Gäste sitzen im [Wohnzimmer].
+pintu | Tür | Bitte öffne die [Tür].
+jendela | Fenster | Dieses [Fenster] ist groß.
+kota | Stadt | Jakarta ist eine große [Stadt].
+desa | Dorf | Oma wohnt in einem [Dorf].
+negara | Land | Indonesien ist ein großes [Land].
+jalan | Straße | Diese [Straße] ist lang.
+pasar | Markt | Mutter geht zum [Markt].
+toko | Laden | Der [Laden] ist geöffnet.
+supermarket | Supermarkt | Ich kaufe im [Supermarkt] ein.
+bank | Bank | Ich gehe zur [Bank].
+rumah sakit | Krankenhaus | Er ist im [Krankenhaus].
+sekolah | Schule | Mein Kind ist in der [Schule].
+universitas | Universität | Mein älteres Geschwister ist an der [Universität].
+kantor | Büro | Vater ist im [Büro].
+bandara | Flughafen | Wir fahren zum [Flughafen].
+stasiun | Bahnhof | Der Zug ist am [Bahnhof].
+pantai | Strand | Wir spielen am [Strand].
+gunung | Berg | Der [Berg] ist hoch.
+laut | Meer | Das [Meer] ist blau.

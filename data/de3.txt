@@ -1,0 +1,268 @@
+sungai | Fluss | Der [Fluss] ist lang.
+danau | See | Wir schwimmen im [See].
+hutan | Wald | Tiger leben im [Wald].
+taman | Park | Die Kinder spielen im [Park].
+masjid | Moschee | Die [Moschee] ist groß.
+gereja | Kirche | Die [Kirche] ist alt.
+pulau | Insel | Bali ist eine schöne [Insel].
+toilet | Toilette | Wo ist die [Toilette]?
+kiri | links | Biege hier [links] ab.
+kanan | rechts | Biege dort [rechts] ab.
+lurus | geradeaus | Geh einfach [geradeaus].
+depan | vorn | Der Laden ist [vorn].
+belakang | hinten | Die Küche ist [hinten].
+atas | oben | Das Buch liegt [oben] auf dem Tisch.
+bawah | unten | Die Katze ist [unter] dem Stuhl.
+luar | draußen | Die Kinder spielen [draußen].
+tengah | Mitte | Der Tisch steht in der [Mitte] des Zimmers.
+samping | neben | Die Bank ist [neben] dem Laden.
+utara | Norden | Medan liegt im [Norden].
+selatan | Süden | Bali liegt im [Süden].
+timur | Osten | Die Sonne geht im [Osten] auf.
+barat | Westen | Die Sonne geht im [Westen] unter.
+sini | hier | Bitte setz dich [hierher].
+situ | da | Das Buch ist [da].
+sana | dort drüben | Mein Haus ist [dort drüben].
+mobil | Auto | Vater hat ein neues [Auto].
+motor | Motorrad | Ich fahre [Motorrad].
+sepeda | Fahrrad | Ich fahre mit dem [Fahrrad].
+bus | Bus | Ich nehme den [Bus] zum Büro.
+kereta api | Zug | Wir nehmen den [Zug] nach Bandung.
+pesawat | Flugzeug | Das [Flugzeug] fliegt hoch.
+kapal | Schiff | Das [Schiff] ist groß.
+taksi | Taxi | Wir nehmen ein [Taxi] zum Hotel.
+ojek | Motorradtaxi | Ich nehme ein [Motorradtaxi] zum Markt.
+tiket | Fahrkarte | Ich kaufe zwei [Fahrkarten].
+bensin | Benzin | Dieses Auto braucht [Benzin].
+parkir | Parkplatz | Hier gibt es keinen [Parkplatz].
+macet | Stau | Auf dieser Straße ist [Stau].
+peta | Landkarte | Ich schaue auf die [Landkarte].
+perjalanan | Reise | Unsere [Reise] ist lang.
+paspor | Reisepass | Ich habe einen [Reisepass].
+koper | Koffer | Mein [Koffer] ist schwer.
+hotel | Hotel | Dieses [Hotel] ist sauber.
+liburan | Urlaub | Wir sind in Bali im [Urlaub].
+alamat | Adresse | Wie lautet deine [Adresse]?
+kepala | Kopf | Mein [Kopf] tut weh.
+mata | Auge | Ihre [Augen] sind blau.
+telinga | Ohr | Mein [Ohr] tut weh.
+hidung | Nase | Seine [Nase] ist spitz.
+mulut | Mund | Öffne deinen [Mund].
+gigi | Zahn | Mein [Zahn] tut weh.
+lidah | Zunge | Meine [Zunge] brennt.
+leher | Hals | Mein [Hals] tut weh.
+bahu | Schulter | Meine [Schulter] tut weh.
+lengan | Arm | Mein [Arm] ist stark.
+tangan | Hand | Wasch deine [Hände].
+jari | Finger | Mein [Finger] ist verletzt.
+kaki | Fuß | Mein [Fuß] tut weh.
+lutut | Knie | Mein [Knie] tut weh.
+perut | Bauch | Mein [Bauch] tut weh.
+punggung | Rücken | Mein [Rücken] tut weh.
+rambut | Haar | Ihre [Haare] sind lang.
+wajah | Gesicht | Ihr [Gesicht] ist schön.
+badan | Körper | Mein [Körper] ist müde.
+kulit | Haut | Meine [Haut] ist trocken.
+hati | Herz | Sie hat ein gutes [Herz].
+darah | Blut | An der Hand ist [Blut].
+obat | Medizin | Ich nehme [Medizin].
+demam | Fieber | Mein Kind hat [Fieber].
+flu | Grippe | Ich habe die [Grippe].
+batuk | Husten | Ich habe [Husten].
+sakit kepala | Kopfschmerzen | Ich habe [Kopfschmerzen].
+pusing | schwindlig | Mir ist [schwindlig].
+luka | Wunde | Die [Wunde] an meinem Fuß ist groß.
+alergi | Allergie | Ich habe eine [Allergie] gegen Garnelen.
+apotek | Apotheke | Die [Apotheke] ist geöffnet.
+baju | Hemd | Dieses [Hemd] ist schön.
+pakaian | Kleidung | Meine [Kleidung] ist schmutzig.
+celana | Hose | Diese [Hose] ist lang.
+rok | Rock | Ihr [Rock] ist rot.
+jaket | Jacke | Diese [Jacke] ist warm.
+kaos | T-Shirt | Ich trage ein weißes [T-Shirt].
+kaus kaki | Socken | Meine [Socken] sind nass.
+sepatu | Schuh | Diese [Schuhe] sind neu.
+sandal | Sandalen | Ich trage [Sandalen].
+topi | Hut | Er trägt einen [Hut].
+tas | Tasche | Meine [Tasche] ist schwer.
+kacamata | Brille | Opa trägt eine [Brille].
+jam tangan | Armbanduhr | Diese [Armbanduhr] ist teuer.
+cincin | Ring | Dieser [Ring] ist schön.
+dompet | Geldbörse | Meine [Geldbörse] ist weg.
+payung | Regenschirm | Nimm einen [Regenschirm] mit, es regnet!
+warna | Farbe | Welche [Farbe] ist das?
+merah | rot | Dieser Apfel ist [rot].
+biru | blau | Der Himmel ist [blau].
+hijau | grün | Das Blatt ist [grün].
+kuning | gelb | Die Banane ist [gelb].
+hitam | schwarz | Die Katze ist [schwarz].
+putih | weiß | Der Reis ist [weiß].
+cokelat | braun | Meine Tasche ist [braun].
+abu-abu | grau | Die Wolke ist [grau].
+oranye | orange (Farbe) | Die Orange ist [orange].
+ungu | lila | Die Blume ist [lila].
+merah muda | rosa | Ihr Rock ist [rosa].
+cuaca | Wetter | Das [Wetter] ist heute schön.
+hujan | Regen | Heute gibt es [Regen].
+matahari | Sonne | Die [Sonne] scheint.
+bintang | Stern | Dieser [Stern] ist hell.
+langit | Himmel | Der [Himmel] ist blau.
+angin | Wind | Der [Wind] weht stark.
+awan | Wolke | Die [Wolke] ist weiß.
+salju | Schnee | [Schnee] fällt auf den Berg.
+badai | Sturm | Heute Nacht kommt ein [Sturm].
+petir | Blitz | Der [Blitz] ist laut.
+pelangi | Regenbogen | Am Himmel ist ein [Regenbogen].
+banjir | Überschwemmung | In der Stadt gibt es eine [Überschwemmung].
+gempa bumi | Erdbeben | Gestern gab es ein [Erdbeben].
+api | Feuer | Das [Feuer] ist heiß.
+bumi | Erde | Die [Erde] ist rund.
+tanah | Boden | Dieser [Boden] ist nass.
+batu | Stein | Dieser [Stein] ist schwer.
+pasir | Sand | Der [Sand] am Strand ist weiß.
+pohon | Baum | Dieser [Baum] ist hoch.
+daun | Blatt | Das [Blatt] ist grün.
+bunga | Blume | Diese [Blume] duftet gut.
+rumput | Gras | Das [Gras] ist grün.
+hewan | Tier | Ich mag [Tiere].
+anjing | Hund | Mein [Hund] ist süß.
+kucing | Katze | Die [Katze] schläft.
+burung | Vogel | Der [Vogel] fliegt.
+sapi | Kuh | Die [Kuh] frisst Gras.
+kuda | Pferd | Das [Pferd] ist schnell.
+kambing | Ziege | Die [Ziege] ist klein.
+bebek | Ente | Die [Ente] schwimmt im See.
+tikus | Maus | In der Küche ist eine [Maus].
+nyamuk | Mücke | Im Zimmer ist eine [Mücke].
+semut | Ameise | Auf dem Tisch sind [Ameisen].
+cicak | Gecko | An der Wand ist ein [Gecko].
+kodok | Frosch | Der [Frosch] springt ins Wasser.
+harimau | Tiger | Der [Tiger] ist stark.
+gajah | Elefant | Der [Elefant] ist groß.
+monyet | Affe | Der [Affe] mag Bananen.
+buaya | Krokodil | Das [Krokodil] lebt im Fluss.
+ular | Schlange | Die [Schlange] ist lang.
+kupu-kupu | Schmetterling | Der [Schmetterling] ist schön.
+meja | Tisch | Das Buch liegt auf dem [Tisch].
+kursi | Stuhl | Dieser [Stuhl] ist bequem.
+tempat tidur | Bett | Mein [Bett] ist groß.
+lemari | Schrank | Die Kleider sind im [Schrank].
+cermin | Spiegel | Der [Spiegel] ist sauber.
+lampu | Lampe | Die [Lampe] ist hell.
+televisi | Fernseher | Der [Fernseher] ist neu.
+kunci | Schlüssel | Wo ist mein [Schlüssel]?
+lantai | Boden (im Haus) | Dieser [Boden] ist sauber.
+dinding | Wand | Die [Wand] ist weiß.
+atap | Dach | Das [Dach] des Hauses ist rot.
+tangga | Treppe | Geh die [Treppe] langsam hinauf.
+kebun | Garten | Unser [Garten] ist groß.
+sabun | Seife | Ich benutze [Seife].
+handuk | Handtuch | Dieses [Handtuch] ist nass.
+sikat gigi | Zahnbürste | Ich habe meine [Zahnbürste] vergessen.
+selimut | Decke | Diese [Decke] ist warm.
+kipas angin | Ventilator | Der [Ventilator] ist aus.
+listrik | Strom | Der [Strom] ist ausgefallen.
+sampah | Müll | Wirf den [Müll] hierher.
+barang | Ding | Dieses [Ding] ist teuer.
+hadiah | Geschenk | Das ist ein [Geschenk] für dich.
+foto | Foto | Ich mache ein [Foto].
+musik | Musik | Ich mag [Musik].
+film | Film | Der [Film] ist lustig.
+permainan | Spiel | Das [Spiel] ist spannend.
+uang | Geld | Ich habe kein [Geld].
+harga | Preis | Wie hoch ist der [Preis] dafür?
+tunai | bar | Ich zahle [bar].
+kartu | Karte | Ich zahle mit [Karte].
+kembalian | Wechselgeld | Hier ist Ihr [Wechselgeld].
+diskon | Rabatt | Heute gibt es [Rabatt].
+menawar | feilschen | Ich will um den Preis [feilschen].
+belanja | einkaufen | Mutter will auf dem Markt [einkaufen].
+kasir | Kassierer | Der [Kassierer] ist freundlich.
+gratis | kostenlos | Dieser Tee ist [kostenlos].
+tagihan | Rechnung | Die [Rechnung], bitte.
+pekerjaan | Arbeit / Job | Meine [Arbeit] ist schwierig.
+gaji | Gehalt | Mein [Gehalt] reicht.
+bos | Chef | Mein [Chef] ist nett.
+rapat | Besprechung | Wir haben heute eine [Besprechung].
+kelas | Klasse | Meine [Klasse] ist groß.
+ujian | Prüfung | Morgen ist eine [Prüfung].
+pelajaran | Unterrichtsstunde | Diese [Stunde] ist leicht.
+bahasa | Sprache | Ich lerne die indonesische [Sprache].
+kata | Wort | Ich habe dieses [Wort] vergessen.
+kalimat | Satz | Dieser [Satz] ist lang.
+pertanyaan | Frage | Ich habe eine [Frage].
+jawaban | Antwort | Deine [Antwort] ist richtig.
+masalah | Problem | Es gibt kein [Problem].
+ide | Idee | Das ist eine gute [Idee].
+buku | Buch | Ich lese ein [Buch].
+pena | Stift | Ich brauche einen [Stift].
+kertas | Papier | Dieses [Papier] ist weiß.
+surat | Brief | Ich schreibe einen [Brief].
+kamus | Wörterbuch | Ich schlage das [Wörterbuch] auf.
+komputer | Computer | Mein [Computer] ist neu.
+internet | Internet | Das [Internet] ist hier langsam.
+ponsel | Handy | Mein [Handy] ist aus.
+telepon | Telefon | Das [Telefon] klingelt.
+pesan | Nachricht | Ich schicke eine [Nachricht].
+email | E-Mail | Ich schicke eine [E-Mail].
+dan | und | Ich esse Reis [und] Fisch.
+atau | oder | Tee [oder] Kaffee?
+tetapi | aber | Ich will, [aber] ich kann nicht.
+tapi | aber (umgangssprachlich) | Billig, [aber] schön.
+karena | weil | Ich gehe nach Hause, [weil] ich müde bin.
+jika | wenn | [Wenn] es regnet, bleibe ich zu Hause.
+kalau | falls (umgangssprachlich) | [Falls] du Hunger hast, iss.
+dengan | mit | Ich gehe [mit] einem Freund.
+tanpa | ohne | Kaffee [ohne] Zucker.
+untuk | für | Das ist [für] dich.
+dari | von / aus | Ich komme [aus] Deutschland.
+ke | nach / zu | Ich gehe [zum] Markt.
+di | in / an | Ich wohne [in] Berlin.
+pada | am / um | Wir treffen uns [am] Montag.
+dalam | innerhalb / im | Das Buch ist [in] der Tasche.
+oleh | durch (von) | Dieser Kuchen wurde [von] Mutter gemacht.
+antara | zwischen | Die Bank ist [zwischen] dem Laden und der Schule.
+sebelum | vor / bevor | Wasch dir die Hände [vor] dem Essen.
+sesudah | nach / nachdem | [Nach] dem Essen trinke ich Tee.
+sampai | bis | Warte [bis] fünf Uhr.
+sambil | während | Er isst, [während] er liest.
+bahwa | dass | Ich weiß, [dass] du Hunger hast.
+agar | damit | Lerne, [damit] du klug wirst.
+tentang | über | Dieses Buch handelt [von] Bali.
+seperti | wie | Sie ist [wie] ihre Mutter.
+kira-kira | ungefähr | [Ungefähr] fünf Minuten.
+mungkin | vielleicht | [Vielleicht] regnet es morgen.
+pasti | bestimmt | Ich komme [bestimmt].
+tentu | natürlich | [Natürlich] ist es erlaubt.
+memang | tatsächlich | [Tatsächlich] stimmt es.
+saja | nur / einfach | Das ist [alles], danke.
+ayo | los / gehen wir | [Los], wir essen!
+hati-hati | Vorsicht | [Vorsicht] auf der Straße.
+awas | Achtung | [Achtung], ein Auto!
+sebentar | einen Moment | Warte [einen Moment].
+saya mengerti | ich verstehe |
+saya tidak mengerti | ich verstehe nicht |
+saya tidak tahu | ich weiß nicht |
+siapa nama kamu | wie heißt du |
+nama saya | mein Name ist |
+saya dari Jerman | ich komme aus Deutschland |
+saya mau makan | ich möchte essen |
+saya suka kopi | ich mag Kaffee |
+saya lapar | ich habe Hunger |
+saya haus | ich habe Durst |
+saya sakit | ich bin krank |
+saya tersesat | ich habe mich verlaufen |
+apa ini | was ist das |
+berapa harganya | wie viel kostet es |
+di mana toilet | wo ist die Toilette |
+bisa bicara bahasa Inggris | können Sie Englisch sprechen |
+tolong ulangi | bitte wiederholen |
+bicara pelan-pelan | sprich langsam |
+tolong tagihannya | die Rechnung bitte |
+satu lagi | noch eins |
+tidak pedas | nicht scharf |
+sudah cukup | das ist genug |
+sudah makan | hast du schon gegessen |
+tidak ada | es gibt keins |
+ke mana | wohin |
+dari mana | woher |

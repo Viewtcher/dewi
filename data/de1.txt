@@ -1,0 +1,223 @@
+halo | hallo | [Hallo], mein Name ist Vito.
+selamat pagi | guten Morgen | [Guten Morgen], gnädige Frau.
+selamat siang | guten Tag | [Guten Tag], mein Herr.
+selamat sore | guten Nachmittag | [Guten Nachmittag], zusammen.
+selamat malam | guten Abend / gute Nacht | [Gute Nacht], schlaf gut.
+sampai jumpa | bis bald | [Bis bald] wieder.
+selamat tinggal | auf Wiedersehen | [Auf Wiedersehen], Freunde.
+sampai besok | bis morgen | [Bis morgen] in der Schule.
+terima kasih | danke | Vielen [Dank].
+sama-sama | gern geschehen | [Gern geschehen], ich helfe gern.
+tolong | bitte / helfen | [Bitte] hilf mir.
+silakan | bitte sehr | [Bitte sehr], setz dich.
+maaf | Entschuldigung / tut mir leid | [Entschuldigung], ich bin zu spät.
+permisi | Verzeihung | [Verzeihung], darf ich vorbei?
+ya | ja | [Ja], ich möchte.
+tidak | nein / nicht | [Nein], danke.
+bukan | nicht (bei Nomen) | Das ist [kein] Kaffee.
+apa kabar | wie geht es dir | Hallo, [wie geht es dir]?
+baik | gut / in Ordnung | Mir geht es [gut], danke.
+nama | Name | Mein [Name] ist Dewi.
+senang bertemu | freut mich | [Freut mich], Sie kennenzulernen.
+selamat makan | guten Appetit | [Guten Appetit], zusammen.
+selamat ulang tahun | alles Gute zum Geburtstag | [Alles Gute zum Geburtstag], Rina!
+semoga berhasil | viel Erfolg | [Viel Erfolg] morgen.
+tidak apa-apa | kein Problem | [Kein Problem], mach dir keine Sorgen.
+saya | ich (formell) | [Ich] mag Kaffee.
+aku | ich (umgangssprachlich) | [Ich] bin sehr hungrig.
+kamu | du | Wohin willst [du] gehen?
+Anda | Sie (formell) | Sind [Sie] Arzt?
+dia | er / sie | [Sie] ist meine Lehrerin.
+kami | wir (ohne dich) | [Wir] wohnen in Jakarta.
+kita | wir (mit dir) | Komm, [wir] gehen jetzt.
+mereka | sie (Mehrzahl) | [Sie] essen gerade.
+ini | dies / das hier | [Das hier] ist mein Haus.
+itu | das dort | [Das] ist ein neues Auto.
+apa | was | [Was] ist das?
+siapa | wer | [Wer] ist er?
+di mana | wo | [Wo] ist das Badezimmer?
+kapan | wann | [Wann] gehst du nach Hause?
+mengapa | warum | [Warum] bist du traurig?
+kenapa | wieso (umgangssprachlich) | [Wieso] bist du zu spät?
+bagaimana | wie | [Wie] komme ich dorthin?
+berapa | wie viele | [Wie viele] Jahre alt bist du?
+yang mana | welche | [Welches] gehört dir?
+yang | der / die / das (Relativ) | Der Mann, [der] dort steht, ist mein Vater.
+nol | null | Meine Nummer ist [null] acht.
+satu | eins | Ich habe [einen] älteren Bruder.
+dua | zwei | Sie hat [zwei] Kinder.
+tiga | drei | [Drei] Freunde kamen.
+empat | vier | Es gibt [vier] Stühle.
+lima | fünf | Ich habe [fünf] Äpfel gekauft.
+enam | sechs | Es ist jetzt [sechs] Uhr.
+tujuh | sieben | Eine Woche hat [sieben] Tage.
+delapan | acht | Er steht um [acht] auf.
+sembilan | neun | Das Kind ist [neun] Jahre alt.
+sepuluh | zehn | Ich warte [zehn] Minuten.
+sebelas | elf | Es gibt [elf] Spieler.
+dua belas | zwölf | Der Dezember ist der [zwölfte] Monat.
+dua puluh | zwanzig | Sie ist [zwanzig] Jahre alt.
+tiga puluh | dreißig | Wir haben [dreißig] Minuten gewartet.
+lima puluh | fünfzig | Der Preis ist [fünfzig] Tausend.
+seratus | hundert | Hier sind [hundert] Leute.
+seribu | tausend | Dieses Bonbon kostet [tausend] Rupiah.
+sejuta | eine Million | Er hat [eine Million] Träume.
+pertama | erste | Das ist mein [erster] Tag.
+terakhir | letzte | Das ist das [letzte] Mal.
+setengah | halb | Ich habe einen [halben] Apfel gegessen.
+hari | Tag | Heute ist ein schöner [Tag].
+hari ini | heute | [Heute] habe ich frei.
+besok | morgen | [Morgen] lernen wir.
+kemarin | gestern | [Gestern] war ich krank.
+sekarang | jetzt | Ich esse [jetzt].
+nanti | später | Ich rufe dich [später] an.
+segera | bald | Er kommt [bald].
+tadi | vorhin | Ich habe ihn [vorhin] getroffen.
+dulu | früher | [Früher] habe ich im Dorf gewohnt.
+minggu | Woche | Ich habe eine [Woche] Urlaub.
+bulan | Monat / Mond | Ein [Monat] hat dreißig Tage.
+tahun | Jahr | Dieses [Jahr] fahre ich nach Bali.
+jam | Stunde | Ich habe eine [Stunde] gewartet.
+menit | Minute | Warte noch fünf [Minuten].
+detik | Sekunde | Warte eine [Sekunde].
+waktu | Zeit | Ich habe keine [Zeit].
+pagi | Morgen | Ich mache jeden [Morgen] Sport.
+siang | Mittag | Wir essen am [Mittag].
+sore | später Nachmittag | Ich gehe am [späten Nachmittag] spazieren.
+malam | Nacht | Ich schlafe heute [Nacht].
+libur | freier Tag | Am Sonntag habe ich einen [freien Tag].
+Senin | Montag | Am [Montag] arbeite ich.
+Selasa | Dienstag | Am [Dienstag] lerne ich.
+Rabu | Mittwoch | Am [Mittwoch] haben wir eine Besprechung.
+Kamis | Donnerstag | Am [Donnerstag] mache ich Sport.
+Jumat | Freitag | Am [Freitag] beten wir.
+Sabtu | Samstag | Am [Samstag] spiele ich.
+hari Minggu | Sonntag | Am [Sonntag] ruhe ich mich aus.
+selalu | immer | Sie lächelt [immer].
+sering | oft | Ich trinke [oft] Kaffee.
+kadang-kadang | manchmal | [Manchmal] nehme ich den Bus.
+jarang | selten | Ich esse [selten] Fleisch.
+tidak pernah | nie | Ich bin [nie] zu spät.
+sudah | schon | Ich habe [schon] gegessen.
+belum | noch nicht | Ich habe [noch nicht] gegessen.
+akan | werden (Zukunft) | Ich [werde] morgen gehen.
+masih | noch | Er schläft [noch].
+lagi | wieder | Bitte sag es [noch einmal].
+Januari | Januar | Im [Januar] ist Regenzeit.
+Februari | Februar | Mein Geburtstag ist im [Februar].
+Maret | März | Im [März] regnet es noch.
+April | April | Im [April] verreise ich.
+Mei | Mai | Im [Mai] gibt es einen Feiertag.
+Juni | Juni | Der [Juni] ist sehr heiß.
+Juli | Juli | Im [Juli] machen wir Urlaub.
+Agustus | August | Der siebzehnte [August] ist der Unabhängigkeitstag.
+September | September | Im [September] beginnt die Schule.
+Oktober | Oktober | Im [Oktober] arbeite ich.
+November | November | Im [November] regnet es oft.
+Desember | Dezember | Der [Dezember] ist kalt in Europa.
+keluarga | Familie | Meine [Familie] ist groß.
+ibu | Mutter | [Mutter] kocht in der Küche.
+ayah | Vater | [Vater] arbeitet im Büro.
+orang tua | Eltern | Meine [Eltern] wohnen in einem Dorf.
+anak | Kind | Das [Kind] spielt im Park.
+kakak | älteres Geschwister | Mein [älteres Geschwister] studiert schon.
+adik | jüngeres Geschwister | Mein [jüngeres Geschwister] geht noch zur Schule.
+saudara | Verwandte | Ich habe viele [Verwandte].
+suami | Ehemann | Mein [Ehemann] arbeitet bei einer Bank.
+istri | Ehefrau | Meine [Ehefrau] kocht gern.
+nenek | Großmutter | [Oma] backt einen Kuchen.
+kakek | Großvater | [Opa] liest die Zeitung.
+paman | Onkel | Mein [Onkel] wohnt in Bandung.
+bibi | Tante | [Tante] bringt Obst mit.
+sepupu | Cousin | Mein [Cousin] kommt heute.
+teman | Freund | Mein [Freund] ist herzensgut.
+sahabat | bester Freund | Sie ist seit der Kindheit meine [beste Freundin].
+pacar | Freund / Freundin (Beziehung) | Meine [Freundin] ist sehr nett.
+orang | Person | Da ist eine [Person] vor der Tür.
+laki-laki | Mann | Der [Mann] ist groß.
+perempuan | Frau | Die [Frau] liest gerade.
+anak laki-laki | Junge | Der [Junge] spielt Fußball.
+anak perempuan | Mädchen | Das [Mädchen] singt.
+bayi | Baby | Das [Baby] schläft.
+bapak | Herr | Was möchten Sie trinken, [mein Herr]?
+tetangga | Nachbar | Mein [Nachbar] ist freundlich.
+tamu | Gast | Unser [Gast] ist angekommen.
+guru | Lehrer | Mein [Lehrer] ist sehr geduldig.
+murid | Schüler | Der [Schüler] lernt fleißig.
+dokter | Arzt | Der [Arzt] untersucht den Patienten.
+polisi | Polizei | Die [Polizei] bewacht die Straße.
+penjual | Verkäufer | Der [Verkäufer] ist freundlich.
+pembeli | Käufer | Der [Käufer] feilscht um den Preis.
+petani | Bauer | Der [Bauer] arbeitet auf dem Reisfeld.
+nelayan | Fischer | Der [Fischer] fährt aufs Meer.
+sopir | Fahrer | Der [Fahrer] fährt vorsichtig.
+koki | Koch | Der [Koch] kocht gebratenen Reis.
+turis | Tourist | Der [Tourist] mag den Strand.
+orang asing | Ausländer | Der [Ausländer] fragt nach dem Weg.
+makan | essen | Ich will jetzt [essen].
+minum | trinken | Ich will Wasser [trinken].
+makanan | Essen | Dieses [Essen] ist lecker.
+minuman | Getränk | Dieses [Getränk] ist kalt.
+air | Wasser | Ich trinke stilles [Wasser].
+nasi | gekochter Reis | Ich esse jeden Tag [Reis].
+beras | roher Reis | Mutter kauft [Reis] auf dem Markt.
+nasi goreng | gebratener Reis | Ich mag [gebratenen Reis].
+roti | Brot | Ich esse [Brot] mit Ei.
+daging | Fleisch | Er isst kein [Fleisch].
+ayam | Huhn | Ich bestelle gebratenes [Huhn].
+ikan | Fisch | Dieser [Fisch] ist frisch.
+udang | Garnele | Diese [Garnele] ist groß.
+telur | Ei | Ich esse zwei [Eier].
+tempe | Tempeh | [Tempeh] ist billig und gesund.
+sate | Saté | Ich möchte Hähnchen-[Saté].
+sayur | Gemüse | Kinder müssen [Gemüse] essen.
+buah | Obst | Ich mag frisches [Obst].
+apel | Apfel | Dieser [Apfel] ist süß.
+pisang | Banane | Affen mögen [Bananen].
+jeruk | Orange | Ich trinke [Orangen]saft.
+mangga | Mango | Diese [Mango] ist sehr süß.
+nanas | Ananas | [Ananas] schmeckt sauer.
+semangka | Wassermelone | [Wassermelone] passt gut, wenn es heiß ist.
+kopi | Kaffee | Ich trinke morgens [Kaffee].
+teh | Tee | Sie mag warmen [Tee].
+susu | Milch | Das Baby trinkt [Milch].
+jus | Saft | Ich bestelle Mango-[Saft].
+bir | Bier | Er trinkt ein kaltes [Bier].
+es | Eis | Ich möchte Eistee, also mit [Eis].
+gula | Zucker | Mein Kaffee ist mit [Zucker].
+garam | Salz | Dieser Suppe fehlt [Salz].
+pedas | scharf | Dieses Essen ist zu [scharf].
+manis | süß | Dieser Tee ist [süß].
+asin | salzig | Dieser Fisch ist [salzig].
+asam | sauer | Diese Orange ist [sauer].
+pahit | bitter | Dieser Kaffee ist [bitter].
+lapar | hungrig | Ich bin sehr [hungrig].
+haus | durstig | Ich bin [durstig], ich will etwas trinken.
+kenyang | satt | Ich bin schon [satt].
+enak | lecker | Der gebratene Reis ist [lecker].
+sarapan | Frühstück | Ich esse um sieben [Frühstück].
+makan siang | Mittagessen | Wir essen im Imbiss [Mittag].
+makan malam | Abendessen | Wir essen zusammen [Abend].
+restoran | Restaurant | Das [Restaurant] ist voll.
+warung | kleiner Imbiss | Wir essen im [Imbiss].
+piring | Teller | Bitte hol einen [Teller].
+mangkuk | Schüssel | Ich möchte eine [Schüssel] Suppe.
+sendok | Löffel | Ich brauche einen [Löffel].
+garpu | Gabel | Er isst mit einer [Gabel].
+pisau | Messer | Dieses [Messer] ist scharf.
+gelas | Glas | Bitte gib mir ein [Glas] Wasser.
+mie | Nudeln | Ich bestelle gebratene [Nudeln].
+sup | Suppe | Diese [Suppe] ist heiß.
+goreng | gebraten | Ich mag [gebratene] Bananen.
+rebus | gekocht | Ich esse [gekochte] Eier.
+bakar | gegrillt | Ich mag [gegrillten] Fisch.
+bawang putih | Knoblauch | Mutter gibt [Knoblauch] dazu.
+bawang merah | Schalotte | Ich schneide die [Schalotte].
+cabai | Chili | Er mag [Chili].
+kentang | Kartoffel | Ich brate [Kartoffeln].
+tomat | Tomate | Diese [Tomate] ist rot.
+kelapa | Kokosnuss | Ich trinke [Kokos]wasser.
+kue | Kuchen | Oma backt einen [Kuchen].
+permen | Bonbon | Das Kind isst ein [Bonbon].
+makanan ringan | Snack | Ich kaufe einen [Snack].
+bungkus | zum Mitnehmen | Einmal gebratener Reis, [zum Mitnehmen].

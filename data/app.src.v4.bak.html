@@ -1,0 +1,1301 @@
+<title>kata.vito</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&display=swap">
+<style>
+/* Layout: eine schmale Heftseite, unten Tab-Leiste. Farben: Indigo (nila) und Kurkuma (kunyit), wie beim Batik-Färben. */
+:root{
+  --bg:#0d1325; --surface:#141b33; --raised:#1b2444; --line:#27325a; --line-soft:#1e2748;
+  --text:#ece8dc; --muted:#a0aac9; --faint:#8490b4;
+  --accent:#ffc23d; --accent-ink:#1b1403; --accent-soft:rgba(255,194,61,.16);
+  --c-yellow:#ffc23d; --c-orange:#ff8a3d; --c-pink:#ff5c9d; --c-violet:#a888ff; --c-blue:#5aa9ff; --c-cyan:#35dcd2; --c-green:#6ee77a;
+  --lv0:#f2907f; --lv1:var(--c-blue); --lv2:var(--c-cyan); --lv3:var(--c-green); --lv4:var(--c-yellow); --lv5:var(--c-pink);
+  --rainbow:linear-gradient(90deg,var(--c-blue),var(--c-cyan),var(--c-green),var(--c-yellow),var(--c-orange),var(--c-pink));
+  --good:#5fd3a0; --good-soft:rgba(95,211,160,.12);
+  --bad:#f2907f; --bad-soft:rgba(242,144,127,.12);
+  --display:'Bricolage Grotesque','Avenir Next','Segoe UI',system-ui,sans-serif;
+  --body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:dark;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+[hidden]{display:none!important}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;-webkit-tap-highlight-color:transparent}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+p{margin:0}
+h1{font:700 26px/1.15 var(--display);letter-spacing:-.015em;margin:0;text-wrap:balance}
+h2{font:700 18px/1.2 var(--display);margin:0}
+
+.app{max-width:480px;margin:0 auto;padding:18px 16px 104px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:9px;font:700 22px/1 var(--display);letter-spacing:-.01em}
+.brand i{width:10px;height:10px;background:linear-gradient(135deg,var(--c-yellow),var(--c-pink));transform:rotate(45deg)}
+.brand b{color:var(--c-pink);font-weight:700}
+.brand em{font-style:italic;font-weight:600;font-size:.82em;letter-spacing:0;color:var(--c-cyan)}
+.eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.hint{color:var(--muted);font-size:14px}
+.chip{display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-size:14px;font-weight:600}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px;margin-top:14px}
+.plan{position:relative;overflow:hidden;background:linear-gradient(155deg,#1b2652 0%,#2b1f5e 100%);border-color:#3b3a82}
+.plan::after{content:"";position:absolute;left:0;right:0;top:0;height:4px;background:var(--rainbow)}
+.plan::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44' viewBox='0 0 44 44'%3E%3Cg fill='none' stroke='%23e8b13a' stroke-opacity='.2' stroke-width='1'%3E%3Cellipse cx='22' cy='11' rx='5.5' ry='11'/%3E%3Cellipse cx='22' cy='33' rx='5.5' ry='11'/%3E%3Cellipse cx='11' cy='22' rx='11' ry='5.5'/%3E%3Cellipse cx='33' cy='22' rx='11' ry='5.5'/%3E%3C/g%3E%3C/svg%3E");
+  -webkit-mask-image:linear-gradient(100deg,transparent 40%,#000 100%);mask-image:linear-gradient(100deg,transparent 40%,#000 100%)}
+.plan>*{position:relative}
+.nums{display:flex;gap:30px;margin:10px 0 18px}
+.num b{display:block;font:700 46px/1 var(--display);font-variant-numeric:tabular-nums}
+.num span{font-size:13px;color:var(--muted)}
+.num:nth-child(1) b{color:var(--c-cyan)}
+.num:nth-child(2) b{color:var(--c-pink)}
+.plan h2{margin:8px 0 6px}
+
+.streak{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.sl{display:flex;align-items:flex-end;gap:10px}
+.streak b{font:700 34px/1 var(--display);font-variant-numeric:tabular-nums;color:var(--c-orange)}
+.streak small{display:block;color:var(--muted);font-size:13px;margin-top:4px}
+.fl{width:46px;height:58px;flex:none;overflow:visible;filter:drop-shadow(0 0 7px rgba(255,150,0,.5))}
+.fl.big{width:76px;height:96px;filter:drop-shadow(0 0 12px rgba(255,150,0,.55))}
+.fl.off{filter:none}
+.fl path{transform-origin:32px 77px}
+.fl:not(.off) .f1{animation:fl1 1.3s ease-in-out infinite}
+.fl:not(.off) .f2{animation:fl2 1s ease-in-out -.3s infinite}
+.fl:not(.off) .f3{animation:fl3 .8s ease-in-out -.5s infinite}
+.fl:not(.off) .f4{animation:fl4 .6s ease-in-out -.2s infinite}
+@keyframes fl1{0%,100%{transform:scale(1,1) skewX(0deg)}33%{transform:scale(1.04,1.08) skewX(-3deg)}66%{transform:scale(.97,.95) skewX(2.5deg)}}
+@keyframes fl2{0%,100%{transform:scale(1,1) skewX(0deg)}40%{transform:scale(.96,1.1) skewX(3deg)}75%{transform:scale(1.03,.94) skewX(-2deg)}}
+@keyframes fl3{0%,100%{transform:scale(1,1) skewX(0deg)}50%{transform:scale(1.06,1.14) skewX(-2deg)}}
+@keyframes fl4{0%,100%{transform:scale(1,1)}50%{transform:scale(.9,1.18)}}
+.week{display:flex;gap:8px}
+.day{display:grid;justify-items:center;gap:6px;font-size:11px;color:var(--faint)}
+.day i{width:22px;height:22px;border-radius:6px;border:1.5px solid var(--line)}
+.day.on i{background:var(--dc);border-color:var(--dc)}
+.day.now span{color:var(--text);font-weight:700}
+.day.now i{outline:2px solid var(--dc);outline-offset:2px}
+
+.stack{display:flex;gap:2px;height:10px;border-radius:999px;overflow:hidden;background:var(--raised);margin-top:12px}
+.stack i{display:block;height:100%}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;margin-top:14px;font-size:13px;color:var(--muted)}
+.legend span{display:flex;align-items:center;gap:8px;min-width:0}
+.legend em{width:9px;height:9px;border-radius:50%;flex:none}
+.legend b{margin-left:auto;color:var(--text);font-weight:600;font-variant-numeric:tabular-nums}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:12px;border:1px solid var(--line);background:var(--raised);font-weight:600;font-size:16px}
+.btn.primary{background:linear-gradient(135deg,var(--c-yellow),var(--c-orange));border-color:transparent;color:var(--accent-ink);box-shadow:0 4px 0 #b3560f;transition:transform .06s,box-shadow .06s}
+.btn.primary:active{transform:translateY(3px);box-shadow:0 1px 0 #b3560f}
+.btn.primary.pulse{animation:glow 2.2s ease-out infinite}
+@keyframes glow{0%,100%{box-shadow:0 4px 0 #b3560f,0 0 0 0 rgba(255,194,61,.55)}50%{box-shadow:0 4px 0 #b3560f,0 0 0 12px rgba(255,194,61,0)}}
+.btn.ghost{background:transparent}
+.btn.block{display:flex;width:100%}
+.btn.danger{border-color:var(--bad);color:var(--bad);background:var(--bad-soft)}
+.btn:disabled{opacity:.45;cursor:default}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+
+.field{display:block;width:100%;min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);padding:0 14px;font-size:16px}
+.field::placeholder{color:var(--faint)}
+textarea.field{padding:12px 14px;min-height:96px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:12px 0 6px}
+.pill{flex:none;min-height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:14px;font-weight:600}
+.pill[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+details.cat{border-bottom:1px solid var(--line)}
+details.cat summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:54px;cursor:pointer;font-weight:600}
+details.cat summary::-webkit-details-marker{display:none}
+details.cat summary::before{content:"";flex:none;width:7px;height:7px;border-right:3px solid var(--cc);border-bottom:3px solid var(--cc);transform:rotate(-45deg);transition:transform .15s}
+details.cat[open] summary::before{transform:rotate(45deg)}
+.cnt{margin-left:auto;font-size:13px;font-weight:500;color:var(--faint);font-variant-numeric:tabular-nums}
+ul.rows{list-style:none;margin:0 0 10px 3px;padding:0;border-left:3px solid var(--cc)}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0 10px 14px;border-top:1px solid var(--line-soft)}
+.row .w{flex:1;min-width:0;display:flex;flex-direction:column}
+.row .id{font:600 17px/1.25 var(--display);overflow-wrap:anywhere}
+.row .en{color:var(--muted);font-size:14px;overflow-wrap:anywhere}
+.meta{display:grid;justify-items:end;gap:4px;flex:none}
+.pips{display:flex;gap:3px}
+.pips i{width:7px;height:7px;border-radius:2px;background:var(--line)}
+.pips i.f{background:var(--pc,var(--accent))}
+.tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--c-orange)}
+.empty{padding:36px 0;text-align:center;color:var(--muted)}
+
+.set{display:grid;gap:14px}
+.seg{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}
+.seg button{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--surface);font:700 18px var(--display)}
+.seg button[aria-checked=true]{background:linear-gradient(135deg,var(--c-yellow),var(--c-orange));border-color:transparent;color:var(--accent-ink)}
+details.how summary{cursor:pointer;font-weight:600;min-height:32px}
+ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--muted)}
+.langrow{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px;border-radius:16px;border:1px solid var(--line);background:var(--surface)}
+.langrow .code{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--c-yellow),var(--c-pink));color:var(--accent-ink);font:700 18px var(--display);flex:none}
+.langrow b{display:block;font:700 18px/1.2 var(--display)}
+.flash{color:var(--good);font-size:14px;min-height:1.4em}
+
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs-in{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.tab{display:grid;justify-items:center;gap:2px;min-height:52px;padding:6px 4px;border:0;border-radius:12px;background:transparent;color:var(--faint);font-size:11px;font-weight:600}
+.tab svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tab[data-v=home]{--tc:var(--c-yellow)}
+.tab[data-v=book]{--tc:var(--c-cyan)}
+.tab[data-v=settings]{--tc:var(--c-pink)}
+.tab[aria-current=page]{color:var(--tc)}
+
+.sheet{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}
+.sin{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;gap:18px;padding:max(14px,env(safe-area-inset-top,0px)) 16px max(24px,env(safe-area-inset-bottom,0px))}
+.shead{display:flex;align-items:center;gap:14px}
+.iconbtn{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
+.iconbtn svg{width:18px;height:18px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.sbar{flex:1;height:6px;border-radius:999px;background:var(--raised);overflow:hidden}
+.sbar i{display:block;height:100%;background:var(--rainbow);background-size:calc(100% / var(--p,1)) 100%;border-radius:inherit;transition:width .3s}
+.scount{min-width:42px;text-align:right;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.smain{flex:1;display:flex;flex-direction:column;justify-content:center;gap:16px;padding-bottom:40px;animation:rise .22s ease-out}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--k,var(--accent))}
+.bigword{font:700 clamp(34px,10vw,50px)/1.05 var(--display);letter-spacing:-.015em;overflow-wrap:anywhere;text-wrap:balance}
+.gloss{font:500 24px/1.25 var(--display);color:var(--muted)}
+.qform{display:grid;gap:10px;margin-top:6px}
+.qform .field{font-size:20px;min-height:58px}
+/* Puls beim Tippen: Ring pro Taste, Atem-Glühen solange Text im Feld steht */
+.inwrap{position:relative;--pc:var(--accent);--pcs:rgba(255,194,61,.27)}
+.inwrap .field{position:relative;z-index:1;transition:border-color .15s}
+.inwrap::after{content:"";position:absolute;inset:0;border-radius:12px;border:3px solid var(--pc);opacity:0;pointer-events:none}
+.inwrap.pulse::after{animation:ring .55s ease-out}
+.inwrap.typing .field{border-color:var(--pc);animation:breathe 1.3s ease-in-out infinite}
+@keyframes ring{0%{opacity:.95;transform:scale(1)}100%{opacity:0;transform:scale(1.06,1.4)}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 3px var(--pcs)}50%{box-shadow:0 0 0 9px rgba(0,0,0,0)}}
+.tries{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--faint)}
+.tries i{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.tries i.x{background:var(--line)}
+.tries span{margin-left:4px}
+.fb{min-height:1.5em}
+.fb.bad{color:var(--bad)}
+.res{border-radius:14px;padding:14px 16px;border:1px solid var(--line)}
+.res.good{background:var(--good-soft);border-color:var(--good);animation:pop .45s cubic-bezier(.3,1.6,.5,1)}
+.res.bad{background:var(--bad-soft);border-color:var(--bad);animation:shake .35s}
+@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:none;opacity:1}}
+.confetti{position:fixed;width:0;height:0;pointer-events:none;z-index:60}
+.confetti i{position:absolute;left:-4px;top:-4px;width:8px;height:8px;background:var(--cf);animation:fly .95s cubic-bezier(.15,.7,.3,1) forwards}
+@keyframes fly{0%{transform:translate(0,0) rotate(0) scale(1);opacity:1}100%{transform:translate(var(--dx),var(--dy)) rotate(var(--r)) scale(.3);opacity:0}}
+.endstreak{display:flex;align-items:flex-end;gap:14px;font-size:15px;color:var(--muted)}
+.endstreak b{font:700 40px/1 var(--display);color:var(--c-orange);margin-right:4px}
+.endstreak small{display:block;margin-top:4px;color:var(--c-yellow);font-weight:600}
+.endstreak.grew{animation:bounce .6s cubic-bezier(.3,1.5,.5,1)}
+@keyframes bounce{0%{transform:scale(.6);opacity:0}100%{transform:none;opacity:1}}
+.res .rl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;font-weight:700}
+.res.good .rl{color:var(--good)}
+.res.bad .rl{color:var(--bad)}
+.pair{font:600 22px/1.3 var(--display);margin-top:6px;overflow-wrap:anywhere}
+.pair em{font-style:normal;color:var(--faint);padding:0 6px}
+.missed{display:flex;flex-wrap:wrap;gap:8px}
+.missed span{padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:600}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes shake{20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.shake{animation:shake .3s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="app" id="app"></div>
+
+<nav class="tabs" id="tabs" aria-label="Hauptmenü" hidden>
+  <div class="tabs-in">
+    <button class="tab" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3.5v3M16 3.5v3"/></svg>Heute</button>
+    <button class="tab" data-v="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3V4.5Z"/><path d="M5 17a3 3 0 0 1 3-3h10"/></svg>Vokabelheft</button>
+    <button class="tab" data-v="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Einstellungen</button>
+  </div>
+</nav>
+
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Abfrage"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Wortschatz ---------- */
+const INTERVALS=[1,3,7,14,30];   // Tage bis zur nächsten Wiederholung nach Stufe 1..5
+const STORE='kata.v1';
+
+const LANGS={id:{id:'id',name:'Indonesisch',native:'Bahasa Indonesia',code:'ID',cats:[
+['Begrüßung & Höflichkeit',`
+halo = hello
+selamat pagi = good morning
+selamat siang = good day
+selamat sore = good afternoon
+selamat malam = good evening / good night
+sampai jumpa = see you
+selamat tinggal = goodbye
+sampai besok = see you tomorrow
+terima kasih = thank you
+sama-sama = you are welcome
+tolong = please / help
+silakan = please go ahead
+maaf = sorry
+permisi = excuse me
+ya = yes
+tidak = no / not
+bukan = not (with nouns)
+apa kabar = how are you
+baik = good / fine
+nama = name
+senang bertemu = nice to meet you
+selamat makan = enjoy your meal
+selamat ulang tahun = happy birthday
+semoga berhasil = good luck
+tidak apa-apa = no problem
+`],
+['Pronomen & Fragewörter',`
+saya = I (formal)
+aku = I (informal)
+kamu = you (informal)
+Anda = you (formal)
+dia = he / she
+kami = we (without you)
+kita = we (with you)
+mereka = they
+ini = this
+itu = that
+apa = what
+siapa = who
+di mana = where
+kapan = when
+mengapa = why
+kenapa = why (informal)
+bagaimana = how
+berapa = how many
+yang mana = which
+yang = who / that
+`],
+['Zahlen',`
+nol = zero
+satu = one
+dua = two
+tiga = three
+empat = four
+lima = five
+enam = six
+tujuh = seven
+delapan = eight
+sembilan = nine
+sepuluh = ten
+sebelas = eleven
+dua belas = twelve
+dua puluh = twenty
+tiga puluh = thirty
+lima puluh = fifty
+seratus = one hundred
+seribu = one thousand
+sejuta = one million
+pertama = first
+terakhir = last
+setengah = half
+`],
+['Zeit & Wochentage',`
+hari = day
+hari ini = today
+besok = tomorrow
+kemarin = yesterday
+sekarang = now
+nanti = later
+segera = soon
+tadi = just now
+dulu = in the past
+minggu = week
+bulan = month / moon
+tahun = year
+jam = hour
+menit = minute
+detik = second (time)
+waktu = time
+pagi = morning
+siang = noon
+sore = late afternoon
+malam = night
+libur = day off
+Senin = Monday
+Selasa = Tuesday
+Rabu = Wednesday
+Kamis = Thursday
+Jumat = Friday
+Sabtu = Saturday
+hari Minggu = Sunday
+selalu = always
+sering = often
+kadang-kadang = sometimes
+jarang = rarely
+tidak pernah = never
+sudah = already
+belum = not yet
+akan = will
+masih = still
+lagi = again
+`],
+['Monate',`
+Januari = January
+Februari = February
+Maret = March
+April = April
+Mei = May (month)
+Juni = June
+Juli = July
+Agustus = August
+September = September
+Oktober = October
+November = November
+Desember = December
+`],
+['Familie & Menschen',`
+keluarga = family
+ibu = mother
+ayah = father
+orang tua = parents
+anak = child
+kakak = older sibling
+adik = younger sibling
+saudara = relative
+suami = husband
+istri = wife
+nenek = grandmother
+kakek = grandfather
+paman = uncle
+bibi = aunt
+sepupu = cousin
+teman = friend
+sahabat = best friend
+pacar = boyfriend / girlfriend
+orang = person
+laki-laki = man
+perempuan = woman
+anak laki-laki = boy
+anak perempuan = girl
+bayi = baby
+bapak = sir
+tetangga = neighbor
+tamu = guest
+guru = teacher
+murid = pupil
+dokter = doctor
+polisi = police
+penjual = seller
+pembeli = buyer
+petani = farmer
+nelayan = fisherman
+sopir = driver
+koki = chef
+turis = tourist
+orang asing = foreigner
+`],
+['Essen & Trinken',`
+makan = to eat
+minum = to drink
+makanan = food
+minuman = drink
+air = water
+nasi = cooked rice
+beras = raw rice
+nasi goreng = fried rice
+roti = bread
+daging = meat
+ayam = chicken
+ikan = fish
+udang = shrimp
+telur = egg
+tempe = tempeh
+sate = satay
+sayur = vegetables
+buah = fruit
+apel = apple
+pisang = banana
+jeruk = orange
+mangga = mango
+nanas = pineapple
+semangka = watermelon
+kopi = coffee
+teh = tea
+susu = milk
+jus = juice
+bir = beer
+es = ice
+gula = sugar
+garam = salt
+pedas = spicy
+manis = sweet
+asin = salty
+asam = sour
+pahit = bitter
+lapar = hungry
+haus = thirsty
+kenyang = full (stomach)
+enak = tasty
+sarapan = breakfast
+makan siang = lunch
+makan malam = dinner
+restoran = restaurant
+warung = small eatery
+piring = plate
+mangkuk = bowl
+sendok = spoon
+garpu = fork
+pisau = knife
+gelas = glass
+mie = noodles
+sup = soup
+goreng = fried
+rebus = boiled
+bakar = grilled
+bawang putih = garlic
+bawang merah = shallot
+cabai = chili
+kentang = potato
+tomat = tomato
+kelapa = coconut
+kue = cake
+permen = candy
+makanan ringan = snack
+bungkus = takeaway
+`],
+['Verben',`
+pergi = to go
+datang = to come
+pulang = to go home
+masuk = to enter
+keluar = to go out
+tidur = to sleep
+bangun = to wake up
+duduk = to sit
+berdiri = to stand
+berjalan = to walk
+lari = to run
+jatuh = to fall
+bicara = to speak
+berkata = to say
+bertanya = to ask
+menjawab = to answer
+melihat = to see
+mendengar = to hear
+membaca = to read
+menulis = to write
+belajar = to study
+mengajar = to teach
+bekerja = to work
+bermain = to play
+membeli = to buy
+menjual = to sell
+membayar = to pay
+mengambil = to take
+memberi = to give
+membawa = to bring
+membuka = to open
+menutup = to close
+mulai = to start
+selesai = to finish
+menunggu = to wait
+mencari = to look for
+menemukan = to find
+mengerti = to understand
+tahu = to know
+ingat = to remember
+lupa = to forget
+suka = to like
+cinta = to love
+mau = to want
+bisa = can
+harus = must
+boleh = is allowed
+punya = to have
+ada = there is
+menjadi = to become
+memakai = to wear
+menggunakan = to use
+membuat = to make
+melakukan = to do
+mandi = to bathe
+mencuci = to wash
+memasak = to cook
+naik = to go up
+turun = to go down
+berhenti = to stop
+tinggal = to live
+hidup = to be alive
+mati = to die
+lahir = to be born
+menikah = to marry
+membantu = to help
+berpikir = to think
+merasa = to feel
+tertawa = to laugh
+menangis = to cry
+tersenyum = to smile
+menelepon = to call
+mengirim = to send
+menerima = to receive
+mengunjungi = to visit
+bertemu = to meet
+istirahat = to rest
+menyanyi = to sing
+menari = to dance
+berenang = to swim
+menyetir = to drive
+terbang = to fly
+memilih = to choose
+mencoba = to try
+berharap = to hope
+membersihkan = to clean
+berubah = to change
+menjaga = to look after
+menyimpan = to keep
+`],
+['Adjektive & Mengenwörter',`
+besar = big
+kecil = small
+panjang = long
+pendek = short
+tinggi = tall
+rendah = low
+baru = new
+lama = old (not new)
+tua = old (people)
+muda = young
+bagus = nice
+jelek = ugly
+buruk = bad
+mudah = easy
+sulit = difficult
+murah = cheap
+mahal = expensive
+panas = hot
+dingin = cold
+hangat = warm
+sejuk = cool
+bersih = clean
+kotor = dirty
+cepat = fast
+lambat = slow
+pelan-pelan = slowly
+benar = correct
+salah = wrong
+penuh = full (not empty)
+kosong = empty
+berat = heavy
+ringan = light (weight)
+kaya = rich
+miskin = poor
+senang = happy
+sedih = sad
+marah = angry
+takut = afraid
+lelah = tired
+sakit = sick
+sehat = healthy
+cantik = beautiful
+tampan = handsome
+pintar = smart
+bodoh = stupid
+lucu = funny
+penting = important
+sibuk = busy
+bebas = free
+dekat = near
+jauh = far
+terang = bright
+gelap = dark
+kuat = strong
+lemah = weak
+aman = safe
+berbahaya = dangerous
+ramai = crowded
+sepi = quiet
+sama = same
+berbeda = different
+lain = other
+semua = all
+banyak = many
+sedikit = a little
+beberapa = some
+cukup = enough
+sangat = very
+terlalu = too
+lebih = more
+paling = most
+juga = also
+hanya = only
+`],
+['Orte & Gebäude',`
+rumah = house
+kamar = room
+dapur = kitchen
+kamar mandi = bathroom
+kamar tidur = bedroom
+ruang tamu = living room
+pintu = door
+jendela = window
+kota = city
+desa = village
+negara = country
+jalan = street
+pasar = market
+toko = shop
+supermarket = supermarket
+bank = bank
+rumah sakit = hospital
+sekolah = school
+universitas = university
+kantor = office
+bandara = airport
+stasiun = station
+pantai = beach
+gunung = mountain
+laut = sea
+sungai = river
+danau = lake
+hutan = forest
+taman = park
+masjid = mosque
+gereja = church
+pulau = island
+toilet = toilet
+`],
+['Richtungen',`
+kiri = left
+kanan = right
+lurus = straight ahead
+depan = front
+belakang = back
+atas = above
+bawah = below
+luar = outside
+tengah = middle
+samping = beside
+utara = north
+selatan = south
+timur = east
+barat = west
+sini = here
+situ = there
+sana = over there
+`],
+['Reisen & Verkehr',`
+mobil = car
+motor = motorcycle
+sepeda = bicycle
+bus = bus
+kereta api = train
+pesawat = airplane
+kapal = ship
+taksi = taxi
+ojek = motorbike taxi
+tiket = ticket
+bensin = petrol
+parkir = parking
+macet = traffic jam
+peta = map
+perjalanan = journey
+paspor = passport
+koper = suitcase
+hotel = hotel
+liburan = vacation
+alamat = address
+`],
+['Körper & Gesundheit',`
+kepala = head
+mata = eye
+telinga = ear
+hidung = nose
+mulut = mouth
+gigi = tooth
+lidah = tongue
+leher = neck
+bahu = shoulder
+lengan = arm
+tangan = hand
+jari = finger
+kaki = foot
+lutut = knee
+perut = stomach
+punggung = back (body part)
+rambut = hair
+wajah = face
+badan = body
+kulit = skin
+hati = heart (feelings)
+darah = blood
+obat = medicine
+demam = fever
+flu = flu
+batuk = cough
+sakit kepala = headache
+pusing = dizzy
+luka = wound
+alergi = allergy
+apotek = pharmacy
+`],
+['Kleidung & Farben',`
+baju = shirt
+pakaian = clothes
+celana = trousers
+rok = skirt
+jaket = jacket
+kaos = T-shirt
+kaus kaki = socks
+sepatu = shoe
+sandal = sandals
+topi = hat
+tas = bag
+kacamata = glasses
+jam tangan = wristwatch
+cincin = ring
+dompet = wallet
+payung = umbrella
+warna = color
+merah = red
+biru = blue
+hijau = green
+kuning = yellow
+hitam = black
+putih = white
+cokelat = brown
+abu-abu = gray
+oranye = orange (color)
+ungu = purple
+merah muda = pink
+`],
+['Natur, Wetter & Tiere',`
+cuaca = weather
+hujan = rain
+matahari = sun
+bintang = star
+langit = sky
+angin = wind
+awan = cloud
+salju = snow
+badai = storm
+petir = lightning
+pelangi = rainbow
+banjir = flood
+gempa bumi = earthquake
+api = fire
+bumi = earth
+tanah = soil
+batu = stone
+pasir = sand
+pohon = tree
+daun = leaf
+bunga = flower
+rumput = grass
+hewan = animal
+anjing = dog
+kucing = cat
+burung = bird
+sapi = cow
+kuda = horse
+kambing = goat
+bebek = duck
+tikus = mouse
+nyamuk = mosquito
+semut = ant
+cicak = gecko
+kodok = frog
+harimau = tiger
+gajah = elephant
+monyet = monkey
+buaya = crocodile
+ular = snake
+kupu-kupu = butterfly
+`],
+['Haus & Alltag',`
+meja = table
+kursi = chair
+tempat tidur = bed
+lemari = cupboard
+cermin = mirror
+lampu = lamp
+televisi = television
+kunci = key
+lantai = floor
+dinding = wall
+atap = roof
+tangga = stairs
+kebun = garden
+sabun = soap
+handuk = towel
+sikat gigi = toothbrush
+selimut = blanket
+kipas angin = fan
+listrik = electricity
+sampah = trash
+barang = thing
+hadiah = gift
+foto = photo
+musik = music
+film = film
+permainan = game
+`],
+['Geld & Einkaufen',`
+uang = money
+harga = price
+tunai = cash
+kartu = card
+kembalian = change
+diskon = discount
+menawar = to bargain
+belanja = to shop
+kasir = cashier
+gratis = free of charge
+tagihan = bill
+`],
+['Arbeit & Schule',`
+pekerjaan = job
+gaji = salary
+bos = boss
+rapat = meeting
+kelas = class
+ujian = exam
+pelajaran = lesson
+bahasa = language
+kata = word
+kalimat = sentence
+pertanyaan = question
+jawaban = answer
+masalah = problem
+ide = idea
+buku = book
+pena = pen
+kertas = paper
+surat = letter
+kamus = dictionary
+komputer = computer
+internet = internet
+ponsel = mobile phone
+telepon = telephone
+pesan = message
+email = email
+`],
+['Kleine Wörter',`
+dan = and
+atau = or
+tetapi = but
+tapi = but (informal)
+karena = because
+jika = if
+kalau = if (informal)
+dengan = with
+tanpa = without
+untuk = for
+dari = from
+ke = to
+di = in
+pada = at
+dalam = inside
+oleh = by
+antara = between
+sebelum = before
+sesudah = after
+sampai = until
+sambil = while
+bahwa = that (conjunction)
+agar = so that
+tentang = about
+seperti = like
+kira-kira = approximately
+mungkin = maybe
+pasti = surely
+tentu = of course
+memang = indeed
+saja = just
+`],
+['Sätze für den Alltag',`
+saya mengerti = I understand
+saya tidak mengerti = I do not understand
+saya tidak tahu = I do not know
+siapa nama kamu = what is your name
+nama saya = my name is
+saya dari Jerman = I am from Germany
+saya mau makan = I want to eat
+saya suka kopi = I like coffee
+saya lapar = I am hungry
+saya haus = I am thirsty
+saya sakit = I am sick
+saya tersesat = I am lost
+apa ini = what is this
+berapa harganya = how much is it
+di mana toilet = where is the toilet
+bisa bicara bahasa Inggris = can you speak English
+tolong ulangi = please repeat
+bicara pelan-pelan = speak slowly
+tolong tagihannya = the bill please
+satu lagi = one more
+tidak pedas = not spicy
+sudah cukup = that is enough
+sudah makan = have you eaten
+ayo = let us go
+hati-hati = be careful
+awas = watch out
+sebentar = a moment
+tidak ada = there is none
+ke mana = where to
+dari mana = where from
+`]
+]}};
+
+Object.values(LANGS).forEach(L=>{
+  L.words=[];L.catCount=L.cats.map(()=>0);
+  L.cats.forEach((c,ci)=>c[1].split('\n').forEach(line=>{
+    const i=line.indexOf(' = ');if(i<1)return;
+    const id=line.slice(0,i).trim(),en=line.slice(i+3).trim();if(!id||!en)return;
+    L.words.push({k:id.toLowerCase(),id,en,cat:ci});L.catCount[ci]++;
+  }));
+});
+
+/* ---------- Hilfsfunktionen ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fold=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+const normId=s=>fold(s).replace(/[^a-z0-9]/g,'');
+function normEn(s){
+  s=fold(s).replace(/\([^)]*\)/g,' ').replace(/[’‘`]/g,"'");
+  s=s.replace(/cannot/g,'can not').replace(/can't/g,'can not').replace(/won't/g,'will not').replace(/n't\b/g,' not')
+     .replace(/\bi'm\b/g,'i am').replace(/\b(it|that|what|there|he|she|here)'s\b/g,'$1 is').replace(/'re\b/g,' are');
+  s=s.replace(/[^a-z0-9 ]/g,' ').replace(/\s+/g,' ').trim();
+  return s.replace(/^(to|a|an|the) (?=\S)/,'');
+}
+const pad=n=>String(n).padStart(2,'0');
+const ymd=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const a=s.split('-').map(Number);return new Date(a[0],a[1]-1,a[2],12)};
+const addDays=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return ymd(d)};
+const dayName=(s,o)=>parse(s).toLocaleDateString('de-DE',o);
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a}
+
+/* ---------- Zustand ---------- */
+const defaults=()=>({v:1,lang:null,newPerDay:1,dayOffset:0,progress:{},daily:{date:'',newCount:0,extra:0},done:{}});
+let state=load();
+function load(){try{const raw=localStorage.getItem(STORE);if(raw)return Object.assign(defaults(),JSON.parse(raw));}catch(e){}return defaults();}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
+function today(){const d=new Date();d.setDate(d.getDate()+(state.dayOffset||0));return ymd(d)}
+function daily(){const t=today();if(state.daily.date!==t)state.daily={date:t,newCount:0,extra:0};return state.daily}
+const curLang=()=>LANGS[state.lang];
+
+function plan(){
+  const L=curLang(),t=today(),prog=state.progress[L.id]||{};
+  const due=shuffle(L.words.filter(w=>prog[w.k]&&prog[w.k].d<=t)).sort((a,b)=>prog[a.k].d<prog[b.k].d?-1:prog[a.k].d>prog[b.k].d?1:0);
+  const dq=daily(),need=Math.max(0,state.newPerDay+dq.extra-dq.newCount);
+  const fresh=L.words.filter(w=>!prog[w.k]).slice(0,need);
+  return {due,fresh};
+}
+function streak(){
+  const t=today();let d=state.done[t]?t:addDays(t,-1),n=0;
+  while(state.done[d]){n++;d=addDays(d,-1);}
+  return n;
+}
+function record(w,ok){
+  const L=curLang(),prog=state.progress[L.id]||(state.progress[L.id]={});
+  const prev=prog[w.k],dq=daily();
+  const level=ok?Math.min((prev?prev.l:0)+1,5):0;
+  const days=ok?INTERVALS[level-1]:1;
+  prog[w.k]={l:level,d:addDays(today(),days)};
+  if(!prev)dq.newCount++;
+  save();
+  return {level,days};
+}
+
+/* ---------- Farben & Effekte ---------- */
+const PAL=['#ffc23d','#ff8a3d','#ff5c9d','#a888ff','#5aa9ff','#35dcd2','#6ee77a'];
+const CATCOL=['var(--c-yellow)','var(--c-pink)','var(--c-cyan)','var(--c-violet)','var(--c-green)','var(--c-orange)','var(--c-blue)'];
+const WDCOL=['var(--c-violet)','var(--c-blue)','var(--c-cyan)','var(--c-green)','var(--c-yellow)','var(--c-orange)','var(--c-pink)']; // So bis Sa
+const LVCOL=['var(--lv0)','var(--lv1)','var(--lv2)','var(--lv3)','var(--lv4)','var(--lv5)'];
+const reduceMotion=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches;}catch(e){return false;}};
+
+/* Flamme im Duolingo-Stil: vier Schichten desselben Umrisses, von innen nach außen dunkler.
+   Jede Schicht wackelt in eigenem Takt. Bei 0 Tagen ist sie grau und ruhig. */
+const FLAME_D='M32 3C36 16 54 30 54 52C54 67 44 77 32 77C20 77 10 67 10 52C10 40 17 34 22 26C24 32 27 35 30 36C29 24 29 12 32 3Z';
+function flameSvg(streak,big){
+  const on=streak>0,sc=[1,.76,.54,.33];
+  const cols=on?['#ff7a00','#ff9600','#ffc800','#fff3a6']:['#3b4670','#4a5686','#5e6a9b','#7681b0'];
+  const layers=sc.map((k,i)=>`<g transform="translate(${(32*(1-k)).toFixed(1)} ${(77*(1-k)-i*2).toFixed(1)}) scale(${k})"><path class="f${i+1}" d="${FLAME_D}" fill="${cols[i]}"/></g>`).join('');
+  return `<svg class="fl${big?' big':''}${on?'':' off'}" viewBox="0 0 64 80" role="img" aria-label="Flamme: ${streak} ${streak===1?'Tag':'Tage'} in Folge">${layers}</svg>`;
+}
+function burst(el,n){
+  if(reduceMotion()||!el)return;
+  const r=el.getBoundingClientRect(),box=document.createElement('div');
+  box.className='confetti';box.style.left=(r.left+r.width/2)+'px';box.style.top=(r.top+r.height/2)+'px';
+  for(let i=0;i<n;i++){
+    const p=document.createElement('i'),a=Math.random()*Math.PI*2,s=70+Math.random()*140;
+    p.style.setProperty('--dx',Math.round(Math.cos(a)*s)+'px');p.style.setProperty('--dy',Math.round(Math.sin(a)*s-40)+'px');
+    p.style.setProperty('--r',Math.round(Math.random()*360)+'deg');p.style.setProperty('--cf',PAL[i%PAL.length]);
+    p.style.animationDelay=(Math.random()*90|0)+'ms';box.appendChild(p);
+  }
+  document.body.appendChild(box);setTimeout(()=>box.remove(),1200);
+}
+
+/* ---------- Oberfläche ---------- */
+let view='home',bookQ='',bookQraw='',bookF='all';
+const openCats=new Set();
+const app=$('#app'),tabs=$('#tabs'),sheet=$('#sheet');
+
+function render(){
+  if(!state.lang||!LANGS[state.lang]){tabs.hidden=true;app.innerHTML=langView();$$('[data-lang]',app).forEach(b=>b.onclick=()=>{state.lang=b.dataset.lang;save();view='home';render();});return;}
+  tabs.hidden=false;
+  $$('.tab',tabs).forEach(b=>{if(b.dataset.v===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
+  if(view==='home'){app.innerHTML=homeView();bindHome();}
+  else if(view==='book'){app.innerHTML=bookView();bindBook();}
+  else{app.innerHTML=settingsView();bindSettings();}
+}
+function go(v){view=v;render();try{window.scrollTo(0,0);}catch(e){}}
+$$('.tab',tabs).forEach(b=>b.onclick=()=>go(b.dataset.v));
+
+function langView(){
+  return `<div class="top"><div class="brand"><i></i><span>kata<b>.</b><em>vito</em></span></div></div>
+  <h1>Welche Sprache lernst du?</h1>
+  <p class="hint" style="margin:8px 0 18px">„Kata“ heißt auf Indonesisch „Wort“. Dein Fortschritt bleibt auf diesem Gerät.</p>
+  ${Object.values(LANGS).map(L=>`<button class="langrow" data-lang="${L.id}"><span class="code">${L.code}</span><span><b>${esc(L.name)}</b><span class="hint">${esc(L.native)} · ${L.words.length} Wörter</span></span></button>`).join('')}
+  <p class="hint" style="margin-top:16px">Weitere Sprachen lassen sich später ergänzen.</p>`;
+}
+
+function homeView(){
+  const L=curLang(),t=today(),p=plan(),prog=state.progress[L.id]||{};
+  const n1=p.due.length,n2=p.fresh.length,total=n1+n2,doneToday=!!state.done[t],st=streak();
+  let week='';
+  for(let i=6;i>=0;i--){
+    const d=addDays(t,-i),on=!!state.done[d];
+    week+=`<div class="day${on?' on':''}${i===0?' now':''}" style="--dc:${WDCOL[parse(d).getDay()]}" aria-label="${esc(dayName(d,{weekday:'long',day:'numeric',month:'long'}))}: ${on?'erledigt':'offen'}"><i></i><span>${dayName(d,{weekday:'narrow'})}</span></div>`;
+  }
+  const tomorrow=addDays(t,1);
+  const nTomorrow=L.words.filter(w=>prog[w.k]&&prog[w.k].d===tomorrow).length;
+  const unseen=L.words.filter(w=>!prog[w.k]).length;
+  let planHtml;
+  if(total>0){
+    planHtml=`<div class="eyebrow">Heute dran</div>
+      <div class="nums"><div class="num"><b>${n1}</b><span>${n1===1?'Wiederholung':'Wiederholungen'}</span></div><div class="num"><b>${n2}</b><span>${n2===1?'neue Vokabel':'neue Vokabeln'}</span></div></div>
+      <button class="btn primary block pulse" id="start">Abfrage starten</button>`;
+  }else{
+    planHtml=`<div class="eyebrow">Heute</div>
+      <h2>${doneToday?'Für heute geschafft.':'Heute ist nichts fällig.'}</h2>
+      <p class="hint">${nTomorrow>0?'Morgen kommen '+nTomorrow+(nTomorrow===1?' Wiederholung':' Wiederholungen')+' dran.':'Morgen steht noch keine Wiederholung an.'}</p>
+      ${unseen>0?'<div class="btns" style="margin-top:14px"><button class="btn block" id="extra">Noch eine neue Vokabel</button></div>':''}`;
+  }
+  const lv=[0,0,0,0,0,0];let nNew=0;
+  L.words.forEach(w=>{const q=prog[w.k];if(!q)nNew++;else lv[q.l]++;});
+  const N=L.words.length;
+  const parts=[5,4,3,2,1,0].map(n=>({c:LVCOL[n],n:lv[n],l:n===0?'Nochmal':'Stufe '+n})).concat([{c:'var(--raised)',n:nNew,l:'Noch neu'}]);
+  const seg=parts.filter(p=>p.n>0).map(p=>`<i style="width:${(p.n/N*100).toFixed(2)}%;background:${p.c}"></i>`).join('');
+  const legend=parts.map(p=>`<span><em style="background:${p.c}${p.l==='Noch neu'?';border:1px solid var(--line)':''}"></em>${p.l}<b>${p.n}</b></span>`).join('');
+  return `<div class="top"><div class="brand"><i></i><span>kata<b>.</b><em>vito</em></span></div><button class="chip" id="chlang" aria-label="Sprache wechseln">${esc(L.name)}</button></div>
+  <h1>${esc(dayName(t,{weekday:'long',day:'numeric',month:'long'}))}</h1>
+  <section class="card plan">${planHtml}</section>
+  <section class="card"><div class="streak"><div class="sl">${flameSvg(st,false)}<div><b>${st}</b><small>${st===1?'Tag':'Tage'} in Folge</small></div></div><div class="week">${week}</div></div></section>
+  <section class="card"><div class="eyebrow">Fortschritt</div>
+    <p style="margin-top:6px"><b>${N-nNew}</b> von ${N} Wörtern begonnen</p>
+    <div class="stack" role="img" aria-label="${parts.map(p=>p.n+' '+p.l).join(', ')}">${seg}</div>
+    <div class="legend">${legend}</div></section>`;
+}
+function bindHome(){
+  const s=$('#start');if(s)s.onclick=startSession;
+  const e=$('#extra');if(e)e.onclick=()=>{daily().extra++;save();startSession();};
+  $('#chlang').onclick=()=>{state.lang=null;save();render();};
+}
+
+function bookView(){
+  const L=curLang();
+  return `<div class="top"><h1>Vokabelheft</h1><span class="hint">${L.words.length} Wörter</span></div>
+  <input id="q" class="field" type="search" placeholder="Suchen auf Indonesisch oder Englisch" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" aria-label="Suchen" value="${esc(bookQraw)}">
+  <div class="chips" role="group" aria-label="Filter">${[['all','Alle'],['due','Fällig'],['learned','Gelernt'],['new','Neu']].map(f=>`<button class="pill" data-f="${f[0]}" aria-pressed="${bookF===f[0]}">${f[1]}</button>`).join('')}</div>
+  <div id="vlist"></div>`;
+}
+function bindBook(){
+  $('#q').oninput=e=>{bookQraw=e.target.value;bookQ=fold(bookQraw.trim());renderList();};
+  $$('.pill',app).forEach(b=>b.onclick=()=>{bookF=b.dataset.f;$$('.pill',app).forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.f===bookF)));renderList();});
+  $('#vlist').addEventListener('toggle',e=>{
+    if(bookQ||bookF!=='all')return;
+    const d=e.target;if(!d.dataset||d.dataset.c===undefined)return;
+    if(d.open)openCats.add(d.dataset.c);else openCats.delete(d.dataset.c);
+  },true);
+  renderList();
+}
+function renderList(){
+  const L=curLang(),t=today(),prog=state.progress[L.id]||{};
+  const groups=L.cats.map(()=>[]);
+  L.words.forEach(w=>{
+    const pr=prog[w.k];
+    if(bookF==='due'&&!(pr&&pr.d<=t))return;
+    if(bookF==='learned'&&!(pr&&pr.l>=1))return;
+    if(bookF==='new'&&pr)return;
+    if(bookQ&&!(fold(w.id).includes(bookQ)||fold(w.en).includes(bookQ)))return;
+    groups[w.cat].push(w);
+  });
+  const force=!!bookQ||bookF!=='all';
+  let html='';
+  groups.forEach((items,ci)=>{
+    if(!items.length)return;
+    const learned=L.words.filter(w=>w.cat===ci&&prog[w.k]&&prog[w.k].l>=1).length;
+    html+=`<details class="cat" style="--cc:${CATCOL[ci%CATCOL.length]}" data-c="${ci}"${force||openCats.has(String(ci))?' open':''}><summary>${esc(L.cats[ci][0])}<span class="cnt">${force?items.length+' Treffer':learned+' / '+L.catCount[ci]}</span></summary><ul class="rows">${items.map(w=>{
+      const pr=prog[w.k],due=pr&&pr.d<=t;
+      return `<li class="row"><div class="w"><span class="id" lang="${L.code.toLowerCase()}">${esc(w.id)}</span><span class="en" lang="en">${esc(w.en)}</span></div><div class="meta"><div class="pips" style="--pc:${LVCOL[pr?pr.l:0]}" role="img" aria-label="Stufe ${pr?pr.l:0} von 5">${[1,2,3,4,5].map(n=>`<i${pr&&pr.l>=n?' class="f"':''}></i>`).join('')}</div>${due?'<span class="tag">fällig</span>':''}</div></li>`;
+    }).join('')}</ul></details>`;
+  });
+  $('#vlist').innerHTML=html||'<div class="empty">Nichts gefunden.</div>';
+}
+
+function settingsView(){
+  const L=curLang(),t=today();
+  return `<div class="top"><h1>Einstellungen</h1></div>
+  <section class="card set"><div><div class="eyebrow">Neue Vokabeln pro Tag</div>
+    <div class="seg" role="radiogroup" aria-label="Neue Vokabeln pro Tag">${[1,2,3,4,5].map(n=>`<button role="radio" data-n="${n}" aria-checked="${state.newPerDay===n}">${n}</button>`).join('')}</div></div>
+    <p class="hint">Dazu kommen immer alle fälligen Wiederholungen.</p></section>
+  <section class="card set"><div class="eyebrow">Tägliche Erinnerung</div>
+    <p class="hint">Eine Web-App kann sich nicht selbst melden. Das übernimmt dein iPhone, die Uhrzeit stellst du dort ein.</p>
+    <details class="how"><summary>So richtest du sie ein</summary><ol class="steps">
+      <li>Kurzbefehle-App öffnen, Tab „Automation“, „+“, „Tageszeit“.</li>
+      <li>Uhrzeit wählen, „Täglich“, „Sofort ausführen“.</li>
+      <li>Aktion „URL öffnen“ mit der Adresse dieser App hinzufügen.</li>
+      <li>Je nach iOS-Version musst du die Mitteilung antippen oder das iPhone entsperren, damit sich die Seite öffnet.</li>
+      <li>Alternative: In der Erinnerungen-App eine tägliche Erinnerung mit der Adresse als Link anlegen.</li></ol></details></section>
+  <section class="card set"><div class="eyebrow">Sicherung</div>
+    <p class="hint">Kopiere den Text in eine Notiz. Zum Wiederherstellen fügst du ihn unten ein.</p>
+    <div class="btns"><button class="btn" id="exp">Sicherung erstellen</button><button class="btn ghost" id="copy" hidden>Kopieren</button></div>
+    <textarea class="field" id="expbox" readonly hidden aria-label="Sicherung" rows="4"></textarea><div class="flash" id="flash1" role="status"></div>
+    <textarea class="field" id="impbox" placeholder="Sicherung hier einfügen" aria-label="Sicherung einfügen" rows="3"></textarea>
+    <div class="btns"><button class="btn" id="imp">Sicherung einspielen</button></div><div class="flash" id="flash2" role="status"></div></section>
+  <section class="card set"><div class="eyebrow">Sprache</div>
+    <div class="btns"><button class="btn" id="chlang2">${esc(L.name)} ändern</button></div></section>
+  <section class="card set"><div class="eyebrow">Testen</div>
+    <p class="hint">Simuliert einen späteren Tag, damit du die Wiederholungen siehst. Aktuelles Datum in der App: <b>${esc(dayName(t,{weekday:'short',day:'numeric',month:'short'}))}</b>${state.dayOffset?' (+'+state.dayOffset+')':''}</p>
+    <div class="btns"><button class="btn" id="skip">Einen Tag vorspulen</button><button class="btn ghost" id="unskip"${state.dayOffset?'':' disabled'}>Zurück auf heute</button></div>
+    <div class="btns"><button class="btn" id="reset">Alles zurücksetzen</button></div></section>`;
+}
+function twoStep(btn,armed,fn){
+  const orig=btn.textContent;let on=false,timer;
+  btn.onclick=()=>{
+    if(!on){on=true;btn.textContent=armed;btn.classList.add('danger');timer=setTimeout(()=>{on=false;btn.textContent=orig;btn.classList.remove('danger');},4000);}
+    else{clearTimeout(timer);on=false;btn.textContent=orig;btn.classList.remove('danger');fn();}
+  };
+}
+function bindSettings(){
+  $$('.seg button',app).forEach(b=>b.onclick=()=>{state.newPerDay=+b.dataset.n;save();$$('.seg button',app).forEach(x=>x.setAttribute('aria-checked',String(x===b)));});
+  $('#exp').onclick=()=>{
+    const data=JSON.stringify({app:'kata',v:1,exported:new Date().toISOString(),data:{lang:state.lang,newPerDay:state.newPerDay,progress:state.progress,daily:state.daily,done:state.done}});
+    const box=$('#expbox');box.value=data;box.hidden=false;$('#copy').hidden=false;box.select();$('#flash1').textContent='';
+  };
+  $('#copy').onclick=()=>{
+    const box=$('#expbox');
+    const ok=()=>{$('#flash1').textContent='Kopiert.';};
+    const fallback=()=>{box.select();$('#flash1').textContent='Text ist markiert. Jetzt manuell kopieren.';};
+    try{navigator.clipboard.writeText(box.value).then(ok,fallback);}catch(e){fallback();}
+  };
+  twoStep($('#imp'),'Wirklich ersetzen? Nochmal tippen',()=>{
+    try{
+      const o=JSON.parse($('#impbox').value);
+      if(!o||o.app!=='kata'||!o.data||typeof o.data.progress!=='object')throw new Error('x');
+      state=Object.assign(defaults(),o.data,{dayOffset:0});save();render();
+    }catch(e){$('#flash2').style.color='var(--bad)';$('#flash2').textContent='Das ist keine gültige Sicherung.';render_keep();}
+  });
+  $('#chlang2').onclick=()=>{state.lang=null;save();render();};
+  $('#skip').onclick=()=>{state.dayOffset=(state.dayOffset||0)+1;save();render();};
+  $('#unskip').onclick=()=>{state.dayOffset=0;save();render();};
+  twoStep($('#reset'),'Wirklich alles löschen? Nochmal tippen',()=>{state=defaults();save();view='home';render();});
+}
+function render_keep(){/* Fehlermeldung bleibt stehen, Ansicht wird nicht neu gebaut */}
+
+/* ---------- Abfrage ---------- */
+let S=null;
+function startSession(){
+  const p=plan();
+  const items=p.due.map(w=>({w,type:'review'})).concat(p.fresh.map(w=>({w,type:'new'})));
+  if(!items.length)return;
+  S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak()};
+  sheet.hidden=false;document.body.style.overflow='hidden';
+  showItem();
+}
+function closeSheet(){sheet.hidden=true;sheet.innerHTML='';document.body.style.overflow='';S=null;render();}
+function sheetBody(inner){
+  const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
+  sheet.innerHTML=`<div class="sin"><div class="shead"><button class="iconbtn" id="quit" aria-label="Abfrage beenden"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div></div>${inner}</div>`;
+  $('#quit').onclick=closeSheet;
+  sheet.scrollTop=0;
+}
+function showItem(){
+  const it=S.items[S.i];
+  if(!it)return showEnd();
+  const L=curLang(),key=normEn(it.w.en);
+  const same=L.words.filter(x=>normEn(x.en)===key);
+  S.cur={w:it.w,type:it.type,tries:0,dir:Math.random()<.5?'id2en':'en2id',accept:same.map(x=>normId(x.id)),alts:same.filter(x=>x.k!==it.w.k).map(x=>x.id)};
+  if(it.type==='new')showIntro();else showQuestion();
+}
+function showIntro(){
+  const w=S.cur.w,L=curLang();
+  sheetBody(`<div class="smain"><div class="kicker" style="--k:var(--c-violet)">Neue Vokabel · ${esc(L.cats[w.cat][0])}</div>
+    <div class="bigword" lang="${L.code.toLowerCase()}">${esc(w.id)}</div><div class="gloss" lang="en">${esc(w.en)}</div>
+    <p class="hint">Präg dir das Wort kurz ein. Gleich wird es abgefragt.</p>
+    <button class="btn primary block" id="go">Abfragen</button></div>`);
+  $('#go').onclick=showQuestion;
+}
+function hintFor(c){
+  let t=c.dir==='id2en'?c.w.en.split('/')[0]:c.w.id;
+  t=t.replace(/\([^)]*\)/g,'').replace(/^\s*to\s+(?=\S)/i,'').trim();
+  return t.slice(0,2);
+}
+function isCorrect(c,val){
+  if(c.dir==='id2en'){const a=normEn(val);return !!a&&c.w.en.split('/').map(normEn).indexOf(a)>-1;}
+  const a=normId(val);return !!a&&c.accept.indexOf(a)>-1;
+}
+function dots(n){return [0,1,2].map(i=>`<i class="${i<n?'':'x'}"></i>`).join('')}
+function showQuestion(){
+  const c=S.cur,w=c.w,L=curLang(),id2en=c.dir==='id2en';
+  const lvl=(state.progress[L.id]&&state.progress[L.id][w.k])?state.progress[L.id][w.k].l:0;
+  const kick=(c.type==='review'?'Wiederholung · Stufe '+lvl:'Neue Vokabel')+' · '+(id2en?'ins Englische':'ins Indonesische');
+  c.tries=0;
+  sheetBody(`<div class="smain"><div class="kicker" style="--k:${c.type==='review'?LVCOL[lvl]:'var(--c-violet)'}">${kick}</div>
+    <div class="bigword" lang="${id2en?L.code.toLowerCase():'en'}">${esc(id2en?w.id:w.en)}</div>
+    <form class="qform" id="qf" autocomplete="off"><div class="inwrap" id="iw"><input class="field" id="ans" type="text" aria-label="Deine Antwort" placeholder="Antwort tippen" autocomplete="off" autocapitalize="none" autocorrect="off" spellcheck="false" enterkeyhint="done"></div>
+    <button class="btn primary block" type="submit">Prüfen</button></form>
+    <div class="tries" id="tries">${dots(3)}<span>Versuche übrig</span></div>
+    <p class="fb" id="fb" role="status" aria-live="polite"></p></div>`);
+  const inp=$('#ans'),iw=$('#iw');let keys=0;
+  inp.addEventListener('input',()=>{
+    const col=PAL[++keys%PAL.length];
+    iw.style.setProperty('--pc',col);iw.style.setProperty('--pcs',col+'44');
+    iw.classList.toggle('typing',inp.value.length>0);
+    iw.classList.remove('pulse');void iw.offsetWidth;iw.classList.add('pulse');
+  });
+  $('#qf').onsubmit=e=>{
+    e.preventDefault();
+    const val=inp.value;
+    if(!val.trim()){inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');return;}
+    c.tries++;
+    if(isCorrect(c,val))return finish(true);
+    if(c.tries>=3)return finish(false);
+    const left=3-c.tries,fb=$('#fb');
+    fb.className='fb bad';
+    fb.textContent='Nicht ganz. Noch '+left+(left===1?' Versuch.':' Versuche.')+(c.tries===2?' Tipp: beginnt mit „'+hintFor(c)+'“.':'');
+    $('#tries').innerHTML=dots(left)+'<span>Versuche übrig</span>';
+    inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');inp.select();
+  };
+  try{inp.focus({preventScroll:true});}catch(e){inp.focus();}
+}
+function finish(ok){
+  const c=S.cur,w=c.w,r=record(w,ok);
+  if(ok)S.right++;else{S.wrong++;S.missed.push(w);}
+  const L=curLang();
+  const alts=c.dir==='en2id'&&c.alts.length?`<p class="hint" style="margin-top:6px">Auch richtig: ${c.alts.map(esc).join(', ')}</p>`:'';
+  const when=ok?'Stufe '+r.level+' von 5. Nächste Wiederholung '+(r.days===1?'morgen':'in '+r.days+' Tagen')+'.':'Die Vokabel kommt morgen wieder dran.';
+  sheetBody(`<div class="smain"><div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?'Richtig':'Leider falsch'}</div>
+    <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="en">${esc(w.en)}</span></div>${alts}</div>
+    <p class="hint">${when}</p><button class="btn primary block" id="next">Weiter</button></div>`);
+  const n=$('#next');n.onclick=()=>{S.i++;showItem();};
+  try{n.focus({preventScroll:true});}catch(e){}
+  if(ok)burst($('.res'),28);
+}
+function showEnd(){
+  const t=today();
+  state.done[t]=true;
+  Object.keys(state.done).forEach(k=>{if(k<addDays(t,-120))delete state.done[k];});
+  save();
+  const total=S.items.length,st=streak();
+  const missed=S.missed.length?`<div><p class="hint" style="margin-bottom:8px">Morgen wieder dabei:</p><div class="missed">${S.missed.map(w=>`<span>${esc(w.id)}</span>`).join('')}</div></div>`:'';
+  const grew=st>S.streak0;
+  S.i=total;
+  sheetBody(`<div class="smain"><div class="kicker" style="--k:var(--c-pink)">Abfrage beendet</div>
+    <div class="bigword">${S.right} von ${total}</div><p class="hint">richtig beantwortet</p>
+    <div class="endstreak${grew?' grew':''}">${flameSvg(st,true)}<div><b>${st}</b>${st===1?'Tag':'Tage'} in Folge<small>${grew?'Serie verlängert!':'Die Serie läuft weiter.'}</small></div></div>${missed}
+    <button class="btn primary block" id="fin">Fertig</button></div>`);
+  $('#fin').onclick=closeSheet;
+  if(grew)burst($('.endstreak'),44);else if(S.right===total)burst($('.bigword'),32);
+}
+
+render();
+})();
+</script>

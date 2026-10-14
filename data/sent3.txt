@@ -1,0 +1,242 @@
+sungai | Sungai itu panjang. | That [river] is long.
+danau | Kami berenang di danau. | We swim in the [lake].
+hutan | Harimau tinggal di hutan. | Tigers live in the [forest].
+taman | Anak-anak bermain di taman. | The children play in the [park].
+masjid | Masjid itu besar. | That [mosque] is big.
+gereja | Gereja itu tua. | That [church] is old.
+pulau | Bali adalah pulau yang indah. | Bali is a beautiful [island].
+toilet | Di mana toilet? | Where is the [toilet]?
+kiri | Belok kiri di sini. | Turn [left] here.
+kanan | Belok kanan di sana. | Turn [right] over there.
+lurus | Jalan lurus saja. | Just go [straight ahead].
+depan | Toko ada di depan. | The shop is in [front].
+belakang | Dapur ada di belakang. | The kitchen is at the [back].
+atas | Buku ada di atas meja. | The book is [above] the table.
+bawah | Kucing ada di bawah kursi. | The cat is [below] the chair.
+luar | Anak-anak bermain di luar. | The children play [outside].
+tengah | Meja ada di tengah kamar. | The table is in the [middle] of the room.
+samping | Bank ada di samping toko. | The bank is [beside] the shop.
+utara | Medan ada di utara. | Medan is in the [north].
+selatan | Bali ada di selatan. | Bali is in the [south].
+timur | Matahari terbit di timur. | The sun rises in the [east].
+barat | Matahari terbenam di barat. | The sun sets in the [west].
+sini | Silakan duduk di sini. | Please sit [here].
+situ | Buku ada di situ. | The book is [there].
+sana | Rumah saya ada di sana. | My house is [over there].
+mobil | Ayah punya mobil baru. | Father has a new [car].
+motor | Saya naik motor. | I ride a [motorcycle].
+sepeda | Saya pergi naik sepeda. | I go by [bicycle].
+bus | Saya naik bus ke kantor. | I take the [bus] to the office.
+kereta api | Kami naik kereta api ke Bandung. | We take the [train] to Bandung.
+pesawat | Pesawat terbang tinggi. | The [airplane] flies high.
+kapal | Kapal itu besar. | That [ship] is big.
+taksi | Kami naik taksi ke hotel. | We take a [taxi] to the hotel.
+ojek | Saya naik ojek ke pasar. | I take a [motorbike taxi] to the market.
+tiket | Saya beli dua tiket. | I buy two [tickets].
+bensin | Mobil ini butuh bensin. | This car needs [petrol].
+parkir | Di sini tidak ada parkir. | There is no [parking] here.
+macet | Jalan ini macet. | This road has a [traffic jam].
+peta | Saya lihat peta. | I look at the [map].
+perjalanan | Perjalanan kami panjang. | Our [journey] is long.
+paspor | Saya punya paspor. | I have a [passport].
+koper | Koper saya berat. | My [suitcase] is heavy.
+hotel | Hotel ini bersih. | This [hotel] is clean.
+liburan | Kami liburan di Bali. | We are on [vacation] in Bali.
+alamat | Apa alamat kamu? | What is your [address]?
+kepala | Kepala saya sakit. | My [head] hurts.
+mata | Mata dia biru. | Her [eyes] are blue.
+telinga | Telinga saya sakit. | My [ear] hurts.
+hidung | Hidung dia mancung. | His [nose] is pointed.
+mulut | Buka mulut kamu. | Open your [mouth].
+gigi | Gigi saya sakit. | My [tooth] hurts.
+lidah | Lidah saya terbakar. | My [tongue] is burning.
+leher | Leher saya sakit. | My [neck] hurts.
+bahu | Bahu saya sakit. | My [shoulder] hurts.
+lengan | Lengan saya kuat. | My [arm] is strong.
+tangan | Cuci tangan kamu. | Wash your [hands].
+jari | Jari saya luka. | My [finger] is hurt.
+kaki | Kaki saya sakit. | My [foot] hurts.
+lutut | Lutut saya sakit. | My [knee] hurts.
+perut | Perut saya sakit. | My [stomach] hurts.
+punggung | Punggung saya sakit. | My [back] hurts.
+rambut | Rambut dia panjang. | Her [hair] is long.
+wajah | Wajah dia cantik. | Her [face] is beautiful.
+badan | Badan saya lelah. | My [body] is tired.
+kulit | Kulit saya kering. | My [skin] is dry.
+hati | Dia berhati baik. | She has a kind [heart].
+darah | Ada darah di tangan. | There is [blood] on the hand.
+obat | Saya minum obat. | I take [medicine].
+demam | Anak saya demam. | My child has a [fever].
+flu | Saya kena flu. | I have the [flu].
+batuk | Saya batuk. | I [cough].
+sakit kepala | Saya sakit kepala. | I have a [headache].
+pusing | Saya pusing. | I am [dizzy].
+luka | Luka di kaki saya besar. | The [wound] on my foot is big.
+alergi | Saya alergi udang. | I have an [allergy] to shrimp.
+apotek | Apotek itu buka. | That [pharmacy] is open.
+baju | Baju ini bagus. | This [shirt] is nice.
+pakaian | Pakaian saya kotor. | My [clothes] are dirty.
+celana | Celana ini panjang. | These [trousers] are long.
+rok | Rok dia merah. | Her [skirt] is red.
+jaket | Jaket ini hangat. | This [jacket] is warm.
+kaos | Saya pakai kaos putih. | I wear a white [T-shirt].
+kaus kaki | Kaus kaki saya basah. | My [socks] are wet.
+sepatu | Sepatu ini baru. | These [shoes] are new.
+sandal | Saya pakai sandal. | I wear [sandals].
+topi | Dia pakai topi. | He wears a [hat].
+tas | Tas saya berat. | My [bag] is heavy.
+kacamata | Kakek pakai kacamata. | Grandfather wears [glasses].
+jam tangan | Jam tangan ini mahal. | This [wristwatch] is expensive.
+cincin | Cincin ini cantik. | This [ring] is beautiful.
+dompet | Dompet saya hilang. | My [wallet] is lost.
+payung | Bawa payung, hujan! | Bring an [umbrella], it is raining!
+warna | Warna apa ini? | What [color] is this?
+merah | Apel ini merah. | This apple is [red].
+biru | Langit itu biru. | The sky is [blue].
+hijau | Daun itu hijau. | The leaf is [green].
+kuning | Pisang itu kuning. | The banana is [yellow].
+hitam | Kucing itu hitam. | The cat is [black].
+putih | Nasi itu putih. | The rice is [white].
+cokelat | Tas saya cokelat. | My bag is [brown].
+abu-abu | Awan itu abu-abu. | The cloud is [gray].
+oranye | Jeruk itu oranye. | The orange is [orange].
+ungu | Bunga itu ungu. | The flower is [purple].
+merah muda | Rok dia merah muda. | Her skirt is [pink].
+cuaca | Cuaca hari ini bagus. | The [weather] today is nice.
+hujan | Hari ini hujan. | Today there is [rain].
+matahari | Matahari bersinar. | The [sun] shines.
+bintang | Bintang itu terang. | That [star] is bright.
+langit | Langit itu biru. | The [sky] is blue.
+angin | Angin bertiup kencang. | The [wind] blows hard.
+awan | Awan itu putih. | The [cloud] is white.
+salju | Salju turun di gunung. | [Snow] falls on the mountain.
+badai | Badai datang malam ini. | A [storm] comes tonight.
+petir | Petir itu keras. | The [lightning] is loud.
+pelangi | Ada pelangi di langit. | There is a [rainbow] in the sky.
+banjir | Ada banjir di kota. | There is a [flood] in the city.
+gempa bumi | Ada gempa bumi kemarin. | There was an [earthquake] yesterday.
+api | Api itu panas. | The [fire] is hot.
+bumi | Bumi itu bulat. | The [earth] is round.
+tanah | Tanah ini basah. | This [soil] is wet.
+batu | Batu ini berat. | This [stone] is heavy.
+pasir | Pasir di pantai putih. | The [sand] on the beach is white.
+pohon | Pohon itu tinggi. | That [tree] is tall.
+daun | Daun itu hijau. | The [leaf] is green.
+bunga | Bunga itu wangi. | That [flower] smells good.
+rumput | Rumput itu hijau. | The [grass] is green.
+hewan | Saya suka hewan. | I like [animals].
+anjing | Anjing saya lucu. | My [dog] is cute.
+kucing | Kucing itu tidur. | The [cat] is sleeping.
+burung | Burung itu terbang. | The [bird] flies.
+sapi | Sapi makan rumput. | The [cow] eats grass.
+kuda | Kuda itu cepat. | The [horse] is fast.
+kambing | Kambing itu kecil. | The [goat] is small.
+bebek | Bebek berenang di danau. | The [duck] swims in the lake.
+tikus | Ada tikus di dapur. | There is a [mouse] in the kitchen.
+nyamuk | Ada nyamuk di kamar. | There is a [mosquito] in the room.
+semut | Ada semut di meja. | There are [ants] on the table.
+cicak | Ada cicak di dinding. | There is a [gecko] on the wall.
+kodok | Kodok melompat ke air. | The [frog] jumps into the water.
+harimau | Harimau itu kuat. | The [tiger] is strong.
+gajah | Gajah itu besar. | The [elephant] is big.
+monyet | Monyet suka pisang. | The [monkey] likes bananas.
+buaya | Buaya tinggal di sungai. | The [crocodile] lives in the river.
+ular | Ular itu panjang. | The [snake] is long.
+kupu-kupu | Kupu-kupu itu cantik. | The [butterfly] is beautiful.
+meja | Buku ada di meja. | The book is on the [table].
+kursi | Kursi ini nyaman. | This [chair] is comfortable.
+tempat tidur | Tempat tidur saya besar. | My [bed] is big.
+lemari | Baju ada di lemari. | The clothes are in the [cupboard].
+cermin | Cermin itu bersih. | The [mirror] is clean.
+lampu | Lampu itu terang. | The [lamp] is bright.
+televisi | Televisi itu baru. | The [television] is new.
+kunci | Di mana kunci saya? | Where is my [key]?
+lantai | Lantai ini bersih. | This [floor] is clean.
+dinding | Dinding itu putih. | The [wall] is white.
+atap | Atap rumah itu merah. | The [roof] of that house is red.
+tangga | Naik tangga pelan-pelan. | Go up the [stairs] slowly.
+kebun | Kebun kami besar. | Our [garden] is big.
+sabun | Saya pakai sabun. | I use [soap].
+handuk | Handuk ini basah. | This [towel] is wet.
+sikat gigi | Saya lupa sikat gigi. | I forgot my [toothbrush].
+selimut | Selimut ini hangat. | This [blanket] is warm.
+kipas angin | Kipas angin itu mati. | The [fan] is off.
+listrik | Listrik mati. | The [electricity] is out.
+sampah | Buang sampah di sini. | Throw the [trash] here.
+barang | Barang ini mahal. | This [thing] is expensive.
+hadiah | Ini hadiah untuk kamu. | This is a [gift] for you.
+foto | Saya ambil foto. | I take a [photo].
+musik | Saya suka musik. | I like [music].
+film | Film itu lucu. | That [film] is funny.
+permainan | Permainan itu seru. | That [game] is fun.
+uang | Saya tidak punya uang. | I do not have [money].
+harga | Berapa harga ini? | What is the [price] of this?
+tunai | Saya bayar tunai. | I pay with [cash].
+kartu | Saya bayar pakai kartu. | I pay with a [card].
+kembalian | Ini kembalian Anda. | Here is your [change].
+diskon | Ada diskon hari ini. | There is a [discount] today.
+menawar | Saya mau menawar harga. | I want to [bargain] the price.
+belanja | Ibu belanja di pasar. | Mother [shops] at the market.
+kasir | Kasir itu ramah. | The [cashier] is friendly.
+gratis | Teh ini gratis. | This tea is [free of charge].
+tagihan | Tolong, tagihannya. | The [bill], please.
+pekerjaan | Pekerjaan saya sulit. | My [job] is difficult.
+gaji | Gaji saya cukup. | My [salary] is enough.
+bos | Bos saya baik. | My [boss] is nice.
+rapat | Kami ada rapat hari ini. | We have a [meeting] today.
+kelas | Kelas saya besar. | My [class] is big.
+ujian | Besok ada ujian. | Tomorrow there is an [exam].
+pelajaran | Pelajaran ini mudah. | This [lesson] is easy.
+bahasa | Saya belajar bahasa Indonesia. | I study the Indonesian [language].
+kata | Saya lupa kata itu. | I forgot that [word].
+kalimat | Kalimat ini panjang. | This [sentence] is long.
+pertanyaan | Saya punya satu pertanyaan. | I have one [question].
+jawaban | Jawaban kamu benar. | Your [answer] is correct.
+masalah | Tidak ada masalah. | There is no [problem].
+ide | Itu ide bagus. | That is a good [idea].
+buku | Saya baca buku. | I read a [book].
+pena | Saya butuh pena. | I need a [pen].
+kertas | Kertas ini putih. | This [paper] is white.
+surat | Saya tulis surat. | I write a [letter].
+kamus | Saya buka kamus. | I open the [dictionary].
+komputer | Komputer saya baru. | My [computer] is new.
+internet | Internet di sini lambat. | The [internet] here is slow.
+ponsel | Ponsel saya mati. | My [mobile phone] is off.
+telepon | Telepon berbunyi. | The [telephone] rings.
+pesan | Saya kirim pesan. | I send a [message].
+email | Saya kirim email. | I send an [email].
+dan | Saya makan nasi dan ikan. | I eat rice [and] fish.
+atau | Teh atau kopi? | Tea [or] coffee?
+tetapi | Saya mau, tetapi tidak bisa. | I want to, [but] I cannot.
+tapi | Murah, tapi bagus. | Cheap, [but] nice.
+karena | Saya pulang karena lelah. | I go home [because] I am tired.
+jika | Jika hujan, saya di rumah. | [If] it rains, I stay home.
+kalau | Kalau lapar, makanlah. | [If] you are hungry, eat.
+dengan | Saya pergi dengan teman. | I go [with] a friend.
+tanpa | Kopi tanpa gula. | Coffee [without] sugar.
+untuk | Ini untuk kamu. | This is [for] you.
+dari | Saya dari Jerman. | I am [from] Germany.
+ke | Saya pergi ke pasar. | I go [to] the market.
+di | Saya tinggal di Berlin. | I live [in] Berlin.
+pada | Kami bertemu pada hari Senin. | We meet [on] Monday.
+dalam | Buku ada dalam tas. | The book is [inside] the bag.
+oleh | Kue ini dibuat oleh ibu. | This cake was made [by] mother.
+antara | Bank ada antara toko dan sekolah. | The bank is [between] the shop and the school.
+sebelum | Cuci tangan sebelum makan. | Wash your hands [before] eating.
+sesudah | Sesudah makan, saya minum teh. | [After] eating, I drink tea.
+sampai | Tunggu sampai jam lima. | Wait [until] five o'clock.
+sambil | Dia makan sambil membaca. | He eats [while] reading.
+bahwa | Saya tahu bahwa kamu lapar. | I know [that] you are hungry.
+agar | Belajar agar pintar. | Study [so that] you become smart.
+tentang | Buku ini tentang Bali. | This book is [about] Bali.
+seperti | Dia seperti ibunya. | She is [like] her mother.
+kira-kira | Kira-kira lima menit. | [Approximately] five minutes.
+mungkin | Mungkin besok hujan. | [Maybe] it rains tomorrow.
+pasti | Saya pasti datang. | I will [surely] come.
+tentu | Tentu saja boleh. | [Of course] it is allowed.
+memang | Memang benar. | [Indeed] it is true.
+saja | Itu saja, terima kasih. | That is [just] it, thank you.
+ayo | Ayo, kita makan! | [Let us go], let us eat!
+hati-hati | Hati-hati di jalan. | [Be careful] on the road.
+awas | Awas, ada mobil! | [Watch out], there is a car!
+sebentar | Tunggu sebentar. | Wait [a moment].
