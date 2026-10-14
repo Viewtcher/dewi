@@ -16,11 +16,12 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `gems.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
 2. Bauen: `python build.py` (im Hauptordner). Erzeugt `index.html`.
 3. Testen: `npm test --prefix tests`. Alle vier Tests müssen grün sein (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“). Ändert sich gewolltes Verhalten, Tests anpassen und das offen sagen.
-4. In `ENTWICKLUNG.md` den nächsten Eintrag `## Version NN – Titel` anhängen: was, warum, Technik, Teststand und was nur auf einem echten iPhone prüfbar ist.
-5. Commit mit der Nachricht `Version NN – Titel` (darfst du selbst).
-6. **Push nach `entwicklung` darfst du selbst, ohne Nachfrage.** Das sichert die Version auf GitHub, verändert aber `main` nicht und veröffentlicht nichts.
-7. **Push nach `main` nur nach Vitos ausdrücklichem OK.** Das veröffentlicht die App. Vorher kurz sagen, was live geht.
-8. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
+4. **Keine Vorschau-Screenshots von selbst aus.** Bei optischen Änderungen kurz beschreiben, was sich zeigen sollte. Ein Screenshot (Playwright/Chromium) nur, wenn Vito ausdrücklich danach fragt. Spart Token, die ein Bild beim Ansehen kostet.
+5. In `ENTWICKLUNG.md` den nächsten Eintrag `## Version NN – Titel` anhängen: was, warum, Technik, Teststand und was nur auf einem echten iPhone prüfbar ist.
+6. Commit mit der Nachricht `Version NN – Titel` (darfst du selbst).
+7. **Push nach `entwicklung` darfst du selbst, ohne Nachfrage.** Das sichert die Version auf GitHub, verändert aber `main` nicht und veröffentlicht nichts.
+8. **Push nach `main` nur nach Vitos ausdrücklichem OK.** Das veröffentlicht die App. Vorher kurz sagen, was live geht.
+9. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
 
 ## Git-Regeln
 
