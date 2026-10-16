@@ -1715,3 +1715,20 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Wie sich die Geste mit echtem Finger und echtem Safari-Verhalten (z. B. gleichzeitiges Scrollen) anfühlt, ob 24 px als Trefferbereich am Gerät leicht genug zu treffen sind.
 
+
+## Version 145 – Tab-Leiste zurück, mit Shop statt Einstellungen
+
+> **Die Leiste ist wieder da.** Unten im Hauptmenü gibt es wieder die drei Reiter wie vor Version 139 – nur steht jetzt an der Stelle der Einstellungen der Shop. Einstellungen bleiben über das Zahnrad oben erreichbar, das es seit Version 139 gibt. Die Leiste ist auf allen drei Bildschirmen (Start, Vokabelheft, Einstellungen) sichtbar.
+
+**Entscheidungen (Vito):** Leiste wie früher, Shop an der Stelle der Einstellungen. Zahnrad oben bleibt zusätzlich für die Einstellungen. Leiste bleibt auch in den Einstellungen sichtbar (kein Reiter markiert, da Einstellungen keiner der drei Reiter ist).
+
+**Technik**
+- `<nav class="tabs" id="tabs">` und die zugehörige CSS (`.tabs`, `.tabs-in`) wieder eingebaut (waren seit Version 139 aus Markup und JS entfernt, einzelne `.tab`-Regeln standen als totes CSS noch da). Dritter Reiter heißt jetzt `#shoptab` (eigenes schlichtes Einkaufstüten-Symbol, Farbe Gold `var(--c-yellow)`) statt `data-v="settings"`.
+- `render()`/`applyStatic()`: Leiste wird wie früher ein-/ausgeblendet (versteckt nur auf den Auswahlbildschirmen für App-Sprache/Name/Lernsprache) und übersetzt; der aktuelle Reiter (Heute/Vokabelheft) bekommt `aria-current`, der Shop-Reiter nie, weil er kein eigener Bildschirm ist, sondern den Shop als Sheet öffnet.
+- Reiter-Klicks sind einmalig gebunden (`Heute`/`Vokabelheft` rufen `go()`, `#shoptab` ruft `openShop()`), nicht bei jedem `render()` neu, weil die Leiste selbst nie neu gezeichnet wird.
+- `.app`-Innenabstand unten wieder auf 104 px (Platz für die fixe Leiste), vorher 40 px ohne Leiste.
+
+**Tests:** test4 NV1–NV7 angepasst und erweitert (Leiste da statt weg, zeigt Heute/Vokabelheft/Shop statt Einstellungen, aktiver Reiter markiert, Shop-Reiter öffnet/schließt den Shop, Vokabelheft-Reiter navigiert und wird aktiv markiert). test3 prüft die englische Leiste (Today/Wordbook/Shop, keine Einstellungen). Tests 2–5 grün. Im echten Chromium auf 390 × 844 und 375 × 667 gemessen: Leiste sitzt fix unten ohne horizontalen Überlauf, auf dem kleinen iPhone braucht die unterste Kachel etwas Scrollen, ist dann aber vollständig sichtbar und nicht von der Leiste verdeckt.
+
+**Nicht auf einem echten iPhone getestet:** Wie die Leiste mit der Haus-Leiste/Safe-Area auf einem echten Gerät zusammenspielt, Treffergenauigkeit der drei Reiter mit dem Finger.
+

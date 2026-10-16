@@ -715,18 +715,24 @@ function toReels(E,force=true){
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
   ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
 }
-// --- Startscreen ohne Tab-Leiste (Version 139)
+// --- Startscreen mit Tab-Leiste, Shop statt Einstellungen (Version 139 entfernt sie, Version 144 bringt sie zurück)
 {
   const E=fresh();ev(E,'render()');
-  ok(!E.$('#tabs')&&!E.$('.stpill')&&!!E.$('.status #chippill')&&!!E.$('.status #gear'),'NV1 Keine Tab-Leiste, keine Streak-Pille, oben Chips und Zahnrad');
+  ok(!!E.$('#tabs')&&!E.$('.stpill')&&!!E.$('.status #chippill')&&!!E.$('.status #gear'),'NV1 Tab-Leiste da, keine Streak-Pille, oben Chips und Zahnrad');
+  ok(!!E.$('.tab[data-v="home"]')&&!!E.$('.tab[data-v="book"]')&&!!E.$('#shoptab')&&!E.$('.tab[data-v="settings"]'),'NV1b Leiste zeigt Heute, Vokabelheft, Shop statt Einstellungen');
+  ok(E.$('.tab[data-v="home"]').getAttribute('aria-current')==='page'&&!E.$('.tab[data-v="book"]').getAttribute('aria-current'),'NV1c Heute-Reiter ist aktiv markiert');
+  E.click(E.$('#shoptab'));
+  ok(!!E.$('#shop'),'NV1d Shop-Reiter öffnet den Shop');
+  E.click(E.$('#quit'));
+  ok(!E.$('#shop')&&!!E.$('.plan'),'NV1e Shop schließen führt zurück zum Startscreen');
   ok(!E.$('.plan .dstack'),'NV2 Daily Round ohne Chip-Stapel (Version 141, zu unruhig)');
   ok(!!E.$('.bookcard.card.prog')&&!!E.$('.bookcard .stack')&&!E.$('.bookcard .legend')&&!!E.$('.bookcard .bookgo'),'NV3 Vokabelheft-Kachel wie die alte Fortschritt-Karte, mit Pfeil wie Gamemodes');
   E.click(E.$('#gear'));
   ok(!!E.$('#sethead')&&!!E.$('.backbtn[data-v="home"]'),'NV4 Zahnrad öffnet die Einstellungen mit Zurück-Pfeil');
   E.click(E.$('.backbtn'));
   ok(!!E.$('.plan')&&!!E.$('#gear'),'NV5 Zurück führt auf den Startscreen');
-  E.click(E.$('#bookbtn'));
-  ok(!!E.$('#q')&&!!E.$('.bookprog .stack')&&!!E.$('.bookprog .legend'),'NV6 Vokabelheft-Kachel öffnet das Heft, Fortschritt steht dort oben');
+  E.click(E.$('.tab[data-v="book"]'));
+  ok(!!E.$('#q')&&!!E.$('.bookprog .stack')&&!!E.$('.bookprog .legend')&&E.$('.tab[data-v="book"]').getAttribute('aria-current')==='page','NV6 Vokabelheft-Reiter öffnet das Heft, Fortschritt steht dort oben, Reiter aktiv markiert');
   E.click(E.$('.backbtn'));
   ok(!!E.$('.plan'),'NV7 Zurück aus dem Vokabelheft');
 }

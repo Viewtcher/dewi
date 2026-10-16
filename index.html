@@ -42,7 +42,7 @@ p{margin:0}
 h1{font:700 26px/1.15 var(--display);letter-spacing:-.015em;margin:0;text-wrap:balance}
 h2{font:700 18px/1.2 var(--display);margin:0}
 
-.app{max-width:480px;margin:0 auto;padding:18px 16px 40px}
+.app{max-width:480px;margin:0 auto;padding:18px 16px 104px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .brand{display:flex;align-items:center;gap:9px;font:700 22px/1 var(--display);letter-spacing:-.01em}
 .brand b{color:var(--c-pink);font-weight:700}
@@ -388,11 +388,13 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .langrow b{display:block;font:700 18px/1.2 var(--display)}
 .flash{color:var(--good);font-size:14px;min-height:1.4em}
 
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:10;background:var(--surface);border-top:1px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs-in{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
 .tab{display:grid;justify-items:center;gap:2px;min-height:52px;padding:6px 4px;border:0;border-radius:12px;background:transparent;color:var(--faint);font-size:11px;font-weight:600}
 .tab svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .tab[data-v=home]{--tc:var(--accent)}
 .tab[data-v=book]{--tc:var(--c-cyan)}
-.tab[data-v=settings]{--tc:var(--c-violet)}
+#shoptab{--tc:var(--c-yellow)}
 .tab{transition:background .15s,color .15s}
 .tab[aria-current=page]{color:var(--tc);background:color-mix(in srgb,var(--tc) 18%,transparent)}
 .tab[aria-current=page] svg :is(rect,circle,path:first-child){fill:currentColor;fill-opacity:.28}
@@ -869,6 +871,13 @@ button.chippill{font:inherit;cursor:pointer}
 <body>
 <div class="app" id="app"></div>
 
+<nav class="tabs" id="tabs" aria-label="Hauptmenü" hidden>
+  <div class="tabs-in">
+    <button class="tab" data-v="home"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3.5v3M16 3.5v3"/></svg><span class="tl" data-k="Heute">Heute</span></button>
+    <button class="tab" data-v="book"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3V4.5Z"/><path d="M5 17a3 3 0 0 1 3-3h10"/></svg><span class="tl" data-k="Vokabelheft">Vokabelheft</span></button>
+    <button class="tab" id="shoptab" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.3 11.2a2 2 0 0 1-2 1.8H8.3a2 2 0 0 1-2-1.8Z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg><span class="tl" data-k="Shop">Shop</span></button>
+  </div>
+</nav>
 
 <div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Round"></div>
 
@@ -8432,7 +8441,7 @@ function openStamp(d,from){
 /* ---------- Oberfläche ---------- */
 let view='home',bookQ='',bookQraw='',bookF='all';
 const openCats=new Set();
-const app=$('#app'),sheet=$('#sheet');
+const app=$('#app'),tabs=$('#tabs'),sheet=$('#sheet');
 /* Version 144: Vom linken Bildschirmrand nach rechts wischen = zurück, wie der Pfeil oben links.
    Nur auf den normalen Bildschirmen (Vokabelheft, Einstellungen), nicht während ein Sheet offen ist. */
 (function(){
@@ -8462,20 +8471,26 @@ sheet.addEventListener('click',e=>{
 function applyStatic(){
   document.documentElement.lang=state.ui==='en'?'en':'de';
   sheet.setAttribute('aria-label',t('Round'));
+  $$('.tab',tabs).forEach(b=>{const s=$('.tl',b);if(s)s.textContent=t(s.dataset.k);});
+  tabs.setAttribute('aria-label',t('Hauptmenü'));
 }
 function render(){
   closeStamp();
   applyStatic();
-  if(!state.ui){app.innerHTML=uiView();bindPick('[data-ui]','ui','#uigo',v=>{state.ui=v;save();render();},previewUiMascot);return;}
-  if(!state.nameAsked){app.innerHTML=nameView();bindName();return;}
+  if(!state.ui){tabs.hidden=true;app.innerHTML=uiView();bindPick('[data-ui]','ui','#uigo',v=>{state.ui=v;save();render();},previewUiMascot);return;}
+  if(!state.nameAsked){tabs.hidden=true;app.innerHTML=nameView();bindName();return;}
   if(state.lang&&LANGS[state.lang]&&((LANGS[state.lang].needsDe&&state.ui!=='de')||(LANGS[state.lang].needsEn&&state.ui!=='en'))){state.lang=null;save();}   // Englisch lernen geht nur mit deutscher App-Sprache
-  if(!state.lang||!LANGS[state.lang]){app.innerHTML=langView();bindPick('[data-lang]','lang','#langgo',v=>{state.lang=v;save();view='home';render();});return;}
+  if(!state.lang||!LANGS[state.lang]){tabs.hidden=true;app.innerHTML=langView();bindPick('[data-lang]','lang','#langgo',v=>{state.lang=v;save();view='home';render();});return;}
+  tabs.hidden=false;
+  $$('.tab',tabs).forEach(b=>{if(b.dataset.v===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
   if(view==='home'){app.innerHTML=homeView();bindHome();}
   else if(view==='book'){app.innerHTML=bookView();bindBook();}
   else{app.innerHTML=settingsView();bindSettings();}
   $$('[data-v]',app).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v)));   // Version 139: Zahnrad, Vokabelheft-Kachel und Zurück-Pfeile statt Tab-Leiste
 }
 function go(v){view=v;render();try{window.scrollTo(0,0);}catch(e){}}
+$$('.tab[data-v]',tabs).forEach(b=>b.onclick=()=>go(b.dataset.v));
+$('#shoptab',tabs).onclick=()=>openShop();   // Version 144: Leiste wieder da, an der Stelle der Einstellungen jetzt der Shop
 
 const LOCKIC='<svg class="ico-lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.3" class="dot"/></svg>';
 const GEARIC='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>';
