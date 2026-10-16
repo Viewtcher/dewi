@@ -1842,3 +1842,15 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** Die Musik-Prüfungen H14/H15, M4, M13/M14 nutzen jetzt den Regler statt des weggefallenen An/Aus-Schalters, M10b erwartet „Sound & Musik“ als erste Kachel. Neuer Block V1–V29 in test4: Haus-Symbol, Kachel-Reihenfolge, Indie, Dewis Stimme auf 0 stumm (auch Vorlesen), Sound aus macht Musik und Dewi still, deutsche Stimme, OK-Knöpfe, volle Leiste auf Startscreen und im Vokabelheft, Ein-/Ausklappen, Lautsprecher in jeder Zeile, Zurück-Wisch an allen Orten (und nicht im Spiel, nicht beim Scrollen, nicht zu weit vom Rand), Umstellung bestehender Stände. Tests 2–5 grün. Zusätzlich in Chromium im iPhone-Format (390×844) gemessen: keine Überlappung in 40 Vokabelheft-Zeilen, kein seitliches Scrollen, alle drei Regler bündig, Pfeil exakt mittig auf der Kachel; eine echte Touch-Wischgeste mit leichtem Drift nach unten führt zurück.
 
 **Nicht auf einem echten iPhone getestet:** Ob der Wisch jetzt zuverlässig klappt, ob iOS die Lautstärke für das Vorlesen beachtet (Safari ignoriert sie teils, „0 = aus“ greift aber sicher), ob das iPhone eine deutsche Stimme mitbringt, wie das Blubbern in der neuen Lautstärke klingt.
+
+## Version 152 – Sprachscreens aufgeräumt
+
+**Was:** Der erste Screen („Sprache / Language“) ist nicht mehr zweisprachig. Englisch ist vorgewählt und der ganze Screen (Titel, Hinweis, Knopf, Dewis Spruch) ist englisch. Ein Tipp auf „Deutsch“ schaltet sofort alles auf Deutsch um, ein Tipp auf „English“ wieder zurück. Erst „Weiter“ / „Next“ übernimmt die Wahl. In beiden Sprachscreens (App-Sprache und Lernsprache) stehen die Flaggen-Emojis wie auf dem Startscreen statt der Kürzel-Kästchen. Der Satz „Weitere Sprachen lassen sich später ergänzen“ ist weg.
+
+**Warum:** Der Erstkontakt sollte nicht zwei Sprachen gleichzeitig zeigen, und die Flaggen passen zum Startscreen.
+
+**Technik:** `uiDraft` (Standard `'en'`) hält die Entwurfs-Sprache; `uiView()` setzt `state.ui` nur während des Zusammenbauens auf den Entwurf, `state.ui` bleibt bis „Weiter“ leer. `bindUi()` ersetzt `bindPick`/`previewUiMascot` für diesen Screen. Neue Konstante `FLAGS` (auch für den Startscreen), CSS `.langrow .flagbox`. Die Handy-Sprache wird für die Vorauswahl nicht mehr beachtet (bestehende Nutzer ohne `ui` bekommen sie in `migrate()` weiter). Neue Texte im `EN`-Wörterbuch.
+
+**Tests:** test3 Abschnitt 0 neu: nur Englisch sichtbar, Englisch vorgewählt, Flaggen, Umschalten hin und zurück, „Weiter“ übernimmt. Alle vier Suiten grün. Die alte Prüfung „Handy-Sprache ist vorgeschlagen“ entfällt gewollt.
+
+**Nur auf einem echten iPhone prüfbar:** Wie die Flaggen-Emojis in den Zeilen aussehen (Größe/Ausrichtung), Ton beim Antippen.
