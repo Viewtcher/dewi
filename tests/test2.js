@@ -36,7 +36,7 @@ const asc=s=>s.replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').repla
 
 function env(pre,mode='de',lang='de-DE'){
   const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',pretendToBeVisual:true,beforeParse(win){
-    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;
+    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;win.__autoBlind="small";
     win.__aud={osc:[],noise:0,resumed:0,gain:null};
     win.AudioContext=function(){const A=win.__aud;this.currentTime=0;this.sampleRate=8000;this.state='suspended';this.destination={};
       this.resume=()=>{A.resumed++;this.state='running';};
@@ -187,7 +187,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   const s=E.st();
   ok(s.progress.id[first].l===1&&!Object.keys(s.list||{}).some(lg=>Object.keys(s.list[lg]||{}).length),'B4 Wort auf Stufe 1, keine Fehlerliste');
   ok(s.done[ev(E,'today()')]===true&&!(s.flawed&&s.flawed[ev(E,'today()')]),'B5 Tag zählt, kein grauer Stempel');
-  ok((s.chips|0)===0&&!E.$('#egem'),'B5b Daily Round bringt (bis Version 133) keine Chips mehr');
+  ok((s.chips|0)===200&&/×2 Royal Flush/.test(E.$('#epay').textContent),'B5b Erste Hand (1 Modul, Dewi zahlt): (100 + 0) × 1 × 2 = 200 Chips');
   E.click(E.$('#fin'));
   ok(/Heute geschafft/.test(E.$('#app').textContent),'B6 Home: geschafft');
   E.click(E.$('#gm'));ok(!!E.$('#surv')&&E.$('#surv').disabled,'B7 Survival sichtbar, aber gesperrt (zu wenig Wörter)');
@@ -250,6 +250,71 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   E.click(fb);
   const rows=E.$$('#vlist .row'),shakyN=ev(E,'curLang().words.filter(w=>isShaky(state.progress.id[w.k])).length');
   ok(rows.length===shakyN&&rows.length>0&&E.$$('#vlist .tag.err').length===ev(E,'fallenWords().length')&&/wackelig/.test(E.$('#vlist').textContent)&&!/Fehlerliste/.test(E.$('#app').textContent),'D18 Filter zeigt Stufe 0–1, Marke „wackelig“ nur auf Stufe 0 ('+rows.length+')');
+}
+// --- P) Poker (Version 133)
+{
+  const E=fresh();known(E,6);
+  const P=ev(E,`(()=>{
+    const pay=(blind,res,pct)=>{const h={blind,stake:blind==='big'?300:100,paid:'self',pct:pct||0,mult:0,done:0,lost:0};h.bonus=Math.round(h.stake*h.pct/100);
+      res.forEach(ok=>handSettle(h,ok));const c=state.chips;const r=handPayout(h);state.chips=c;return r.net;};
+    const T=[1,1,1,1,1],F1=[1,1,1,1,0],F2=[1,1,1,0,0],F3=[1,1,0,0,0];
+    return JSON.stringify({s:[pay('small',T),pay('small',F1),pay('small',F2),pay('small',F3)],b:[pay('big',T),pay('big',F1),pay('big',F2),pay('big',F3)],
+      b30:(()=>{const h={blind:'big',stake:300,paid:'self',pct:30,bonus:90,mult:0,done:0,lost:0};T.forEach(ok=>handSettle(h,ok));const c=state.chips;const r=handPayout(h);state.chips=c;return r.payout;})(),
+      floor:(()=>{const h={blind:'big',stake:300,paid:'self',pct:0,bonus:0,mult:0,done:0,lost:0};[0,0,1,0].forEach(ok=>handSettle(h,ok));return h.mult;})(),
+      small0:(()=>{const h={blind:'small',stake:100,paid:'self',pct:0,bonus:0,mult:0,done:0,lost:0};[1,1,0,0].forEach(ok=>handSettle(h,ok));return h.mult;})()});})()`);
+  const R=JSON.parse(P);
+  ok(R.s.join()==='900,300,200,100','P1 Rechenbeispiele Small Blind 100: +900 / +300 / +200 / +100 ('+R.s+')');
+  ok(R.b.join()==='2700,600,0,-300','P2 Rechenbeispiele Big Blind 300: +2.700 / +600 / ±0 / −300 ('+R.b+')');
+  ok(R.b30===3900,'P3 30 Tage, Big Blind, Royal Flush: 390 × 10 = 3.900 ('+R.b30+')');
+  ok(R.floor===0&&R.small0===2,'P4 Multiplikator: Big nie unter ×0, Small bleibt bei Fehlern stehen');
+  ok(ev(E,'[6,7,13,14,29,30,49,50,99,100,364,365,999].map(bonusPct).join()')==='0,10,10,20,20,30,30,40,40,50,50,100,100','P5 Serien-Bonus-Stufen');
+  ok(ev(E,'STREAK_MILES.join()')==='7,14,30,50,100,365','P6 Meilensteine = Bonus-Stufen');
+  // Wer zahlt den Small Blind?
+  const day0=ev(E,'today()');
+  ok(ev(E,'(()=>{state.chips=0;return blindOffer().small.paid})()')==='dewi','P7 Erste Round des Tages: Dewi zahlt');
+  ev(E,`state.done['${day0}']=true;state.chips=150;save()`);
+  ok(ev(E,'blindOffer().small.paid')==='self'&&!ev(E,'blindOffer().big.ok'),'P8 Danach zahlt man selbst, Big ausgegraut ohne 300 Chips');
+  ev(E,'state.chips=40;save()');
+  ok(ev(E,'blindOffer().small.paid')==='rescue','P9 Leeres Konto: Dewi rettet');
+  ev(E,"handNew('small')");
+  ok(ev(E,'state.chips')===40&&ev(E,'daily().rescue')===true&&ev(E,'blindOffer().small.paid')==='none'&&ev(E,'blindOffer().small.stake')===0,'P10 Rettung nur einmal am Tag, danach ohne Einsatz');
+  ev(E,'state.chips=1000;save()');ev(E,"handNew('big')");
+  ok(ev(E,'state.chips')===700,'P11 Big Blind wird beim Start abgebucht');
+  // Echte Hand: Big Blind, alles falsch → ×0, Einsatz weg
+  ev(E,`delete state.done['${day0}'];state.chips=1000;state.chipShown=1000;save();render();window.__autoBlind='big'`);
+  E.click(E.$('#start'));
+  ok(/Big Blind 300/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===700,'P12 Kopfzeile zeigt die Hand, Einsatz abgebucht');
+  ok(E.play({failSent:true,failType:true}),'P13 Hand mit lauter Fehlern läuft durch');
+  ok(ev(E,'state.chips')===700&&/×0/.test(E.$('#epay').textContent)&&/Einsatz weg/.test(E.$('#epay').textContent)&&!E.$('#egem'),'P14 ×0: keine Auszahlung, Einsatz weg');
+  E.click(E.$('#fin'));
+  // Pausieren, keine Verwerfen-Möglichkeit, Verfallen um Mitternacht
+  ev(E,"window.__autoBlind='small'");nextDay(E);
+  E.click(E.$('#start'));skipIntro(E);
+  ok(ev(E,'S.hand&&S.hand.paid')==='dewi','P15 Neuer Tag: wieder Dewis Small Blind');
+  ev(E,'closeSheet()');
+  ok(!!ev(E,"openRun('daily')")&&/Weiterspielen/.test(E.$('#start').textContent),'P16 Pausierte Hand: Weiterspielen');
+  E.click(E.$('#start'));ok(!!E.$('#pkrow')&&!E.$('.blindbox')&&!E.$('.askbox'),'P17 Start setzt die Hand fort, ohne Rückfrage');
+  ev(E,'closeSheet()');
+  ev(E,'startRound("survival")');
+  ok(!!E.$('.askbox')&&!E.$('#askgo')&&!!E.$('#askon'),'P18 Survival bei offener Hand: kein „Trotzdem neu starten“');
+  E.click(E.$('#askno'));
+  nextDay(E);
+  ok(!ev(E,"openRun('daily')")&&ev(E,'state.run')===null&&/Play now/.test(E.$('#start').textContent),'P19 Um Mitternacht verfällt die pausierte Hand');
+  // Meilenstein zeigt den neuen Bonus
+  ev(E,`(()=>{for(let i=1;i<=6;i++)state.done[addDays(today(),-i)]=true;save();render();})()`);
+  E.click(E.$('#start'));E.play();
+  ok(/Serien-Bonus jetzt \+10 %/.test(E.$('#fin').textContent),'P20 Tag 7: Meilenstein mit „Serien-Bonus jetzt +10 %“');
+  const ep=E.$('#epay')?E.$('#epay').textContent:'';
+  ok(/^100 ·/.test(ep)&&!/\+/.test(ep),'P21 Bonus nach der Serie vor der Hand: Tag 7 zahlt noch ohne Bonus ('+ep+')');
+  E.click(E.$('#fin'));
+  ok(ev(E,'blindOffer().pct')===10,'P22 Ab der nächsten Hand gilt +10 %');
+  ev(E,"window.__autoBlind=null;state.chips=250;save();render()");
+  E.click(E.$('#extra'));
+  const bb=E.$('.blindbox');
+  ok(!!bb&&E.$('#blind-big').disabled&&/Serien-Bonus \+10 %/.test(bb.textContent)&&!E.$('#pkrow'),'P23 Blind-Wahl erscheint vor der Hand, Big ausgegraut bei 250 Chips');
+  E.click(E.$('#blind-small'));
+  ok(!E.$('.blindbox')&&/Small Blind 100 · \+10 %/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===150,'P24 Small gewählt: Hand startet, 100 abgebucht, Bonus +10 %');
+  ev(E,"closeSheet();window.__autoBlind='small'");
 }
 // --- E) Versuche je Modul
 {

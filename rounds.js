@@ -92,7 +92,7 @@ function saveRun(){
   state.run={v:1,lang:state.lang,kind:S.kind,playmode:S.playmode,i:S.i,
     items:S.items.map(x=>({k:x.w.k,kind:x.kind,type:x.type})),
     right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),
-    streak0:S.streak0,last:S.last,lives:S.lives,score:S.score,shown:S.score,run:S.run,words:S.words,lost:S.lost,best:S.best};
+    streak0:S.streak0,last:S.last,lives:S.lives,score:S.score,shown:S.score,run:S.run,words:S.words,lost:S.lost,best:S.best,hand:S.hand||null,date:S.date||today()};
   save();
 }
 function clearRun(){if(state.run){state.run=null;save();}}
@@ -105,6 +105,7 @@ function openRun(kind){
   const by={};L.words.forEach(w=>{by[w.k]=w;});
   if(!r.items||!r.items.length||r.items.some(x=>!by[x.k]||x.kind==='repair'))return null;   // Runs von vor Version 131 mit Reparatur-Karten verfallen
   if(r.i>=r.items.length)return null;
+  if(r.kind==='daily'&&r.date&&r.date<today()){state.run=null;save();return null;}   // Version 133: pausierte Daily-Hand verfällt um Mitternacht samt Einsatz
   return r;
 }
 function resumeRun(){
@@ -113,7 +114,7 @@ function resumeRun(){
   S={items:r.items.map(x=>({w:by[x.k],kind:x.kind,type:x.type})),i:r.i,right:r.right,wrong:r.wrong,
      missed:(r.missed||[]).map(k=>by[k]).filter(Boolean),
      cur:null,streak0:r.streak0,kind:r.kind,playmode:r.playmode,last:r.last,lives:r.lives,score:r.score,
-     shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best};
+     shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best,hand:r.hand||null,date:r.date||today()};
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
   return true;
@@ -122,29 +123,34 @@ function resumeRun(){
 function askDiscard(cb){
   const r=openRun();if(!r)return cb();
   const o=document.createElement('div');o.className='askbox';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');
-  const what=r.kind==='survival'?t('Survival'):t('Daily Round');
-  o.innerHTML=`<div class="ask-back"></div><div class="ask-in"><b>${t('Offener Run: {0}',what)}</b>
-    <p>${t('Wenn du neu startest, ist der alte Run weg.')}</p>
-    <button class="btn primary block" id="askgo">${t('Trotzdem neu starten')}</button>
+  const what=r.kind==='survival'?t('Survival'):t('Daily Round'),hand=r.kind==='daily';   // Version 133: eine Daily-Hand lässt sich nicht verwerfen
+  o.innerHTML=`<div class="ask-back"></div><div class="ask-in"><b>${hand?t('Offene Hand'):t('Offener Run: {0}',what)}</b>
+    <p>${hand?t('Erst die offene Hand zu Ende spielen.'):t('Wenn du neu startest, ist der alte Run weg.')}</p>
+    ${hand?'':`<button class="btn primary block" id="askgo">${t('Trotzdem neu starten')}</button>`}
     <button class="btn block" id="askon">${t('Weiterspielen')}</button>
     <button class="btn block ghost" id="askno">${t('Abbrechen')}</button></div>`;
   document.body.appendChild(o);
   const close=()=>o.remove();
   $('.ask-back',o).onclick=close;$('#askno',o).onclick=close;
-  $('#askgo',o).onclick=()=>{close();clearRun();cb();};
+  if(!hand)$('#askgo',o).onclick=()=>{close();clearRun();cb();};
   $('#askon',o).onclick=()=>{close();resumeRun();};
-  try{$('#askgo',o).focus();}catch(e){}
+  try{($('#askgo',o)||$('#askon',o)).focus();}catch(e){}
 }
 function startRound(kind,opt){
-  const o=opt||{};
-  if(!o.force&&openRun())return askDiscard(()=>startRound(kind,Object.assign({force:1},o)));
+  const o=opt||{},open=openRun();
+  if(!o.force&&open){
+    if(open.kind==='daily'&&kind!=='survival')return resumeRun();   // offene Daily-Hand: nur weiterspielen
+    return askDiscard(()=>startRound(kind,Object.assign({force:1},o)));
+  }
+  if(kind!=='survival'&&!o.blind)return chooseBlind(b=>startRound(kind,Object.assign({},o,{blind:b,force:1})));   // Version 133: erst der Einsatz
   clearRun();
   const pool=kind==='survival'&&o.playmode&&o.playmode!=='random'?soloWords(o.playmode):survivalWords();
   if(kind==='survival'&&o.playmode&&o.playmode!=='random'&&pool.length<SOLO_MIN)return;
   const items=kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards();
   if(!items.length)return;
   S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak(),kind:kind||'daily',playmode:o.playmode||'random',
-     last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:kind==='survival'?bestFor(o.playmode||'random'):0};
+     last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:kind==='survival'?bestFor(o.playmode||'random'):0,
+     hand:kind==='survival'?null:handNew(o.blind),date:today()};
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
 }
@@ -153,7 +159,7 @@ function closeSheet(){sheet.hidden=true;sheet.innerHTML='';document.body.style.o
 
 function sheetBody(inner){
   const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
-  sheet.innerHTML=`<div class="sin"><div class="shead"><button class="iconbtn" id="quit" aria-label="${t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div>${musIcon()}</div>${scoreRow()}${inner}</div>`;
+  sheet.innerHTML=`<div class="sin"><div class="shead"><button class="iconbtn" id="quit" aria-label="${t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div>${musIcon()}</div>${scoreRow()}${pokerRow()}${inner}</div>`;
   $('#quit').onclick=closeSheet;
   sheet.scrollTop=0;
   if(S.kind==='survival'&&S.score>(S.shown||0))setTimeout(scoreTick,350);
@@ -210,6 +216,7 @@ function settleCard(typedOk){
   }else{
     r=record(w,ok,c.type);
     if(ok)S.right++;else{S.wrong++;S.lost++;S.missed.push(w);}
+    c.dm=handSettle(S.hand,ok);   // Multiplikator der Pokerhand: +1, −1 (Big Blind) oder 0
     S.run=ok?(S.run||0)+1:0;
   }
   c.res=r;
@@ -295,8 +302,9 @@ function showEnd(){
   save();
   const total=S.right+S.wrong,st=streak();
   const grew=st>S.streak0,gray=firstToday&&S.lost>0;
-  /* Version 132: Tages-, Perfekt-, Wort- und Meilenstein-Diamanten entfallen. Chips gibt es ab Version 133 aus der Pokerhand (E.chips). */
-  endResult({total,st,grew,gray,chips:0,first:firstToday});
+  /* Version 133: Chips gibt es nur noch aus der Auszahlung der Pokerhand (poker.js) */
+  const P=S.hand&&!S.paidOut?handPayout(S.hand):null;S.paidOut=true;
+  endResult({total,st,grew,gray,chips:P?P.payout:0,pay:P,first:firstToday});
 }
 /* ===== Bühnen-Helfer für die Endscreens (Version 126) =====
    Ein Ablaufplan (q) setzt Schritte zeitversetzt; ein Tipp auf die Bühne springt zum Endzustand.
@@ -337,7 +345,7 @@ function endResult(E){
   sheetBody(`<div class="smain endstage" id="est"><div class="kicker" style="--k:var(--c-pink)">${t('Round beendet')}</div>
     <div class="bigword es-big${S.lost===0?' perf':''}" id="ebig">${esc(full[0])}<span id="enum">0</span>${esc(full[1]||'')}</div>
     <p class="hint rv" id="esub">${t('Module geschafft')}</p>
-    ${E.chips?`<div class="chipline rv" id="egem">${chipSvg('pink')}<b id="egn">+0</b></div>`:''}
+    ${E.chips?`<div class="chipline rv" id="egem">${chipSvg('pink')}<b id="egn">+0</b></div>`:''}${payoutLine(E.pay)}
     <div class="rv" id="emas">${mascot(good,null,'sm')}</div>
     <button class="btn primary block rv" id="endnext">${E.first?t('Weiter'):t('Fertig')}</button></div>`);
   const q=stageSeq(),stage=$('#est');
@@ -354,7 +362,7 @@ function endResult(E){
     T+=cm+250;
     q.at(T-200,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(E.chips);g.classList.add('pulse');}});
   }
-  q.at(T,()=>{on('emas');sfx(good);});
+  q.at(T,()=>{on('epay');on('emas');sfx(good);});
   T+=450;
   q.at(T,()=>{$$('.rv',stage).forEach(e=>e.classList.add('on'));});
   $('#endnext').onclick=()=>{if(!$('#endnext').classList.contains('on'))return;if(E.first)streakMoment(E);else closeSheet();};   // Serie nur beim ersten Spielen des Tages
@@ -389,14 +397,14 @@ function heartMoment(){
 }
 /* Serie am Ende der Daily Round: Flamme steigt auf, Funkenflug, Zahl groß */
 function streakMoment(E){
-  const st=E.st,ms=E.grew&&(st===7||st===14||st===30||st===60||st%100===0);
+  const st=E.st,ms=E.grew&&STREAK_MILES.indexOf(st)>=0;   // Version 133: Meilensteine = Stufen des Serien-Bonus
   const em=[];for(let i=0;i<11;i++)em.push(`<i style="left:${6+i*8.6}%;animation-delay:${(i*.19).toFixed(2)}s"></i>`);
   /* Gewachsene Serie: alte Zahl rutscht weg, neue rastet ein (Level-up) */
   const num=E.grew&&st>1?`<div class="mm-roll"><b class="ro" aria-hidden="true">${st-1}</b><b class="rn">${st}</b></div>`:`<div class="mm-big">${st}</div>`;
   const el=moment('streak'+(ms?' ms':''),`<div class="mm-art"><div class="mm-em">${em.join('')}</div>${flameSvg(st,true)}</div>
     ${num}
     <div class="mm-lab">${st===1?t('Tag'):t('Tage')} ${t('in Folge')}</div>
-    ${ms?`<div class="mm-ms">${t('Meilenstein!')}</div>`:''}
+    ${ms?`<div class="mm-ms">${t('Meilenstein!')}</div><div class="mm-sub" id="mmbonus">${t('Serien-Bonus jetzt +{0} %',bonusPct(st))}</div>`:''}
     <div class="mm-sub">${E.grew?t('Serie verlängert!'):t('Die Serie läuft weiter.')}</div>`,closeSheet);
   if(E.grew){
     sfx(ms?'milestone':'streakup');

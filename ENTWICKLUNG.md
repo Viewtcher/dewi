@@ -29,6 +29,7 @@ dewi/
 ├── rounds.js             ROUNDS: startRound, Wort-Reihe (showItem, nextStep), Kennzeile, finish, levelUp, showEnd
 ├── playmodes.js          PLAYMODES: Playmode-Wahl für den Survival Mode (Random oder Solo)
 ├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
+├── poker.js              Poker (seit Version 133): Blinds, Multiplikator, Royal Flush, Serien-Bonus, Auszahlung
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -72,7 +73,8 @@ python build.py         # erzeugt index.html (unter Linux/Mac: python3 build.py)
 | Aufgabe | **Karte** | Ein Wort in einem Modul, die kleinste Einheit | „eine Swipe-Karte“ |
 | Ablauf | **Playmode** | Welche Module eine Round einsetzt | **Random** (gemischt, nach Stufe) und **Solo** (ein einziges Modul für alle Wörter, z. B. „Solo Swipe“) |
 | Runde | **Round** | Eine komplette Abfrage vom Start bis zum Ergebnis | siehe unten |
-| Runde | **Daily Round** | Die Pflicht des Tages, immer Playmode Random, ohne Leben. Stages: **Einführung** (neues Wort), **Review** (4 bekannte Wörter + neues Wort am Ende) | `startRound('daily')` |
+| Runde | **Daily Round** | Die Pflicht des Tages, immer Playmode Random, ohne Leben, gespielt als **Pokerhand** (seit Version 133). Stages: **Einführung** (neues Wort), **Review** (4 bekannte Wörter + neues Wort am Ende) | `startRound('daily')` |
+| Poker | **Hand · Blind · Multiplikator · Royal Flush** | Hand = alle gewerteten Module einer Daily Round. Blind = Einsatz (Small 100, Big 300). Multiplikator = ×0 + 1 je geschafftem Modul. Royal Flush = alles geschafft, Multiplikator × 2 | `poker.js` |
 | Runde | **Survival** (früher Freeplay) | Freiwillig, erst nach der Daily Round: alle begonnenen Wörter (auch Stufe 0) einmal, 3 Leben insgesamt, ein Versuch pro Karte, Highscore je Playmode | `startRound('survival')`, `openPlaymodes('survival')` |
 | Zustand | **Wackelig** | Wörter auf Stufe 0 oder 1 (Filter im Vokabelheft). Stufe 0 heißt: ein Modul wurde verloren, das Wort ist morgen fällig und hat im Review Vorrang | `isShaky()`, `fallenWords()` |
 
@@ -1469,3 +1471,24 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 neuer Block „Chips“ (C1–C8: Migration × 10 und nur einmal, Abkürzung, Survival-Grenze, Pille, Varianten, keine Diamanten mehr, Chipregen), M2 und E4/E6 angepasst; test2 B5b (keine Chips aus der Daily Round). Zusätzlich im echten Chromium über Pixelfarben geprüft (ohne Screenshot): Chip in der Pille 28 × 28 px, Gesicht und Rand in den richtigen Farben, alle fünf Varianten. Dabei gefunden und behoben: Zusammenstoß mit der vorhandenen Klasse `.chip`. Tests 2–5 grün.
 
 **Nicht auf einem echten iPhone getestet:** Klang des Chip-Klackerns, Glanz in der Pille, Darstellung der Chips in Safari.
+
+
+## Version 133 – Poker-Regeln (Poker Phase 1, Etappe 3)
+
+> **Die Daily Round ist eine Pokerhand.** Vor jeder Hand wählt man Small Blind (100) oder Big Blind (300). Jedes geschaffte Modul hebt den Multiplikator um 1, alles geschafft verdoppelt ihn (Royal Flush). Am Ende zahlt das Haus (Einsatz + Serien-Bonus) × Multiplikator aus. Grundlage: `konzept-poker-shop.md`, Abschnitte 2 und 3. Die Screens sind noch ein Behelf, gestaltet wird in Version 134.
+
+**Entscheidungen (Vito):** Der Serien-Bonus richtet sich nach der Serie **vor** der Hand (was die Flamme bei der Blind-Wahl zeigt). Royal Flush gilt immer, auch bei kleinen Händen. Ist das Konto leer und Dewi hat heute schon gerettet, spielt man **ohne Einsatz** weiter (Auszahlung 0), damit Lernen nie an Chips scheitert.
+
+**Regeln (alle in `poker.js`)**
+- Erste Daily Round des Tages: Small Blind zahlt Dewi; Big Blind freiwillig, voller Betrag selbst. „Noch eine Runde“: beide selbst. Reicht das Konto nicht für den Small Blind, zahlt ihn Dewi einmal am Tag (`daily().rescue`), danach Hand ohne Einsatz. Der eigene Einsatz wird beim Start abgebucht.
+- Multiplikator ×0, +1 je geschafftem Modul. Verloren: Small bleibt stehen, Big −1 (nie unter 0). Das Kennenlernen zählt nicht.
+- Royal Flush: alle Module geschafft → × 2. Auszahlung nur am Ende: `(Einsatz + Bonus) × Multiplikator`. Bonus = Einsatz × Prozent, gerundet.
+- Serien-Bonus: 7 +10 %, 14 +20 %, 30 +30 %, 50 +40 %, 100 +50 %, 365 +100 % (`BONUS_STEPS`). Meilenstein-Moment genau an diesen Tagen (`STREAK_MILES`) mit „Serien-Bonus jetzt +X %“; 60 und jedes 100. ist kein Meilenstein mehr (außer 100).
+- Offene Hand: X oder Schließen pausiert (wie der offene Run aus Version 114, jetzt mit `hand` und `date`). Eine pausierte Daily-Hand verfällt um Mitternacht samt Einsatz (`openRun`). Eine Hand, die gerade auf dem Bildschirm läuft, darf über Mitternacht zu Ende gespielt werden.
+- Kein Verwerfen: „Play now“ und „Noch eine Runde“ setzen eine offene Hand fort; der Startscreen zeigt dann „Weiterspielen“. Survival-Start bei offener Hand fragt ohne „Trotzdem neu starten“. Survival selbst bleibt wie bisher.
+
+**Behelf bis Version 134:** Blind-Wahl als kleines Fenster (`chooseBlind`), Zeile „Small Blind 100 · +10 % … ×3“ im Kopf der Round (`pokerRow`), auf dem Endscreen die Chip-Zeile und die Rechnung (`payoutLine`, z. B. „100 + 10 · ×5 · ×2 Royal Flush“, bei ×0 mit eigenem Einsatz „Einsatz weg“).
+
+**Tests:** test2 neuer Block P (P1–P24): alle Rechenbeispiele aus dem Konzept (Small +900/+300/+200/+100, Big +2.700/+600/±0/−300, 30 Tage Big Royal Flush 3.900), Multiplikator-Grenzen, Bonus-Stufen, Meilensteine, wer zahlt (Dewi, selbst, Rettung, ohne Einsatz), Abbuchung, echte Hand mit ×0, Pausieren, kein Verwerfen, Verfallen um Mitternacht, Meilenstein an Tag 7, Bonus erst ab der nächsten Hand, Blind-Wahl-Fenster. B5b: erste Hand bringt 200 Chips. In allen Testdateien wählt `window.__autoBlind="small"` den Blind automatisch (nur mit `window.__test`). Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet.** Kein eigener iPhone-Check nötig, die Screens kommen in Version 134.

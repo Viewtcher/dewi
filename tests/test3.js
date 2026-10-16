@@ -35,7 +35,7 @@ const asc=s=>s.replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').repla
 
 function env(pre,mode='de',lang='de-DE'){
   const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',pretendToBeVisual:true,beforeParse(win){
-    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;
+    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;win.__autoBlind="small";
     win.__aud={osc:[],noise:0,resumed:0,gain:null};
     win.AudioContext=function(){const A=win.__aud;this.currentTime=0;this.sampleRate=8000;this.state='suspended';this.destination={};
       this.resume=()=>{A.resumed++;this.state='running';};
