@@ -251,11 +251,9 @@ function kicker(c,id,dir){
 
 /* Hinweis unter dem Ergebnis eines Moduls */
 function resultNote(good){
-  const c=S.cur,r=c.res||{};
+  const c=S.cur;
   if(S.kind==='survival')return good?`<p class="hint" style="margin-top:8px">+${fmtSc(c.pts)} ${t('Punkte')}${S.run>=3?' · '+t('{0} in Folge',S.run):''}${c.healed?' · '+t('Serie von {0}: ein Herz kommt zurück!',HEART_STREAK):''}</p>`:`<p class="hint" style="margin-top:8px">${t('Ein Leben weniger.')}</p>`;
-  if(!good)return `<p class="hint" style="margin-top:8px">${t('Das Wort fällt auf Stufe 0 und kommt morgen wieder.')}</p>`;
-  if(r.saved)return `<p class="hint" style="margin-top:8px">${t('Geschafft. Das Wort kommt morgen wieder (Stufe 1).')}</p>`;
-  return `<p class="hint" style="margin-top:8px">${r.days===1?t('Stufe {0} von 5. Nächste Wiederholung morgen.',r.level):t('Stufe {0} von 5. Nächste Wiederholung in {1} Tagen.',r.level,r.days)}</p>`;
+  return '';   // Version 149: Stufe und nächste Wiederholung nicht mehr geschrieben zeigen, Dewis Kommentar reicht als Rückmeldung
 }
 
 /* Ergebnis des Moduls Tippen (die anderen Module zeigen ihr Ergebnis selbst) */
@@ -284,8 +282,7 @@ function levelUp(c,r){
     <div class="lvl-badge"><span>${r.level}</span></div>
     <div class="lvl-pips">${[1,2,3,4,5].map(i=>`<i class="${i<=r.level?'on':''}" style="--d:${300+i*110}ms;--pc:${LVCOL[i]}"></i>`).join('')}</div>
     <div class="lvl-word">${esc(w.id)} = ${esc(gl(w))}</div>
-    <div class="lvl-sub">${r.days===1?t('Stufe {0} von 5 · nächste Wiederholung morgen',r.level):t('Stufe {0} von 5 · nächste Wiederholung in {1} Tagen',r.level,r.days)}</div>
-    ${mascot(lk,null,'col')}</div>`;
+    ${mascot(lk,null,'col')}</div>`;   // Version 149: Zeile mit Stufe/nächster Wiederholung raus, Kreis und Punkte zeigen die Stufe schon
   document.body.appendChild(el);
   let gone=false;
   const close=()=>{if(gone)return;gone=true;el.classList.add('out');setTimeout(()=>el.remove(),300);};

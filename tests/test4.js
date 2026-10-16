@@ -249,7 +249,7 @@ function toReels(E,force=true){
   act(E,'(r.right+2)%3');ev(E,'S.cur.rl.toss(true)');
   ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.cur.ok')===false,'D7 Zweiter Fehler: Modul verloren');
   ok(ev(E,'S.wrong')>=1,'D8 Als Fehler gezählt');
-  ok(/fällt auf Stufe 0 und kommt morgen wieder/.test(E.$('.smain').textContent)&&!/Fehlerliste/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0 und kommt morgen wieder, ohne Fehlerliste');
+  ok(ev(E,"state.progress[curLang().id][S.cur.w.k].l")===0&&!/Stufe|Wiederholung/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0, aber kein geschriebener Hinweis mehr dazu (Version 149)');
 }
 // --- Reduzierte Bewegung: Liste
 {

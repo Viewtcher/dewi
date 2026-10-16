@@ -1788,3 +1788,19 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** M10 in test4 geändert (prüfte bisher den Lautsprecher-Knopf im Modul, jetzt das Zahnrad) und um M10b/M10c erweitert: Antippen öffnet das Overlay mit „Sound" als erster Karte, Zurück-Pfeil schließt es wieder und das Spiel läuft unverändert weiter. Tests 2–5 grün. Zusätzlich mit Playwright/Chromium geprüft: Overlay liegt sichtbar über dem Spiel-Sheet, nach dem Schließen sind Quit-Knopf und Spielstand (`S`) noch da.
 
 **Nicht auf einem echten iPhone getestet:** Wie sich das Ebenen-Layout (Overlay über Sheet) mit der Safe-Area und etwaigen Übergangs-Rucklern auf einem echten Gerät anfühlt.
+
+
+## Version 149 – Keine geschriebene Stufe/nächste Wiederholung mehr
+
+> **Unter dem Ergebnis jedes Moduls stand bisher ein Satz wie „Stufe 3 von 5. Nächste Wiederholung in 2 Tagen." (oder bei falsch/gerettet ähnlich) – das soll man nicht sehen.** Der Satz ist jetzt überall weg, Dewis Kommentar reicht als Rückmeldung. Im großen Level-up-Zwischenbildschirm fällt aus demselben Grund die Textzeile unter dem Stufen-Kreis weg – der Kreis mit der großen Zahl und die 5 Punkte darunter zeigen die Stufe schon bildlich.
+
+**Entscheidungen (Vito):** Unter dem Modul-Ergebnis bleibt gar kein Ersatz-Satz stehen. Im Level-up-Screen fällt die Zeile komplett weg (nicht nur der Wiederholungs-Teil).
+
+**Technik**
+- `resultNote()` in `rounds.js` ist die gemeinsame Stelle für alle Module (Tippen, Auswahl, Swipe, Lückensatz, Bausteine, Reihenfolge, Reels) – sie gibt für die Daily Round jetzt in allen drei Fällen (falsch, gerettet, normal richtig) einen leeren String zurück. Der Survival-Zweig (Punkte, Serie, „Ein Leben weniger.") ist unverändert, weil der nichts mit Stufe/Wiederholung zu tun hat.
+- `levelUp()`: Die Zeile `.lvl-sub` („Stufe {Level} von 5 · nächste Wiederholung …") ist entfernt. Übrig bleiben Beschriftung („Level up!"/„Gerettet!"/„Neues Wort!"/„Stufe gehalten"), der Stufen-Kreis mit der Zahl, die 5 Punkte darunter, das Wortpaar und Dewis Kommentar.
+- Die nun ungenutzten Übersetzungstexte (6 Varianten der beiden Sätze) bleiben in den Sprachdateien stehen, falls sie später wieder gebraucht werden – unschädlich.
+
+**Tests:** test4 D9 prüfte bisher den Wortlaut dieses Satzes bei falscher Antwort; jetzt prüft er stattdessen direkt im Spielstand, dass das Wort auf Stufe 0 fällt, und dass im Ergebnis kein „Stufe"/„Wiederholung"-Text mehr auftaucht. Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich der jetzt kürzere Ergebnis-Bildschirm (ohne den Satz) auf dem iPhone liest und ob er optisch leer wirkt.
