@@ -1804,3 +1804,65 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 D9 prüfte bisher den Wortlaut dieses Satzes bei falscher Antwort; jetzt prüft er stattdessen direkt im Spielstand, dass das Wort auf Stufe 0 fällt, und dass im Ergebnis kein „Stufe"/„Wiederholung"-Text mehr auftaucht. Tests 2–5 grün.
 
 **Nicht auf einem echten iPhone getestet:** Wie sich der jetzt kürzere Ergebnis-Bildschirm (ohne den Satz) auf dem iPhone liest und ob er optisch leer wirkt.
+
+
+## Version 150 – Tab-Leiste sitzt wirklich ganz unten
+
+> **Auf dem echten iPhone war unter der Tab-Leiste ein schmaler Spalt zu sehen** – nicht im App-Lila, sondern in der Standard-Hintergrundfarbe des Browsers (fast schwarz), die durchschimmerte. Das sah billig aus. Grund: Bei kurzen Bildschirmen (wie dem Startscreen) war die Seite selbst kürzer als das Display, darunter kam der Browser-Hintergrund statt unserem zum Vorschein, genau dort, wo die Leiste sitzt. Die Seite füllt jetzt immer mindestens die volle Bildschirmhöhe, mit unserem eigenen Hintergrund.
+
+**Entscheidungen (Vito):** Beheben wie vorgeschlagen (Seite füllt immer den ganzen Bildschirm).
+
+**Technik**
+- `html` bekommt `min-height:100%` und explizit `background:var(--bg)` (vorher nur auf `body` gesetzt, `html` selbst hatte keinen eigenen Hintergrund).
+- `body` bekommt zusätzlich `min-height:100vh` (mit `100dvh` als zweiter, modernerer Wert direkt danach – Browser, die `dvh` kennen, nehmen automatisch den zweiten).
+- Damit ist die Seite nie kürzer als der sichtbare Bildschirm, auch bei kurzen Ansichten wie dem Startscreen, und der Browser-eigene Hintergrund (der bei `color-scheme:dark` fast schwarz statt unserem Lila ist) kommt nirgends mehr zum Vorschein.
+
+**Tests:** Keine automatisierte Prüfung dafür möglich (reine Layout-Metrik auf echtem Gerät), Tests 2–5 bleiben unverändert grün. Zusätzlich mit Chromium im iPhone-Format (390×844) gemessen: Dokument- und Body-Höhe entsprechen jetzt exakt der Bildschirmhöhe, die Tab-Leiste endet exakt am unteren Rand (vorher kürzer als die Bildschirmhöhe bei kurzen Ansichten).
+
+**Nicht auf einem echten iPhone getestet:** Ob der Spalt auf dem Gerät jetzt wirklich weg ist – das war ja gerade der gemeldete Fehler, den ich nur im Code und in Chromium nachvollziehen konnte, nicht 1:1 auf dem iPhone.
+
+
+## Version 151 – Sound & Musik in einer Kachel, volle Fortschrittsleiste, Vorlesen im Vokabelheft, Zurück-Wisch überall
+
+> **Acht Änderungen auf einmal.** (1) Sound und Musik stehen in einer Kachel ganz oben in den Einstellungen: oben Sound An/Aus, darunter Regler für Musik (mit Soundtrack-Wahl), Soundeffekte und – neu – Dewis Stimme. (2) Im Testbereich gibt es einen „OK“-Knopf, weil man auf dem iPhone die Zahl sonst nicht bestätigen konnte. (3) Der Soundtrack „Holo-Aufstieg“ heißt jetzt „Indie“. (4) Der Home-Reiter zeigt ein Haus statt eines Kalenders. (5) Die Fortschritt-Kachel im Vokabelheft ist ausklappbar. (6) Die Fortschrittsleiste ist immer voll und zeigt, wie sich die begonnenen Wörter auf die Stufen verteilen – so sieht man den Regenbogen schon von Anfang an. (7) Jede Vokabel im Vokabelheft hat einen Lautsprecher zum Vorlesen. (8) Zurück-Wischen geht jetzt überall außer im laufenden Spiel und klappt auf dem iPhone viel zuverlässiger.
+
+**Entscheidungen (Vito):** Kachel-Aufbau: Sound An/Aus, dann Musik, Soundeffekte, Dewis Stimme. „Dewis Stimme“ steuert Blubbern und Vorlesen zusammen. Je ein Regler, ganz links = aus, Sound-Schalter macht alles still (auch Musik). Fortschritt im Vokabelheft beim Öffnen immer eingeklappt. Vorlesen über einen Lautsprecher-Knopf pro Zeile. Deutschkurs-Stimme gleich mit beheben. Wisch: breiterer Rand und robustere Technik, zusätzlich in Shop, Gamemodes-Auswahl, Blind-Wahl und Einstellungen im Spiel.
+
+**Technik**
+- **Ton:** Neuer Wert `state.dvol` (Dewis Stimme), startet beim Update auf dem bisherigen Effekt-Wert, damit nichts plötzlich leiser oder lauter wird. Das Blubbern läuft über einen eigenen Lautstärke-Knoten `SND.dgain` (`acDewi()`), unabhängig von den Effekten. `say()` (Gerätestimme) hängt jetzt an `dvol` und am Sound-Schalter; vorher las es auch bei ausgeschaltetem Sound vor. `musicOn()` prüft jetzt auch den Sound-Schalter.
+- **Musik nur noch über den Regler:** Der Musik-An/Aus-Schalter ist weg, `state.music` folgt dem Regler (`mvol>0`). Umstellung bestehender Stände (einmalig, `mus151`): Wer die Musik aus hatte, bekommt den Regler auf 0. Die Soundtrack-Wahl bleibt immer sichtbar.
+- **Vorlesen im Deutschkurs:** `VOICELANG` kannte kein Deutsch (`de:'de-DE'` ergänzt), dort wurde bisher nie etwas vorgelesen – weder in der Einführung noch sonst.
+- **Testbereich:** Zahlenfeld, „OK“ (Absenden des Formulars) und „Zurücksetzen“ in einer Zeile, das Feld wird dadurch schmaler (im iPhone-Format 114 px).
+- **Indie:** Nur der angezeigte Name ändert sich. Intern heißt der Soundtrack weiter `holo`, damit gespeicherte Wahlen erhalten bleiben.
+- **Fortschrittsleiste:** Neue gemeinsame Funktion `progParts()` für Startscreen und Vokabelheft. Die Segmente teilen sich 100 % unter den begonnenen Wörtern (Stufe 5 links bis Stufe 0 rechts); „Noch neu“ ist nicht mehr in der Leiste, steht aber weiter im Text („29 von 678“) und in der aufgeklappten Legende. Ohne begonnene Wörter bleibt die Leiste leer.
+- **Ausklappen:** Die Kachel ist ein Knopf (`#bptog`) mit Pfeil nach unten, aufgeklappt zeigt er nach oben und die Stufen-Legende erscheint. `bookView()` baut sie immer eingeklappt.
+- **Vorlesen im Vokabelheft:** Lautsprecher (`.spkrow`, 36 px) zwischen Wort und Stufen-Punkten, ein Klick-Listener auf der Liste ruft `say(w.id)` auf.
+- **Zurück-Wisch (`EDGESW`):** Startstreifen 48 statt 24 px. Touch- statt Pointer-Ereignisse: Safari bricht Pointer-Gesten ab, sobald der Finger leicht nach oben oder unten wandert, weil es das für Scrollen hält – vermutlich der Grund, warum es am iPhone so selten klappte. Erkannt wird ein Wisch ab 60 px nach rechts, solange er nicht steiler als 45° ist; deutlich senkrechte Bewegungen (Scrollen) brechen ab. Starten auf Reglern, Eingabefeldern und der seitlich scrollbaren Filterleiste löst nichts aus. Ziel: Einstellungen im Spiel → zurück ins Spiel; offenes Sheet ohne laufendes Spiel (Shop, Gamemodes, Playmodes, Blind-Wahl) → derselbe Knopf wie oben links; Vokabelheft/Einstellungen → Startscreen; während einer Round, ihres Endscreens, einer Rückfrage oder eines Feier-Moments → nichts. Mit der Maus am Computer funktioniert dieselbe Geste.
+
+**Tests:** Die Musik-Prüfungen H14/H15, M4, M13/M14 nutzen jetzt den Regler statt des weggefallenen An/Aus-Schalters, M10b erwartet „Sound & Musik“ als erste Kachel. Neuer Block V1–V29 in test4: Haus-Symbol, Kachel-Reihenfolge, Indie, Dewis Stimme auf 0 stumm (auch Vorlesen), Sound aus macht Musik und Dewi still, deutsche Stimme, OK-Knöpfe, volle Leiste auf Startscreen und im Vokabelheft, Ein-/Ausklappen, Lautsprecher in jeder Zeile, Zurück-Wisch an allen Orten (und nicht im Spiel, nicht beim Scrollen, nicht zu weit vom Rand), Umstellung bestehender Stände. Tests 2–5 grün. Zusätzlich in Chromium im iPhone-Format (390×844) gemessen: keine Überlappung in 40 Vokabelheft-Zeilen, kein seitliches Scrollen, alle drei Regler bündig, Pfeil exakt mittig auf der Kachel; eine echte Touch-Wischgeste mit leichtem Drift nach unten führt zurück.
+
+**Nicht auf einem echten iPhone getestet:** Ob der Wisch jetzt zuverlässig klappt, ob iOS die Lautstärke für das Vorlesen beachtet (Safari ignoriert sie teils, „0 = aus“ greift aber sicher), ob das iPhone eine deutsche Stimme mitbringt, wie das Blubbern in der neuen Lautstärke klingt.
+
+## Version 152 – Sprachscreens aufgeräumt
+
+**Was:** Der erste Screen („Sprache / Language“) ist nicht mehr zweisprachig. Englisch ist vorgewählt und der ganze Screen (Titel, Hinweis, Knopf, Dewis Spruch) ist englisch. Ein Tipp auf „Deutsch“ schaltet sofort alles auf Deutsch um, ein Tipp auf „English“ wieder zurück. Erst „Weiter“ / „Next“ übernimmt die Wahl. In beiden Sprachscreens (App-Sprache und Lernsprache) stehen die Flaggen-Emojis wie auf dem Startscreen statt der Kürzel-Kästchen. Der Satz „Weitere Sprachen lassen sich später ergänzen“ ist weg.
+
+**Warum:** Der Erstkontakt sollte nicht zwei Sprachen gleichzeitig zeigen, und die Flaggen passen zum Startscreen.
+
+**Technik:** `uiDraft` (Standard `'en'`) hält die Entwurfs-Sprache; `uiView()` setzt `state.ui` nur während des Zusammenbauens auf den Entwurf, `state.ui` bleibt bis „Weiter“ leer. `bindUi()` ersetzt `bindPick`/`previewUiMascot` für diesen Screen. Neue Konstante `FLAGS` (auch für den Startscreen), CSS `.langrow .flagbox`. Die Handy-Sprache wird für die Vorauswahl nicht mehr beachtet (bestehende Nutzer ohne `ui` bekommen sie in `migrate()` weiter). Neue Texte im `EN`-Wörterbuch.
+
+**Tests:** test3 Abschnitt 0 neu: nur Englisch sichtbar, Englisch vorgewählt, Flaggen, Umschalten hin und zurück, „Weiter“ übernimmt. Alle vier Suiten grün. Die alte Prüfung „Handy-Sprache ist vorgeschlagen“ entfällt gewollt.
+
+**Nur auf einem echten iPhone prüfbar:** Wie die Flaggen-Emojis in den Zeilen aussehen (Größe/Ausrichtung), Ton beim Antippen.
+
+## Version 153 – Leistungsanzeige gegen das Heißwerden
+
+**Was:** Im Testbereich der Einstellungen gibt es einen Schalter „Leistungsanzeige“. Er blendet oben links eine kleine Anzeige ein: Bilder pro Sekunde, das längste Bild in ms, wie viele Bilder zu lahm waren, wie viele Animationen laufen und die drei häufigsten (Name×Anzahl).
+
+**Warum:** Vito meldet, dass das iPhone beim Spielen in Safari heiß wird und der Bildschirm dunkler schaltet, vor allem in Modulen/Runden. Statt zu raten, messen wir erst. Ursachen im Verdacht (nur Lesen im Code, nichts geändert): rund 48 Endlos-Animationen (viele verändern Schatten, Verläufe oder Filter und zwingen zum Neuzeichnen), `mix-blend-mode` in den Wochen-Stempeln, `backdrop-filter` hinter Fenstern, live berechnete Musik (Taktgeber alle 90 ms). Musik und Bildrate-Drosselung bleiben bewusst unberührt.
+
+**Technik:** `perfSet(on)` startet eine `requestAnimationFrame`-Schleife und `document.getAnimations()`; `state.perf` merkt den Schalter (kein Migrationsbedarf, fehlt = aus). Anzeige `#perf`, `pointer-events:none`, über allem. Läuft nur, wenn eingeschaltet.
+
+**Tests:** P1–P3 in test4 (aus, an + gemerkt, wieder aus). Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** Alles. Vito spielt mit eingeschalteter Anzeige und meldet, in welchem Modul die Werte schlecht sind (Bilder pro Sekunde unter 50, viele Animationen, auffällige Namen).

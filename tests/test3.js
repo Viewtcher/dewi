@@ -133,10 +133,16 @@ let E=env(null,'de','de-DE');
 try{
 // ===== 0) Erster Start: Sprachwahl der App
 
-ok(/Sprache \/ Language/.test(E.$('h1').textContent),'Erster Start: Auswahl der App-Sprache');
-ok(E.$('[data-ui="de"]').classList.contains('sug')&&!E.$('[data-ui="en"]').classList.contains('sug'),'Handy-Sprache Deutsch ist vorgeschlagen');
+ok(/^Language$/.test(E.$('h1').textContent.trim())&&!/Sprache/.test(E.$('#app').textContent),'Erster Start: nur Englisch sichtbar (Version 152)');
+ok(E.$('[data-ui="en"]').getAttribute('aria-pressed')==='true'&&E.$('[data-ui="de"]').getAttribute('aria-pressed')==='false','Englisch ist vorgewählt, auch bei deutschem Handy');
+ok(/🇬🇧/.test(E.$('[data-ui="en"]').textContent)&&/🇩🇪/.test(E.$('[data-ui="de"]').textContent),'Sprachzeilen mit Flaggen');
+E.click(E.$('[data-ui="de"]'));
+ok(/^Sprache$/.test(E.$('h1').textContent.trim())&&/Weiter/.test(E.$('#uigo').textContent)&&!/Language/.test(E.$('#app').textContent),'Tipp auf Deutsch schaltet den Screen komplett auf Deutsch');
+E.click(E.$('[data-ui="en"]'));
+ok(/^Language$/.test(E.$('h1').textContent.trim()),'Zurück auf Englisch tippbar');
+E.click(E.$('[data-ui="de"]'));E.click(E.$('#uigo'));
+ok(!!E.$('#nmf')&&/heißt/.test(E.$('h1').textContent),'Weiter übernimmt Deutsch, Namensfrage deutsch');
 const E0=env(null,'de','en-US');
-ok(E0.$('[data-ui="en"]').classList.contains('sug'),'Handy-Sprache Englisch ist vorgeschlagen');
 E0.click(E0.$('[data-ui="en"]'));if(E0.$('#uigo'))E0.click(E0.$('#uigo'));
 ok(/your name/i.test(E0.$('h1').textContent)&&/Skip/.test(E0.$('#nmskip').textContent),'Englisch: Namensfrage englisch');
 E0.click(E0.$('#nmskip'));

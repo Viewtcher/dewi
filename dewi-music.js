@@ -1,5 +1,5 @@
 /**
- * dewi-music.js – Hintergrund-Loop "Holo-Aufstieg" für dewi.
+ * dewi-music.js – Hintergrund-Loop "Indie" (früher "Holo-Aufstieg") für dewi.
  * ------------------------------------------------------------
  * Komposition & Sound: Claudio · Technik: reines Web Audio (keine Audiodateien, offline)
  *

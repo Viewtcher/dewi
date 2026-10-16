@@ -1,15 +1,15 @@
 /* ===== Musik: zwei Loops, live per Web Audio erzeugt (keine Dateien) =====
    lofi   = sanfter Basis-Soundtrack der ganzen App
    synth  = Synthwave nur im Modul Reels; wird mit jeder gelockten Walze voller
-   holo   = „Holo-Aufstieg“ (Claudio, dewi-music.js): dritter Soundtrack, siehe Verbindungsstück unten
-   Schalter: state.music und state.mvol; läuft unabhängig von den Effekt-Sounds.
+   holo   = „Indie“ (früher „Holo-Aufstieg“, Claudio, dewi-music.js): dritter Soundtrack, siehe Verbindungsstück unten
+   Schalter: state.mvol (Regler, 0 = aus; state.music folgt ihm, Version 151) und der Sound-Schalter state.sound, der alles stumm macht.
    Ein Timer plant die Noten ein kleines Stück voraus (Lookahead), dadurch bleibt der Takt stabil. */
 const MUS={mode:null,bus:null,next:0,step:0,timer:0,duck:1,since:0,holo:false};
-const musicOn=()=>state.music===true&&(+state.mvol||0)>0;
+const musicOn=()=>state.sound!==false&&state.music===true&&(+state.mvol||0)>0;   // Version 151: Sound aus = auch Musik aus
 const mtof=m=>440*Math.pow(2,(m-69)/12);
 function musCtx(){
   try{
-    if(SND.ctx&&SND.ctx.state==='closed'){SND.ctx=null;SND.master=null;SND.mgain=null;MUS.bus=null;MUS.mode=null;}   // iOS kann den Kontext beenden: neu aufbauen
+    if(SND.ctx&&SND.ctx.state==='closed'){SND.ctx=null;SND.master=null;SND.mgain=null;SND.dgain=null;MUS.bus=null;MUS.mode=null;}   // iOS kann den Kontext beenden: neu aufbauen
     if(!SND.ctx){
       const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;
       SND.ctx=new C();SND.master=SND.ctx.createGain();SND.master.connect(SND.ctx.destination);
@@ -86,7 +86,7 @@ function arcadeStep(c,st,at,o,L){
   }
   if(L>=3&&i===15)tone(c,mtof(ch[2]+24),at,.16,{type:'square',v:.012,to:mtof(ch[2]+36),dest:o});
 }
-/* ===== Verbindungsstück zu „Holo-Aufstieg“ (dewi-music.js, Version 129) =====
+/* ===== Verbindungsstück zu „Indie“ (früher „Holo-Aufstieg“, dewi-music.js, Version 129) =====
    Claudios Modul bleibt klanglich unverändert. Hier wird nur gesteuert:
    - gleicher AudioContext wie die Effekt-Sounds (SND.ctx), nur ein Kontext
    - Schalter und Lautstärke kommen aus state (music, mvol, mtrack), nicht aus eigenem Speicher
@@ -185,10 +185,8 @@ function musIcon(){
 const trackOf=()=>state.mtrack==='arcade'||state.mtrack==='holo'?state.mtrack:'lofi';
 function musRefresh(){
   $$('.musbtn').forEach(b=>b.setAttribute('aria-pressed',String(musicOn())));
-  $$('[data-mus]').forEach(b=>b.setAttribute('aria-checked',String((state.music===true)===(b.dataset.mus==='true'))));
   $$('[data-trk]').forEach(b=>b.setAttribute('aria-checked',String(trackOf()===b.dataset.trk)));
-  const mv=$('#mvol');if(mv)mv.disabled=state.music!==true;
-  $$('[data-trkrow]').forEach(r=>{r.hidden=state.music!==true;});
+  $$('#mvol').forEach(mv=>{const v=state.music===true?(+state.mvol||0):0;if(+mv.value!==v)mv.value=v;});   // Version 151: Regler statt An/Aus, die Soundtrack-Wahl bleibt immer sichtbar
 }
 function musSet(on){
   state.music=!!on;save();
