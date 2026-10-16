@@ -30,6 +30,7 @@ console.log('Wörter',dEn.size,'EN-Sätze',sEn.size,'DE-Sätze',sDe.size);
 const normId0=s=>s.toLowerCase().replace(/[^a-z0-9äöüß]/g,'');
 const T=el=>{const c=el.cloneNode(true);c.querySelectorAll('.qh').forEach(q=>q.remove());return c.textContent;};
 let fails=0;const ok=(c,m)=>{console.log((c?'OK   ':'FEHL ')+m);if(!c)fails++;};
+const setRange=(E,sel,v)=>{const el=E.$(sel);el.value=String(v);el.dispatchEvent(new E.w.Event('input',{bubbles:true}));};   // Version 151: Regler bewegen
 const toks=s=>s.replace(/[.,!?;:"“”]/g,' ').split(/\s+/).filter(Boolean);
 const nid=s=>s.toLowerCase().replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]/g,'');
 const asc=s=>s.replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').replace(/ß/g,'ss').replace(/Ä/g,'Ae').replace(/Ö/g,'Oe').replace(/Ü/g,'Ue');
@@ -291,9 +292,9 @@ function toReels(E,force=true){
   // Einstellungen
   ev(E,'state.music=false');E.click(E.$('[data-v="settings"]'));
   ok(E.$$('[data-trk]').length===3&&!!E.$('[data-trk="holo"]'),'H13 Einstellungen: drei Soundtracks');
-  ok(E.$('#mvol').disabled===true,'H14 Regler ist bei ausgeschalteter Musik inaktiv');
-  E.click(E.$('[data-mus="true"]'));
-  ok(E.$('#mvol').disabled===false,'H15 Regler wird mit der Musik aktiv');
+  ok(E.$('#mvol').value==='0'&&!E.$('[data-mus]'),'H14 Musik aus: Regler steht ganz links, kein eigener An/Aus-Schalter mehr (Version 151)');
+  setRange(E,'#mvol',50);
+  ok(ev(E,'state.music')===true&&ev(E,'state.mvol')===50,'H15 Regler hochziehen schaltet die Musik ein');
   E.click(E.$('[data-trk="arcade"]'));
   ok(ev(E,'state.mtrack')==='arcade'&&E.st().mtrack==='arcade'&&E.$('[data-trk="arcade"]').getAttribute('aria-checked')==='true','H16 Soundtrack-Wahl wird gespeichert');
   // Umstellung bestehender Stände
@@ -312,7 +313,7 @@ function toReels(E,force=true){
   ok(!E.$('.top .musbtn')&&!!E.$('.top #chlang.langbtn')&&!!E.$('.top .topr #chippill'),'M2 Kopfzeile: Flagge, Serie, Chips – kein Lautsprecher mehr');
   ev(E,'state.music=false');
   ok(ev(E,"(()=>{musTick();return MUS.mode;})()")===null,'M3 Aus: keine Musik');
-  E.click(E.$('[data-v="settings"]'));E.click(E.$('[data-mus="true"]'));
+  E.click(E.$('[data-v="settings"]'));setRange(E,'#mvol',35);
   ok(ev(E,'state.music')===true&&E.st().music===true,'M4 Einstellungen schalten Musik an und speichern');
   E.click(E.$('[data-v="home"]'));
   ev(E,'musTick()');
@@ -332,14 +333,14 @@ function toReels(E,force=true){
   E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
   ok(!!E.$('.sin #setgear')&&!E.$('.sin .musbtn'),'M10 Zahnrad statt Lautsprecher im Modul (Version 148)');
   E.click(E.$('#setgear'));
-  ok(!!E.$('#setov')&&!E.$('#setov').hidden&&E.$('#setov .card .eyebrow').textContent===ev(E,"t('Sound')"),'M10b Zahnrad öffnet Einstellungen übers Spiel, Sound-Karte ganz oben');
+  ok(!!E.$('#setov')&&!E.$('#setov').hidden&&E.$('#setov .card .eyebrow').textContent===ev(E,"t('Sound & Musik')"),'M10b Zahnrad öffnet Einstellungen übers Spiel, Sound-Karte ganz oben');
   E.click(E.$('#setov .backbtn'));
   ok(E.$('#setov').hidden&&!!E.$('.sin.hand, .sin')&&!!E.$('#quit'),'M10c Zurück führt ins laufende Spiel zurück, nichts wurde beendet');
   ev(E,'musTick()');ok(ev(E,'MUS.mode')==='synth','M11 In Reels spielt der Synthwave-Soundtrack');
   E.click(E.$('#quit'));ev(E,'musTick()');ok(ev(E,'MUS.mode')==='lofi','M12 Zurück in der App wieder Lo-Fi');
   E.click(E.$('[data-v="settings"]'));
-  ok(!!E.$('[data-mus="true"]')&&!!E.$('#mvol'),'M13 Einstellungen: Musik An/Aus und Lautstärke');
-  E.click(E.$('[data-mus="false"]'));ok(ev(E,'state.music')===false,'M14 Aus in den Einstellungen');
+  ok(!!E.$('#sndcard #mvol'),'M13 Einstellungen: Musik-Regler in der Sound-Kachel');
+  setRange(E,'#mvol',0);ok(ev(E,'state.music')===false&&E.st().mvol===0,'M14 Regler ganz links = Musik aus');
   ev(E,'musTick()');ok(ev(E,'MUS.mode')===null,'M15 Musik stoppt');
 }
 // --- Hilfe-Fragezeichen
@@ -765,6 +766,79 @@ function toReels(E,force=true){
     &&ev(E,"state.run={v:1,lang:'de',kind:'daily',i:0,items:[{k:'de:der arm',kind:'rev'}],missed:[]};migrate();state.run")===null,'DK6b Offener Run: Schlüssel umgeschrieben, mit entfallenem Wort verworfen');
   const en=JSON.parse(ev(E,"JSON.stringify(LANGS.en.cats.map(c=>c[1]).join('\\n'))"));
   ok(/neighbor = Nachbar\b/.test(en)&&!/= (der|die|das) [A-ZÄÖÜ][^\s/]*\s*(\/|$)/m.test(en),'DK7 Englischkurs: deutsche Bedeutung ohne Artikel');
+}
+// --- Version 151: Sound & Musik, Testbereich, Indie, Haus, Fortschritt, Vorlesen, Zurück-Wisch
+{
+  const E=fresh();ev(E,'render()');
+  ok(/M4 10\.5/.test(E.$('.tab[data-v="home"] svg').innerHTML),'V1 Home-Reiter mit Haus statt Kalender');
+  E.click(E.$('#gear'));
+  const sc=E.$('#sndcard'),first=E.$('.card.set');
+  ok(first===sc&&sc.querySelector('.eyebrow').textContent==='Sound & Musik','V2 Sound & Musik ist die erste Kachel');
+  const order=Array.from(sc.querySelectorAll('[data-snd],#mvol,[data-trk],#vol,#dvol')).map(x=>x.id||(x.dataset.snd!==undefined?'snd':'trk'));
+  ok(order.join(',').replace(/(snd,)+/,'snd,').replace(/(trk,)+/,'trk,')==='snd,mvol,trk,vol,dvol','V3 Reihenfolge: Sound An/Aus, Musik, Soundtrack, Effekte, Dewis Stimme ('+order.join(',')+')');
+  ok(!E.$('.card.set [data-mus]')&&E.$$('.card.set').filter(c=>/Musik/.test(c.querySelector('.eyebrow').textContent)).length===1,'V4 Keine eigene Musik-Kachel mehr');
+  ok(E.$('[data-trk="holo"]').textContent==='Indie'&&!/Holo-Aufstieg|Holo Ascent/.test(E.$('#app').textContent),'V5 Soundtrack heißt Indie');
+  ok(ev(E,'state.dvol')===40,'V6 Dewis Stimme startet auf dem bisherigen Effekt-Wert');
+  setRange(E,'#dvol',0);
+  ok(ev(E,'state.dvol')===0&&ev(E,'dewiOn()')===false&&ev(E,"say('halo')")===false,'V7 Dewis Stimme auf 0: kein Blubbern, kein Vorlesen');
+  setRange(E,'#dvol',60);ok(ev(E,'dewiOn()')===true,'V7b Dewis Stimme wieder an');
+  ev(E,'musTick()');ok(ev(E,'MUS.mode')!==null||ev(E,'MUS.holo')===true,'V8a Musik läuft');
+  E.click(E.$('[data-snd="false"]'));ev(E,'musTick()');
+  ok(ev(E,'musicOn()')===false&&ev(E,'MUS.mode')===null&&ev(E,'dewiOn()')===false&&!!E.$('.sndrows.off'),'V8 Sound aus macht alles still, auch Musik und Dewi');
+  E.click(E.$('[data-snd="true"]'));ok(ev(E,'musicOn()')===true&&!E.$('.sndrows.off'),'V8b Sound an: Musik wieder an');
+  ok(ev(E,"VOICELANG.de")==='de-DE','V9 Deutsche Stimme hinterlegt');
+  // Testbereich: OK-Knopf links vom Zurücksetzen
+  const f=E.$('#devwordsf'),bs=Array.from(f.querySelectorAll('button'));
+  ok(bs.length===2&&bs[0].type==='submit'&&bs[0].textContent==='OK'&&bs[1].id==='devwordsreset'&&E.$('#devchipsf button[type=submit]'),'V10 OK-Knopf links vom Zurücksetzen');
+  E.$('#devwords').value='5';E.click(bs[0]);
+  ok(Object.keys(E.st().progress.id||{}).length===5,'V11 OK übernimmt die Zahl ('+Object.keys(E.st().progress.id||{}).length+')');
+  E.$('#devchips').value='777';E.click(E.$('#devchipsf button[type=submit]'));
+  ok(ev(E,'state.chips')===777,'V11b OK bei den Chips');
+  // Fortschritt: Leiste immer voll
+  ev(E,"(()=>{const L=curLang(),p=state.progress.id;L.words.slice(5,8).forEach(w=>{p[w.k]={l:3,d:today()};});save();})()");
+  E.click(E.$('.tab[data-v="home"]'));
+  const sum=sel=>E.$$(sel+' .stack i').reduce((a,i)=>a+parseFloat(i.style.width),0);
+  ok(Math.abs(sum('.bookcard')-100)<.1&&E.$$('.bookcard .stack i').length===2,'V12 Startscreen: Leiste voll, aufgeteilt nach Stufe ('+sum('.bookcard').toFixed(1)+')');
+  E.click(E.$('.tab[data-v="book"]'));
+  ok(Math.abs(sum('.bookprog')-100)<.1,'V13 Vokabelheft: Leiste voll');
+  ok(E.$('#bplegend').hidden&&E.$('#bptog').getAttribute('aria-expanded')==='false','V14 Fortschritt beim Öffnen eingeklappt');
+  E.click(E.$('#bptog'));ok(!E.$('#bplegend').hidden&&E.$('#bptog').getAttribute('aria-expanded')==='true','V15 Aufklappen zeigt die Stufen');
+  E.click(E.$('.tab[data-v="home"]'));E.click(E.$('.tab[data-v="book"]'));
+  ok(E.$('#bplegend').hidden,'V16 Beim nächsten Öffnen wieder eingeklappt');
+  const F=fresh();F.click(F.$('.tab[data-v="book"]'));
+  ok(F.$$('.bookprog .stack i').length===0,'V16b Noch nichts begonnen: leere Leiste');
+  // Vorlesen im Vokabelheft
+  E.click(E.$('.pill[data-f="all"]'));E.$$('details.cat').forEach(d=>d.open=true);
+  ok(E.$$('.row').length>0&&E.$$('.row').length===E.$$('.row .spkrow').length,'V17 Jede Vokabel hat einen Lautsprecher');
+  ev(E,"say=function(t){window.__said=t;return true;}");
+  const sp=E.$('.row .spkrow'),wid=sp.closest('.row').querySelector('.id').textContent;
+  E.click(sp);ok(E.w.__said===wid,'V18 Lautsprecher liest das Wort vor ('+E.w.__said+')');
+  // Zurück-Wisch
+  const sw=(x0,y0,x1,y1,mid)=>ev(E,`(()=>{EDGESW.down(${x0},${y0},document.body);${mid?`EDGESW.move(${mid[0]},${mid[1]});`:''}return EDGESW.up(${x1},${y1});})()`);
+  ok(sw(40,300,130,320)===true&&!!E.$('.plan'),'V19 Vokabelheft: Wisch vom Rand (40 px) zurück');
+  E.click(E.$('.tab[data-v="book"]'));
+  ok(sw(70,300,200,300)===false&&!!E.$('#q'),'V20 Zu weit vom Rand: nichts');
+  ok(sw(20,300,90,420,[30,420])===false&&!!E.$('#q'),'V21 Klar nach unten (Scrollen): nichts');
+  E.click(E.$('.tab[data-v="home"]'));
+  ok(ev(E,'EDGESW.target()')===null,'V22 Startscreen: kein Ziel');
+  E.click(E.$('#shoptab'));ok(!!E.$('#shop')&&sw(10,300,120,300)===true&&!E.$('#shop')&&!!E.$('.plan'),'V23 Shop: Wisch schließt ihn');
+  E.click(E.$('#gm'));ok(!!E.$('.sin.modes')&&sw(10,300,120,300)===true&&E.$('#sheet').hidden,'V24 Gamemodes: Wisch zurück');
+  E.click(E.$('#gm'));E.click(E.$('#surv'));ok(!!E.$('.sin.modes.surv')&&sw(10,300,120,300)===true&&!!E.$('.sin.modes')&&!E.$('.sin.modes.surv'),'V24b Playmodes: Wisch zurück zu den Gamemodes');
+  sw(10,300,120,300);
+  E.w.__autoBlind=null;ev(E,"state.done[today()]=false;save();render();showBlindStage('daily',{})");
+  ok(!!E.$('#blindstage')&&sw(10,300,120,300)===true&&E.$('#sheet').hidden&&ev(E,'S')===null,'V25 Blind-Wahl: Wisch schließt, keine Runde gestartet');
+  E.w.__autoBlind='small';
+  E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="random"]'));
+  ok(!!E.$('#quit')&&ev(E,'!!S')&&sw(10,300,120,300)===false&&!E.$('#sheet').hidden,'V26 Im laufenden Spiel: Wisch tut nichts');
+  E.click(E.$('#setgear'));
+  ok(!E.$('#setov').hidden&&sw(10,300,120,300)===true&&E.$('#setov').hidden&&ev(E,'!!S')&&!E.$('#sheet').hidden,'V27 Einstellungen im Spiel: Wisch zurück ins Spiel');
+}
+// --- Version 151: Umstellung bestehender Stände
+{
+  const O=env({music:false,mvol:35,musDef:1,holoDef:1,vol:60,lang:'id',ui:'de',v:2},'de');
+  ok(ev(O,'state.mvol')===0&&ev(O,'state.music')===false&&ev(O,'state.dvol')===60,'V28 Musik aus wird zu Regler 0, Dewis Stimme übernimmt die Effekt-Lautstärke');
+  const P=env({music:true,mvol:50,musDef:1,holoDef:1,lang:'id',ui:'de',v:2},'de');
+  ok(ev(P,'state.mvol')===50&&ev(P,'state.music')===true,'V29 Musik an bleibt unverändert');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
