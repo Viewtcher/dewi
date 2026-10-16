@@ -2,16 +2,14 @@
    Eine ROUND ist eine komplette Abfrage vom Start bis zum Ergebnis. Es gibt zwei Arten:
 
    DAILY ROUND (kind 'daily'), immer Playmode Random, keine Leben:
-     Stage 0  Reparatur   nur wenn die Fehlerliste gefüllt ist: jedes Fehlerlisten-Wort, 1 zufälliges Modul. Klappt eins nicht,
-                          wird es hinten wieder angestellt (anderes Modul), bis alle bestanden sind.
      Stage 1  Einführung  das neue Wort (Modul intro, „Weiter“ erst nach ein paar Sekunden)
-     Stage 2  Review      4 bekannte Wörter (2 überfällige, 2 zufällige, aufgefüllt mit noch nicht fälligen),
-                          zum Schluss kommt das neue Wort noch einmal (schweres Modul: Tippen oder Bausteine).
+     Stage 2  Review      4 bekannte Wörter (Vorrang: fällige Wörter auf Stufe 0; dann überfällige und zufällige fällige,
+                          aufgefüllt mit noch nicht fälligen), zum Schluss das neue Wort noch einmal (Tippen oder Bausteine).
      Pro Wort genau ein Modul, nie zweimal dasselbe Modul hintereinander. Fehlerrecht je Modul: siehe TRIES.
-     Wird ein Modul verloren, kommt das Wort auf die Fehlerliste.
+     Wird ein Modul verloren, fällt das Wort auf Stufe 0 und ist morgen fällig (Version 131, die Fehlerliste ist entfallen).
 
    SURVIVAL (kind 'survival', früher Freeplay), nur nach der Daily Round:
-     Alle bekannten Wörter, jedes einmal, gemischt. 3 Leben insgesamt, pro Karte ein Versuch. Score mit Serienbonus,
+     Alle begonnenen Wörter (auch Stufe 0), jedes einmal, gemischt. 3 Leben insgesamt, pro Karte ein Versuch. Score mit Serienbonus,
      eigener Rekord je Playmode. Ein richtiges Wort steigt wie in der Daily Round eine Stufe (einmal pro Tag und Wort).
 
    S = Zustand der laufenden Round: items (Karten), i (aktuelle Karte), cur (aktuelle Karte mit Wort und Modul), kind, playmode … */
@@ -71,15 +69,14 @@ function scoreTick(){
 
 function dailyCards(){
   const p=plan(),cards=[];
-  p.repair.forEach(w=>cards.push({w,kind:'repair',type:'list'}));
   if(p.fresh)cards.push({w:p.fresh,kind:'intro',type:'new'});
   p.review.forEach(w=>cards.push({w,kind:'review',type:'review'}));
   if(p.fresh)cards.push({w:p.fresh,kind:'final',type:'new'});
   return cards;
 }
 function survivalWords(){
-  const L=curLang(),prog=state.progress[L.id]||{},lm=listOf();
-  return L.words.filter(w=>prog[w.k]&&prog[w.k].l>=1&&!lm[w.k]);
+  const L=curLang(),prog=state.progress[L.id]||{};
+  return L.words.filter(w=>prog[w.k]);   // Version 131: auch Wörter auf Stufe 0
 }
 /* Solo-Playmode: nur Wörter, die zum gewählten Modul passen (kein Ersatzmodul). Zu wenige passende Wörter = Solo gesperrt. */
 const SOLO_MIN=3;
@@ -94,8 +91,8 @@ function saveRun(){
   if(!S||!S.items||S.i>=S.items.length)return;
   state.run={v:1,lang:state.lang,kind:S.kind,playmode:S.playmode,i:S.i,
     items:S.items.map(x=>({k:x.w.k,kind:x.kind,type:x.type})),
-    right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),cleared:S.cleared.map(w=>w.k),
-    streak0:S.streak0,last:S.last,lives:S.lives,score:S.score,shown:S.score,run:S.run,words:S.words,lost:S.lost,rf:S.rf,best:S.best};
+    right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),
+    streak0:S.streak0,last:S.last,lives:S.lives,score:S.score,shown:S.score,run:S.run,words:S.words,lost:S.lost,best:S.best};
   save();
 }
 function clearRun(){if(state.run){state.run=null;save();}}
@@ -106,7 +103,7 @@ function openRun(kind){
   if(kind&&r.kind!==kind)return null;
   const L=curLang();if(!L)return null;
   const by={};L.words.forEach(w=>{by[w.k]=w;});
-  if(!r.items||!r.items.length||r.items.some(x=>!by[x.k]))return null;
+  if(!r.items||!r.items.length||r.items.some(x=>!by[x.k]||x.kind==='repair'))return null;   // Runs von vor Version 131 mit Reparatur-Karten verfallen
   if(r.i>=r.items.length)return null;
   return r;
 }
@@ -114,9 +111,9 @@ function resumeRun(){
   const r=openRun();if(!r)return false;
   const L=curLang(),by={};L.words.forEach(w=>{by[w.k]=w;});
   S={items:r.items.map(x=>({w:by[x.k],kind:x.kind,type:x.type})),i:r.i,right:r.right,wrong:r.wrong,
-     missed:(r.missed||[]).map(k=>by[k]).filter(Boolean),cleared:(r.cleared||[]).map(k=>by[k]).filter(Boolean),
+     missed:(r.missed||[]).map(k=>by[k]).filter(Boolean),
      cur:null,streak0:r.streak0,kind:r.kind,playmode:r.playmode,last:r.last,lives:r.lives,score:r.score,
-     shown:r.score,run:r.run,words:r.words,lost:r.lost,rf:r.rf||{},best:r.best};
+     shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best};
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
   return true;
@@ -146,8 +143,8 @@ function startRound(kind,opt){
   if(kind==='survival'&&o.playmode&&o.playmode!=='random'&&pool.length<SOLO_MIN)return;
   const items=kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards();
   if(!items.length)return;
-  S={items,i:0,right:0,wrong:0,missed:[],cleared:[],cur:null,streak0:streak(),kind:kind||'daily',playmode:o.playmode||'random',
-     last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,rf:{},best:kind==='survival'?bestFor(o.playmode||'random'):0};
+  S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak(),kind:kind||'daily',playmode:o.playmode||'random',
+     last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:kind==='survival'?bestFor(o.playmode||'random'):0};
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
 }
@@ -211,12 +208,8 @@ function settleCard(typedOk){
       else{const pr=(state.progress[state.lang]||{})[w.k]||{};r={level:pr.l||1,days:0,same:true};}
     }else{S.wrong++;S.lives--;setLives(S.lives);if(S.kind==='survival'&&S.lives<=0)window.__gover=Date.now();}
   }else{
-    if(!ok&&card.kind==='repair'&&S.rf[w.k])r={n:(listOf()[w.k]||{}).n||1};   // schon in dieser Round gescheitert: nicht doppelt zählen
-    else r=record(w,ok,c.type);
-    if(ok)S.right++;else{S.wrong++;S.lost++;}
-    if(!ok&&card.kind==='repair'){S.rf[w.k]=1;const at=S.items.findIndex((x,ix)=>ix>S.i&&x.kind!=='repair');S.items.splice(at<0?S.items.length:at,0,{w,kind:'repair',type:'list'});}   // am Ende der Reparatur wieder anstellen (vor der Einführung)
-    if(!ok&&c.type!=='list')S.missed.push(w);
-    if(ok&&c.type==='list')S.cleared.push(w);
+    r=record(w,ok,c.type);
+    if(ok)S.right++;else{S.wrong++;S.lost++;S.missed.push(w);}
     S.run=ok?(S.run||0)+1:0;
   }
   c.res=r;
@@ -236,7 +229,6 @@ function nextStep(){
 function kicker(c,id,dir){
   const k=c.card;let base,col;
   if(S.kind==='survival'){base='Survival';col='var(--c-pink)';}
-  else if(k.kind==='repair'){const n=S.items.slice(S.i).filter(x=>x.kind==='repair').length;base=t('Daily Round · Reparatur · noch {0}',n);col='var(--lv0)';}
   else if(k.kind==='intro'){base=t('Daily Round · Einführung');col='var(--c-violet)';}
   else if(k.kind==='final'){base=t('Daily Round · Review · neues Wort');col='var(--c-violet)';}
   else{const rv=S.items.filter(x=>x.kind==='review'),n=rv.indexOf(k)+1;base=t('Daily Round · Review {0} von {1}',n,rv.length);col=LVCOL[c.lvl]||'var(--c-cyan)';}
@@ -249,8 +241,8 @@ function kicker(c,id,dir){
 function resultNote(good){
   const c=S.cur,r=c.res||{};
   if(S.kind==='survival')return good?`<p class="hint" style="margin-top:8px">+${fmtSc(c.pts)} ${t('Punkte')}${S.run>=3?' · '+t('{0} in Folge',S.run):''}${c.healed?' · '+t('Serie von {0}: ein Herz kommt zurück!',HEART_STREAK):''}</p>`:`<p class="hint" style="margin-top:8px">${t('Ein Leben weniger.')}</p>`;
-  if(!good)return `<p class="hint" style="margin-top:8px">${c.type==='list'?t('Das Wort kommt gleich nochmal dran.'):t('Das Wort kommt bald wieder.')}</p>`;
-  if(c.type==='list')return `<p class="hint" style="margin-top:8px">${t('Geschafft. Das Wort kommt morgen wieder (Stufe 1).')}</p>`;
+  if(!good)return `<p class="hint" style="margin-top:8px">${t('Das Wort fällt auf Stufe 0 und kommt morgen wieder.')}</p>`;
+  if(r.saved)return `<p class="hint" style="margin-top:8px">${t('Geschafft. Das Wort kommt morgen wieder (Stufe 1).')}</p>`;
   return `<p class="hint" style="margin-top:8px">${r.days===1?t('Stufe {0} von 5. Nächste Wiederholung morgen.',r.level):t('Stufe {0} von 5. Nächste Wiederholung in {1} Tagen.',r.level,r.days)}</p>`;
 }
 
@@ -259,7 +251,7 @@ function finish(typedOk){
   const c=S.cur,w=c.w,L=curLang(),r=settleCard(typedOk),ok=c.ok,type=c.type;
   let qk,qc={n:ok?S.run:(r.n||1),w:w.id,lv:c.lvl};
   if(ok)qk=c.tries>1&&typedOk?'ok_try2':S.run>=3&&S.run%3===0?'ok_run':'ok';
-  else qk=type==='list'&&(r.n||1)>=2?'bad_again':c.lvl>=3?'bad_rare':'bad';
+  else qk=(r.n||1)>=2?'bad_again':c.lvl>=3?'bad_rare':'bad';   // Fehlerzähler des Wortes (bleibt seit Version 131 im Wort)
   const alts=c.dir==='gl2id'&&c.alts.length?`<p class="hint" style="margin-top:6px">${t('Auch richtig: {0}',c.alts.map(esc).join(', '))}</p>`:'';
   const typoNote=c.typo?`<p class="hint" style="margin-top:6px">${t('Kleiner Tippfehler. Richtig geschrieben: {0}','<b lang="'+(c.dir==='gl2id'?L.code.toLowerCase():state.ui)+'">'+esc(c.dir==='gl2id'?w.id:glFirst(w))+'</b>')}</p>`:'';
   sheetBody(`<div class="smain">${S.kind==='survival'?roundLives():''}<div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?t('Richtig'):t('Leider falsch')}</div>
@@ -273,9 +265,9 @@ function finish(typedOk){
 function levelUp(c,r){
   if(reduceMotion())return;
   const w=c.w,type=c.type,old=$('.lvl');if(old)old.remove();
-  const lab=type==='list'?t('Gerettet!'):type==='new'?t('Neues Wort!'):(r.level>c.lvl?t('Level up!'):t('Stufe gehalten'));
+  const lab=r.saved?t('Gerettet!'):type==='new'?t('Neues Wort!'):(r.level>c.lvl?t('Level up!'):t('Stufe gehalten'));
   const el=document.createElement('div');el.className='lvl';el.setAttribute('role','status');
-  const lk=type==='list'?'lvl_saved':type==='new'?'lvl_new':(r.level>c.lvl?'lvl_up':'lvl_hold');
+  const lk=r.saved?'lvl_saved':type==='new'?'lvl_new':(r.level>c.lvl?'lvl_up':'lvl_hold');
   el.innerHTML=`<div class="lvl-rays"></div><div class="lvl-in"><div class="lvl-lab">${lab}</div>
     <div class="lvl-badge"><span>${r.level}</span></div>
     <div class="lvl-pips">${[1,2,3,4,5].map(i=>`<i class="${i<=r.level?'on':''}" style="--d:${300+i*110}ms;--pc:${LVCOL[i]}"></i>`).join('')}</div>

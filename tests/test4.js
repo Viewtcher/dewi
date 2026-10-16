@@ -249,7 +249,7 @@ function toReels(E,force=true){
   act(E,'(r.right+2)%3');ev(E,'S.cur.rl.toss(true)');
   ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.cur.ok')===false,'D7 Zweiter Fehler: Modul verloren');
   ok(ev(E,'S.wrong')>=1,'D8 Als Fehler gezählt');
-  ok(/kommt bald wieder/.test(E.$('.smain').textContent)&&!/Fehlerliste/.test(E.$('.smain').textContent),'D9 Wort kommt bald wieder, ohne Fehlerliste');
+  ok(/fällt auf Stufe 0 und kommt morgen wieder/.test(E.$('.smain').textContent)&&!/Fehlerliste/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0 und kommt morgen wieder, ohne Fehlerliste');
 }
 // --- Reduzierte Bewegung: Liste
 {
@@ -529,7 +529,7 @@ function toReels(E,force=true){
   const N=ev(E,"LANGS.id.words.length");
   tw('[data-dev=p10]');
   ok(ev(E,"Object.keys(state.progress.id).length")===Math.round(N*.1),'V3 10 % = '+Math.round(N*.1));
-  ok(ev(E,"Object.keys(state.list.id).length")>0&&ev(E,"Object.keys(state.list.id).length")<=3&&ev(E,"Object.keys(state.list.id).every(k=>state.progress.id[k].l===0&&state.progress.id[k].d===FAR)"),'V4 Fehlerliste gefüllt');
+  ok(ev(E,"fallenWords().length")>0&&ev(E,"fallenWords().length")<=3&&ev(E,"fallenWords().every(w=>state.progress.id[w.k].d<=today()&&state.progress.id[w.k].n>=1)")&&ev(E,"JSON.stringify(state.list)")==='{}','V4 Einige Wörter auf Stufe 0, fällig, mit Fehlerzähler');
   ok(ev(E,"new Set(Object.values(state.progress.id).map(p=>p.l)).size")>=4,'V5 gemischte Stufen');
   ok(ev(E,"state.name")==='Vito','V6 Name bleibt');
   ev(E,"view='settings';render()");tw('[data-dev=all]');

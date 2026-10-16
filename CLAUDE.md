@@ -49,9 +49,10 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 130)
+## Offene Punkte (Stand Version 131)
 
-- Shop mit Kosmetik (Dewi-Outfits, Kachel-Themes, Soundtracks, Stempel; `CHARS` mit `price` vorbereitet). Vorher Fragen stellen.
+- **In Arbeit: Poker Phase 1** nach `konzept-poker-shop.md` (Etappen 131 Lernlogik ✓, 132 Chips, 133 Poker-Regeln, 134 Poker-Screens). Konzeptbilder: Design-Canvas „dewi. Poker-Screens“, Reihe „Version 2“. Veröffentlichen erst nach Etappe 4.
+- Shop (Phase 2) nach den Erfahrungen aus Phase 1. Vorher Fragen stellen.
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.

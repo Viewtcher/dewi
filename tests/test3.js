@@ -270,7 +270,7 @@ try{
   F.click(F.$('#nmskip'));ok(!!F.$('[data-lang]'),'Dann Lernsprache');
   // Anrede in Sprüchen
   const Q=env(base({name:'Vito',nameAsked:true}),'de');
-  const kinds=['pick','lang','home_new','home_due','home_done','home_sleep','home_list','home_streak','settings','intro','ok','ok_try2','ok_run','bad','bad_rare','bad_again','lvl_up','lvl_new','lvl_saved','lvl_hold','end_perfect','end_good','end_bad','name'];
+  const kinds=['pick','lang','home_new','home_due','home_done','home_sleep','home_fallen','home_streak','settings','intro','ok','ok_try2','ok_run','bad','bad_rare','bad_again','lvl_up','lvl_new','lvl_saved','lvl_hold','end_perfect','end_good','end_bad','name'];
   let withName=0,withNick=0,leak=0,total=0;const nickRe=/Choom|Chief|Digga|Boss|Bestie|Meister/;
   for(const k of kinds)for(let i=0;i<60;i++){const q=Q.w.sayQuip(k,{n:3,s:5,lv:4,w:'x'});total++;if(/\{\w+\}/.test(q.text))leak++;if(q.text.includes('Vito'))withName++;if(nickRe.test(q.text))withNick++;}
   ok(leak===0,'Keine unaufgelösten Platzhalter in '+total+' Sprüchen');

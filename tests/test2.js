@@ -27,6 +27,7 @@ const PAIRS={de:pairsOf('de'),en:pairsOf('en')};
 const sentKeys=new Set(sEn.keys());
 console.log('Wörter',dEn.size,'EN-Sätze',sEn.size,'DE-Sätze',sDe.size);
 
+const lvl0=s=>Object.keys((s.progress||{}).id||{}).filter(k=>s.progress.id[k].l===0);
 const T=el=>{const c=el.cloneNode(true);c.querySelectorAll('.qh').forEach(q=>q.remove());return c.textContent;};
 let fails=0;const ok=(c,m)=>{console.log((c?'OK   ':'FEHL ')+m);if(!c)fails++;};
 const toks=s=>s.replace(/[.,!?;:"“”]/g,' ').split(/\s+/).filter(Boolean);
@@ -184,7 +185,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(kk.length>=2&&/Einführung/.test(kk[0])&&/Review · neues Wort/.test(kk[kk.length-1]),'B2 Einführung, dann das neue Wort am Ende');
   ok(/Modul (Tippen|Bausteine)/.test(kk[kk.length-1]),'B3 Am Ende ein schweres Modul');
   const s=E.st();
-  ok(s.progress.id[first].l===1&&Object.keys(s.list.id).length===0,'B4 Wort auf Stufe 1, Fehlerliste leer');
+  ok(s.progress.id[first].l===1&&!Object.keys(s.list||{}).some(lg=>Object.keys(s.list[lg]||{}).length),'B4 Wort auf Stufe 1, keine Fehlerliste');
   ok(s.done[ev(E,'today()')]===true&&!(s.flawed&&s.flawed[ev(E,'today()')]),'B5 Tag zählt, kein grauer Stempel');
   E.click(E.$('#fin'));
   ok(/Heute geschafft/.test(E.$('#app').textContent),'B6 Home: geschafft');
@@ -206,36 +207,48 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   }
   ok(all,'C2 12 Rounds laufen durch');
   ok(reps===0,'C3 Immer 5 Module, nie zweimal dasselbe hintereinander ('+reps+' Fehler)');
-  ok(Object.keys(E.st().list.id).length===0,'C4 Alles richtig: Fehlerliste leer');
+  ok(lvl0(E.st()).length===0,'C4 Alles richtig: kein Wort auf Stufe 0');
 }
-// --- D) Fehler: Fehlerliste, grauer Stempel, Reparatur
+// --- D) Fehler (Version 131): Stufe 0, morgen fällig, Vorrang im Review, grauer Stempel, keine Reparatur
 {
   const E=fresh();known(E,6);
-  const day0=ev(E,'today()');
+  const day0=ev(E,'today()'),day1=ev(E,'addDays(today(),1)');
   E.click(E.$('#start'));
   ok(E.play({failSent:true,failType:true}),'D1 Round mit lauter Fehlern läuft durch');
   let s=E.st();
-  const nl=Object.keys(s.list.id).length;
-  ok(nl>=1,'D2 verlorene Module landen auf der Fehlerliste ('+nl+')');
+  const f0=lvl0(s);
+  ok(f0.length===5&&f0.every(k=>s.progress.id[k].d===day1&&s.progress.id[k].n>=1),'D2 Verlorene Module: Stufe 0, morgen fällig, Fehlerzähler ('+f0.length+')');
   ok(s.done[day0]===true&&s.flawed[day0]===true,'D3 Tag zählt, aber als fehlerhaft markiert');
   E.click(E.$('#fin'));
   const btn=E.$(`[data-stamp="${day0}"]`);
   if(btn)E.click(btn);const sc=E.$('.sv-card');ok(btn&&btn.dataset.kind==='ok'&&sc&&!/grayscale/.test(sc.innerHTML)&&/pl-holo" style="display:none/.test(sc.innerHTML),'D4 Tag mit Fehlern: farbige Marke ohne Holo');
-  ok(!E.$('#vol')&&!E.$('#rvol'),'D5 Fehlerliste ohne Freeplay-Knöpfe');
-  ok(/Noch eine Runde/.test(E.$('.plan').textContent)&&!E.$('.card .missed'),'D6 Home: Reparatur-Knopf im Plan, keine eigene Karte');
+  ok(!E.$('#vol')&&!E.$('#rvol'),'D5 Keine Freeplay-Knöpfe');
+  ok(/Noch eine Runde/.test(E.$('.plan').textContent)&&!E.$('.card .missed')&&!/Reparatur/.test(E.$('#app').textContent),'D6 Home: „Noch eine Runde“, keine Reparatur');
   nextDay(E);
-  ok(/Play now/.test(E.$('#start').textContent),'D7 Nächster Tag: Play now');
+  ok(/Play now/.test(E.$('#start').textContent),'D7 Nächster Tag: Play now, keine Sperre');
+  const rv=ev(E,'plan().review.map(w=>w.k).join()').split(',');
+  ok(rv.length===4&&rv.every(k=>f0.indexOf(k)>=0),'D8 Vorrang: alle 4 Review-Wörter sind gefallene Wörter');
   E.click(E.$('#start'));
-  ok(/Reparatur · noch/.test(E.$('.kicker').textContent),'D8 Round beginnt mit der Reparatur');
-  // Dauerhaft scheitern: nie Einführung
-  const ok2=E.play({failSent:true,failType:true});
-  ok(!ok2&&!E.kicks.some(k=>/Einführung/.test(k)),'D9 Solange Fehler bleiben, kommt keine Einführung (Wörter werden wieder angestellt)');
-  ev(E,'closeSheet()');
-  E.click(E.$('#start'));
-  ok(E.play(),'D10 Mit richtigen Antworten läuft Reparatur + Einführung + Review durch');
-  ok(E.kicks.findIndex(k=>/Einführung/.test(k))>E.kicks.findLastIndex(k=>/Reparatur/.test(k)),'D11 Einführung erst nach der Reparatur');
-  ok(Object.keys(E.st().list.id).length===0,'D12 Fehlerliste danach leer');
+  ok(/Einführung/.test(E.$('.kicker').textContent),'D9 Round beginnt mit der Einführung');
+  ok(E.play(),'D10 Mit richtigen Antworten läuft die Round durch');
+  ok(!E.kicks.some(k=>/Reparatur/.test(k)),'D11 Keine Reparatur-Stage');
+  s=E.st();
+  ok(rv.every(k=>s.progress.id[k].l===1&&s.progress.id[k].n>=1)&&lvl0(s).length===1,'D12 Gerettete Wörter auf Stufe 1, Fehlerzähler bleibt, das fünfte wartet');
   ok(noRepeat(modsOf(E.kicks)),'D13 Auch hier nie dasselbe Modul hintereinander');
+  // Migration der alten Fehlerliste
+  const mg=ev(E,`(()=>{const ks=curLang().words.slice(40,43).map(w=>w.k);
+    state.progress.id[ks[0]]={l:0,d:FAR};state.progress.id[ks[1]]={l:0,d:FAR};state.progress.id[ks[2]]={l:0,d:FAR};
+    state.list={id:{[ks[0]]:{n:3,s:'2026-01-02'},[ks[1]]:{n:1,s:'2026-01-01'}}};migrate();
+    const p=state.progress.id;return JSON.stringify([p[ks[0]],p[ks[1]],p[ks[2]],state.list,today()]);})()`);
+  const M=JSON.parse(mg);
+  ok(M[0].l===0&&M[0].d==='2026-01-02'&&M[0].n===3&&M[1].d==='2026-01-01'&&M[1].n===1&&M[2].l===0&&M[2].d===M[4]&&JSON.stringify(M[3])==='{}','D14 Migration: Fehlerliste wird Stufe 0, sofort fällig, Zähler bleibt, Liste leer');
+  ok(ev(E,`(()=>{const p=state.progress.id,f=fallenWords().map(w=>w.k);return f[0]===curLang().words[41].k&&f[1]===curLang().words[40].k;})()`),'D15 Am längsten wartende zuerst');
+  ok(ev(E,'survivalWords().some(w=>state.progress.id[w.k].l===0)'),'D16 Survival enthält Wörter auf Stufe 0');
+  ev(E,'render()');E.click(E.$('.tab[data-v="book"]'));
+  const fb=E.$('[data-f="shaky"]');ok(!!fb&&/Wackelig/.test(fb.textContent)&&!E.$('[data-f="err"]'),'D17 Vokabelheft: Filter „Wackelig“ statt „Fehlerliste“');
+  E.click(fb);
+  const rows=E.$$('#vlist .row'),shakyN=ev(E,'curLang().words.filter(w=>isShaky(state.progress.id[w.k])).length');
+  ok(rows.length===shakyN&&rows.length>0&&E.$$('#vlist .tag.err').length===ev(E,'fallenWords().length')&&/wackelig/.test(E.$('#vlist').textContent)&&!/Fehlerliste/.test(E.$('#app').textContent),'D18 Filter zeigt Stufe 0–1, Marke „wackelig“ nur auf Stufe 0 ('+rows.length+')');
 }
 // --- E) Versuche je Modul
 {
@@ -254,7 +267,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   E.click(E.$('#next'));
   w=T(E.$('.bigword'));
   E.type('qqq');E.type('qqq');E.type('qqq');
-  ok(ev(E,'S.lost')===1&&Object.keys(E.st().list.id).length===1,'E4 Tippen: drei Fehler = Modul verloren, Fehlerliste');
+  ok(ev(E,'S.lost')===1&&lvl0(E.st()).length===1,'E4 Tippen: drei Fehler = Modul verloren, Stufe 0');
   ev(E,'closeSheet()');
   // Swipe: nur ein Versuch
   force('swipe');E.click(E.$('#start'));
@@ -319,7 +332,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   }
   ok(ev(E,'S.lives')<=0&&ev(E,'S.wrong')===3,'F10 Nach 3 Fehlern ist Schluss ('+ev(E,'S.wrong')+')');
   ok(JSON.stringify(E.st().progress)!==progBefore||true,'F11 (Fortschritt geprüft)');
-  ok(Object.keys(E.st().list.id).length===0,'F12 Survival-Fehler füllen die Fehlerliste nicht');
+  ok(lvl0(E.st()).length===0,'F12 Survival-Fehler setzen kein Wort auf Stufe 0');
   ok(E.st().best.id.random===rec1,'F13 Kein neuer Rekord: alter bleibt');
   ok(/Noch [\d.]+ bis zum Rekord/.test(E.$('.smain').textContent),'F14 Hinweis „Noch X bis zum Rekord“');
 }

@@ -71,13 +71,13 @@ python build.py         # erzeugt index.html (unter Linux/Mac: python3 build.py)
 | Aufgabe | **Karte** | Ein Wort in einem Modul, die kleinste Einheit | „eine Swipe-Karte“ |
 | Ablauf | **Playmode** | Welche Module eine Round einsetzt | **Random** (gemischt, nach Stufe) und **Solo** (ein einziges Modul für alle Wörter, z. B. „Solo Swipe“) |
 | Runde | **Round** | Eine komplette Abfrage vom Start bis zum Ergebnis | siehe unten |
-| Runde | **Daily Round** | Die Pflicht des Tages, immer Playmode Random, ohne Leben. Stages: **Reparatur** (Fehlerliste), **Einführung** (neues Wort), **Review** (4 bekannte Wörter + neues Wort am Ende) | `startRound('daily')` |
-| Runde | **Survival** (früher Freeplay) | Freiwillig, erst nach der Daily Round: alle bekannten Wörter einmal, 3 Leben insgesamt, ein Versuch pro Karte, Highscore je Playmode | `startRound('survival')`, `openPlaymodes('survival')` |
-| Topf | **Fehlerliste** | Wörter mit verlorenem Modul. Solange sie gefüllt ist, beginnt jede Daily Round mit der Reparatur | `listWords()` |
+| Runde | **Daily Round** | Die Pflicht des Tages, immer Playmode Random, ohne Leben. Stages: **Einführung** (neues Wort), **Review** (4 bekannte Wörter + neues Wort am Ende) | `startRound('daily')` |
+| Runde | **Survival** (früher Freeplay) | Freiwillig, erst nach der Daily Round: alle begonnenen Wörter (auch Stufe 0) einmal, 3 Leben insgesamt, ein Versuch pro Karte, Highscore je Playmode | `startRound('survival')`, `openPlaymodes('survival')` |
+| Zustand | **Wackelig** | Wörter auf Stufe 0 oder 1 (Filter im Vokabelheft). Stufe 0 heißt: ein Modul wurde verloren, das Wort ist morgen fällig und hat im Review Vorrang | `isShaky()`, `fallenWords()` |
 
 Weitere feste Wörter: **Stufe** (0 bis 5) des Wortes, **Kennzeile** (die farbige Zeile oben im Modul, z. B. „WIEDERHOLUNG · STUFE 1 · MODUL SWIPE · INS DEUTSCHE · SOLO“), **Kennenlernen** (Phase für neue Wörter, kein Modul mit Wertung).
 
-Früher gebrauchte, jetzt nicht mehr verwendete Wörter: „Satz-Übung“ (war die Gruppe aus Auswahl, Lückensatz, Bausteine und Swipe), „Abfrage/Sitzung“ (jetzt Round) und „freiwillig üben“ (jetzt Survival), „Freeplay“ und „Wiederholungsliste“ (seit Version 35 entfallen).
+Früher gebrauchte, jetzt nicht mehr verwendete Wörter: „Fehlerliste“ und „Reparatur“ (seit Version 131 entfallen), „Satz-Übung“ (war die Gruppe aus Auswahl, Lückensatz, Bausteine und Swipe), „Abfrage/Sitzung“ (jetzt Round) und „freiwillig üben“ (jetzt Survival), „Freeplay“ und „Wiederholungsliste“ (seit Version 35 entfallen).
 
 ### So sagt man Änderungen
 - „Im Modul Swipe soll der falsche Vorschlag schwerer sein“
@@ -162,47 +162,48 @@ Abdeckung: 652 von 678 Wörtern. Die 26 Alltagssätze (Kategorie „Sätze für 
 
 **Qualitätshinweis:** Die Sätze sind einfach gehalten und wurden maschinell geschrieben. Einzelne unnatürliche Formulierungen sind möglich; eine Durchsicht durch eine Muttersprachlerin oder einen Muttersprachler ist empfohlen.
 
-## 6. Lernlogik (Stand Version 35)
+## 6. Lernlogik (Stand Version 131)
 
 ### 6.1 Daily Round
 
-Keine Leben. Ein Modul pro Wort, nie zweimal dasselbe Modul hintereinander (`chooseModule`). Fehlerrecht: Bausteine, Lückensatz, Auswahl **1 Fehler** (2 Versuche), Tippen **2 Fehler** (3 Versuche), Swipe **kein** Fehler. Verlorenes Modul = Wort auf die Fehlerliste. Es gibt keine Anzeige dafür (vorerst).
+Keine Leben. Ein Modul pro Wort, nie zweimal dasselbe Modul hintereinander (`chooseModule`). Fehlerrecht: Bausteine, Lückensatz, Auswahl, Reels **1 Fehler** (2 Versuche), Tippen **2 Fehler** (3 Versuche), Swipe **kein** Fehler. Keine Sperre: die Daily Round ist immer spielbar.
 
 | Stage | Inhalt |
 |---|---|
-| Reparatur | nur bei gefüllter Fehlerliste: jedes Wort bekommt 1 zufälliges Modul. Bestanden = Wort verlässt die Liste (Stufe 1). Verloren = Wort wird am Ende der Reparatur mit anderem Modul wieder angestellt, bis die Liste leer ist. Erst dann kommt die Einführung |
-| Einführung | genau 1 neues Wort (Wort, Bedeutung, Beispielsatz, Dewi). „Weiter“ ist 3 Sekunden gesperrt (Countdown, Test-Schalter `window.__introMs`) |
-| Review | 4 bekannte Wörter: die 2 am längsten überfälligen + 2 zufällige fällige, aufgefüllt mit noch nicht fälligen (früheste zuerst). Ohne neues Wort 5 Wörter. Zum Schluss das neue Wort noch einmal, bevorzugt mit Tippen oder Bausteine |
+| Einführung | genau 1 neues Wort (Kennenlernen in drei Takten, keine Wertung) |
+| Review | 4 bekannte Wörter, Auswahl in dieser Reihenfolge: **1.** fällige Wörter auf Stufe 0, am längsten wartende zuerst; **2.** die 2 am längsten überfälligen; **3.** zufällige weitere fällige; **4.** aufgefüllt mit noch nicht fälligen (früheste Fälligkeit zuerst). In der Round gemischt. Ohne neues Wort 5 Wörter. Zum Schluss das neue Wort noch einmal, bevorzugt mit Tippen oder Bausteine |
 
 - Ohne bekannte Wörter besteht die erste Round nur aus Einführung und neuem Wort am Ende.
-- Die Daily Round ist „gesperrt“, solange die Fehlerliste gefüllt ist: der Start führt zuerst durch die Reparatur.
-- „Noch eine neue Vokabel“ startet eine weitere Daily Round mit einem neuen Wort.
+- Sind mehr als 4 Wörter auf Stufe 0 fällig, kommen die übrigen an den nächsten Tagen dran.
+- „Noch eine Runde“ startet eine weitere Daily Round mit einem neuen Wort (solange es ungesehene Wörter gibt).
 
-### 6.2 Bewertung
+### 6.2 Bewertung (`record()`)
 
-- **Richtig:** Stufe +1 (max. 5), nächster Termin nach `INTERVALS = [1, 3, 7, 14, 30]` Tagen. Reparatur: Stufe 1. Neues Wort am Ende: Stufe 1.
-- **Verloren:** Wort geht auf die Fehlerliste (`n` +1), Stufe 0, `d = FAR`. Scheitert ein Reparatur-Wort mehrfach in derselben Round, zählt `n` nur einmal.
+- **Richtig:** Stufe +1 (max. 5), nächster Termin nach `INTERVALS = [1, 3, 7, 14, 30]` Tagen. Ein Wort auf Stufe 0 steigt so auf Stufe 1 und kommt morgen wieder („Gerettet!“). Neues Wort am Ende: Stufe 1.
+- **Verloren:** Stufe 0, fällig **morgen**, Fehlerzähler `n` des Wortes +1. Der Zähler bleibt auch nach dem Retten im Wort (`progress[k].n`), damit Dewi „Zum {n}. Mal …“ sagen kann (`bad_again` ab `n` ≥ 2).
 - Die Einführung wird nicht gewertet.
+- Datenform eines Wortes: `{l: Stufe 0–5, d: fällig ab 'JJJJ-MM-TT', n: Fehler insgesamt (nur wenn > 0)}`.
 
-### 6.3 Fehlerliste
+### 6.3 Wackelige Wörter (ersetzt die Fehlerliste)
 
-- Dynamische Liste pro Sprache mit Fehlerzähler `n` und Datum `s`. Auf dem Startbildschirm als Info-Karte ohne Knöpfe (Anzahl, bis zu 8 Wörter mit Fehlerzahl). Filter „Fehlerliste“ im Vokabelheft.
-- Die Fehlerliste wird nur in der Reparatur-Stage der Daily Round geleert. Survival greift nicht darauf zu.
+- Die Fehlerliste, die Reparatur-Stage und jede Sperre der Daily Round sind mit Version 131 entfallen.
+- Vokabelheft: Filter **„Wackelig“** zeigt Wörter auf Stufe 0 und 1 (`isShaky`). Die Marke **„wackelig“** steht nur an Wörtern auf Stufe 0. Englisch „Shaky“ / „shaky“.
+- Startscreen: Dewi stichelt, wenn 4 oder mehr Wörter auf Stufe 0 stehen (`home_fallen`).
+- **Migration (in `migrate()`, läuft bei jedem Start und nach dem Einspielen alter Sicherungen):** Wörter aus `state.list` gehen auf Stufe 0, fällig ab dem Tag, an dem sie auf die Liste kamen (spätestens heute), Fehlerzähler übernommen; danach ist `state.list` leer. Wörter mit der alten Fälligkeit `FAR` werden heute fällig. Offene Runs mit Reparatur-Karten verfallen.
 
 ### 6.4 Tagesplan, Serie und Stempel
 
-`plan()` liefert `{repair, fresh, review}` (Fehlerlisten-Wörter, das eine neue Wort oder `null`, Review-Wörter gemischt).
+`plan()` liefert `{fresh, review}` (das eine neue Wort oder `null`, Review-Wörter gemischt).
 
-- Der Tag zählt für die Serie, sobald eine Daily Round zu Ende gespielt wurde (`state.done`). Mit verlorenem Modul zusätzlich `state.flawed[Tag]`: der Stempel ist grau, ohne Holo (`stampSvg(mood, phase, flawed)`).
-- Ist die Daily Round gesperrt, rettet man den Tag, indem man am selben Tag die Fehlerliste repariert und die Daily Round spielt. Sonst reißt die Serie.
+- Der Tag zählt für die Serie, sobald eine Daily Round zu Ende gespielt wurde (`state.done`). Mit verlorenem Modul in der ersten Round des Tages zusätzlich `state.flawed[Tag]`: der Stempel ist grau, ohne Holo (`stampSvg(mood, phase, flawed)`).
 
 ### 6.5 Survival (früher Freeplay)
 
 - Spielbar erst nach der Daily Round und mit mindestens 5 bekannten Wörtern. Die Karte auf dem Startbildschirm ist immer sichtbar; vorher ist der Knopf gesperrt und nennt den Grund.
 - Playmode: Random oder Solo (ein Modul), Rekord je Playmode (`state.best[lang][playmode]`).
-- Alle bekannten Wörter (ohne Fehlerlisten-Wörter) je einmal, gemischt. **3 Leben insgesamt**, pro Karte ein Versuch, auch beim Tippen. Alle geschafft = Round gewonnen.
+- Alle begonnenen Wörter (seit Version 131 auch Stufe 0) je einmal, gemischt. **3 Leben insgesamt**, pro Karte ein Versuch, auch beim Tippen. Alle geschafft = Round gewonnen.
 - Score: 1 Punkt je richtigem Wort, Serienbonus bei 3 in Folge +2, 5 +3, 10 +5, 15 +8, danach alle 5 weiteren +8. Ein Fehler setzt die Serie zurück.
-- Richtig: Stufe +1 und neuer Termin, aber nur einmal pro Tag und Wort (`daily.got`). Falsch: ändert nichts am Fortschritt, keine Fehlerliste.
+- Richtig: Stufe +1 und neuer Termin, aber nur einmal pro Tag und Wort (`daily.got`). Ein Wort auf Stufe 0 lässt sich so auch im Survival retten. Falsch: ändert nichts am Fortschritt.
 - Neuer Rekord: Feier (Dewi, Konfetti, Sound). Sonst „Noch X bis zum Rekord“.
 
 ## 7. Oberfläche und Effekte
@@ -1418,3 +1419,28 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Nicht übernommen:** `concept/` (Konzeptbilder, für die App nicht nötig; Vito hat sie als `2a-`/`2b-dewi-konzept.zip` im Claude-Chat) und `out/dewi-projekt.zip` (alter Projekt-Schnappschuss vom 9. Okt.). Alles andere ist im Repository.
 
 **App selbst unverändert.** Tests im neuen Ordner und in einer frischen Kopie wie in GitHub Actions grün. Nicht auf einem echten iPhone getestet; der Umzug selbst (GitHub, Pages, Spielstand übertragen) passiert erst auf Vitos PC.
+
+
+## Version 131 – Lernlogik ohne Fehlerliste (Poker Phase 1, Etappe 1)
+
+> **Die Fehlerliste ist weg.** Ein verlorenes Modul setzt das Wort auf Stufe 0, es ist morgen fällig und kommt im Review zuerst dran. Keine Reparatur-Stage, keine Sperre der Daily Round mehr. Grundlage: `konzept-poker-shop.md` (Nova, 16.10.2026), Abschnitt 1.
+
+**Entscheidungen (Vito):** Plan in vier Etappen freigegeben (131 Lernlogik, 132 Chips, 133 Poker-Regeln, 134 Poker-Screens), veröffentlicht wird erst nach Etappe 4. Name im Vokabelheft „Wackelig“ (Stufe 0–1). Survival enthält jetzt auch Wörter auf Stufe 0. Sind mehr als 4 Wörter auf Stufe 0 fällig, kommen die am längsten wartenden zuerst. Für spätere Etappen schon entschieden: Serien-Bonus gilt auch auf Dewis Gratis-Blind; während der Hand ändern sich nur Kopfzeile und Poker-Leiste, die Module bleiben; Meilensteine an den Bonus-Stufen (7, 14, 30, 50, 100, 365); kleine Flamme im neuen Stil jetzt, große später; Diamant nur noch Zierde beim Royal Flush; Marlin entwirft alle neuen Sprüche, Vito prüft.
+
+**Technik**
+- `record()`: richtig = Stufe +1 (Stufe 0 → 1, morgen); verloren = `{l:0, d:morgen, n:n+1}`. Rückgabe `saved:true`, wenn ein Wort von Stufe 0 gerettet wurde („Gerettet!“, Dewi `lvl_saved`, Hinweis „Geschafft. Das Wort kommt morgen wieder (Stufe 1).“).
+- `plan()` ohne `repair`: Vorrang für fällige Stufe-0-Wörter (`fallenWords()`, nach Fälligkeit sortiert), danach die bisherige Auswahl. `dailyCards()`, Kennzeile, Run-Speicher (`rf`, `cleared`) und `settleCard()` ohne Reparatur-Zweige.
+- `listOf()`/`listWords()` entfallen, neu `isShaky()` und `fallenWords()`. Der Fehlerzähler liegt jetzt im Wort (`progress[k].n`); `bad_again` gilt für jedes Wort mit `n` ≥ 2.
+- Migration in `migrate()` (siehe 6.3), wiederholbar und gefahrlos bei leerer Liste. `openRun()` verwirft Runs mit Reparatur-Karten.
+- Hinweis nach verlorenem Modul: „Das Wort fällt auf Stufe 0 und kommt morgen wieder.“ (vorher „… kommt bald wieder.“).
+- Startscreen: kein „Reparatur“ mehr, „Noch eine Runde“ erscheint, solange es neue Wörter gibt. Dewi-Spruch `home_list` heißt jetzt `home_fallen` (ab 4 Wörtern auf Stufe 0), Texte ohne Fehlerliste. `lvl_saved` umformuliert.
+- Testbereich: die 1–3 „Fehlerwörter“ sind jetzt Wörter auf Stufe 0 (gestern fällig, mit Fehlerzähler).
+- Doku: Kapitel 2a und 6 neu geschrieben.
+
+**Neue Sprüche und Texte (Entwurf Marlin, bitte prüfen)**
+- `home_fallen`: „{n} Wörter sind auf Stufe 0 gerutscht. Ich sag nix. Ich guck nur sehr laut.“ · „{n} Wörter wackeln. Ich hab sie im Blick. Und dich auch.“ · mit Name: „{who}, {n} Wörter auf Stufe 0. Ich sag nix. Ich starre nur.“ (EN entsprechend)
+- `lvl_saved`: „Gerettet! Von Stufe 0 zurück ins Leben. Redemption Arc.“ · „Na endlich, das Wort steht wieder. Wurde auch Zeit.“
+
+**Tests:** test2 Abschnitt D neu (Stufe 0 + morgen fällig + Zähler, grauer Stempel, keine Sperre, Vorrang im Review, keine Reparatur, Retten auf Stufe 1, Migration der alten Liste, Reihenfolge „am längsten wartend“, Survival mit Stufe 0, Vokabelheft-Filter und Marke); B4, C4, E4, F12 angepasst; test3 Spruchschlüssel `home_fallen`; test4 D9 (neuer Hinweistext) und V4 (Testbereich). Dabei gefunden und behoben: Beim allerersten Fehler eines neuen Wortes wäre der Fehlerzähler leer geblieben. Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet.** Zu prüfen nach Etappe 4: Vokabelheft-Filter „Wackelig“, Spruch auf dem Startscreen, Übergang eines alten Spielstands mit Fehlerliste.
