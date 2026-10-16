@@ -245,7 +245,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(M[0].l===0&&M[0].d==='2026-01-02'&&M[0].n===3&&M[1].d==='2026-01-01'&&M[1].n===1&&M[2].l===0&&M[2].d===M[4]&&JSON.stringify(M[3])==='{}','D14 Migration: Fehlerliste wird Stufe 0, sofort fällig, Zähler bleibt, Liste leer');
   ok(ev(E,`(()=>{const p=state.progress.id,f=fallenWords().map(w=>w.k);return f[0]===curLang().words[41].k&&f[1]===curLang().words[40].k;})()`),'D15 Am längsten wartende zuerst');
   ok(ev(E,'survivalWords().some(w=>state.progress.id[w.k].l===0)'),'D16 Survival enthält Wörter auf Stufe 0');
-  ev(E,'render()');E.click(E.$('.tab[data-v="book"]'));
+  ev(E,'render()');E.click(E.$('.bookcard[data-v="book"]'));
   const fb=E.$('[data-f="shaky"]');ok(!!fb&&/Wackelig/.test(fb.textContent)&&!E.$('[data-f="err"]'),'D17 Vokabelheft: Filter „Wackelig“ statt „Fehlerliste“');
   E.click(fb);
   const rows=E.$$('#vlist .row'),shakyN=ev(E,'curLang().words.filter(w=>isShaky(state.progress.id[w.k])).length');

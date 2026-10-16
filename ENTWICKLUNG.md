@@ -1614,3 +1614,24 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 neuer Block SP1–SP15 (Kachel unter unverändertem Gamemodes, Pille öffnet Shop, Reiter, Anprobe, Kauf und Ausrüsten mit Abzug, Gratis-Fell, Theme-Vorschau, zu wenig Chips, „Nur meine“, Streak-Schutz kaufen, Schließen setzt Vorschau zurück, Schleife in allen Stimmungen, Stempel im Original, gekauftes Theme bleibt, Sicherung mit Käufen); C5 angepasst. Dabei gefunden und behoben: Kachel und Shop-Screen hatten dieselbe ID. Tests 2–5 grün. Im echten Chromium gemessen: Shop passt auf 390 × 844 und 375 × 667 ohne Überlauf.
 
 **Nicht auf einem echten iPhone getestet:** Farben von Mitternacht und Neon-Nacht, Sitz der Schleife, Sound beim Kaufen. In der Vorschau zum Ausprobieren im Testbereich Chips sammeln oder per Survival.
+
+
+## Version 139 – Startscreen ohne Tab-Leiste: Zahnrad, Vokabelheft-Kachel, goldener Shop, Chip-Stapel
+
+> **Der Startscreen wird zum Hauptmenü.** Die Tab-Leiste unten ist weg. Oben rechts neben den Chips sitzt ein Zahnrad, das die Einstellungen öffnet. Die Streak-Pille oben ist weg, weil die Serie schon in der Daily-Round-Kachel steht und nur dort zählt. Die Fortschritt-Kachel ist jetzt eine schmale dunkelblaue Kachel „Vokabelheft“ im Stil von Gamemodes; der Fortschrittsbalken steht im Vokabelheft oben. Die Shop-Kachel ist golden und hat mehr Abstand zu Gamemodes. In der Daily-Round-Kachel oben rechts liegen zwei gestapelte Dewi-Chips, obendrauf dreht sich ein goldener Chip um die senkrechte Achse.
+
+**Entscheidungen (Vito):** Zahnrad öffnet direkt die Einstellungsseite (kein Menü). Vokabelheft-Kachel schmal wie Gamemodes, dunkelblau. Shop im Gold-Verlauf. Chip-Stapel klein oben rechts in der Kachelecke, dreht sich immer (auch nach geschaffter Runde).
+
+**Technik**
+- `<nav id="tabs">` samt CSS und Code entfernt; untere Polsterung der Seite von 104 auf 40 px.
+- Navigation über `data-v`: `render()` bindet alle `[data-v]` im aktuellen Screen an `go()`. Zahnrad `#gear` (`data-v="settings"`), Vokabelheft-Kachel `.bookcard` (`data-v="book"`), Zurück-Pfeil `.backbtn` (`data-v="home"`) in Vokabelheft und Einstellungen.
+- `stPill()` und `.stpill` entfernt.
+- Reihenfolge der Kacheln: Daily Round, Gamemodes, Shop, Vokabelheft. Abstand zwischen den Kacheln 16 px (`.gmcard+.gmcard`).
+- Shop-Kachel: Gold-Verlauf (#ffd45c → #e88a0c) mit Glanz oben, dunkelbraune Schrift und Icon-Linien.
+- `chipStack()`: zwei gestauchte pinke Chips (`preserveAspectRatio="none"`, Kante per Schatten) und ein goldener Chip mit `rotateY`-Animation (2,8 s). Bei „Bewegung reduzieren“ steht er still.
+- EN: „Vokabelheft öffnen“, „Einstellungen öffnen“.
+
+**Tests:** test4 neu NV1–NV7 (keine Tab-Leiste/Streak-Pille, Zahnrad, Chip-Stapel, Vokabelheft-Kachel, Zurück-Pfeile); SP1 auf drei Kacheln angepasst; test2 D17 und test3 (Englisch-Start, Namensfrage, Sound-Einstellungen) öffnen Heft und Einstellungen jetzt über Kachel bzw. Zahnrad. Tests 2–5 grün. Im echten Chromium gemessen (390 × 844 und 375 × 667, Runde offen und geschafft): kein seitlicher Überlauf, Chip-Stapel überlappt den Titel nicht.
+
+**Nicht auf einem echten iPhone getestet:** Wirkung des Golds, Drehung des Chips (Ruckeln, Akku), Antippen des Zahnrads neben der Chip-Pille.
+

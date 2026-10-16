@@ -689,7 +689,7 @@ function toReels(E,force=true){
   const E=fresh();
   ev(E,"state.chips=10000;state.chipShown=10000;state.shields=0;state.owned=[];state.equip={};save();render()");
   const cards=E.$$('#app .gmcard');
-  ok(cards.length===2&&!cards[0].classList.contains('shopcard')&&!!cards[0].querySelector('#gm')&&cards[1].classList.contains('shopcard')&&!!E.$('#shopbtn'),'SP1 Hauptmenü: Gamemodes unverändert, Shop-Kachel darunter');
+  ok(cards.length===3&&!cards[0].classList.contains('shopcard')&&!!cards[0].querySelector('#gm')&&cards[1].classList.contains('shopcard')&&cards[2].classList.contains('bookcard')&&!!E.$('#shopbtn'),'SP1 Hauptmenü: Gamemodes unverändert, darunter Shop und Vokabelheft (Version 139)');
   E.click(E.$('#chippill'));ok(!!E.$('#shop.sin.shop'),'SP2 Chip-Pille öffnet den Shop');
   ok(E.$$('.shit').length===4&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell und Kopf, Aktion erst nach Antippen');
   E.click(E.$('[data-shop="fur:mitternacht"]'));
@@ -715,6 +715,21 @@ function toReels(E,force=true){
   ok(E.d.documentElement.dataset.theme==='neon'&&ev(E,'state.equip.theme')==='neon','SP14 Gekauftes Theme bleibt nach dem Schließen');
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
   ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
+}
+// --- Startscreen ohne Tab-Leiste (Version 139)
+{
+  const E=fresh();ev(E,'render()');
+  ok(!E.$('#tabs')&&!E.$('.stpill')&&!!E.$('.status #chippill')&&!!E.$('.status #gear'),'NV1 Keine Tab-Leiste, keine Streak-Pille, oben Chips und Zahnrad');
+  ok(E.$$('.plan .dstack .dsd').length===2&&!!E.$('.plan .dstack .dstop .dchip'),'NV2 Daily Round: zwei gestapelte Chips und ein drehender obendrauf');
+  ok(!E.$('.card.prog:not(.bookprog)')&&!!E.$('.bookcard'),'NV3 Fortschritt-Kachel ersetzt durch Vokabelheft-Kachel');
+  E.click(E.$('#gear'));
+  ok(!!E.$('#sethead')&&!!E.$('.backbtn[data-v="home"]'),'NV4 Zahnrad öffnet die Einstellungen mit Zurück-Pfeil');
+  E.click(E.$('.backbtn'));
+  ok(!!E.$('.plan')&&!!E.$('#gear'),'NV5 Zurück führt auf den Startscreen');
+  E.click(E.$('#bookbtn'));
+  ok(!!E.$('#q')&&!!E.$('.bookprog .stack')&&!!E.$('.bookprog .legend'),'NV6 Vokabelheft-Kachel öffnet das Heft, Fortschritt steht dort oben');
+  E.click(E.$('.backbtn'));
+  ok(!!E.$('.plan'),'NV7 Zurück aus dem Vokabelheft');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
