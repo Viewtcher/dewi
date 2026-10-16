@@ -689,7 +689,7 @@ function toReels(E,force=true){
   const E=fresh();
   ev(E,"state.chips=10000;state.chipShown=10000;state.shields=0;state.owned=[];state.equip={};save();render()");
   const cards=E.$$('#app .gmcard');
-  ok(cards.length===3&&!cards[0].classList.contains('shopcard')&&!!cards[0].querySelector('#gm')&&cards[1].classList.contains('shopcard')&&cards[2].classList.contains('bookcard')&&!!E.$('#shopbtn'),'SP1 Hauptmenü: Gamemodes unverändert, darunter Shop und Vokabelheft (Version 139)');
+  ok(cards.length===1&&!!cards[0].querySelector('#gm')&&!E.$('.shopcard')&&!!E.$('.bookcard'),'SP1 Hauptmenü: nur Gamemodes als Kachel, kein Shop-Kachel mehr (Version 140)');
   E.click(E.$('#chippill'));ok(!!E.$('#shop.sin.shop'),'SP2 Chip-Pille öffnet den Shop');
   ok(E.$$('.shit').length===4&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell und Kopf, Aktion erst nach Antippen');
   E.click(E.$('[data-shop="fur:mitternacht"]'));
@@ -711,7 +711,7 @@ function toReels(E,force=true){
   ok(!E.d.documentElement.dataset.theme&&!E.$('#shop')&&E.$('#app .mascot .dw').outerHTML.includes('translate(132 40)'),'SP11 Schließen: Theme-Vorschau weg, Dewi trägt die Schleife auch auf dem Startscreen');
   ok(ev(E,"Object.keys(DWM).every(m=>dwSvg(m).includes('translate(132 40) rotate(18)'))")&&ev(E,"Object.keys(DWM).every(m=>{const s=dwSvg(m),r=s.indexOf('rotate('),i=s.indexOf('translate(132 40)');return r>=0&&i>r;})"),'SP12 Schleife in allen Stimmungen in der gedrehten Kopf-Gruppe');
   ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('translate(132 40)')&&!ev(E,"stampSvg0('sly',0)").includes('#ff4f6d'),'SP13 Stempel zeigen Dewi im Original');
-  ev(E,"state.chips=7000;state.equip.theme='classic';save()");E.click(E.$('.shopcard'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
+  ev(E,"state.chips=7000;state.equip.theme='classic';save()");E.click(E.$('#chippill'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
   ok(E.d.documentElement.dataset.theme==='neon'&&ev(E,'state.equip.theme')==='neon','SP14 Gekauftes Theme bleibt nach dem Schließen');
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
   ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
@@ -721,7 +721,7 @@ function toReels(E,force=true){
   const E=fresh();ev(E,'render()');
   ok(!E.$('#tabs')&&!E.$('.stpill')&&!!E.$('.status #chippill')&&!!E.$('.status #gear'),'NV1 Keine Tab-Leiste, keine Streak-Pille, oben Chips und Zahnrad');
   ok(E.$$('.plan .dstack .dsd').length===2&&!!E.$('.plan .dstack .dstop .dchip'),'NV2 Daily Round: zwei gestapelte Chips und ein drehender obendrauf');
-  ok(!E.$('.card.prog:not(.bookprog)')&&!!E.$('.bookcard'),'NV3 Fortschritt-Kachel ersetzt durch Vokabelheft-Kachel');
+  ok(!!E.$('.bookcard.card.prog')&&!!E.$('.bookcard .stack')&&!E.$('.bookcard .legend'),'NV3 Vokabelheft-Kachel wie die alte Fortschritt-Karte (Balken, ohne Stufen-Liste)');
   E.click(E.$('#gear'));
   ok(!!E.$('#sethead')&&!!E.$('.backbtn[data-v="home"]'),'NV4 Zahnrad öffnet die Einstellungen mit Zurück-Pfeil');
   E.click(E.$('.backbtn'));

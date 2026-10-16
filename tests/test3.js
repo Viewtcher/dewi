@@ -142,7 +142,7 @@ ok(/your name/i.test(E0.$('h1').textContent)&&/Skip/.test(E0.$('#nmskip').textCo
 E0.click(E0.$('#nmskip'));
 ok(/Which language are you learning/.test(E0.$('h1').textContent)&&E0.d.documentElement.lang==='en','Englisch gewählt: Oberfläche englisch');
 E0.click(E0.$('[data-lang="id"]'));if(E0.$('#langgo'))E0.click(E0.$('#langgo'));
-ok(/Daily Round/.test(E0.$('#app').textContent)&&!E0.$('#tabs')&&/Wordbook/.test(E0.$('.bookcard').textContent)&&E0.$('#gear').getAttribute('aria-label')==='Open settings','Englisch: Startseite, Vokabelheft-Kachel und Zahnrad (Tab-Leiste weg, Version 139)');
+ok(/Daily Round/.test(E0.$('#app').textContent)&&!E0.$('#tabs')&&E0.$('.bookcard').getAttribute('aria-label')==='Open wordbook'&&E0.$('#gear').getAttribute('aria-label')==='Open settings','Englisch: Startseite, Vokabelheft-Kachel und Zahnrad (Tab-Leiste weg, Version 139)');
 
 }catch(e){ok(false,'Abschnitt 0 abgebrochen: '+e.message.slice(0,150));}
 try{

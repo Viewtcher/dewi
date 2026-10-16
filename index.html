@@ -520,16 +520,10 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .gmmain b{font:800 23px/1.1 var(--display);letter-spacing:.02em;text-transform:uppercase;text-shadow:0 2px 0 rgba(5,40,90,.5)}
 .gmcard .gmgo{margin-left:auto;flex:none;opacity:.9;filter:drop-shadow(0 2px 0 rgba(5,40,90,.5))}
 .gmcard{cursor:pointer}
-/* Shop-Kachel (Version 138): wie Gamemodes, eigene Farbe */
-.gmcard+.gmcard{margin-top:16px}
-/* Shop-Kachel golden (Version 139) */
-.shopcard{color:#4a2600;border-bottom-color:rgba(130,70,0,.7);background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,0) 55%),repeating-linear-gradient(0deg,rgba(255,255,255,.035) 0 2px,transparent 2px 5px),linear-gradient(100deg,#ffd45c,#f5a524 60%,#e88a0c);box-shadow:inset 0 0 0 2px rgba(255,240,190,.55),0 8px 22px rgba(255,170,40,.18)}
-.shopcard .gmmain{color:#4a2600}
-.shopcard .gmmain svg,.shopcard .gmgo{filter:drop-shadow(0 2px 0 rgba(130,70,0,.35))}
-.shopcard .gmmain b{text-shadow:0 1px 0 rgba(255,245,210,.6)}
-/* Vokabelheft-Kachel dunkelblau (Version 139) */
-.bookcard{border-bottom-color:rgba(5,10,45,.7);background:repeating-linear-gradient(0deg,rgba(255,255,255,.025) 0 2px,transparent 2px 5px),linear-gradient(100deg,#1e3a8a,#172554)}
-.bookcard .gmmain svg,.bookcard .gmmain b,.bookcard .gmgo{filter:drop-shadow(0 2px 0 rgba(5,10,45,.6));text-shadow:0 2px 0 rgba(5,10,45,.6)}
+/* Shop ab Version 140 nur noch über die Chip-Pille erreichbar, keine eigene Kachel mehr */
+/* Vokabelheft-Kachel auf dem Startscreen: wie die alte Fortschritt-Karte, aber antippbar (Version 140) */
+.bookcard{display:block;width:100%;box-sizing:border-box;appearance:none;-webkit-appearance:none;font:inherit;text-align:left;cursor:pointer}
+.bookcard:active{transform:translateY(1px)}
 .bookprog{margin:0 0 16px}
 .topl{display:flex;align-items:center;gap:10px;min-width:0}
 .backbtn svg{width:20px;height:20px;stroke-width:2.6}
@@ -8549,19 +8543,24 @@ function homeView(){
     planHtml=`<h2 class="dn">${t('Heute geschafft')} ${cqBtn('daily')}</h2>${cqText('daily')}
       ${oh||nF?'<div class="btns" style="margin-top:14px"><button class="btn block light" id="extra">'+(oh?t('Weiterspielen'):t('Noch eine Runde'))+'</button></div>'+openHandHint():''}`;
   }
-  const SHOPIC='<svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8Z" fill="#fff" stroke="#4a2600" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10" fill="none" stroke="#4a2600" stroke-width="1.9" stroke-linecap="round"/><path d="M12 12.4l.9 1.9 2.1.3-1.5 1.4.4 2.1-1.9-1-1.9 1 .4-2.1-1.5-1.4 2.1-.3z" fill="#ff3d9a"/></svg>';
-  const BOOKIC='<svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h10a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3V4.5Z" fill="#fff"/><path d="M5 17a3 3 0 0 1 3-3h10" fill="none" stroke="#1e3a8a" stroke-width="1.8" stroke-linecap="round"/><path d="M9 8h5" stroke="#ff3d9a" stroke-width="1.8" stroke-linecap="round"/></svg>';
   const GMIC='<svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5" fill="#fff"/><path d="M7 10v5M4.5 12.5h5" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.5" r="1.4" fill="#ff3d9a"/><circle cx="18.5" cy="13.8" r="1.4" fill="#ffc83d"/></svg>';
-  const revHtml=`<section class="card gmcard"><div class="gmrow"><button class="gmmain" id="gm" type="button" aria-label="${t('Gamemodes öffnen')}">${GMIC}<b>${t('Gamemodes')}</b></button>${cqBtn('gm')}<svg class="gmgo" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>${cqText('gm')}</section>
-
-<section class="card gmcard shopcard"><div class="gmrow"><button class="gmmain" id="shopbtn" type="button" aria-label="${t('Shop öffnen')}">${SHOPIC}<b>${t('Shop')}</b></button><svg class="gmgo" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#4a2600" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></section>
-
-<section class="card gmcard bookcard" data-v="book"><div class="gmrow"><button class="gmmain" id="bookbtn" type="button" aria-label="${t('Vokabelheft öffnen')}">${BOOKIC}<b>${t('Vokabelheft')}</b></button><svg class="gmgo" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div></section>`;
+  const revHtml=`<section class="card gmcard"><div class="gmrow"><button class="gmmain" id="gm" type="button" aria-label="${t('Gamemodes öffnen')}">${GMIC}<b>${t('Gamemodes')}</b></button>${cqBtn('gm')}<svg class="gmgo" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>${cqText('gm')}</section>`;
+  // Version 140: Vokabelheft-Kachel wie die alte Fortschritt-Karte, ohne die Stufen-Liste (die steht im Vokabelheft selbst)
+  const lv=[0,0,0,0,0,0];let nNew=0;
+  L.words.forEach(w=>{const q=prog[w.k];if(!q)nNew++;else lv[q.l]++;});
+  const N=L.words.length;
+  const bparts=[5,4,3,2,1,0].map(n=>({c:LVCOL[n],n:lv[n],l:t('Stufe {0}',n)})).concat([{c:'var(--raised)',n:nNew,l:t('Noch neu')}]);
+  const bseg=bparts.filter(p=>p.n>0).map(p=>`<i style="width:${(p.n/N*100).toFixed(2)}%;background:${p.c}"></i>`).join('');
+  const bookHtml=`<button class="card prog bookcard" id="bookbtn" type="button" data-v="book" aria-label="${t('Vokabelheft öffnen')}">
+    <div class="eyebrow">${t('Fortschritt')}</div>
+    <p style="margin-top:6px">${t('{0} von {1} Wörtern begonnen','<b>'+(N-nNew)+'</b>',N)}</p>
+    <div class="stack" role="img" aria-label="${bparts.map(p=>p.n+' '+p.l).join(', ')}">${bseg}</div></button>`;
   const streakHtml=`<div class="streak foot${st>0?' on':''}"><div class="sl">${flameSvg(st,false)}<b class="sn" aria-label="${st} ${st===1?t('Tag'):t('Tage')} ${t('in Folge')}">${st}</b></div><div class="dots">${week}</div></div>`;
   return `<div class="top status"><button class="langbtn" id="chlang" aria-label="${t('Sprache wechseln')}: ${esc(t(L.name))}"><span aria-hidden="true">${{id:'🇮🇩',en:'🇬🇧'}[L.id]||'🌐'}</span></button><div class="topr">${chipPill()}<button class="iconbtn gearbtn" id="gear" type="button" data-v="settings" aria-label="${t('Einstellungen öffnen')}">${GEARIC}</button></div></div>
   ${homeMascot(p,st,nFallen,doneToday,prog)}
   <section class="card plan">${chipStack()}${planHtml}${streakHtml}</section>
-  ${revHtml}`;
+  ${revHtml}
+  ${bookHtml}`;
 }
 function homeMascot(p,st,nFallen,doneToday,prog){
   const any=Object.keys(prog).length>0,total=(p.fresh?1:0)+p.review.length;
@@ -8579,9 +8578,8 @@ function bindHome(){
   $$('[data-stamp]',app).forEach(b=>b.onclick=()=>openStamp(b.dataset.stamp,b));
   const s=$('#start');if(s)s.onclick=()=>startRound('daily');   // setzt eine offene Hand fort oder fragt nach dem Einsatz
   const v=$('#gm');if(v)v.onclick=openGamemodes;
-  const gc=$('.gmcard:not(.shopcard)',app);if(gc)gc.onclick=ev=>{if(ev.target.closest('#gm,.cq,.cqtext'))return;openGamemodes();};
-  const sc=$('.shopcard',app);if(sc)sc.onclick=()=>openShop();   // Version 138
-  const cp=$('#chippill',app);if(cp)cp.onclick=()=>openShop();
+  const gc=$('.gmcard',app);if(gc)gc.onclick=ev=>{if(ev.target.closest('#gm,.cq,.cqtext'))return;openGamemodes();};
+  const cp=$('#chippill',app);if(cp)cp.onclick=()=>openShop();   // Shop nur noch über die Chip-Pille (Version 140)
   const e=$('#extra');if(e)e.onclick=()=>startRound('daily');
   $('#chlang').onclick=()=>{state.lang=null;save();render();};
   $$('.cq',app).forEach(b=>b.onclick=()=>{const p=$('#cq-'+b.dataset.cq,app);if(!p)return;const open=p.hidden;p.hidden=!open;b.setAttribute('aria-expanded',String(open));b.classList.toggle('on',open);});

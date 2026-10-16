@@ -1635,3 +1635,19 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Wirkung des Golds, Drehung des Chips (Ruckeln, Akku), Antippen des Zahnrads neben der Chip-Pille.
 
+
+## Version 140 – Shop-Kachel weg, Vokabelheft-Kachel wie die alte Fortschritt-Karte
+
+> **Zurück zur Ruhe im Hauptmenü.** Die goldene Shop-Kachel ist wieder weg, der Shop bleibt über die Chip-Pille oben erreichbar. Die Vokabelheft-Kachel sieht jetzt wieder aus wie die alte Fortschritt-Karte: „FORTSCHRITT“, „X von Y Wörtern begonnen“ und der bunte Balken, aber ohne die Liste der Stufen darunter. Die Liste steht jetzt im Vokabelheft selbst, direkt wenn man die Kachel antippt.
+
+**Entscheidung (Vito):** Shop-Kachel entfernen, Shop nur über die Pille. Vokabelheft-Kachel wie im Screenshot: Balken ohne Stufen-Liste, die Liste erst auf der Vokabelheft-Seite.
+
+**Technik**
+- Shop-Kachel (`SHOPIC`, `#shopbtn`, `.shopcard`) komplett aus `homeView()` und dem CSS entfernt. `openShop()` bleibt unverändert, erreichbar über `#chippill`.
+- Die Vokabelheft-Kachel ist jetzt ein `<button class="card prog bookcard">` (kein schmaler `gmcard`-Knopf mehr): Eyebrow „Fortschritt“, Text, Balken – dieselbe Berechnung wie im Vokabelheft, nur ohne `.legend`. Klick/Enter navigiert wie bisher über `data-v="book"`.
+- CSS: `.bookcard` setzt nur noch die Button-Grundlagen zurück (Breite, Schrift, Cursor), die Optik kommt von `.card.prog` (dieselbe Klasse wie zuvor auf dem Startscreen).
+
+**Tests:** test4 SP1 und NV3 angepasst (keine Shop-Kachel mehr im Hauptmenü, Vokabelheft-Kachel mit Balken ohne Liste), SP-Block öffnet den Shop jetzt über die Chip-Pille statt über die Kachel. test3 prüft das aria-label der Kachel statt eines Kachel-Titels. Tests 2–5 grün. Im echten Chromium gemessen (390 × 844 und 375 × 667): keine Shop-Kachel mehr, Vokabelheft-Kachel ohne Überlauf, Klick öffnet das Vokabelheft mit der Stufen-Liste oben.
+
+**Nicht auf einem echten iPhone getestet:** Antippbarkeit der ganzen Karte als Knopf, Wirkung ohne die Shop-Kachel im Alltag.
+
