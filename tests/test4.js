@@ -249,7 +249,7 @@ function toReels(E,force=true){
   act(E,'(r.right+2)%3');ev(E,'S.cur.rl.toss(true)');
   ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.cur.ok')===false,'D7 Zweiter Fehler: Modul verloren');
   ok(ev(E,'S.wrong')>=1,'D8 Als Fehler gezählt');
-  ok(/fällt auf Stufe 0 und kommt morgen wieder/.test(E.$('.smain').textContent)&&!/Fehlerliste/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0 und kommt morgen wieder, ohne Fehlerliste');
+  ok(ev(E,"state.progress[curLang().id][S.cur.w.k].l")===0&&!/Stufe|Wiederholung/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0, aber kein geschriebener Hinweis mehr dazu (Version 149)');
 }
 // --- Reduzierte Bewegung: Liste
 {
@@ -330,7 +330,11 @@ function toReels(E,force=true){
   // Reels: Synthwave
   knownReels(E,8);ev(E,'state.done[today()]=true;save();render()');
   E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
-  ok(!!E.$('.sin .musbtn'),'M10 Lautsprecher auch im Modul');
+  ok(!!E.$('.sin #setgear')&&!E.$('.sin .musbtn'),'M10 Zahnrad statt Lautsprecher im Modul (Version 148)');
+  E.click(E.$('#setgear'));
+  ok(!!E.$('#setov')&&!E.$('#setov').hidden&&E.$('#setov .card .eyebrow').textContent===ev(E,"t('Sound')"),'M10b Zahnrad öffnet Einstellungen übers Spiel, Sound-Karte ganz oben');
+  E.click(E.$('#setov .backbtn'));
+  ok(E.$('#setov').hidden&&!!E.$('.sin.hand, .sin')&&!!E.$('#quit'),'M10c Zurück führt ins laufende Spiel zurück, nichts wurde beendet');
   ev(E,'musTick()');ok(ev(E,'MUS.mode')==='synth','M11 In Reels spielt der Synthwave-Soundtrack');
   E.click(E.$('#quit'));ev(E,'musTick()');ok(ev(E,'MUS.mode')==='lofi','M12 Zurück in der App wieder Lo-Fi');
   E.click(E.$('[data-v="settings"]'));
@@ -518,26 +522,25 @@ function toReels(E,force=true){
   const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','chips','chipclick','royal','tossed'].forEach(k=>sfx(k))");
   ok(A.osc.length>n0+20,'E6 Alle Reels-Sounds erzeugen Töne ('+(A.osc.length-n0)+')');
 }
+// --- Testbereich: immer sichtbar, Wörter/Chips per Textfeld + Enter (Version 142)
 {
   const E=fresh();
-  ev(E,"state.lang='id';state.name='Vito';state.nameAsked=true;state.progress.id={};state.progress.id[LANGS.id.words[0].k]={l:2,d:today()};save()");
+  const submit=id=>ev(E,"document.querySelector('"+id+"').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}))");
+  ev(E,"state.lang='id';state.name='Vito';state.nameAsked=true;state.chips=250;state.progress.id={};state.progress.id[LANGS.id.words[0].k]={l:2,d:today()};save()");
   ev(E,"view='settings';render()");
-  ok(!ev(E,"!!document.querySelector('#devcard')"),'V1 Testbereich anfangs versteckt');
-  for(let i=0;i<7;i++)ev(E,"document.querySelector('#sethead').click()");
-  ok(ev(E,"!!document.querySelector('#devcard')"),'V2 nach 7 Tipps sichtbar');
-  const tw=sel=>{ev(E,"document.querySelector('"+sel+"').click()");ev(E,"document.querySelector('"+sel+"').click()");};
+  ok(!!E.$('#devcard')&&!!E.$('#devwords')&&!!E.$('#devchips'),'V1 Testbereich sofort sichtbar, ohne Geheim-Tipps');
   const N=ev(E,"LANGS.id.words.length");
-  tw('[data-dev=p10]');
-  ok(ev(E,"Object.keys(state.progress.id).length")===Math.round(N*.1),'V3 10 % = '+Math.round(N*.1));
-  ok(ev(E,"fallenWords().length")>0&&ev(E,"fallenWords().length")<=3&&ev(E,"fallenWords().every(w=>state.progress.id[w.k].d<=today()&&state.progress.id[w.k].n>=1)")&&ev(E,"JSON.stringify(state.list)")==='{}','V4 Einige Wörter auf Stufe 0, fällig, mit Fehlerzähler');
-  ok(ev(E,"new Set(Object.values(state.progress.id).map(p=>p.l)).size")>=4,'V5 gemischte Stufen');
-  ok(ev(E,"state.name")==='Vito','V6 Name bleibt');
-  ev(E,"view='settings';render()");tw('[data-dev=all]');
-  ok(ev(E,"Object.keys(state.progress.id).length")===N,'V7 alle Wörter');
-  ev(E,"view='settings';render()");tw('[data-dev=first]');
-  ok(ev(E,"state.lang")===null&&ev(E,"state.name")==='','V8 Erster Start leer');
-  ev(E,"state.lang='id';state.ui='de';state.nameAsked=true;view='settings';render()");tw('#devrestore');
-  ok(ev(E,"Object.keys(state.progress.id).length")===1&&ev(E,"state.name")==='Vito'&&!ev(E,"state.devTest"),'V9 Wiederherstellen = echter Stand');
+  E.$('#devwords').value='10';submit('#devwordsf');
+  ok(ev(E,"Object.keys(state.progress.id).length")===10&&ev(E,"Object.values(state.progress.id).every(p=>p.l===1&&p.d===today())"),'V2 10 Wörter auf Stufe 1, heute fällig');
+  ok(ev(E,"state.name")==='Vito'&&ev(E,"state.chips")===250,'V3 Name und Chips bleiben unberührt');
+  ev(E,"view='settings';render()");E.click(E.$('#devwordsreset'));
+  ok(ev(E,"Object.keys(state.progress.id).length")===0,'V4 Zurücksetzen leert die Wörter');
+  ev(E,"view='settings';render()");E.$('#devchips').value='9999';submit('#devchipsf');
+  ok(ev(E,'state.chips')===9999&&ev(E,'state.chipShown')===9999,'V5 Chips per Textfeld gesetzt');
+  ev(E,"view='settings';render()");E.click(E.$('#devchipsreset'));
+  ok(ev(E,'state.chips')===0&&ev(E,'state.chipShown')===0,'V6 Zurücksetzen leert die Chips');
+  ev(E,"view='settings';render()");E.$('#devwords').value=String(N+50);submit('#devwordsf');
+  ok(ev(E,"Object.keys(state.progress.id).length")===N,'V7 Eingabe über der Wortzahl wird gekappt');
 }
 {
   const E=fresh();
@@ -645,12 +648,123 @@ function toReels(E,force=true){
   ok(ev(E,`(()=>{state.chips=0;state.chipSurv=null;const a=chipSurvival(10),b=chipSurvival(100),c=chipSurvival(10);return [a,b,c,state.chips].join()})()`)==='50,250,0,300','C4 Survival: 5 Chips pro Wort, höchstens 300 am Tag, kein Rekord-Bonus');
   ev(E,"state.chips=4820;state.chipShown=4820;save();render()");
   const pill=E.$('#chippill');
-  ok(!!pill&&pill.tagName!=='BUTTON'&&/4\.820/.test(pill.textContent)&&!!pill.querySelector('use[href="#chip-pink"]')&&!E.$('canvas.gem'),'C5 Pille: Dewi-Chip, volle Zahl unter 10.000, kein Knopf');
+  ok(!!pill&&pill.tagName==='BUTTON'&&/4\.820/.test(pill.textContent)&&!!pill.querySelector('use[href="#chip-pink"]')&&!E.$('canvas.gem'),'C5 Pille: Dewi-Chip, volle Zahl unter 10.000, öffnet den Shop (Version 138)');
   ev(E,"state.chips=12549;state.chipShown=12549;save();render()");
   ok(/12,5K/.test(E.$('#chippill').textContent)&&/12\.549/.test(E.$('#chippill').getAttribute('aria-label')),'C5b Pille kürzt ab, Vorlesetext nennt die volle Zahl');
   ok(['pink','gold','holo','grey','empty'].every(t=>!!E.d.getElementById('chip-'+t))&&!!E.d.getElementById('chipFaceClip')&&E.d.querySelectorAll('#chipsprite').length===1,'C6 Alle fünf Chip-Varianten einmal im Dokument');
   ok(!/Diamant/.test(E.$('#app').textContent)&&!ev(E,"typeof GEMV!=='undefined'||typeof GEM_MILES!=='undefined'||typeof gemAdd!=='undefined'"),'C7 Keine Diamanten mehr in Anzeige und Code');
   ok(ev(E,"(()=>{chipRain(5);const b=document.querySelector('.drain');const r=!!b&&b.querySelectorAll('use[href^=\"#chip-\"]').length===5;b&&b.remove();return r;})()")||ev(E,'reduceMotion()'),'C8 Reels-Regen besteht aus Chips');
+}
+// --- Streak-Schutz und Sicherung (Version 137)
+{
+  const E=fresh();
+  const setDays=(js)=>ev(E,`(()=>{const t=today();state.done={};state.shielded={};state.shieldNote=null;${js};save();render();})()`);
+  // Serie 10 Tage bis vorgestern, gestern verpasst, 1 Schutz
+  setDays("for(let i=2;i<=11;i++)state.done[addDays(t,-i)]=true;state.shields=1");
+  ok(ev(E,'streak()')===10&&ev(E,'state.shields')===0&&ev(E,'state.shielded[addDays(today(),-1)]')===true,'SH1 Gestern verpasst, 1 Schutz: Serie bleibt bei 10, Schutz verbraucht');
+  ok(!!E.$('.moment.shield')&&/Streak-Schutz eingesetzt/.test(E.$('.moment.shield').textContent)&&/bleibt bei 10 Tagen/.test(E.$('.moment.shield').textContent),'SH2 Eisblauer Moment mit Serienstand');
+  E.click(E.$('.moment.shield'));
+  ok(!E.$('.moment.shield')&&ev(E,'state.shieldNote')===null,'SH3 Moment nur einmal');
+  const yd=ev(E,'addDays(today(),-1)');const st=E.$(`[data-stamp="${yd}"]`);
+  ok(!!st&&st.dataset.kind==='ice'&&/geschützt/.test(st.getAttribute('aria-label')),'SH4 Gestern: eisblauer Stempel „geschützt“');
+  // Zu viele verpasste Tage: Schutze bleiben
+  setDays("for(let i=4;i<=8;i++)state.done[addDays(t,-i)]=true;state.shields=2");
+  ok(ev(E,'streak()')===0&&ev(E,'state.shields')===2&&!E.$('.moment.shield'),'SH5 Drei Tage verpasst, zwei Schutze: Serie weg, Schutze bleiben');
+  // Zwei Tage verpasst, zwei Schutze
+  setDays("for(let i=3;i<=9;i++)state.done[addDays(t,-i)]=true;state.shields=2");
+  ok(ev(E,'streak()')===7&&ev(E,'state.shields')===0,'SH6 Zwei verpasste Tage, zwei Schutze: Serie 7 bleibt');
+  ok(ev(E,'bonusPct(streak())')===10,'SH7 Geschützte Tage zählen nicht für Bonus-Stufen (7 Tage = +10 %)');
+  E.click(E.$('.moment.shield'));
+  // Heute gespielt nach geschütztem Tag: Serie wächst weiter
+  ev(E,'state.done[today()]=true;save()');
+  ok(ev(E,'streak()')===8,'SH8 Heute gespielt: Serie zählt weiter (8)');
+  // Kein Einsatz ohne vorherige Serie
+  setDays("state.shields=2");
+  ok(ev(E,'state.shields')===2,'SH9 Ohne gespielte Tage wird nichts eingesetzt');
+  // Sicherung
+  const B=JSON.parse(ev(E,`(()=>{state.chips=4321;state.shields=1;state.owned=['x'];state.equip={fur:'x'};state.mtrack='arcade';state.run={v:1,kind:'daily'};state.dayOffset=3;return JSON.stringify(backupData());})()`));
+  ok(B.chips===4321&&B.shields===1&&B.owned[0]==='x'&&B.equip.fur==='x'&&B.mtrack==='arcade'&&!('run' in B)&&!('dayOffset' in B),'SH10 Sicherung: Chips, Schutze, Artikel, Auswahl, Musik; ohne offene Hand');
+  const R=JSON.parse(ev(E,`(()=>{const d=JSON.stringify({app:'kata',v:2,data:backupData()});state=Object.assign(defaults(),JSON.parse(d).data,{dayOffset:0});migrate();return JSON.stringify({c:state.chips,s:state.shields,v:state.chipV});})()`));
+  ok(R.c===4321&&R.s===1&&R.v===1,'SH11 Einspielen: Chips nicht noch einmal × 10');
+}
+// --- Shop (Version 138)
+{
+  const E=fresh();
+  ev(E,"state.chips=10000;state.chipShown=10000;state.shields=0;state.owned=[];state.equip={};save();render()");
+  const cards=E.$$('#app .gmcard');
+  ok(cards.length===1&&!!cards[0].querySelector('#gm')&&!E.$('.shopcard')&&!!E.$('.bookcard'),'SP1 Hauptmenü: nur Gamemodes als Kachel, kein Shop-Kachel mehr (Version 140)');
+  E.click(E.$('#chippill'));ok(!!E.$('#shop.sin.shop'),'SP2 Chip-Pille öffnet den Shop');
+  ok(E.$$('.shit').length===4&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell und Kopf, Aktion erst nach Antippen');
+  E.click(E.$('[data-shop="fur:mitternacht"]'));
+  ok(/Kaufen · 6\.000/.test(E.$('#shact').textContent)&&E.$('.shdewi').innerHTML.includes('#5b4bb0')&&/Anprobe/.test(E.$('.shinfo').textContent),'SP4 Anprobe: Dewi trägt Mitternacht, Kaufen 6.000');
+  E.click(E.$('#shact'));
+  ok(ev(E,'state.chips')===4000&&ev(E,"state.owned.indexOf('fur:mitternacht')>=0")&&ev(E,'state.equip.fur')==='mitternacht'&&/Ausgerüstet/.test(E.$('#shact').textContent),'SP5 Gekauft und ausgerüstet, 6.000 abgezogen');
+  E.click(E.$('[data-shop="head:schleife"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.chips')===1500&&ev(E,'state.equip.head')==='schleife'&&E.$('.shdewi').innerHTML.includes('translate(132 40) rotate(18)'),'SP6 Schleife gekauft (2.500) und auf dem Kopf');
+  E.click(E.$('[data-shop="fur:classic"]'));
+  ok(/Ausrüsten/.test(E.$('#shact').textContent),'SP7 Gratis-Fell: Ausrüsten');
+  E.click(E.$('#shact'));ok(ev(E,'state.equip.fur')==='classic','SP7b Zurück auf Classic');
+  E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));
+  ok(E.d.documentElement.dataset.theme==='neon'&&/Noch 4\.500 Chips/.test(E.$('#shact').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP8 Theme als Vorschau, zu wenig Chips');
+  E.click(E.$('#shmine'));ok(!E.$('[data-shop="theme:neon"]')&&!!E.$('[data-shop="theme:classic"]'),'SP9 „Nur meine“ zeigt nur Gekauftes');
+  E.click(E.$('#shmine'));
+  E.click(E.$('.shtab[data-tab="con"]'));E.click(E.$('[data-shop="shield"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.shields')===1&&ev(E,'state.chips')===500&&/Vorrat 1\/2/.test(E.$('.shlist').textContent),'SP10 Streak-Schutz gekauft (1.000), Vorrat 1/2');
+  E.click(E.$('#quit'));
+  ok(!E.d.documentElement.dataset.theme&&!E.$('#shop')&&E.$('#app .mascot .dw').outerHTML.includes('translate(132 40)'),'SP11 Schließen: Theme-Vorschau weg, Dewi trägt die Schleife auch auf dem Startscreen');
+  ok(ev(E,"Object.keys(DWM).every(m=>dwSvg(m).includes('translate(132 40) rotate(18)'))")&&ev(E,"Object.keys(DWM).every(m=>{const s=dwSvg(m),r=s.indexOf('rotate('),i=s.indexOf('translate(132 40)');return r>=0&&i>r;})"),'SP12 Schleife in allen Stimmungen in der gedrehten Kopf-Gruppe');
+  ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('translate(132 40)')&&!ev(E,"stampSvg0('sly',0)").includes('#ff4f6d'),'SP13 Stempel zeigen Dewi im Original');
+  ev(E,"state.chips=7000;state.equip.theme='classic';save()");E.click(E.$('#chippill'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
+  ok(E.d.documentElement.dataset.theme==='neon'&&ev(E,'state.equip.theme')==='neon','SP14 Gekauftes Theme bleibt nach dem Schließen');
+  const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
+  ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
+}
+// --- Startscreen mit Tab-Leiste, Shop statt Einstellungen (Version 139 entfernt sie, Version 144 bringt sie zurück)
+{
+  const E=fresh();ev(E,'render()');
+  ok(!!E.$('#tabs')&&!E.$('.stpill')&&!!E.$('.status #chippill')&&!!E.$('.status #gear'),'NV1 Tab-Leiste da, keine Streak-Pille, oben Chips und Zahnrad');
+  ok(!!E.$('.tab[data-v="home"]')&&!!E.$('.tab[data-v="book"]')&&!!E.$('#shoptab')&&!E.$('.tab[data-v="settings"]'),'NV1b Leiste zeigt Home, Vokabelheft, Shop statt Einstellungen');
+  ok(E.$('.tab[data-v="home"]').getAttribute('aria-current')==='page'&&!E.$('.tab[data-v="book"]').getAttribute('aria-current'),'NV1c Home-Reiter ist aktiv markiert');
+  E.click(E.$('#shoptab'));
+  ok(!!E.$('#shop'),'NV1d Shop-Reiter öffnet den Shop');
+  ok(ev(E,"sheet.classList.contains('shop-open')")&&!E.$('#tabs').hidden&&E.$('#shoptab').getAttribute('aria-current')==='page','NV1d2 Im Shop bleibt die Leiste da, Shop-Reiter aktiv markiert');
+  E.click(E.$('#quit'));
+  ok(!E.$('#shop')&&!!E.$('.plan')&&!ev(E,"sheet.classList.contains('shop-open')"),'NV1e Shop schließen (×) führt zurück zum Startscreen');
+  E.click(E.$('#shoptab'));
+  E.click(E.$('.tab[data-v="book"]'));
+  ok(!E.$('#shop')&&!!E.$('#q')&&!ev(E,"sheet.classList.contains('shop-open')"),'NV1f Vokabelheft-Reiter schließt den Shop mit und öffnet das Heft');
+  E.click(E.$('.tab[data-v="home"]'));
+  ok(!!E.$('.plan'),'NV1g Heute-Reiter zurück zum Startscreen');
+  ok(!E.$('.plan .dstack'),'NV2 Daily Round ohne Chip-Stapel (Version 141, zu unruhig)');
+  ok(!!E.$('.bookcard.card.prog')&&!!E.$('.bookcard .stack')&&!E.$('.bookcard .legend')&&!!E.$('.bookcard .bookgo'),'NV3 Vokabelheft-Kachel wie die alte Fortschritt-Karte, mit Pfeil wie Gamemodes');
+  E.click(E.$('#gear'));
+  ok(!!E.$('#sethead')&&!!E.$('.backbtn[data-v="home"]'),'NV4 Zahnrad öffnet die Einstellungen mit Zurück-Pfeil');
+  E.click(E.$('.backbtn'));
+  ok(!!E.$('.plan')&&!!E.$('#gear'),'NV5 Zurück führt auf den Startscreen');
+  E.click(E.$('.tab[data-v="book"]'));
+  ok(!!E.$('#q')&&!!E.$('.bookprog .stack')&&!!E.$('.bookprog .legend')&&E.$('.tab[data-v="book"]').getAttribute('aria-current')==='page','NV6 Vokabelheft-Reiter öffnet das Heft, Fortschritt steht dort oben, Reiter aktiv markiert');
+  E.click(E.$('.backbtn'));
+  ok(!!E.$('.plan'),'NV7 Zurück aus dem Vokabelheft');
+}
+// --- Deutschkurs ohne Artikel, Flagge, Übertragung des alten Fortschritts (Version 147)
+{
+  const old={l:3,d:'2099-01-01',n:0};
+  const E=env({lang:'de',progress:{de:{'de:der nachbar':old,'de:der morgen':{l:5,d:'2099-01-01',n:0},'de:morgen':{l:1,d:'2099-01-01',n:0},'de:das dort':{l:2,d:'2099-01-01',n:0}}},
+    daily:{date:'2000-01-01',newCount:0,extra:0,lt:[],got:['de:die straße','de:das essen']}},'en','en-US');
+  ev(E,'render()');
+  ok(E.$('#chlang').textContent.trim()==='🇩🇪','DK1 Deutschkurs zeigt die deutsche Flagge');
+  const words=JSON.parse(ev(E,"JSON.stringify(curLang().words.map(w=>w.id))"));
+  const withArt=words.filter(w=>/^(der|die|das) [A-ZÄÖÜ]\S*$/.test(w));
+  ok(withArt.length===0&&words.includes('Nachbar')&&words.includes('das dort')&&words.includes('eine Million'),'DK2 Keine Wörter mit Artikel mehr, Pronomen und Zahlen bleiben ('+withArt.slice(0,3).join(', ')+')');
+  ok(!words.includes('Morgen')&&words.includes('morgen')&&!words.includes('Essen')&&words.includes('essen')&&!words.includes('Arm')&&words.includes('arm')&&words.length===652,'DK3 Morgen, Essen, Arm entfallen, morgen/essen/arm bleiben ('+words.length+')');
+  const P=JSON.parse(ev(E,'JSON.stringify(state.progress.de)'));
+  ok(P['de:nachbar']&&P['de:nachbar'].l===3&&!P['de:der nachbar'],'DK4 Fortschritt „der Nachbar“ wandert zu „Nachbar“');
+  ok(!P['de:der morgen']&&P['de:morgen'].l===1&&P['de:das dort'].l===2,'DK5 Entfallenes Wort wird gelöscht, nicht mit „morgen“ vermischt; „das dort“ bleibt');
+  ok(ev(E,"state.daily={date:today(),newCount:0,extra:0,lt:[],got:['de:die straße','de:das essen']};migrate();JSON.stringify(state.daily.got)")===JSON.stringify(['de:straße']),'DK6 Tagesliste umgeschrieben, entfallenes Wort raus');
+  ok(ev(E,"state.run={v:1,lang:'de',kind:'daily',i:0,items:[{k:'de:der nachbar',kind:'rev'}],missed:['de:der nachbar']};migrate();state.run.items[0].k+'|'+state.run.missed[0]")==='de:nachbar|de:nachbar'
+    &&ev(E,"state.run={v:1,lang:'de',kind:'daily',i:0,items:[{k:'de:der arm',kind:'rev'}],missed:[]};migrate();state.run")===null,'DK6b Offener Run: Schlüssel umgeschrieben, mit entfallenem Wort verworfen');
+  const en=JSON.parse(ev(E,"JSON.stringify(LANGS.en.cats.map(c=>c[1]).join('\\n'))"));
+  ok(/neighbor = Nachbar\b/.test(en)&&!/= (der|die|das) [A-ZÄÖÜ][^\s/]*\s*(\/|$)/m.test(en),'DK7 Englischkurs: deutsche Bedeutung ohne Artikel');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

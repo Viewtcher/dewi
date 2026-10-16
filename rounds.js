@@ -155,14 +155,15 @@ function startRound(kind,opt){
   showItem();
 }
 
-function closeSheet(){sheet.hidden=true;sheet.innerHTML='';document.body.style.overflow='';S=null;render();}
+function closeSheet(){sheet.hidden=true;sheet.innerHTML='';sheet.classList.remove('shop-open');document.body.style.overflow='';S=null;render();}
 
 function sheetBody(inner){
   const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
   const hand=S.kind==='daily'&&S.hand&&S.i<S.items.length;   // Version 134: Pokerhand mit Dewi-Chips und Dewi-Zone
   const prog=hand?chipTrack():`<div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div>`;
-  sheet.innerHTML=`<div class="sin${hand?' hand':''}"><div class="shead"><button class="iconbtn" id="quit" aria-label="${hand?t('Round pausieren'):t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${prog}${musIcon()}</div>${scoreRow()}${hand?handZone():''}${inner}</div>`;
+  sheet.innerHTML=`<div class="sin${hand?' hand':''}"><div class="shead"><button class="iconbtn" id="quit" aria-label="${hand?t('Round pausieren'):t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${prog}<button class="iconbtn" id="setgear" aria-label="${t('Einstellungen öffnen')}">${GEARIC}</button></div>${scoreRow()}${hand?handZone():''}${inner}</div>`;
   $('#quit').onclick=closeSheet;
+  $('#setgear').onclick=openSettingsOverlay;   // Version 148: Zahnrad statt Lautstärke-Knopf, Sound-Einstellungen liegen dort sowieso ganz oben
   if(hand)handAfterRender();
   sheet.scrollTop=0;
   if(S.kind==='survival'&&S.score>(S.shown||0))setTimeout(scoreTick,350);
@@ -250,11 +251,9 @@ function kicker(c,id,dir){
 
 /* Hinweis unter dem Ergebnis eines Moduls */
 function resultNote(good){
-  const c=S.cur,r=c.res||{};
+  const c=S.cur;
   if(S.kind==='survival')return good?`<p class="hint" style="margin-top:8px">+${fmtSc(c.pts)} ${t('Punkte')}${S.run>=3?' · '+t('{0} in Folge',S.run):''}${c.healed?' · '+t('Serie von {0}: ein Herz kommt zurück!',HEART_STREAK):''}</p>`:`<p class="hint" style="margin-top:8px">${t('Ein Leben weniger.')}</p>`;
-  if(!good)return `<p class="hint" style="margin-top:8px">${t('Das Wort fällt auf Stufe 0 und kommt morgen wieder.')}</p>`;
-  if(r.saved)return `<p class="hint" style="margin-top:8px">${t('Geschafft. Das Wort kommt morgen wieder (Stufe 1).')}</p>`;
-  return `<p class="hint" style="margin-top:8px">${r.days===1?t('Stufe {0} von 5. Nächste Wiederholung morgen.',r.level):t('Stufe {0} von 5. Nächste Wiederholung in {1} Tagen.',r.level,r.days)}</p>`;
+  return '';   // Version 149: Stufe und nächste Wiederholung nicht mehr geschrieben zeigen, Dewis Kommentar reicht als Rückmeldung
 }
 
 /* Ergebnis des Moduls Tippen (die anderen Module zeigen ihr Ergebnis selbst) */
@@ -267,7 +266,7 @@ function finish(typedOk){
   const typoNote=c.typo?`<p class="hint" style="margin-top:6px">${t('Kleiner Tippfehler. Richtig geschrieben: {0}','<b lang="'+(c.dir==='gl2id'?L.code.toLowerCase():state.ui)+'">'+esc(c.dir==='gl2id'?w.id:glFirst(w))+'</b>')}</p>`:'';
   sheetBody(`<div class="smain">${S.kind==='survival'?roundLives():''}<div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?t('Richtig'):t('Leider falsch')}</div>
     <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="${state.ui}">${esc(gl(w))}</span></div>${typoNote}${alts}</div>
-    ${resultNote(ok)}${S.hand?'':mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
+    ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
   try{n.focus({preventScroll:true});}catch(e){}
   if(ok&&S.kind!=='survival')levelUp(c,r);
@@ -283,8 +282,7 @@ function levelUp(c,r){
     <div class="lvl-badge"><span>${r.level}</span></div>
     <div class="lvl-pips">${[1,2,3,4,5].map(i=>`<i class="${i<=r.level?'on':''}" style="--d:${300+i*110}ms;--pc:${LVCOL[i]}"></i>`).join('')}</div>
     <div class="lvl-word">${esc(w.id)} = ${esc(gl(w))}</div>
-    <div class="lvl-sub">${r.days===1?t('Stufe {0} von 5 · nächste Wiederholung morgen',r.level):t('Stufe {0} von 5 · nächste Wiederholung in {1} Tagen',r.level,r.days)}</div>
-    ${mascot(lk,null,'col')}</div>`;
+    ${mascot(lk,null,'col')}</div>`;   // Version 149: Zeile mit Stufe/nächster Wiederholung raus, Kreis und Punkte zeigen die Stufe schon
   document.body.appendChild(el);
   let gone=false;
   const close=()=>{if(gone)return;gone=true;el.classList.add('out');setTimeout(()=>el.remove(),300);};

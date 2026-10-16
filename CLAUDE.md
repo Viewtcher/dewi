@@ -13,13 +13,14 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 
 ## Ablauf nach jeder Änderung
 
-1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js`, `pokerui.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
+1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js`, `pokerui.js`, `shop.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
 2. Bauen: `python build.py` (im Hauptordner). Erzeugt `index.html`.
 3. Testen: `npm test --prefix tests`. Alle vier Tests müssen grün sein (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“). Ändert sich gewolltes Verhalten, Tests anpassen und das offen sagen.
 4. **Keine Vorschau-Screenshots von selbst aus.** Bei optischen Änderungen kurz beschreiben, was sich zeigen sollte. Ein Screenshot (Playwright/Chromium) nur, wenn Vito ausdrücklich danach fragt. Spart Token, die ein Bild beim Ansehen kostet.
 5. In `ENTWICKLUNG.md` den nächsten Eintrag `## Version NN – Titel` anhängen: was, warum, Technik, Teststand und was nur auf einem echten iPhone prüfbar ist.
 6. Commit mit der Nachricht `Version NN – Titel` (darfst du selbst).
 7. **Push nach `entwicklung` darfst du selbst, ohne Nachfrage.** Das sichert die Version auf GitHub, verändert aber `main` nicht und veröffentlicht nichts.
+   Danach die gebaute `index.html` als Artefakt **„dewi. Vorschau“** neu veröffentlichen (immer dasselbe Artefakt, Titel im `<title>` auf „dewi. Vorschau“ ändern, `icon.png` mitgeben), damit Vito den Stand in Claude testen kann, ohne dass etwas live geht. Die Vorschau hat einen eigenen Spielstand.
 8. **Push nach `main` nur nach Vitos ausdrücklichem OK.** Das veröffentlicht die App. Vorher kurz sagen, was live geht.
 9. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
 
@@ -49,11 +50,14 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 135)
+## Offene Punkte (Stand Version 149)
 
-- **Poker Phase 1 fertig** (Versionen 131–135 nach `konzept-poker-shop.md`). Veröffentlichung auf `main` wartet auf Vitos OK. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
+- **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
-- Shop (Phase 2) nach den Erfahrungen aus Phase 1. Vorher Fragen stellen.
+- **Shop (Phase 2) in Arbeit:** 137 Streak-Schutz + Sicherung ✓, Gestaltung im Canvas ✓, 138 Shop mit Mitternacht, Schleife, Neon-Nacht, Streak-Schutz ✓, 139 Startscreen ohne Tab-Leiste ✓, 140 Shop-Kachel wieder entfernt (Shop nur über die Chip-Pille), Vokabelheft-Kachel wie die alte Fortschritt-Karte ✓, 141 Chip-Stapel wieder weg, Pfeil an der Vokabelheft-Kachel ✓, 142 Blind-Chip-Drehung, Einstellungen ohne Beschreibungen, Testbereich mit Textfeldern ✓, 143 echter Münz-Flip mit eigenem Dreh-Sound, wuchtige Royal-Flush-Verdopplung mit Bildschirm-Zucken ✓, 144 Zurück-Wisch vom linken Rand in Vokabelheft/Einstellungen ✓, 145 Tab-Leiste zurück mit Shop statt Einstellungen ✓, 146 Reiter „Home", Leiste auch im Shop, Pfeil mittig auf der Vokabelheft-Kachel ✓. Weitere Artikel aus dem Canvas (Minze, Holo, Herzbrille, Krone, Sonnenuntergang, Holo-Lounge) und Musik-Kits später. Preise in `shop.js` (`SHOP_PRICE`).
+- 147: Deutsche Flagge im Deutschkurs, Artikel aus allen deutschen Wörtern entfernt (`data/strip_artikel.py`), Deutschkurs 652 Wörter ✓
+- 148: Im Spiel Zahnrad statt Lautstärke-Knopf, öffnet Einstellungen als Ebene übers Spiel, Sound-Karte dort ganz oben ✓
+- 149: Kein geschriebener Satz mehr zu Stufe/nächster Wiederholung unter dem Modul-Ergebnis und im Level-up-Screen ✓
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.

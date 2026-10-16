@@ -6,9 +6,9 @@
 
    Blind-Wahl     showBlindStage(): eigener Screen im Round-Blatt. Tipp auf einen Chip: er gleitet weg, die Hand startet.
    Während der Hand  chipTrack() ersetzt den Fortschrittsbalken (geschafft = holo, solange der Royal Flush drin ist,
-                  sonst pink/gold; verloren = grau; aktuell = gestrichelt). handZone() = Dewi-Kopf + Poker-Leiste,
-                  das „?“ tauscht die Leiste gegen Dewis Erklärung. Multiplikator: springt hoch (+1), rutscht runter (−1, Big Blind),
-                  blinkt grau (verloren beim Small Blind). Die Module selbst bleiben unverändert; ihr kleiner Dewi entfällt in der Hand. */
+                  sonst pink/gold; verloren = grau; aktuell = gestrichelt). Seit Version 136 darunter nur eine kleine Zeile
+                  wie im Survival (pkBar): Einsatz, ×, Multiplikator weiß leuchtend, „?“. Dewi erscheint in der Hand nur in den Modulen.
+                  Multiplikator: springt hoch (+1), rutscht runter (−1, Big Blind), blinkt grau (verloren beim Small Blind). */
 const FLAME_SM='<svg class="flsm" viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 2 C14 7 20 10 20 18 C20 24 16.5 28 12 28 C7.5 28 4 24 4 18 C4 13.5 7 11 8.5 8 C9.5 11 10.5 12 11.5 12 C11 8 11 5 12 2Z" fill="#ff8a3d" stroke="#2a1630" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 15 C14 18 16 19.5 16 22 C16 24.5 14.2 26 12 26 C9.8 26 8 24.5 8 22 C8 19.8 10 18 12 15Z" fill="#ffc23d"/></svg>';
 const XIC='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 const bonusPill=(pct,id)=>pct?`<span class="bonuspill"${id?` id="${id}"`:''} role="img" aria-label="${t('Serien-Bonus +{0} %',pct)}">${FLAME_SM}<span aria-hidden="true">+${pct} %</span></span>`:'';
@@ -49,8 +49,8 @@ function showBlindStage(kind,o){
     <div class="bsmain">
       <div class="bshead"><span class="eyebrow2">${t('DEIN EINSATZ')}</span>${bonusPill(B.pct,'bonuspill')}</div>
       <div class="bsgrid">
-        <button class="bschip" id="blind-small" type="button" aria-label="Small Blind ${B.small.stake?fmtChip(B.small.stake):t('ohne Einsatz')}${badge?' · '+badge:''}">${badge?`<span class="bsbadge" aria-hidden="true">${badge}</span>`:''}${chipSvg('pink','bsc')}<span class="bsv" aria-hidden="true">${B.small.stake?fmtChip(B.small.stake):'0'}</span><span class="bsl" aria-hidden="true">SMALL</span></button>
-        <button class="bschip" id="blind-big" type="button" aria-label="Big Blind ${fmtChip(BLINDS.big)}"${B.big.ok?'':' disabled'}>${chipSvg('gold','bsc')}<span class="bsv" aria-hidden="true">${fmtChip(BLINDS.big)}</span><span class="bsl" aria-hidden="true">BIG</span></button>
+        <button class="bschip" id="blind-small" type="button" aria-label="Small Blind ${B.small.stake?fmtChip(B.small.stake):t('ohne Einsatz')}${badge?' · '+badge:''}">${badge?`<span class="bsbadge" aria-hidden="true">${badge}</span>`:''}<span class="bscwrap"><span class="bscface bscfront">${chipSvg('pink')}</span><span class="bscface bscback">${chipBackSvg('pink')}</span></span><span class="bsv" aria-hidden="true">${B.small.stake?fmtChip(B.small.stake):'0'}</span><span class="bsl" aria-hidden="true">SMALL</span></button>
+        <button class="bschip" id="blind-big" type="button" aria-label="Big Blind ${fmtChip(BLINDS.big)}"${B.big.ok?'':' disabled'}><span class="bscwrap"><span class="bscface bscfront">${chipSvg('gold')}</span><span class="bscface bscback">${chipBackSvg('gold')}</span></span><span class="bsv" aria-hidden="true">${fmtChip(BLINDS.big)}</span><span class="bsl" aria-hidden="true">BIG</span></button>
       </div>
     </div>
     <div class="actzone" aria-hidden="true"></div></div>`;
@@ -60,10 +60,10 @@ function showBlindStage(kind,o){
   let go=false;
   const pick=(b,btn)=>{
     if(go||btn.disabled)return;go=true;
-    sfx('chips');haptic(20);
+    sfx('spinchip');haptic(20);   // Version 143: Schwirr-Sound passend zum Münz-Flip
     btn.classList.add('go');
     const start=()=>startRound(kind,Object.assign({},o,{blind:b,force:1}));
-    if(window.__test||reduceMotion())start();else setTimeout(start,420);
+    if(window.__test||reduceMotion())start();else setTimeout(start,520);   // Version 142: wartet die Dreh+Glanz-Animation ab (.5s)
   };
   $('#blind-small').onclick=e=>pick('small',e.currentTarget);
   $('#blind-big').onclick=e=>pick('big',e.currentTarget);
@@ -78,22 +78,25 @@ function chipTrack(){
   const cells=mods.map(({x,i})=>x.ok===true?chipSvg(won,'ct'+(won==='holo'?' sh':'')):x.ok===false?chipSvg('grey','ct'):i===S.i?chipSvg('empty','ct now'):'<i class="cslot"></i>').join('');
   return `<div class="ctrack" style="--n:${mods.length}" role="img" aria-label="${t('{0} von {1} Modulen geschafft',okN,mods.length)}">${cells}</div>`;
 }
-/* Poker-Leiste: Einsatz-Chip, Serien-Bonus, Multiplikator (Heldenzahl). anim: 'up' | 'down' | 'hold' | '' */
+/* Poker-Zeile (Version 136): klein wie Score und Herzen im Survival. Links bleibt frei, rechts Einsatz-Chip mit Betrag,
+   kleines ×, Multiplikator weiß leuchtend wie der Survival-Score, daneben ein kleines „?“ für die Regeln.
+   anim: 'up' (springt hoch, Chip-Klick) | 'down' (rutscht runter, Big Blind) | 'hold' (blinkt grau, Small Blind) | '' */
 function pkBar(anim){
   const h=S.hand,m=h.mult,name=h.blind==='big'?'Big Blind':'Small Blind';
-  const num=anim==='down'?`<span class="o" aria-hidden="true">×${m+1}</span><span class="n">×${m}</span>`:`<span class="n">×${m}</span>`;
-  return `<div class="pkbar" id="pkrow"><div class="pkleft"><span class="pkstake">${chipSvg(h.blind==='big'?'gold':'pink','pks')}<span class="vh">${name} </span>${h.stake?fmtChip(h.stake):t('ohne Einsatz')}</span>${h.pct?`<span class="pkbonus">${FLAME_SM}+${h.pct} %</span>`:''}</div>
-    <b class="pkm${anim?' '+anim:''}" id="pkmult" aria-label="${t('Multiplikator')} ×${m}">${num}</b></div>`;
+  const num=anim==='down'?`<span class="o" aria-hidden="true">${m+1}</span><span class="n">${m}</span>`:`<span class="n">${m}</span>`;
+  return `<div class="pkrow" id="pkrow"><span class="pkspace"></span><div class="pkright"><span class="pkstake">${chipSvg(h.blind==='big'?'gold':'pink','pks')}<span class="vh">${name} </span>${h.stake?fmtChip(h.stake):t('ohne Einsatz')}</span><span class="pkx" aria-hidden="true">×</span><b class="pkm${anim?' '+anim:''}" id="pkmult" aria-label="${t('Multiplikator')} ×${m}">${num}</b><button class="pkq" id="pkq" type="button" aria-label="${t('Erklärung')}" aria-expanded="false">?</button></div></div><p class="pkhelp" id="pkhelp" hidden>${dzHelp(h.blind==='big'?'big':'small')}</p>`;
 }
 function handZone(){
-  const c=S.cur,h=S.hand;
+  const c=S.cur;
   let anim='';
   if(c&&c.settled&&!c.pkAnim&&c.dm!==undefined){anim=c.dm>0?'up':c.dm<0?'down':!c.ok?'hold':'';}
-  return `<div class="dzone hand" id="dzone">${dzHead(h.face||'sly')}<div class="dzbody" id="dzbody">${pkBar(anim)}</div></div>`;
+  return pkBar(anim);
 }
-/* Nach dem Einsetzen ins Blatt: Animation einmal pro Karte, Ton und Haptik dazu */
+/* Nach dem Einsetzen ins Blatt: „?“ verbinden, Animation einmal pro Karte, Ton und Haptik dazu */
 function handAfterRender(){
-  const c=S&&S.cur;bindDz(S.hand.blind==='big'?'big':'small');
+  const q=$('#pkq'),hp=$('#pkhelp');
+  if(q&&hp)q.onclick=e=>{e.stopPropagation();const open=hp.hidden;hp.hidden=!open;q.setAttribute('aria-expanded',String(open));q.classList.toggle('on',open);};
+  const c=S&&S.cur;
   if(!c||!c.settled||c.pkAnim||c.dm===undefined)return;
   c.pkAnim=true;
   if(c.dm>0){sfx('chipclick',120);haptic(12);}
@@ -122,7 +125,7 @@ function payoutStage(E){
       ${rf?`<div class="rftitle rv" id="ertitle">${DIAMOND}<span>ROYAL FLUSH</span>${DIAMOND}</div>`:''}
       <div class="porow" role="img" aria-label="${t('{0} von {1} Modulen geschafft',okN,mods.length)}">${mods.map((x,i)=>`<span class="pochip" id="poc${i}">${chipSvg(x.ok?won:'grey','pc')}</span>`).join('')}</div>
       <div class="pohero rv${zero?' zero':''}" id="egem"><span class="phw">${chipSvg(tone,'phc')}</span><b id="egn">${zero?'0':'+0'}</b></div>
-      <p class="poline rv" id="epay">${fmtChip(P.stake)}${P.bonus?` <i>+</i> <span class="pobonus">${FLAME_SM}${fmtChip(P.bonus)}</span>`:''} <span class="pomult" id="epm">×${P.mult}${rf?' ×2':''}</span>${zero&&P.paid==='self'?`<span class="vh"> · ${t('Einsatz weg')}</span>`:''}</p>
+      <p class="poline rv" id="epay">${fmtChip(P.stake)}${P.bonus?` <i>+</i> <span class="pobonus">${FLAME_SM}${fmtChip(P.bonus)}</span>`:''} <span class="pomult" id="epm">×${P.mult}${rf?' <span class="rfx2" id="erfx2" hidden aria-hidden="true">×2</span>':''}</span>${zero&&P.paid==='self'?`<span class="vh"> · ${t('Einsatz weg')}</span>`:''}</p>
     </div>
     <button class="btn primary block actbtn rv" id="endnext">${E.first?t('Weiter'):t('Fertig')}</button></div>`;
   sheet.scrollTop=0;
@@ -143,13 +146,30 @@ function payoutStage(E){
         c.animate([{transform:'none',opacity:1},{transform:`translate(${b.left+b.width/2-a.left-a.width/2}px,${b.top+b.height/2-a.top-a.height/2}px) scale(.35)`,opacity:0}],{duration:650,easing:'cubic-bezier(.5,0,.75,0)',fill:'forwards'});}
       else if(c)c.classList.add('gone');});
     T+=600;
+  }else if(rf){
+    /* Version 143: erst der einfache Betrag, dann ein wuchtiger Moment, wenn er sich verdoppelt */
+    const base=Math.round(P.payout/2);
+    T+=300;q2.at(T,()=>{on('ertitle');sfx('royal');haptic([30,60,30,60,50]);chipRain(46,['holo','gold','pink']);});T+=550;
+    const cm=Math.min(900,400+base*.3);
+    T+=200;
+    q2.at(T,()=>{countTo($('#egn'),0,base,cm,v=>'+'+fmtChip(v),q2,true);if(pillN)countTo(pillN,before,before+base,cm,fmtChipShort,q2,false);});
+    T+=cm+280;
+    q2.at(T,()=>{
+      const m=$('#erfx2'),g=$('#egn'),st=$('#est');
+      if(m){m.hidden=false;m.classList.add('punch');}
+      if(st)st.classList.add('dbl');
+      sfx('doubleup');haptic([50,30,50,30,120]);
+      if(g){g.textContent='+'+fmtChip(P.payout);g.classList.add('slam');}
+      if(pillN)pillN.textContent=fmtChipShort(after);
+      burst($('#egem'),70);
+    });
+    T+=650;
   }else{
-    if(rf){T+=300;q2.at(T,()=>{on('ertitle');const m=$('#epm');if(m)m.classList.add('flash');sfx('royal');haptic([30,60,30,60,50]);chipRain(46,['holo','gold','pink']);});T+=550;}
     const cm=Math.min(1100,450+P.payout*.3);
     T+=200;
     q2.at(T,()=>{countTo($('#egn'),0,P.payout,cm,v=>'+'+fmtChip(v),q2,true);if(pillN)countTo(pillN,before,after,cm,fmtChipShort,q2,false);});
     T+=cm+150;
-    q2.at(T,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(P.payout);g.classList.add('pulse');}if(pillN)pillN.textContent=fmtChipShort(after);sfx('lockin');burst($('#egem'),rf?60:30);});
+    q2.at(T,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(P.payout);g.classList.add('pulse');}if(pillN)pillN.textContent=fmtChipShort(after);sfx('lockin');burst($('#egem'),30);});
   }
   T+=420;
   q2.at(T,()=>{dzFace(face);const b=$('#dzbody');if(b&&!b.querySelector('.bubble'))b.innerHTML=dzBubble(q.text);sfx(rf?'end_perfect':zero?'end_bad':'end_good');});
@@ -157,11 +177,6 @@ function payoutStage(E){
   q2.at(T,()=>{$$('.rv,.pochip',stage).forEach(e=>e.classList.add('on'));});
   $('#endnext').onclick=()=>{if(!$('#endnext').classList.contains('on'))return;q2.stop();if(E.first)streakMoment(E);else closeSheet();};
   if(window.__test)$$('.rv,.pochip',stage).forEach(e=>e.classList.add('on'));
-}
-/* Startscreen: Hinweis unter „Weiterspielen“, z. B. „Big Blind 300 · ×3 · verfällt um Mitternacht“ */
-function openHandHint(){
-  const r=openRun('daily'),h=r&&r.hand;if(!h)return '';
-  return `<p class="ohint" id="ohint">${h.blind==='big'?'Big Blind':'Small Blind'} ${h.stake?fmtChip(h.stake):t('ohne Einsatz')} · <b>×${h.mult}</b> · ${t('verfällt um Mitternacht')}</p>`;
 }
 /* Abend-Sticheln: ab 21 Uhr bei offener Hand (Testhaken window.__hour) */
 const hourNow=()=>window.__test&&typeof window.__hour==='number'?window.__hour:new Date().getHours();

@@ -142,7 +142,8 @@ ok(/your name/i.test(E0.$('h1').textContent)&&/Skip/.test(E0.$('#nmskip').textCo
 E0.click(E0.$('#nmskip'));
 ok(/Which language are you learning/.test(E0.$('h1').textContent)&&E0.d.documentElement.lang==='en','Englisch gewählt: Oberfläche englisch');
 E0.click(E0.$('[data-lang="id"]'));if(E0.$('#langgo'))E0.click(E0.$('#langgo'));
-ok(/Daily Round/.test(E0.$('#app').textContent)&&E0.$$('.tab .tl').map(x=>x.textContent).join()==='Today,Wordbook,Settings','Englisch: Startseite und Tabs');
+ok(/Daily Round/.test(E0.$('#app').textContent)&&!!E0.$('#tabs')&&E0.$('.bookcard').getAttribute('aria-label')==='Open wordbook'&&E0.$('#gear').getAttribute('aria-label')==='Open settings','Englisch: Startseite, Vokabelheft-Kachel und Zahnrad');
+ok(/Home/.test(E0.$('.tab[data-v="home"]').textContent)&&/Wordbook/.test(E0.$('.tab[data-v="book"]').textContent)&&/Shop/.test(E0.$('#shoptab').textContent)&&!E0.$('.tab[data-v="settings"]'),'Englisch: Tab-Leiste zeigt Home, Wordbook, Shop (Version 145)');
 
 }catch(e){ok(false,'Abschnitt 0 abgebrochen: '+e.message.slice(0,150));}
 try{
@@ -254,7 +255,7 @@ try{
 {
   const base=o=>Object.assign({v:2,lang:'id',newPerDay:1,dayOffset:0,progress:{id:{}},list:{id:{}},daily:{date:'',newCount:0,extra:0,lt:[]},done:{}},o||{});
   const N=env(base({nameAsked:false}),'de');
-  ok(!!N.$('#nmf')&&!!N.$('#nm')&&N.$('#tabs').hidden,'Erster Start: Namensfrage statt Startseite (auch für bestehende Nutzer)');
+  ok(!!N.$('#nmf')&&!!N.$('#nm')&&!N.$('#gear'),'Erster Start: Namensfrage statt Startseite (auch für bestehende Nutzer)');
   ok(N.$('.mascot .bubble').textContent.length>8,'Namensfrage: Dewi spricht');
   N.$('#nm').value='  Vito<b>  ';N.$('#nmf').dispatchEvent(new N.w.Event('submit',{bubbles:true,cancelable:true}));
   ok(N.st().name==='Vitob'&&N.st().nameAsked===true,'Name wird bereinigt gespeichert (Leerzeichen, <> entfernt): '+N.st().name);
@@ -318,7 +319,7 @@ try{
   const C=env({v:2,lang:'id',newPerDay:1,dayOffset:0,progress:{id:{}},list:{id:{}},daily:{date:'',newCount:0,extra:0,lt:[]},done:{}},'de');
   const A=C.w.__aud;
   ok(C.st().sound===true&&C.st().vol===40,'Sounds standardmäßig an, leise (40)');
-  C.click(C.$('.tab[data-v=settings]'));
+  C.click(C.$('#gear'));
   ok(!!C.$('#vol')&&C.$$('[data-snd]').length===2,'Einstellungen: Schalter und Lautstärkeregler');
   const n0=A.osc.length;C.click(C.$('[data-snd=false]'));
   ok(C.st().sound===false,'Sound ausschaltbar');

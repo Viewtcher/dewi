@@ -855,7 +855,7 @@ de:letzte:en|1 2 3 4 5|1 2 3 4 5
 en:half:de|2 3 1 4 4 5|2 3 1 1 4 5
 de:halb:en|2 3 1 1 4 5|2 3 1 4 4 5
 en:day:de|1 2 3 4|1 2 3 4
-de:der tag:en|1 2 3 4|1 2 3 4
+de:tag:en|1 2 3 4|1 2 3 4
 en:today:de|1 2 3 4 5|1 2 3 4 5
 de:heute:en|1 2 3 4 5|1 2 3 4 5
 en:tomorrow:de|1 2 3|1 2 3
@@ -867,19 +867,19 @@ de:jetzt:en|1 3 2|1 0 3 2
 en:soon:de|0 1 2 3|1 1 2 3
 de:bald:en|1 1 2 3|0 1 2 3
 en:night:de|0 1 2 3 4|1 1 2 3 4
-de:die nacht:en|1 1 2 3 4|0 1 2 3 4
+de:nacht:en|1 1 2 3 4|0 1 2 3 4
 en:month:de|1 2 3 4 5|1 2 3 4 5
-de:der monat:en|1 2 3 4 5|1 2 3 4 5
+de:monat:en|1 2 3 4 5|1 2 3 4 5
 en:year:de|1 2 3 4 5|1 2 4 3 5
-de:das jahr:en|1 2 4 3 5|1 2 3 4 5
+de:jahr:en|1 2 4 3 5|1 2 3 4 5
 en:hour:de|1 2 5 3 4|1 2 5 3 4
-de:die stunde:en|1 2 5 3 4|1 2 5 3 4
+de:stunde:en|1 2 5 3 4|1 2 5 3 4
 en:minute:de|1 2 3 4|1 2 3 4
-de:die minute:en|1 2 3 4|1 2 3 4
+de:minute:en|1 2 3 4|1 2 3 4
 en:second:de|1 2 3 4|1 4 2 3
-de:die sekunde:en|1 4 2 3|1 2 3 4
+de:sekunde:en|1 4 2 3|1 2 3 4
 en:time:de|1 2 3 4 5|1 2 5 3 4
-de:die zeit:en|1 2 5 3 4|1 2 3 4 5
+de:zeit:en|1 2 5 3 4|1 2 3 4 5
 en:always:de|1 2 3 4|1 3 2 4
 de:immer:en|1 3 2 4|1 2 3 4
 en:often:de|1 2 3 4|1 3 2 4
@@ -921,155 +921,154 @@ de:oktober:en|0 1 2 3 5 4|1 2 3 5 4
 en:november:de|1 2 3 4 5|0 1 2 3 4 5
 de:november:en|0 1 2 3 4 5|1 2 3 4 5
 en:family:de|1 4 2 3|1 4 2 3
-de:die familie:en|1 4 2 3|1 4 2 3
+de:familie:en|1 4 2 3|1 4 2 3
 en:mother:de|1 2 4 3|1 2 4 3
-de:die mutter:en|1 2 4 3|1 2 4 3
+de:mutter:en|1 2 4 3|1 2 4 3
 en:father:de|1 2 6 3 4 5|1 2 6 3 4 5
-de:der vater:en|1 2 6 3 4 5|1 2 6 3 4 5
+de:vater:en|1 2 6 3 4 5|1 2 6 3 4 5
 en:parents:de|1 2 3 4 5|1 2 3 4 5
-de:die eltern:en|1 2 3 4 5|1 2 3 4 5
+de:eltern:en|1 2 3 4 5|1 2 3 4 5
 en:child:de|0 1 3 2|1 1 3 2
-de:das kind:en|1 1 3 2|0 1 3 2
+de:kind:en|1 1 3 2|0 1 3 2
 en:son:de|1 2 3 4 6 5|1 2 3 4 6 5
-de:der sohn:en|1 2 3 4 6 5|1 2 3 4 6 5
+de:sohn:en|1 2 3 4 6 5|1 2 3 4 6 5
 en:daughter:de|1 2 3 4|1 2 3 4
-de:die tochter:en|1 2 3 4|1 2 3 4
+de:tochter:en|1 2 3 4|1 2 3 4
 en:sister:de|1 2 3 0 4|1 2 3 4
-de:die schwester:en|1 2 3 4|1 2 3 0 4
+de:schwester:en|1 2 3 4|1 2 3 0 4
 en:grandfather:de|1 2 6 3 4 5|1 2 6 3 4 5
-de:der großvater:en|1 2 6 3 4 5|1 2 6 3 4 5
+de:großvater:en|1 2 6 3 4 5|1 2 6 3 4 5
 en:uncle:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:der onkel:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:onkel:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:aunt:de|1 2 3 4 5|1 2 3 4 5
-de:die tante:en|1 2 3 4 5|1 2 3 4 5
+de:tante:en|1 2 3 4 5|1 2 3 4 5
 en:cousin:de|1 2 5 3 4|1 2 5 3 4
-de:der cousin:en|1 2 5 3 4|1 2 5 3 4
+de:cousin:en|1 2 5 3 4|1 2 5 3 4
 en:husband:de|1 2 3 0 4|1 2 3 4
-de:der ehemann:en|1 2 3 4|1 2 3 0 4
+de:ehemann:en|1 2 3 4|1 2 3 0 4
 en:wife:de|2 3 4 1 1|2 3 4 1 1
-de:die ehefrau:en|2 3 4 1 1|2 3 4 1 1
+de:ehefrau:en|2 3 4 1 1|2 3 4 1 1
 en:baby:de|0 1 3 2|1 1 3 2
-de:das baby:en|1 1 3 2|0 1 3 2
+de:baby:en|1 1 3 2|0 1 3 2
 en:boy:de|0 1 3 2|1 1 3 2
-de:der junge:en|1 1 3 2|0 1 3 2
+de:junge:en|1 1 3 2|0 1 3 2
 en:girl:de|0 1 4 2 3|1 1 4 2 3
-de:das mädchen:en|1 1 4 2 3|0 1 4 2 3
+de:mädchen:en|1 1 4 2 3|0 1 4 2 3
 en:woman:de|0 1 3 2|1 1 3 2
-de:die frau:en|1 1 3 2|0 1 3 2
+de:frau:en|1 1 3 2|0 1 3 2
 en:people:de|1 2 3 4|1 2 3 4
-de:die leute:en|1 2 3 4|1 2 3 4
+de:leute:en|1 2 3 4|1 2 3 4
 en:person:de|1 2 3 5 4|1 2 3 5 4
-de:die person:en|1 2 3 5 4|1 2 3 5 4
+de:person:en|1 2 3 5 4|1 2 3 5 4
 en:neighbor:de|1 2 3 4 5|1 2 3 4 5
-de:der nachbar:en|1 2 3 4 5|1 2 3 4 5
+de:nachbar:en|1 2 3 4 5|1 2 3 4 5
 en:guest:de|1 2 3 4 5|1 2 5 3 4
-de:der gast:en|1 2 5 3 4|1 2 3 4 5
+de:gast:en|1 2 5 3 4|1 2 3 4 5
 en:teacher:de|0 1 2 3|1 1 2 3
-de:der lehrer:en|1 1 2 3|0 1 2 3
+de:lehrer:en|1 1 2 3|0 1 2 3
 en:student:de|0 1 4 2 3|1 1 4 2 3
-de:der student:en|1 1 4 2 3|0 1 4 2 3
+de:student:en|1 1 4 2 3|0 1 4 2 3
 en:doctor:de|2 1 4 2 3|1 1 4 2 3
-de:der arzt:en|1 1 4 2 3|2 1 4 2 3
+de:arzt:en|1 1 4 2 3|2 1 4 2 3
 en:nurse:de|0 1 3 2 2|1 1 3 2
-de:der krankenpfleger:en|1 1 3 2|0 1 3 2 2
+de:krankenpfleger:en|1 1 3 2|0 1 3 2 2
 en:police officer:de|0 1 1 3 2|1 1 3 2
-de:der polizist:en|1 1 3 2|0 1 1 3 2
+de:polizist:en|1 1 3 2|0 1 1 3 2
 en:driver:de|0 1 3 2|1 1 3 2
-de:der fahrer:en|1 1 3 2|0 1 3 2
+de:fahrer:en|1 1 3 2|0 1 3 2
 en:cook:de|0 1 2 3|1 1 2 3
-de:der koch:en|1 1 2 3|0 1 2 3
+de:koch:en|1 1 2 3|0 1 2 3
 en:waiter:de|0 1 3 0 2|1 1 3 2 2
-de:der kellner:en|1 1 3 2 2|0 1 3 0 2
+de:kellner:en|1 1 3 2 2|0 1 3 0 2
 en:boss:de|1 2 3 4 5|1 2 3 4 5
-de:der chef:en|1 2 3 4 5|1 2 3 4 5
+de:chef:en|1 2 3 4 5|1 2 3 4 5
 en:eat:de|1 2 3 4 5|1 2 4 5 3
 de:essen:en|1 2 4 5 3|1 2 3 4 5
 en:drink:de|1 2 3 4 5|1 2 4 5 3
 de:trinken:en|1 2 4 5 3|1 2 3 4 5
 en:food:de|0 1 2 3 4|1 1 2 3 4
-de:das essen:en|1 1 2 3 4|0 1 2 3 4
 en:water:de|1 2 3 4 0 5|1 2 3 4 5
-de:das wasser:en|1 2 3 4 5|1 2 3 4 0 5
+de:wasser:en|1 2 3 4 5|1 2 3 4 0 5
 en:tea:de|1 2 4 3|1 2 4 3
-de:der tee:en|1 2 4 3|1 2 4 3
+de:tee:en|1 2 4 3|1 2 4 3
 en:milk:de|0 1 3 2|1 1 3 2
-de:die milch:en|1 1 3 2|0 1 3 2
+de:milch:en|1 1 3 2|0 1 3 2
 en:beer:de|1 4 2 5 3|1 4 2 5 3
-de:das bier:en|1 4 2 5 3|1 4 2 5 3
+de:bier:en|1 4 2 5 3|1 4 2 5 3
 en:wine:de|1 2 4 3|1 2 4 3
-de:der wein:en|1 2 4 3|1 2 4 3
+de:wein:en|1 2 4 3|1 2 4 3
 en:rice:de|1 2 3 4 5|1 2 3 4 5
-de:der reis:en|1 2 3 4 5|1 2 3 4 5
+de:reis:en|1 2 3 4 5|1 2 3 4 5
 en:egg:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:das ei:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:ei:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:meat:de|1 0 2 3 4|1 3 2 4
-de:das fleisch:en|1 3 2 4|1 0 2 3 4
+de:fleisch:en|1 3 2 4|1 0 2 3 4
 en:chicken:de|1 2 3 4|1 2 4 4 3
-de:das hähnchen:en|1 2 4 4 3|1 2 3 4
+de:hähnchen:en|1 2 4 4 3|1 2 3 4
 en:beef:de|0 1 2 3 4|1 1 2 3 4
-de:das rindfleisch:en|1 1 2 3 4|0 1 2 3 4
+de:rindfleisch:en|1 1 2 3 4|0 1 2 3 4
 en:pork:de|1 2 3 4|1 3 2 4
-de:das schweinefleisch:en|1 3 2 4|1 2 3 4
+de:schweinefleisch:en|1 3 2 4|1 2 3 4
 en:fish:de|1 2 3 4 5|1 2 4 5 3
-de:der fisch:en|1 2 4 5 3|1 2 3 4 5
+de:fisch:en|1 2 4 5 3|1 2 3 4 5
 en:soup:de|0 1 2 3|1 1 2 3
-de:die suppe:en|1 1 2 3|0 1 2 3
+de:suppe:en|1 1 2 3|0 1 2 3
 en:salad:de|1 2 3 4 5 6|1 2 5 6 3 4
-de:der salat:en|1 2 5 6 3 4|1 2 3 4 5 6
+de:salat:en|1 2 5 6 3 4|1 2 3 4 5 6
 en:vegetable:de|1 2 3 4|1 2 3 4
-de:das gemüse:en|1 2 3 4|1 2 3 4
+de:gemüse:en|1 2 3 4|1 2 3 4
 en:fruit:de|1 2 3 4 5|1 2 3 4 5
-de:das obst:en|1 2 3 4 5|1 2 3 4 5
+de:obst:en|1 2 3 4 5|1 2 3 4 5
 en:apple:de|1 2 3 4 5 6|1 2 5 6 3 4
-de:der apfel:en|1 2 5 6 3 4|1 2 3 4 5 6
+de:apfel:en|1 2 5 6 3 4|1 2 3 4 5 6
 en:banana:de|0 1 2 3|1 1 2 3
-de:die banane:en|1 1 2 3|0 1 2 3
+de:banane:en|1 1 2 3|0 1 2 3
 en:orange:de|1 2 3 4|1 2 3 4
-de:die orange:en|1 2 3 4|1 2 3 4
+de:orange:en|1 2 3 4|1 2 3 4
 en:potato:de|1 6 2 3 4 5|1 6 2 3 4 5
-de:die kartoffel:en|1 6 2 3 4 5|1 6 2 3 4 5
+de:kartoffel:en|1 6 2 3 4 5|1 6 2 3 4 5
 en:tomato:de|0 1 2 3|1 1 2 3
-de:die tomate:en|1 1 2 3|0 1 2 3
+de:tomate:en|1 1 2 3|0 1 2 3
 en:onion:de|2 3 0 1|2 3 1 1
-de:die zwiebel:en|2 3 1 1|2 3 0 1
+de:zwiebel:en|2 3 1 1|2 3 0 1
 en:carrot:de|0 1 4 2 3|1 1 4 2 3
-de:die karotte:en|1 1 4 2 3|0 1 4 2 3
+de:karotte:en|1 1 4 2 3|0 1 4 2 3
 en:cheese:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:der käse:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:käse:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:sugar:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:der zucker:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:zucker:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:noodles:de|1 2 3 4 5|1 2 3 4 5
-de:die nudeln:en|1 2 3 4 5|1 2 3 4 5
+de:nudeln:en|1 2 3 4 5|1 2 3 4 5
 en:pasta:de|1 2 3 4|1 2 4 4 3
-de:die pasta:en|1 2 4 4 3|1 2 3 4
+de:pasta:en|1 2 4 4 3|1 2 3 4
 en:sandwich:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:das sandwich:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:sandwich:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:chocolate:de|0 1 2 3|1 1 2 3
-de:die schokolade:en|1 1 2 3|0 1 2 3
+de:schokolade:en|1 1 2 3|0 1 2 3
 en:ice cream:de|2 3 4 1 1|2 3 4 1
-de:das eis:en|2 3 4 1|2 3 4 1 1
+de:eis:en|2 3 4 1|2 3 4 1 1
 en:breakfast:de|1 2 3 4 5|1 2 4 5 3
-de:das frühstück:en|1 2 4 5 3|1 2 3 4 5
+de:frühstück:en|1 2 4 5 3|1 2 3 4 5
 en:dinner:de|1 2 3|1 1 2 3
-de:das abendessen:en|1 1 2 3|1 2 3
+de:abendessen:en|1 1 2 3|1 2 3
 en:snack:de|1 2 3 4 5 6|1 2 5 6 3 4
-de:der snack:en|1 2 5 6 3 4|1 2 3 4 5 6
+de:snack:en|1 2 5 6 3 4|1 2 3 4 5 6
 en:meal:de|1 2 3 4 5|1 2 3 4 5
-de:die mahlzeit:en|1 2 3 4 5|1 2 3 4 5
+de:mahlzeit:en|1 2 3 4 5|1 2 3 4 5
 en:menu:de|2 3 4 0 1 5|2 3 5 1 1 4
-de:die speisekarte:en|2 3 5 1 1 4|2 3 4 0 1 5
+de:speisekarte:en|2 3 5 1 1 4|2 3 4 0 1 5
 en:bill:de|1 1 1|1 1 1
-de:die rechnung:en|1 1 1|1 1 1
+de:rechnung:en|1 1 1|1 1 1
 en:table:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:der tisch:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:tisch:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:glass:de|1 2 3 5 4|1 2 3 5 4
-de:das glas:en|1 2 3 5 4|1 2 3 5 4
+de:glas:en|1 2 3 5 4|1 2 3 5 4
 en:cup:de|1 5 2 3 4|1 5 2 3 4
-de:die tasse:en|1 5 2 3 4|1 5 2 3 4
+de:tasse:en|1 5 2 3 4|1 5 2 3 4
 en:bottle:de|1 2 3 4 0 5|1 2 3 4 5
-de:die flasche:en|1 2 3 4 5|1 2 3 4 0 5
+de:flasche:en|1 2 3 4 5|1 2 3 4 0 5
 en:spoon:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:der löffel:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:löffel:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:hungry:de|1 2 3 4|1 2 3 4
 de:hungrig:en|1 2 3 4|1 2 3 4
 en:delicious:de|0 1 2 3|1 1 2 3
@@ -1323,59 +1322,59 @@ de:genug:en|1 2 3 4|1 2 3 4
 en:only:de|1 2 3 5 4|1 2 3 5 4
 de:nur:en|1 2 3 5 4|1 2 3 5 4
 en:house:de|1 2 3 4 5|1 2 3 4 5
-de:das haus:en|1 2 3 4 5|1 2 3 4 5
+de:haus:en|1 2 3 4 5|1 2 3 4 5
 en:home:de|2 3 1 1|2 3 1 1
-de:das zuhause:en|2 3 1 1|2 3 1 1
+de:zuhause:en|2 3 1 1|2 3 1 1
 en:room:de|1 2 3 4|1 2 3 4
-de:das zimmer:en|1 2 3 4|1 2 3 4
+de:zimmer:en|1 2 3 4|1 2 3 4
 en:kitchen:de|1 2 3 4 5|1 2 3 4 5
-de:die küche:en|1 2 3 4 5|1 2 3 4 5
+de:küche:en|1 2 3 4 5|1 2 3 4 5
 en:bathroom:de|0 1 2 3|1 1 2 3
-de:das badezimmer:en|1 1 2 3|0 1 2 3
+de:badezimmer:en|1 1 2 3|0 1 2 3
 en:bedroom:de|0 1 2 3|1 1 2 3
-de:das schlafzimmer:en|1 1 2 3|0 1 2 3
+de:schlafzimmer:en|1 1 2 3|0 1 2 3
 en:garden:de|0 1 2 3|1 1 2 3
-de:der garten:en|1 1 2 3|0 1 2 3
+de:garten:en|1 1 2 3|0 1 2 3
 en:street:de|0 1 2 3|1 1 2 3
-de:die straße:en|1 1 2 3|0 1 2 3
+de:straße:en|1 1 2 3|0 1 2 3
 en:city:de|1 2 3 4 6 5|1 2 3 4 6 5
-de:die stadt:en|1 2 3 4 6 5|1 2 3 4 6 5
+de:stadt:en|1 2 3 4 6 5|1 2 3 4 6 5
 en:town:de|0 1 2 3|1 1 2 3
-de:die kleinstadt:en|1 1 2 3|0 1 2 3
+de:kleinstadt:en|1 1 2 3|0 1 2 3
 en:village:de|1 2 6 3 4 5|1 2 6 3 4 5
-de:das dorf:en|1 2 6 3 4 5|1 2 6 3 4 5
+de:dorf:en|1 2 6 3 4 5|1 2 6 3 4 5
 en:university:de|1 5 2 3 4|1 5 2 3 4
-de:die universität:en|1 5 2 3 4|1 5 2 3 4
+de:universität:en|1 5 2 3 4|1 5 2 3 4
 en:hospital:de|0 1 2 3|1 1 2 3
-de:das krankenhaus:en|1 1 2 3|0 1 2 3
+de:krankenhaus:en|1 1 2 3|0 1 2 3
 en:shop:de|0 1 4 2 3|1 1 4 2 3
-de:der laden:en|1 1 4 2 3|0 1 4 2 3
+de:laden:en|1 1 4 2 3|0 1 4 2 3
 en:supermarket:de|0 1 2 3|1 1 2 3
-de:der supermarkt:en|1 1 2 3|0 1 2 3
+de:supermarkt:en|1 1 2 3|0 1 2 3
 en:bank:de|0 1 2 3|1 1 2 3
-de:die bank:en|1 1 2 3|0 1 2 3
+de:bank:en|1 1 2 3|0 1 2 3
 en:post office:de|0 1 1 4 2 3|1 1 4 2 3
-de:die post:en|1 1 4 2 3|0 1 1 4 2 3
+de:post:en|1 1 4 2 3|0 1 1 4 2 3
 en:church:de|0 1 2 3 4|1 1 2 3 4
-de:die kirche:en|1 1 2 3 4|0 1 2 3 4
+de:kirche:en|1 1 2 3 4|0 1 2 3 4
 en:museum:de|0 1 2 3|1 1 2 3
-de:das museum:en|1 1 2 3|0 1 2 3
+de:museum:en|1 1 2 3|0 1 2 3
 en:library:de|1 2 3 4 5|1 2 3 4 5
-de:die bibliothek:en|1 2 3 4 5|1 2 3 4 5
+de:bibliothek:en|1 2 3 4 5|1 2 3 4 5
 en:park:de|1 2 3 4 1 5|1 2 3 4 5
-de:der park:en|1 2 3 4 5|1 2 3 4 1 5
+de:park:en|1 2 3 4 5|1 2 3 4 1 5
 en:hotel:de|0 1 2 3|1 1 2 3
-de:das hotel:en|1 1 2 3|0 1 2 3
+de:hotel:en|1 1 2 3|0 1 2 3
 en:office:de|1 2 3 4 5|1 2 3 4 5
-de:das büro:en|1 2 3 4 5|1 2 3 4 5
+de:büro:en|1 2 3 4 5|1 2 3 4 5
 en:factory:de|1 5 2 3 4|1 5 2 3 4
-de:die fabrik:en|1 5 2 3 4|1 5 2 3 4
+de:fabrik:en|1 5 2 3 4|1 5 2 3 4
 en:farm:de|1 2 3 4 5|1 2 3 4 5
-de:der bauernhof:en|1 2 3 4 5|1 2 3 4 5
+de:bauernhof:en|1 2 3 4 5|1 2 3 4 5
 en:bridge:de|0 1 2 3|1 1 2 3
-de:die brücke:en|1 1 2 3|0 1 2 3
+de:brücke:en|1 1 2 3|0 1 2 3
 en:place:de|1 2 3 5 4|1 2 3 5 4
-de:der ort:en|1 2 3 5 4|1 2 3 5 4
+de:ort:en|1 2 3 5 4|1 2 3 5 4
 en:here:de|2 3 1|2 1 3
 de:hier:en|2 1 3|2 3 1
 en:near:de|0 1 2 3|1 1 2 3
@@ -1393,109 +1392,109 @@ de:drinnen:en|1 1 2 3|0 1 2 3
 en:outside:de|1 2 3 4|1 2 3 4
 de:draußen:en|1 2 3 4|1 2 3 4
 en:north:de|0 1 2 3 0 4|1 1 2 3 4
-de:der norden:en|1 1 2 3 4|0 1 2 3 0 4
+de:norden:en|1 1 2 3 4|0 1 2 3 0 4
 en:south:de|1 2 3 4 5|1 2 4 5 4 0 3
-de:der süden:en|1 2 4 5 4 0 3|1 2 3 4 5
+de:süden:en|1 2 4 5 4 0 3|1 2 3 4 5
 en:car:de|1 2 3 5 4|1 2 3 5 4
-de:das auto:en|1 2 3 5 4|1 2 3 5 4
+de:auto:en|1 2 3 5 4|1 2 3 5 4
 en:bus:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:der bus:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:bus:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:train:de|0 1 2 3|1 1 2 3
-de:der zug:en|1 1 2 3|0 1 2 3
+de:zug:en|1 1 2 3|0 1 2 3
 en:motorcycle:de|1 2 3 4|1 2 3 4
-de:das motorrad:en|1 2 3 4|1 2 3 4
+de:motorrad:en|1 2 3 4|1 2 3 4
 en:ship:de|0 1 2 3 4|1 1 2 3 4
-de:das schiff:en|1 1 2 3 4|0 1 2 3 4
+de:schiff:en|1 1 2 3 4|0 1 2 3 4
 en:station:de|0 1 2 3|1 1 2 3
-de:der bahnhof:en|1 1 2 3|0 1 2 3
+de:bahnhof:en|1 1 2 3|0 1 2 3
 en:airport:de|0 1 2 3 4 5|1 1 2 3 4 5
-de:der flughafen:en|1 1 2 3 4 5|0 1 2 3 4 5
+de:flughafen:en|1 1 2 3 4 5|0 1 2 3 4 5
 en:ticket:de|1 2 3 4|1 2 3 4
-de:die fahrkarte:en|1 2 3 4|1 2 3 4
+de:fahrkarte:en|1 2 3 4|1 2 3 4
 en:passport:de|1 2 3 4|1 2 3 4
-de:der reisepass:en|1 2 3 4|1 2 3 4
+de:reisepass:en|1 2 3 4|1 2 3 4
 en:luggage:de|1 2 3 4|1 2 3 4
-de:das gepäck:en|1 2 3 4|1 2 3 4
+de:gepäck:en|1 2 3 4|1 2 3 4
 en:map:de|1 2 3 4 5 5 6|1 2 3 4 5 6
-de:die karte:en|1 2 3 4 5 6|1 2 3 4 5 5 6
+de:karte:en|1 2 3 4 5 6|1 2 3 4 5 5 6
 en:journey:de|0 1 3 2 4|1 1 3 2 4
-de:die fahrt:en|1 1 3 2 4|0 1 3 2 4
+de:fahrt:en|1 1 3 2 4|0 1 3 2 4
 en:body:de|0 1 3 2|1 1 3 2
-de:der körper:en|1 1 3 2|0 1 3 2
+de:körper:en|1 1 3 2|0 1 3 2
 en:head:de|1 2 3|1 2 3 3
-de:der kopf:en|1 2 3 3|1 2 3
+de:kopf:en|1 2 3 3|1 2 3
 en:hair:de|1 2 3 4|1 2 3 4
-de:die haare:en|1 2 3 4|1 2 3 4
+de:haare:en|1 2 3 4|1 2 3 4
 en:face:de|1 2 3|1 2 3
-de:das gesicht:en|1 2 3|1 2 3
+de:gesicht:en|1 2 3|1 2 3
 en:eye:de|1 2 3 5 4|1 2 3 5 4
-de:das auge:en|1 2 3 5 4|1 2 3 5 4
+de:auge:en|1 2 3 5 4|1 2 3 5 4
 en:ear:de|1 2 3|1 2 3 3
-de:das ohr:en|1 2 3 3|1 2 3
+de:ohr:en|1 2 3 3|1 2 3
 en:nose:de|0 1 2 3 4 5|1 1 2 3 4 5
-de:die nase:en|1 1 2 3 4 5|0 1 2 3 4 5
+de:nase:en|1 1 2 3 4 5|0 1 2 3 4 5
 en:mouth:de|3 1 2|3 1 2
-de:der mund:en|3 1 2|3 1 2
+de:mund:en|3 1 2|3 1 2
 en:neck:de|1 2 3|1 2 3 3
-de:der hals:en|1 2 3 3|1 2 3
+de:hals:en|1 2 3 3|1 2 3
 en:shoulder:de|1 2 3|1 2 3 3
-de:die schulter:en|1 2 3 3|1 2 3
+de:schulter:en|1 2 3 3|1 2 3
 en:hand:de|1 2 3 4|1 2 3 4
-de:die hand:en|1 2 3 4|1 2 3 4
+de:hand:en|1 2 3 4|1 2 3 4
 en:back:de|1 2 3|1 2 3 3
-de:der rücken:en|1 2 3 3|1 2 3
+de:rücken:en|1 2 3 3|1 2 3
 en:stomach:de|1 2 3|1 2 3 3
-de:der bauch:en|1 2 3 3|1 2 3
+de:bauch:en|1 2 3 3|1 2 3
 en:leg:de|1 2 3|1 2 3 3
-de:das bein:en|1 2 3 3|1 2 3
+de:bein:en|1 2 3 3|1 2 3
 en:knee:de|1 2 3|1 2 3 3
-de:das knie:en|1 2 3 3|1 2 3
+de:knie:en|1 2 3 3|1 2 3
 en:foot:de|1 2 3 4|1 2 3 4
-de:der fuß:en|1 2 3 4|1 2 3 4
+de:fuß:en|1 2 3 4|1 2 3 4
 en:heart:de|1 2 3 4|1 2 3 4
-de:das herz:en|1 2 3 4|1 2 3 4
+de:herz:en|1 2 3 4|1 2 3 4
 en:blood:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:das blut:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:blut:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:fever:de|0 1 2 0 3|1 1 2 3
-de:das fieber:en|1 1 2 3|0 1 2 0 3
+de:fieber:en|1 1 2 3|0 1 2 0 3
 en:flu:de|2 3 0 1|2 3 1 1
-de:die grippe:en|2 3 1 1|2 3 0 1
+de:grippe:en|2 3 1 1|2 3 0 1
 en:headache:de|1 2 0 3|1 2 3
-de:die kopfschmerzen:en|1 2 3|1 2 0 3
+de:kopfschmerzen:en|1 2 3|1 2 0 3
 en:bone:de|0 1 2 3 4|1 1 2 3 4
-de:der knochen:en|1 1 2 3 4|0 1 2 3 4
+de:knochen:en|1 1 2 3 4|0 1 2 3 4
 en:health:de|1 2 3|1 2 3
-de:die gesundheit:en|1 2 3|1 2 3
+de:gesundheit:en|1 2 3|1 2 3
 en:hurt:de|1 2 3|1 2 3
 de:wehtun:en|1 2 3|1 2 3
 en:clothes:de|1 2 3 4|1 2 3 4
-de:die kleidung:en|1 2 3 4|1 2 3 4
+de:kleidung:en|1 2 3 4|1 2 3 4
 en:shirt:de|1 4 2 5 3|1 4 2 5 3
-de:das hemd:en|1 4 2 5 3|1 4 2 5 3
+de:hemd:en|1 4 2 5 3|1 4 2 5 3
 en:dress:de|1 2 3 4 5|1 2 3 4 5
-de:das kleid:en|1 2 3 4 5|1 2 3 4 5
+de:kleid:en|1 2 3 4 5|1 2 3 4 5
 en:skirt:de|1 4 2 5 3|1 4 2 5 3
-de:der rock:en|1 4 2 5 3|1 4 2 5 3
+de:rock:en|1 4 2 5 3|1 4 2 5 3
 en:trousers:de|1 2 3 4|1 2 0 3 4
-de:die hose:en|1 2 0 3 4|1 2 3 4
+de:hose:en|1 2 0 3 4|1 2 3 4
 en:jacket:de|1 2 3|1 2 3
-de:die jacke:en|1 2 3|1 2 3
+de:jacke:en|1 2 3|1 2 3
 en:coat:de|1 2 3 4 5 6|1 2 3 4 5 6
-de:der mantel:en|1 2 3 4 5 6|1 2 3 4 5 6
+de:mantel:en|1 2 3 4 5 6|1 2 3 4 5 6
 en:sweater:de|1 2 3 5 4|1 2 3 5 4
-de:der pullover:en|1 2 3 5 4|1 2 3 5 4
+de:pullover:en|1 2 3 5 4|1 2 3 5 4
 en:shoe:de|1 2 3 4|1 0 3 4 2
-de:der schuh:en|1 0 3 4 2|1 2 3 4
+de:schuh:en|1 0 3 4 2|1 2 3 4
 en:sock:de|1 2 3 4|1 2 3 4
-de:die socke:en|1 2 3 4|1 2 3 4
+de:socke:en|1 2 3 4|1 2 3 4
 en:hat:de|1 4 2 5 3|1 4 2 5 3
-de:der hut:en|1 4 2 5 3|1 4 2 5 3
+de:hut:en|1 4 2 5 3|1 4 2 5 3
 en:bag:de|1 2 3 4|1 2 3 4
-de:die tasche:en|1 2 3 4|1 2 3 4
+de:tasche:en|1 2 3 4|1 2 3 4
 en:glasses:de|1 2 3 4|1 2 3 4
-de:die brille:en|1 2 3 4|1 2 3 4
+de:brille:en|1 2 3 4|1 2 3 4
 en:ring:de|1 4 2 5 3|1 4 2 5 3
-de:der ring:en|1 4 2 5 3|1 4 2 5 3
+de:ring:en|1 4 2 5 3|1 4 2 5 3
 en:red:de|0 1 2 3|1 1 2 3
 de:rot:en|1 1 2 3|0 1 2 3
 en:blue:de|0 1 2 3|1 1 2 3
@@ -1517,158 +1516,158 @@ de:rosa:en|1 2 3 4 5|1 2 3 4 5
 en:purple:de|1 5 2 3 4|1 5 2 3 4
 de:lila:en|1 5 2 3 4|1 5 2 3 4
 en:sun:de|0 1 2 3|1 1 2 3
-de:die sonne:en|1 1 2 3|0 1 2 3
+de:sonne:en|1 1 2 3|0 1 2 3
 en:star:de|1 2 3 4|1 2 3 4
-de:der stern:en|1 2 3 4|1 2 3 4
+de:stern:en|1 2 3 4|1 2 3 4
 en:sky:de|0 1 2 3|1 1 2 3
-de:der himmel:en|1 1 2 3|0 1 2 3
+de:himmel:en|1 1 2 3|0 1 2 3
 en:snow:de|0 1 2 3|1 1 2 3
-de:der schnee:en|1 1 2 3|0 1 2 3
+de:schnee:en|1 1 2 3|0 1 2 3
 en:wind:de|0 1 2 3|1 1 2 3
-de:der wind:en|1 1 2 3|0 1 2 3
+de:wind:en|1 1 2 3|0 1 2 3
 en:weather:de|0 1 2 3 4|1 1 2 4 3
-de:das wetter:en|1 1 2 4 3|0 1 2 3 4
+de:wetter:en|1 1 2 4 3|0 1 2 3 4
 en:fire:de|0 1 2 3|1 1 2 3
-de:das feuer:en|1 1 2 3|0 1 2 3
+de:feuer:en|1 1 2 3|0 1 2 3
 en:river:de|0 1 2 3|1 1 2 3
-de:der fluss:en|1 1 2 3|0 1 2 3
+de:fluss:en|1 1 2 3|0 1 2 3
 en:lake:de|1 2 3 0 4|1 2 3 4
-de:der see:en|1 2 3 4|1 2 3 0 4
+de:see:en|1 2 3 4|1 2 3 0 4
 en:mountain:de|0 1 2 3|1 1 2 3
-de:der berg:en|1 1 2 3|0 1 2 3
+de:berg:en|1 1 2 3|0 1 2 3
 en:tree:de|0 1 2 3|1 1 2 3
-de:der baum:en|1 1 2 3|0 1 2 3
+de:baum:en|1 1 2 3|0 1 2 3
 en:flower:de|1 4 2 3|1 4 2 3
-de:die blume:en|1 4 2 3|1 4 2 3
+de:blume:en|1 4 2 3|1 4 2 3
 en:grass:de|0 1 2 3|1 1 2 3
-de:das gras:en|1 1 2 3|0 1 2 3
+de:gras:en|1 1 2 3|0 1 2 3
 en:leaf:de|0 1 2 3|1 1 2 3
-de:das blatt:en|1 1 2 3|0 1 2 3
+de:blatt:en|1 1 2 3|0 1 2 3
 en:stone:de|0 1 2 3|1 1 2 3
-de:der stein:en|1 1 2 3|0 1 2 3
+de:stein:en|1 1 2 3|0 1 2 3
 en:sand:de|0 1 2 3|1 1 2 3
-de:der sand:en|1 1 2 3|0 1 2 3
+de:sand:en|1 1 2 3|0 1 2 3
 en:animal:de|1 2 0 3 4|1 2 4 3
-de:das tier:en|1 2 4 3|1 2 0 3 4
+de:tier:en|1 2 4 3|1 2 0 3 4
 en:dog:de|1 2 3 4|1 2 3 4
-de:der hund:en|1 2 3 4|1 2 3 4
+de:hund:en|1 2 3 4|1 2 3 4
 en:cat:de|2 1 5 3 2 4|1 1 5 3 2 4
-de:die katze:en|1 1 5 3 2 4|2 1 5 3 2 4
+de:katze:en|1 1 5 3 2 4|2 1 5 3 2 4
 en:bird:de|1 2 6 3 4 5|1 2 6 3 4 5
-de:der vogel:en|1 2 6 3 4 5|1 2 6 3 4 5
+de:vogel:en|1 2 6 3 4 5|1 2 6 3 4 5
 en:horse:de|0 1 3 2|1 1 3 2
-de:das pferd:en|1 1 3 2|0 1 3 2
+de:pferd:en|1 1 3 2|0 1 3 2
 en:cow:de|0 1 3 2|1 1 3 2
-de:die kuh:en|1 1 3 2|0 1 3 2
+de:kuh:en|1 1 3 2|0 1 3 2
 en:pig:de|2 1 3 4 2 5|1 1 3 4 2 5
-de:das schwein:en|1 1 3 4 2 5|2 1 3 4 2 5
+de:schwein:en|1 1 3 4 2 5|2 1 3 4 2 5
 en:sheep:de|0 1 3 2|1 1 3 2
-de:das schaf:en|1 1 3 2|0 1 3 2
+de:schaf:en|1 1 3 2|0 1 3 2
 en:mouse:de|0 1 4 2 3|1 1 4 2 3
-de:die maus:en|1 1 4 2 3|0 1 4 2 3
+de:maus:en|1 1 4 2 3|0 1 4 2 3
 en:rabbit:de|0 1 4 2 3|1 1 4 2 3
-de:das kaninchen:en|1 1 4 2 3|0 1 4 2 3
+de:kaninchen:en|1 1 4 2 3|0 1 4 2 3
 en:elephant:de|0 1 2 3 4|1 1 2 3 4
-de:der elefant:en|1 1 2 3 4|0 1 2 3 4
+de:elefant:en|1 1 2 3 4|0 1 2 3 4
 en:monkey:de|0 1 2 3|1 1 2 3
-de:der affe:en|1 1 2 3|0 1 2 3
+de:affe:en|1 1 2 3|0 1 2 3
 en:door:de|2 3 0 1|2 3 1 1
-de:die tür:en|2 3 1 1|2 3 0 1
+de:tür:en|2 3 1 1|2 3 0 1
 en:window:de|3 0 1 2|3 2 1 1
-de:das fenster:en|3 2 1 1|3 0 1 2
+de:fenster:en|3 2 1 1|3 0 1 2
 en:wall:de|0 1 2 3|1 1 2 3
-de:die wand:en|1 1 2 3|0 1 2 3
+de:wand:en|1 1 2 3|0 1 2 3
 en:floor:de|0 1 2 3|1 1 2 3
-de:der boden:en|1 1 2 3|0 1 2 3
+de:boden:en|1 1 2 3|0 1 2 3
 en:roof:de|0 1 2 3|1 1 2 3
-de:das dach:en|1 1 2 3|0 1 2 3
+de:dach:en|1 1 2 3|0 1 2 3
 en:chair:de|1 2 3 4|1 2 3 4
-de:der stuhl:en|1 2 3 4|1 2 3 4
+de:stuhl:en|1 2 3 4|1 2 3 4
 en:sofa:de|2 1 5 3 2 4|1 1 5 3 2 4
-de:das sofa:en|1 1 5 3 2 4|2 1 5 3 2 4
+de:sofa:en|1 1 5 3 2 4|2 1 5 3 2 4
 en:lamp:de|2 3 0 1|2 1 1 3
-de:die lampe:en|2 1 1 3|2 3 0 1
+de:lampe:en|2 1 1 3|2 3 0 1
 en:key:de|1 2 3 4|1 0 3 4 2
-de:der schlüssel:en|1 0 3 4 2|1 2 3 4
+de:schlüssel:en|1 0 3 4 2|1 2 3 4
 en:phone:de|1 2 3 4|1 2 3 4
-de:das handy:en|1 2 3 4|1 2 3 4
+de:handy:en|1 2 3 4|1 2 3 4
 en:computer:de|1 6 2 3 4 5|1 6 4 0 5 2 3
-de:der computer:en|1 6 4 0 5 2 3|1 6 2 3 4 5
+de:computer:en|1 6 4 0 5 2 3|1 6 2 3 4 5
 en:book:de|1 2 3 4 5|1 2 3 4 5
-de:das buch:en|1 2 3 4 5|1 2 3 4 5
+de:buch:en|1 2 3 4 5|1 2 3 4 5
 en:newspaper:de|2 3 0 1|2 3 1 1
-de:die zeitung:en|2 3 1 1|2 3 0 1
+de:zeitung:en|2 3 1 1|2 3 0 1
 en:letter:de|1 4 2 3|1 4 2 3
-de:der brief:en|1 4 2 3|1 4 2 3
+de:brief:en|1 4 2 3|1 4 2 3
 en:picture:de|0 1 2 3|1 1 2 3
-de:das bild:en|1 1 2 3|0 1 2 3
+de:bild:en|1 1 2 3|0 1 2 3
 en:towel:de|1 2 3 5 4|1 2 3 5 4
-de:das handtuch:en|1 2 3 5 4|1 2 3 5 4
+de:handtuch:en|1 2 3 5 4|1 2 3 5 4
 en:soap:de|4 1 2 3|4 1 2 3
-de:die seife:en|4 1 2 3|4 1 2 3
+de:seife:en|4 1 2 3|4 1 2 3
 en:toilet:de|2 3 0 1|2 3 1 1
-de:die toilette:en|2 3 1 1|2 3 0 1
+de:toilette:en|2 3 1 1|2 3 0 1
 en:box:de|0 1 2 3|1 1 2 3
-de:die kiste:en|1 1 2 3|0 1 2 3
+de:kiste:en|1 1 2 3|0 1 2 3
 en:thing:de|1 2 3 4|1 2 3 4
-de:das ding:en|1 2 3 4|1 2 3 4
+de:ding:en|1 2 3 4|1 2 3 4
 en:money:de|1 2 3|1 2 3
-de:das geld:en|1 2 3|1 2 3
+de:geld:en|1 2 3|1 2 3
 en:price:de|2 3 0 1|2 3 1 1
-de:der preis:en|2 3 1 1|2 3 0 1
+de:preis:en|2 3 1 1|2 3 0 1
 en:card:de|1 2 3 4 5|1 2 4 5 3
 en:coin:de|1 2 3 4|1 2 3 4
-de:die münze:en|1 2 3 4|1 2 3 4
+de:münze:en|1 2 3 4|1 2 3 4
 en:euro:de|1 2 3 4|1 2 3 4
-de:der euro:en|1 2 3 4|1 2 3 4
+de:euro:en|1 2 3 4|1 2 3 4
 en:discount:de|1 2 3 4|1 2 3 4
-de:der rabatt:en|1 2 3 4|1 2 3 4
+de:rabatt:en|1 2 3 4|1 2 3 4
 en:shopping:de|1 2 3 4 5|1 2 4 5 3
 de:einkaufen:en|1 2 4 5 3|1 2 3 4 5
 en:customer:de|0 1 0 2|1 1 2
-de:der kunde:en|1 1 2|0 1 0 2
+de:kunde:en|1 1 2|0 1 0 2
 en:gift:de|1 2 3 4 5 6 7|1 2 3 4 5 6 7
-de:das geschenk:en|1 2 3 4 5 6 7|1 2 3 4 5 6 7
+de:geschenk:en|1 2 3 4 5 6 7|1 2 3 4 5 6 7
 en:wallet:de|1 2 3 4|1 0 3 4 2
-de:der geldbeutel:en|1 0 3 4 2|1 2 3 4
+de:geldbeutel:en|1 0 3 4 2|1 2 3 4
 en:job:de|1 2 3 4 5|1 2 3 4 5
-de:die arbeitsstelle:en|1 2 3 4 5|1 2 3 4 5
+de:arbeitsstelle:en|1 2 3 4 5|1 2 3 4 5
 en:colleague:de|1 2 4 3|1 2 4 3
-de:der kollege:en|1 2 4 3|1 2 4 3
+de:kollege:en|1 2 4 3|1 2 4 3
 en:company:de|1 6 2 3 4 5|1 6 2 3 4 5
-de:die firma:en|1 6 2 3 4 5|1 6 2 3 4 5
+de:firma:en|1 6 2 3 4 5|1 6 2 3 4 5
 en:salary:de|0 1 2 3|1 1 2 3
-de:das gehalt:en|1 1 2 3|0 1 2 3
+de:gehalt:en|1 1 2 3|0 1 2 3
 en:class:de|0 1 2 3|1 1 2 3
-de:die klasse:en|1 1 2 3|0 1 2 3
+de:klasse:en|1 1 2 3|0 1 2 3
 en:lesson:de|0 1 2 3|1 1 2 3
-de:die unterrichtsstunde:en|1 1 2 3|0 1 2 3
+de:unterrichtsstunde:en|1 1 2 3|0 1 2 3
 en:homework:de|1 2 3 4|1 2 3 4
-de:die hausaufgabe:en|1 2 3 4|1 2 3 4
+de:hausaufgabe:en|1 2 3 4|1 2 3 4
 en:exam:de|1 2 3 4 5|1 2 5 3 4
-de:die prüfung:en|1 2 5 3 4|1 2 3 4 5
+de:prüfung:en|1 2 5 3 4|1 2 3 4 5
 en:question:de|1 2 3 4|1 2 3 4
-de:die frage:en|1 2 3 4|1 2 3 4
+de:frage:en|1 2 3 4|1 2 3 4
 en:word:de|1 2 3 4 5|1 2 3 4 5
-de:das wort:en|1 2 3 4 5|1 2 3 4 5
+de:wort:en|1 2 3 4 5|1 2 3 4 5
 en:sentence:de|3 1 2|3 1 2
-de:der satz:en|3 1 2|3 1 2
+de:satz:en|3 1 2|3 1 2
 en:language:de|1 2 3 5 4|1 2 3 5 4
-de:die sprache:en|1 2 3 5 4|1 2 3 5 4
+de:sprache:en|1 2 3 5 4|1 2 3 5 4
 en:pen:de|1 2 3 4|1 2 3 4
-de:der stift:en|1 2 3 4|1 2 3 4
+de:stift:en|1 2 3 4|1 2 3 4
 en:notebook:de|1 5 2 3 4|1 5 2 3 4
-de:das heft:en|1 5 2 3 4|1 5 2 3 4
+de:heft:en|1 5 2 3 4|1 5 2 3 4
 en:email:de|1 4 2 3|1 4 2 3
-de:die e-mail:en|1 4 2 3|1 4 2 3
+de:e-mail:en|1 4 2 3|1 4 2 3
 en:project:de|0 1 2 3|1 1 2 3
-de:das projekt:en|1 1 2 3|0 1 2 3
+de:projekt:en|1 1 2 3|0 1 2 3
 en:task:de|1 2 3 4|1 2 3 4
-de:die aufgabe:en|1 2 3 4|1 2 3 4
+de:aufgabe:en|1 2 3 4|1 2 3 4
 en:problem:de|1 2 3 4|1 2 3 4
-de:das problem:en|1 2 3 4|1 2 3 4
+de:problem:en|1 2 3 4|1 2 3 4
 en:idea:de|1 2 3 4 5|1 2 3 4 5
-de:die idee:en|1 2 3 4 5|1 2 3 4 5
+de:idee:en|1 2 3 4 5|1 2 3 4 5
 en:and:de|1 2 3|1 2 3
 de:und:en|1 2 3|1 2 3
 en:or:de|1 2 3|1 2 3

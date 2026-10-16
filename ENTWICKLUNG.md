@@ -31,6 +31,7 @@ dewi/
 ├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
 ├── poker.js              Poker (seit Version 133): Blinds, Multiplikator, Royal Flush, Serien-Bonus, Auszahlung
 ├── pokerui.js            Poker-Screens (seit Version 134/135): Blind-Wahl, Dewi-Zone, Dewi-Chips im Kopf, Multiplikator-Animation, Auszahlung, Royal Flush
+├── shop.js               Shop und Inventar (Phase 2, seit Version 137/138): Preise, Streak-Schutz, Sicherung, Shop-Screen, Kauf, Ausrüsten, Themes
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -1555,3 +1556,251 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test2 B5b, P14/P14b, P21/P21b/P21c (Auszahlung, ×0, Royal Flush mit +1.000, Holo-Chips, Dewi mit Dollar-Augen), P28–P31 (Hinweis auf dem Startscreen, Sticheln ab 21 Uhr, nicht vorher, Folge-Hand schließt mit „Fertig“); test4 E4/E6 um `chipclick` und `royal`; test3 kennt die Stimmung `cash`. Tests 2–5 grün. Zusätzlich im echten Chromium mit echten Zeitabläufen (nicht im Testmodus) durchgespielt: Royal Flush, ×0 und normale Hand auf 390 × 844 und 375 × 667 ohne Fehler, ohne Scrollen, Endzustand vollständig (Heldenzahl, Pille, Spruch, Knopf).
 
 **Nicht auf einem echten iPhone getestet:** Fanfare und Chip-Klick, Haptik, Chipregen, Schrift Archivo, Gesamtlänge der Bühne. Prüfliste für Phase 1 siehe Bericht an Vito.
+
+
+## Version 136 – Poker-Zeile klein wie im Survival, Dewi nur in den Modulen
+
+> **Weniger ist mehr während der Hand.** Die Dewi-Zone mit Kachel (Version 134) ist weg. Unter den Dewi-Chips steht jetzt nur eine kleine Zeile wie Herzen und Score im Survival: rechts der Einsatz-Chip mit Betrag, ein kleines ×, der Multiplikator weiß leuchtend in der Score-Schrift und ein kleines „?“. Dewi erscheint in der Hand wieder in jedem Modul (Ergebnis-Screens mit Spruch, unter dem Reels-Automaten).
+
+**Entscheidungen (Vito, nach dem ersten Test auf dem iPhone):** Dewi soll in der Daily Round wie vorher in jedem Modul zu sehen sein; dafür oben weder Dewi noch Kachel. Links in der Zeile bleibt frei (der Serien-Bonus steht auf der Blind-Wahl und in der Auszahlung). Die Regeln erklärt ein kleines „?“ an der Zeile, der Text erscheint darunter.
+
+**Technik:** `pkBar()` in `pokerui.js` ist jetzt die Zeile `#pkrow` (Höhe 40 px wie `.scrow`); Multiplikator `.pkm` in `var(--num)` 21 px mit dem Leuchten von `.scnum`. Animationen bleiben (hoch mit Chip-Klick, runter beim Big Blind, grau blinken beim Small Blind). `#pkq` blendet `#pkhelp` ein und aus. Rückbau aus Version 134: kein Ausblenden von Dewi auf Ergebnis-Screens und unter Reels, keine Gesichts-Weiterleitung. Blind-Wahl und Auszahlung behalten ihre Dewi-Zone.
+
+**Vorschau-Ablauf (neu):** Jeder Stand von `entwicklung` kann vorab als Artefakt „dewi. Vorschau“ in Claude geöffnet werden, ohne Pull Request und ohne dass etwas live geht. Die Vorschau hat ihren eigenen Spielstand (eigene Adresse), der echte Spielstand auf GitHub Pages bleibt unberührt.
+
+**Tests:** test2 P24, P26/P26b, P27, Q2, Q4, Q6, Q8, Q10 an die Zeile angepasst (Zahl ohne ×, Dewi im Modul). Tests 2–5 grün. Im echten Chromium gemessen: Zeile 40 px, kein Überlauf bei 390 und 375 px.
+
+**Nicht auf einem echten iPhone getestet:** Leuchten und Animation der Zahl, Größe des „?“.
+
+
+## Version 137 – Streak-Schutz, Inventar und Sicherung (Shop Phase 2, Etappe 1)
+
+> **Der Streak-Schutz funktioniert.** Er rettet genau einen verpassten Tag, wird beim nächsten Öffnen automatisch eingesetzt und hinterlässt einen eisblauen Stempel. Kaufen kann man ihn ab der Shop-Etappe; die Technik dahinter steht jetzt. Die Sicherung nimmt ab jetzt alles mit außer der offenen Hand. Grundlage: `konzept-poker-shop.md` Abschnitte 7 und 9.
+
+**Plan Phase 2 (Vito):** 1) Streak-Schutz, Inventar, Sicherung (diese Version) · 2) Gestaltungsrunde mit Nova im Design-Canvas · 3) Shop-Screen mit Kauf · 4) Dewi-Fell und -Kopf · 5) Themes. Preise wie im Konzept, später nachjustieren (`SHOP_PRICE` in `shop.js`). Startangebot: 1 Fell, 1 Kopf-Teil, 1 Theme, Streak-Schutz.
+
+**Entscheidungen (Vito):** Fehlen mehr Tage, als Schutze da sind, bleiben alle im Vorrat (sie werden nur eingesetzt, wenn sie die Serie wirklich retten). Eigener kleiner Moment beim Einsatz. Getestet wird mit dem Shop (kein Knopf im Testbereich). Sicherung mit allem außer der offenen Hand, auch Musik und Sound.
+
+**Technik (`shop.js`, `app.src.html`)**
+- Zustand: `shields` (0–2), `shielded` {Tag: true}, `owned` [], `equip` {} (die letzten beiden für die Cosmetics ab Version 139).
+- `applyShields()` läuft beim Aufbau des Startscreens: Lücke zwischen dem letzten gespielten Tag und gestern; passt sie in den Vorrat, werden alle Tage der Lücke geschützt und `shieldNote` gesetzt, sonst passiert nichts.
+- `streak()` überbrückt geschützte Tage, zählt sie aber nicht mit (Serienzahl bleibt stehen, auch für die Bonus-Stufen des Pokers).
+- Stempel: neue Stufe `ice` (`stampKind`), eisblau eingefärbt, ohne Haken, Miene „Cool“, Beschriftung „geschützt“ bzw. „Streak-Schutz“.
+- Moment `shieldMoment()`: eisblauer Schild, „Streak-Schutz eingesetzt“, „Deine Serie bleibt bei {n} Tagen.“, Dewi-Spruch, Rest im Vorrat. Einmalig.
+- Sicherung `backupData()`: der ganze Zustand außer `run`, `dayOffset`, `dev`, `devTest`, `shieldNote`; Format `v:2`. Alte Sicherungen lassen sich weiter einspielen. Ändert die Entscheidung aus Version 130 (Diamanten waren nicht drin).
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen):** „Du warst weg. Ich hab's vertuscht. Gern geschehen.“ · „Eis drauf, Serie gerettet. Diesmal.“
+
+**Tests:** test4 neuer Block SH1–SH11 (Einsatz bei einem verpassten Tag, Moment und Einmaligkeit, eisblauer Stempel, zu viele Tage = Schutze bleiben, zwei Tage mit zwei Schutzen, keine Bonus-Stufe durch geschützte Tage, Serie wächst danach weiter, kein Einsatz ohne Serie, Sicherung vollständig ohne offene Hand, Einspielen ohne erneute Umrechnung × 10). Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet:** Farbe des eisblauen Stempels, der Moment. Ausprobieren erst mit dem Shop möglich.
+
+
+## Version 138 – Der Shop: Umkleide, Fell, Kopf, Theme, Streak-Schutz (Shop Phase 2, Etappe 2)
+
+> **Der Shop ist da.** Neue Kachel „Shop“ im Hauptmenü unter Gamemodes, und ein Tipp auf die Chip-Pille öffnet ihn ebenfalls. Oben die Umkleide mit Dewi und ihrem Kommentar, darunter Cosmetics, Extras und Consumables. Antippen probiert an, Themes färben den Screen als Vorschau. Startangebot: Fell „Mitternacht“ (Selten, 6.000), Kopf „Schleife“ (Gewöhnlich, 2.500), Theme „Neon-Nacht“ (Selten, 6.000), Streak-Schutz (1.000, höchstens 2 im Vorrat). Gestaltung: Design-Canvas „dewi. Poker-Screens“, Reihe „Phase 2: Shop“.
+
+**Entscheidungen (Vito):** Entwürfe im Canvas passen. Im Hauptmenü kommt nur die Shop-Kachel dazu, bestehende Kacheln bleiben unverändert. Startartikel wie auf der Auswahltafel markiert. Chip-Pille öffnet den Shop. Kein Sparziel auf der Kachel. Alles in einer Version (Shop, Schutz, Fell, Kopf, Theme).
+
+**Technik**
+- `shop.js`: `SHOP_ITEMS` (inkl. Gratis-Artikel Classic-Fell, kein Kopf, Dewi Classic), `openShop`/`renderShop`/`shopAct`/`closeShop`, Kaufen zieht Chips ab und rüstet Cosmetics gleich aus, Streak-Schutz erhöht den Vorrat. `applyTheme()` setzt `data-theme` auf `<html>`; Vorschau während der Anprobe, beim Schließen zurück auf das ausgerüstete Theme; beim Start wird das gekaufte Theme gesetzt.
+- Dewi (`dwSvg(mood, look)`): Fell über `DW_FUR` (Kapuze und Ohren; Mitternacht mit Sternen), Kopf-Teil über `dwHeadItem()` in der gedrehten Kopf-Gruppe, dadurch sitzt die Schleife in allen Stimmungen gleich (Test). Ohne `look` = aktuelle Ausstattung, also überall in der App. Stempel nutzen `DW_PLAIN` (Original), damit alte Tage nicht umgefärbt werden.
+- Theme „Neon-Nacht“ als `:root[data-theme=neon]` (Hintergrund, Flächen, Linien, Akzent). Fest bleiben Lernsprachen-Pink, Grün/Rot und Holo. Einige Poker- und Shop-Stellen haben noch feste Farben und färben nicht mit (später beim Designsystem-Durchgang).
+- Hauptmenü: Kachel `.shopcard` im Stil von Gamemodes (Violett-Pink statt Blau); Chip-Pille auf dem Startscreen ist jetzt ein Knopf.
+- Kleine iPhones: nur die Artikel-Liste scrollt, Umkleide kompakter, Kaufen-Knopf bleibt sichtbar.
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen):** „Probier ruhig an. Anfassen kostet nichts. Noch.“ · „Mitternacht mit Sternen. Endlich versteht mich jemand.“ · „Die Schleife. Süß, aber gefährlich.“ · „Neon-Nacht. Fühlt sich teuer an.“ · „Ein Tag frei, ohne dass ich es merke. Fast.“
+
+**Tests:** test4 neuer Block SP1–SP15 (Kachel unter unverändertem Gamemodes, Pille öffnet Shop, Reiter, Anprobe, Kauf und Ausrüsten mit Abzug, Gratis-Fell, Theme-Vorschau, zu wenig Chips, „Nur meine“, Streak-Schutz kaufen, Schließen setzt Vorschau zurück, Schleife in allen Stimmungen, Stempel im Original, gekauftes Theme bleibt, Sicherung mit Käufen); C5 angepasst. Dabei gefunden und behoben: Kachel und Shop-Screen hatten dieselbe ID. Tests 2–5 grün. Im echten Chromium gemessen: Shop passt auf 390 × 844 und 375 × 667 ohne Überlauf.
+
+**Nicht auf einem echten iPhone getestet:** Farben von Mitternacht und Neon-Nacht, Sitz der Schleife, Sound beim Kaufen. In der Vorschau zum Ausprobieren im Testbereich Chips sammeln oder per Survival.
+
+
+## Version 139 – Startscreen ohne Tab-Leiste: Zahnrad, Vokabelheft-Kachel, goldener Shop, Chip-Stapel
+
+> **Der Startscreen wird zum Hauptmenü.** Die Tab-Leiste unten ist weg. Oben rechts neben den Chips sitzt ein Zahnrad, das die Einstellungen öffnet. Die Streak-Pille oben ist weg, weil die Serie schon in der Daily-Round-Kachel steht und nur dort zählt. Die Fortschritt-Kachel ist jetzt eine schmale dunkelblaue Kachel „Vokabelheft“ im Stil von Gamemodes; der Fortschrittsbalken steht im Vokabelheft oben. Die Shop-Kachel ist golden und hat mehr Abstand zu Gamemodes. In der Daily-Round-Kachel oben rechts liegen zwei gestapelte Dewi-Chips, obendrauf dreht sich ein goldener Chip um die senkrechte Achse.
+
+**Entscheidungen (Vito):** Zahnrad öffnet direkt die Einstellungsseite (kein Menü). Vokabelheft-Kachel schmal wie Gamemodes, dunkelblau. Shop im Gold-Verlauf. Chip-Stapel klein oben rechts in der Kachelecke, dreht sich immer (auch nach geschaffter Runde).
+
+**Technik**
+- `<nav id="tabs">` samt CSS und Code entfernt; untere Polsterung der Seite von 104 auf 40 px.
+- Navigation über `data-v`: `render()` bindet alle `[data-v]` im aktuellen Screen an `go()`. Zahnrad `#gear` (`data-v="settings"`), Vokabelheft-Kachel `.bookcard` (`data-v="book"`), Zurück-Pfeil `.backbtn` (`data-v="home"`) in Vokabelheft und Einstellungen.
+- `stPill()` und `.stpill` entfernt.
+- Reihenfolge der Kacheln: Daily Round, Gamemodes, Shop, Vokabelheft. Abstand zwischen den Kacheln 16 px (`.gmcard+.gmcard`).
+- Shop-Kachel: Gold-Verlauf (#ffd45c → #e88a0c) mit Glanz oben, dunkelbraune Schrift und Icon-Linien.
+- `chipStack()`: zwei gestauchte pinke Chips (`preserveAspectRatio="none"`, Kante per Schatten) und ein goldener Chip mit `rotateY`-Animation (2,8 s). Bei „Bewegung reduzieren“ steht er still.
+- EN: „Vokabelheft öffnen“, „Einstellungen öffnen“.
+
+**Tests:** test4 neu NV1–NV7 (keine Tab-Leiste/Streak-Pille, Zahnrad, Chip-Stapel, Vokabelheft-Kachel, Zurück-Pfeile); SP1 auf drei Kacheln angepasst; test2 D17 und test3 (Englisch-Start, Namensfrage, Sound-Einstellungen) öffnen Heft und Einstellungen jetzt über Kachel bzw. Zahnrad. Tests 2–5 grün. Im echten Chromium gemessen (390 × 844 und 375 × 667, Runde offen und geschafft): kein seitlicher Überlauf, Chip-Stapel überlappt den Titel nicht.
+
+**Nicht auf einem echten iPhone getestet:** Wirkung des Golds, Drehung des Chips (Ruckeln, Akku), Antippen des Zahnrads neben der Chip-Pille.
+
+
+## Version 140 – Shop-Kachel weg, Vokabelheft-Kachel wie die alte Fortschritt-Karte
+
+> **Zurück zur Ruhe im Hauptmenü.** Die goldene Shop-Kachel ist wieder weg, der Shop bleibt über die Chip-Pille oben erreichbar. Die Vokabelheft-Kachel sieht jetzt wieder aus wie die alte Fortschritt-Karte: „FORTSCHRITT“, „X von Y Wörtern begonnen“ und der bunte Balken, aber ohne die Liste der Stufen darunter. Die Liste steht jetzt im Vokabelheft selbst, direkt wenn man die Kachel antippt.
+
+**Entscheidung (Vito):** Shop-Kachel entfernen, Shop nur über die Pille. Vokabelheft-Kachel wie im Screenshot: Balken ohne Stufen-Liste, die Liste erst auf der Vokabelheft-Seite.
+
+**Technik**
+- Shop-Kachel (`SHOPIC`, `#shopbtn`, `.shopcard`) komplett aus `homeView()` und dem CSS entfernt. `openShop()` bleibt unverändert, erreichbar über `#chippill`.
+- Die Vokabelheft-Kachel ist jetzt ein `<button class="card prog bookcard">` (kein schmaler `gmcard`-Knopf mehr): Eyebrow „Fortschritt“, Text, Balken – dieselbe Berechnung wie im Vokabelheft, nur ohne `.legend`. Klick/Enter navigiert wie bisher über `data-v="book"`.
+- CSS: `.bookcard` setzt nur noch die Button-Grundlagen zurück (Breite, Schrift, Cursor), die Optik kommt von `.card.prog` (dieselbe Klasse wie zuvor auf dem Startscreen).
+
+**Tests:** test4 SP1 und NV3 angepasst (keine Shop-Kachel mehr im Hauptmenü, Vokabelheft-Kachel mit Balken ohne Liste), SP-Block öffnet den Shop jetzt über die Chip-Pille statt über die Kachel. test3 prüft das aria-label der Kachel statt eines Kachel-Titels. Tests 2–5 grün. Im echten Chromium gemessen (390 × 844 und 375 × 667): keine Shop-Kachel mehr, Vokabelheft-Kachel ohne Überlauf, Klick öffnet das Vokabelheft mit der Stufen-Liste oben.
+
+**Nicht auf einem echten iPhone getestet:** Antippbarkeit der ganzen Karte als Knopf, Wirkung ohne die Shop-Kachel im Alltag.
+
+
+## Version 141 – Chip-Stapel wieder weg, Pfeil an der Vokabelheft-Kachel
+
+> **Zwei kleine Korrekturen.** Der drehende Chip-Stapel in der Daily-Round-Kachel ist wieder raus, er war zu unruhig fürs Auge. Die Vokabelheft-Kachel hat jetzt oben rechts denselben kleinen Pfeil wie die Gamemodes-Kachel, damit klar ist, dass man sie antippen kann.
+
+**Entscheidung (Vito):** Chip-Stapel entfernen. Pfeil-Symbol wie bei Gamemodes ergänzen.
+
+**Technik**
+- `chipStack()` und das zugehörige CSS (`.dstack`, `@keyframes dsspin`) entfernt, `.plan h2` ohne den dafür reservierten Platz rechts.
+- Vokabelheft-Kachel: neue Kopfzeile `.bookrow` stellt „Fortschritt“ und einen Pfeil (`.bookgo`, gleiche Form wie `.gmgo`, in `var(--muted)`) nebeneinander.
+
+**Tests:** test4 NV2 prüft jetzt, dass kein Chip-Stapel mehr da ist; NV3 prüft zusätzlich den Pfeil. Tests 2–5 grün. Im echten Chromium gemessen (390 × 844 und 375 × 667): kein Überlauf, Pfeil sitzt sauber in der Ecke.
+
+**Nicht auf einem echten iPhone getestet:** Wie ruhig die Daily-Round-Kachel jetzt wirkt.
+
+
+## Version 142 – Blind-Chip dreht sich, schlankere Einstellungen, Testbereich mit Textfeldern
+
+> **Drei Korrekturen auf einmal.** Beim Antippen eines Blind-Chips in der Daily Round dreht sich der Chip jetzt einmal um die senkrechte Achse und glänzt dabei, statt wegzurutschen. Die Einstellungen haben ihre Erklärtexte verloren – die Bedienelemente sprechen für sich, nur „Tägliche Erinnerung“ ist als reiner Erklär-Abschnitt ganz raus. Der Testbereich ist jetzt immer sichtbar (keine sieben Tipps mehr auf die Überschrift) und funktioniert über zwei Textfelder: Anzahl Wörter freischalten und Anzahl Chips, jeweils mit eigenem Zurücksetzen-Knopf, wirkt sofort beim Drücken von Enter.
+
+**Entscheidungen (Vito):** Chip-Drehung ersetzt den bisherigen Abgang. „Tägliche Erinnerung“ fällt als Abschnitt komplett weg. Testbereich wirkt sofort bei Enter, ohne automatische Sicherung im Hintergrund. Freigeschaltete Wörter einfach auf Stufe 1, heute fällig (keine gestreuten Stufen mehr).
+
+**Technik**
+- `pokerui.js`/CSS: `.bschip.go .bscwrap` dreht sich mit `rotateY(360deg)` und schrumpft dabei aus (`bsspin`, 0,5 Sek.), ein Glanzstreifen läuft einmal quer über den Chip (`bsshine`). Rundenstart wartet jetzt 520 ms statt 420 ms. Ersetzt das alte Wegrutschen (`bsgo`).
+- `settingsView()`: alle `<p class="hint">`-Erklärsätze entfernt außer der Sicherungs-/Namens-Rückmeldung (`#nmflash`, jetzt leer) und dem Testdatum bei „Testen“ (nur noch das Datum, ohne Erklärsatz). Abschnitt „Tägliche Erinnerung“ komplett gestrichen.
+- Testbereich: `devCard()` ohne Sichtbarkeits-Flag, keine sieben Tipps auf `#sethead`, kein `state.dev`/`state.devTest` mehr. Zwei Formulare `#devwordsf`/`#devchipsf` mit Zahlenfeld, Enter löst `devSetWords()`/`devSetChips()` aus (Wörter: die ersten X Wörter auf Stufe 1, heute fällig, Rest unberührt; Chips: direkt gesetzt). Je ein „Zurücksetzen“-Knopf daneben (Wörter: Fortschritt der Lernsprache leeren; Chips: auf 0). Die alte Sicherung/Wiederherstellung des echten Standes (`DEV_BAK`, „Testphase aktiv“) ist komplett entfallen, ebenso die sechs Lernphasen-Knöpfe.
+
+**Tests:** Neuer Block V1–V7 in test4 für den Testbereich (sofort sichtbar, Eingabe setzt Wörter/Chips, Zurücksetzen, Kappung über die Wortzahl hinaus). Keine Tests verweisen mehr auf die entfernten Beschreibungstexte. Tests 2–5 grün. Im echten Chromium geprüft: Chip-Drehung läuft (`bsspin`, 0,5 s), Einstellungen zeigen nur noch Bedienelemente plus Testdatum, Testbereich ist ohne Geheim-Tipps sofort da.
+
+**Nicht auf einem echten iPhone getestet:** Wie die Drehung mit Glanz auf dem Gerät wirkt (Timing, Haptik dazu), ob die Einstellungen ohne Erklärtexte noch selbsterklärend genug sind.
+
+
+## Version 143 – Echter Münz-Flip, eigener Dreh-Sound, wuchtige Verdopplung bei Royal Flush
+
+> **Drei Korrekturen an der Daily Round.** Die Zeile „Small Blind 100 · ×0 · verfällt um Mitternacht“ unter „Weiterspielen“ ist weg. Die Blind-Chips drehen sich beim Antippen jetzt wirklich als Münze mit Vorder- und Rückseite (nicht mehr nur ein flaches Drehbild) und haben einen eigenen, dazu passenden Dreh-Sound statt des alten Chip-Klackerns. Und wenn am Ende der Daily Round ein Royal Flush den Betrag verdoppelt, passiert das jetzt in zwei Schritten mit Wumms: erst der normale Betrag, dann ein kräftiger Schlag mit Sound, Vibration, einer „×2“-Marke, die einschlägt, und der ganze Bildschirm zuckt und blitzt kurz auf.
+
+**Entscheidungen (Vito):** Echter Münz-Flip (statt nur schnellerem Drehbild). Neuer eigener Dreh-Sound (statt den Chip-Klack-Sound zu verlängern). Erst normal zählen, dann sichtbar verdoppeln (statt den verdoppelten Betrag sofort anzuzeigen). Die Verdopplungs-Animation lässt den ganzen Bildschirm kurz mitreagieren (statt nur den Betragsbereich).
+
+**Technik**
+- `openHandHint()` und die Zeile „Small Blind … · verfällt um Mitternacht“ komplett entfernt (Funktion, beide Aufrufstellen unter „Weiterspielen“, `.ohint`-CSS).
+- Echter Münz-Flip: `chips.js` bekommt `chipBackSvg(tone)` für eine passende Rückseite (gleiche Farben wie die Vorderseite). Die Blind-Buttons zeigen jetzt `.bscwrap` mit zwei übereinanderliegenden Seiten (`.bscface.bscfront`/`.bscback`, Rückseite per `backface-visibility` vorgedreht). `@keyframes bsflip` dreht den Chip einmal um 360°, dabei wird bei 180° kurz die Rückseite sichtbar; `bsshine` läuft wie bisher als Glanzstreifen quer drüber. Rundenstart wartet weiterhin die 0,5 Sek. ab.
+- Eigener Sound: neue `spinchip`-Stimme in der `SFX`-Tabelle (kurzes Schwirren mit einem kleinen Funkeln am Ende), ersetzt den bisherigen `chips`-Sound bei der Blind-Auswahl.
+- Royal-Flush-Verdopplung in `payoutStage()` (`pokerui.js`): Statt direkt den verdoppelten Betrag hochzuzählen, zählt die Zahl zuerst auf den einfachen Betrag (`Math.round(Auszahlung/2)`). Nach einer kurzen Pause: die „×2“-Marke (`#erfx2`, bis dahin per `hidden` versteckt) schlägt mit einer Lupen-Animation ein (`.rfx2.punch`/`@keyframes rfx2punch`), die Zahl macht einen Sprung nach oben und zurück (`.slam`/`@keyframes eslam`), ein neuer wuchtiger `doubleup`-Sound (tiefer Schlag, kurzer Knack, dann ein helles Funkeln) spielt zusammen mit einem kräftigeren Vibrationsmuster, und der ganze Auszahlungs-Bildschirm zuckt kurz (`.paystage.dbl`/`@keyframes stageShake`) und blitzt einmal weiß-golden auf (`::after`-Overlay, `@keyframes stageFlash`). Dann steht der tatsächliche, verdoppelte Betrag da. Die alte, unbenutzte `pomult.flash`/`pmflash`-Hervorhebung ist entfernt (sie wurde durch die neue „×2“-Marke ersetzt).
+- `#epay` zeigt jetzt bei Royal Flush „Einsatz ×Multiplikator ×2“ (die „×2“ als eigenes, anfangs verstecktes Element) statt einer festen Zahl.
+
+**Tests:** test2 P28/P31 (keine Hinweiszeile mehr beim offenen Hand-Zustand) angepasst. B5b und P21 (Royal-Flush-Texte) an das neue Leerzeichen vor „×2“ angepasst, prüfen inhaltlich weiterhin denselben verdoppelten Betrag. Tests 2–5 grün (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“).
+
+**Nicht auf einem echten iPhone getestet:** Wie der Münz-Flip mit echter Perspektive wirkt, die Lautstärke/Balance des neuen Dreh- und Verdopplungs-Sounds, ob das Bildschirm-Zucken auf dem Gerät angenehm wuchtig oder zu heftig wirkt, das neue Vibrationsmuster bei der Verdopplung.
+
+
+## Version 144 – Vom linken Rand zurückwischen
+
+> **Neue Geste.** Im Vokabelheft und in den Einstellungen kommt man jetzt auch zurück zum Startbildschirm, wenn man vom linken Bildschirmrand nach rechts wischt – wie der bekannte Zurück-Wisch auf dem iPhone. Der Pfeil oben links bleibt zusätzlich da.
+
+**Entscheidungen (Vito):** Gilt nur für die normalen Menüs (Vokabelheft, Einstellungen), nicht für Shop, Spielmodus-Auswahl, Blind-Auswahl oder eine laufende Lernrunde – dort gibt es schon andere Wisch-Gesten (irgendwo wischen = weiter, das Swipe-Modul), die sich sonst in die Quere kämen. Schmaler Rand-Bereich wie beim iPhone (rund 24 px). Kein mitziehender Bildschirm, nur ein einfacher Schwellenwert, der sofort zurückspringt.
+
+**Technik**
+- Ein globaler `pointerdown`/`pointerup`-Zuhörer (einmalig gesetzt, nicht bei jedem `render()`) merkt sich die Startposition, wenn sie innerhalb von 24 px vom linken Rand liegt, kein Sheet offen ist (`sheet.hidden`) und kein Bedienelement getroffen wurde. Beim Loslassen: mindestens 60 px nach rechts, höchstens 70 px hoch/runter (dieselben Schwellen wie beim bestehenden „irgendwo wischen = weiter" in `rounds.js`) und aktuell `view==='book'` oder `'settings'` → `go('home')`, genau wie ein Klick auf den Zurück-Pfeil.
+- Da die Prüfung `sheet.hidden` verlangt, greift die Geste nie, während Shop, Spielmodus-Auswahl, Blind-Auswahl oder eine Runde offen sind (die laufen alle über das `#sheet`-Overlay), und auch nicht auf dem Startbildschirm selbst (da gibt es kein Zurück-Ziel).
+
+**Tests:** Keine automatisierten Tests für Touch-Gesten (die Testumgebung simuliert kein Pointer-Dragging); Tests 2–5 unverändert grün. Im echten Chromium mit simulierten Zeigerereignissen geprüft: Wisch vom Rand bringt im Vokabelheft und in den Einstellungen zurück zum Start, auf dem Startbildschirm passiert nichts, ein Wisch, der nicht am Rand beginnt, löst nichts aus.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich die Geste mit echtem Finger und echtem Safari-Verhalten (z. B. gleichzeitiges Scrollen) anfühlt, ob 24 px als Trefferbereich am Gerät leicht genug zu treffen sind.
+
+
+## Version 145 – Tab-Leiste zurück, mit Shop statt Einstellungen
+
+> **Die Leiste ist wieder da.** Unten im Hauptmenü gibt es wieder die drei Reiter wie vor Version 139 – nur steht jetzt an der Stelle der Einstellungen der Shop. Einstellungen bleiben über das Zahnrad oben erreichbar, das es seit Version 139 gibt. Die Leiste ist auf allen drei Bildschirmen (Start, Vokabelheft, Einstellungen) sichtbar.
+
+**Entscheidungen (Vito):** Leiste wie früher, Shop an der Stelle der Einstellungen. Zahnrad oben bleibt zusätzlich für die Einstellungen. Leiste bleibt auch in den Einstellungen sichtbar (kein Reiter markiert, da Einstellungen keiner der drei Reiter ist).
+
+**Technik**
+- `<nav class="tabs" id="tabs">` und die zugehörige CSS (`.tabs`, `.tabs-in`) wieder eingebaut (waren seit Version 139 aus Markup und JS entfernt, einzelne `.tab`-Regeln standen als totes CSS noch da). Dritter Reiter heißt jetzt `#shoptab` (eigenes schlichtes Einkaufstüten-Symbol, Farbe Gold `var(--c-yellow)`) statt `data-v="settings"`.
+- `render()`/`applyStatic()`: Leiste wird wie früher ein-/ausgeblendet (versteckt nur auf den Auswahlbildschirmen für App-Sprache/Name/Lernsprache) und übersetzt; der aktuelle Reiter (Heute/Vokabelheft) bekommt `aria-current`, der Shop-Reiter nie, weil er kein eigener Bildschirm ist, sondern den Shop als Sheet öffnet.
+- Reiter-Klicks sind einmalig gebunden (`Heute`/`Vokabelheft` rufen `go()`, `#shoptab` ruft `openShop()`), nicht bei jedem `render()` neu, weil die Leiste selbst nie neu gezeichnet wird.
+- `.app`-Innenabstand unten wieder auf 104 px (Platz für die fixe Leiste), vorher 40 px ohne Leiste.
+
+**Tests:** test4 NV1–NV7 angepasst und erweitert (Leiste da statt weg, zeigt Heute/Vokabelheft/Shop statt Einstellungen, aktiver Reiter markiert, Shop-Reiter öffnet/schließt den Shop, Vokabelheft-Reiter navigiert und wird aktiv markiert). test3 prüft die englische Leiste (Today/Wordbook/Shop, keine Einstellungen). Tests 2–5 grün. Im echten Chromium auf 390 × 844 und 375 × 667 gemessen: Leiste sitzt fix unten ohne horizontalen Überlauf, auf dem kleinen iPhone braucht die unterste Kachel etwas Scrollen, ist dann aber vollständig sichtbar und nicht von der Leiste verdeckt.
+
+**Nicht auf einem echten iPhone getestet:** Wie die Leiste mit der Haus-Leiste/Safe-Area auf einem echten Gerät zusammenspielt, Treffergenauigkeit der drei Reiter mit dem Finger.
+
+
+## Version 146 – „Heute" heißt „Home", Leiste auch im Shop, Pfeil mittig auf der Vokabelheft-Kachel
+
+> **Drei kleine Korrekturen.** Der erste Reiter heißt jetzt „Home" statt „Heute" (auf Deutsch und Englisch gleich). Die Tab-Leiste bleibt jetzt auch sichtbar, während der Shop offen ist – Heute und Vokabelheft schließen den Shop dabei automatisch mit, wenn man sie antippt. Der Pfeil auf der Vokabelheft-Kachel sitzt jetzt mittig auf der ganzen Kachel statt oben in der Kopfzeile.
+
+**Entscheidungen (Vito):** „Home" auf Deutsch und Englisch gleich (statt „Start").
+
+**Technik**
+- Reiter-Beschriftung: `data-k="Heute"` → `data-k="Home"`, EN-Eintrag `"Home": "Home"` ergänzt.
+- Leiste im Shop: `.sheet` bekommt beim Öffnen des Shops die Klasse `shop-open` (`openShop()`), die per CSS ihren `z-index` unter den der Leiste senkt (`.sheet.shop-open{z-index:5}`, Leiste bleibt bei 10) – die Leiste liegt dadurch über dem Shop statt darunter. Damit der „Kaufen/Ausrüsten"-Knopf am unteren Rand des Shops nicht unter der Leiste verschwindet, bekommt `.sin.shop` in diesem Zustand 104 px Platz unten (derselbe Wert wie beim `.app`-Innenabstand für die Leiste). Die Klasse wird beim Schließen eines beliebigen Sheets in `closeSheet()` wieder entfernt, damit sie nicht an den nächsten Bildschirm (Spielmodus-Auswahl, Blind-Auswahl) weitergegeben wird – nur der Shop bekommt die sichtbare Leiste, wie gewünscht.
+- Heute/Vokabelheft-Reiter schließen beim Antippen zuerst einen offenen Shop (`if(SHOP)closeShop();`) und wechseln dann erst die Ansicht, damit die Leiste auch im Shop normal funktioniert statt nur sichtbar, aber wirkungslos zu sein. Der Shop-Reiter selbst wird beim Öffnen aktiv markiert (`aria-current`), weil er sonst als einziger Bildschirm ohne markierten Reiter dagestanden hätte.
+- Pfeil auf der Vokabelheft-Kachel: `.bookcard` bekommt `position:relative` und rechts 46 px Platz; `.bookgo` sitzt jetzt absolut positioniert, senkrecht mittig auf der ganzen Kachel (`top:50%;transform:translateY(-50%)`) statt in der Kopfzeile neben der Eyebrow.
+
+**Tests:** test3 prüft die englische Leiste jetzt auf „Home" statt „Today". test4 NV1d2/d3 (jetzt NV1d2/e/f/g) um die Prüfung erweitert, dass die Leiste im Shop sichtbar bleibt und der Shop-Reiter aktiv markiert ist, und dass Vokabelheft/Heute den Shop beim Antippen mitschließen. Tests 2–5 grün. Im echten Chromium gemessen: Pfeil weicht nur 2 px von der exakten Kachel-Mitte ab und überlappt weder den Fortschrittstext noch den Balken (selbst bei „678 Wörtern", dem größten vorkommenden Zahlenwert); im Shop sitzt der „Kaufen"-Knopf 36 px über der Leiste, nicht darunter verdeckt.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich „Home" statt „Heute" auf Deutsch liest, ob die Leiste über dem Shop auf dem Gerät optisch stört oder zu viel wirkt.
+
+
+
+## Version 147 – Deutsche Flagge, keine Artikel mehr
+
+> **Zwei Korrekturen.** Im Deutschkurs zeigt der Sprachknopf oben links jetzt 🇩🇪 statt eines Globus. Und die Artikel aus Version 116 sind wieder raus: Aus „der Nachbar" wird „Nachbar", im Deutschkurs genauso wie bei den deutschen Bedeutungen im Englischkurs. Ziel der App ist ein spielerischer Einstieg, nicht perfekte Grammatik – die Artikel haben im Deutschkurs mehr gestört als geholfen.
+
+**Entscheidungen (Vito):** Artikel überall entfernen (Deutschkurs und Englischkurs). Wörter, die ohne Artikel gleich aussehen würden, nur einmal behalten – das Nomen fällt weg.
+
+**Technik**
+- Flagge: Die Zuordnung im Startscreen-Kopf kannte nur `id`/`en`, Deutsch fiel auf 🌐 zurück. `de:'🇩🇪'` ergänzt.
+- Neues Skript `data/strip_artikel.py` (Gegenstück zu `data/artikel.py`): entfernt in `data/en/*.txt` nur „der/die/das + ein einzelnes großgeschriebenes Wort" (314 Zeilen), doppelte Varianten danach fallen weg. Bewusst unverändert: „das dort" (that), „das hier" (this) – das sind Pronomen, keine Artikel –, „eine Million" (Zahl) und die feste Wendung „Die Rechnung bitte". Danach `make_en.py`, `make_de.py` und `data/align/emit.py` neu ausgeführt.
+- Deutschkurs jetzt **652 statt 655 Wörter:** „der Morgen", „das Essen", „der Arm" entfallen, weil sie ohne Artikel wie „morgen", „essen", „arm" aussähen (die bleiben). „dort" fällt nicht mit „das dort" zusammen, weil „das dort" seinen Artikel als Pronomen behält. Englischkurs unverändert 665 Wörter, nur die deutschen Bedeutungen ohne Artikel.
+- Zuordnungstabelle (`align.js`): Schlüssel des Deutschkurses folgen automatisch („de:nachbar:en"), 1 geprüfter Eintrag eines entfallenen Wortes fällt weg (1750 → 1749). Die Satz-Zuordnung selbst ändert sich nicht, weil die Sätze gleich bleiben.
+- `migrate()`: Fortschritt im Deutschkurs wandert auf die neuen Schlüssel („de:der nachbar" → „de:nachbar"), ebenso Tageslisten (`daily.lt`/`got`) und ein offener Run. Fortschritt der drei entfallenen Wörter wird gelöscht und **nicht** mit morgen/essen/arm vermischt; ein offener Run mit einem entfallenen Wort wird verworfen. Läuft bei jedem Start, findet nach dem ersten Mal nichts mehr.
+- Unverändert: Tippen akzeptiert weiterhin auch „der Nachbar" (`normDe` ignoriert einen führenden Artikel), Artikel in Sätzen gelten weiter als bekannte Füllwörter (`GLUE_DE`).
+
+**Nebeneffekt:** Ohne Artikel passen im Deutschkurs mehr Wörter in die Satz-Module: Lückensatz 43 → 56, Reihenfolge 99 → 190 Wörter.
+
+**Tests:** Neuer Block DK1–DK7 in test4 (Flagge, keine Artikel mehr außer Pronomen/Zahlen, die drei entfallenen Wörter, Übertragung von Fortschritt, Tagesliste und offenem Run, Englischkurs ohne Artikel). Tests 2–5 grün. Zusätzlich alle 652 Deutsch- und 665 Englischwörter in jedem passenden Modul gerendert, keine Fehler.
+
+**Nicht auf einem echten iPhone getestet:** Sprachausgabe der Wörter ohne Artikel (z. B. wie „Essen" vs. „essen" klingt, falls beides in einer Runde vorkommt), Flagge auf dem Gerät.
+
+
+## Version 148 – Zahnrad statt Lautstärke im Spiel, Sound-Einstellungen ganz oben
+
+> **Im Spiel (Daily Round, Survival) steht oben rechts jetzt das Zahnrad statt des Lautsprecher-Knopfs** – die Sound-Einstellungen sind sowieso dort erreichbar. Tippt man es an, legen sich die Einstellungen als Ebene übers laufende Spiel, ohne irgendetwas zu pausieren oder zu beenden; der Zurück-Pfeil führt exakt zurück ins Spiel. Dafür steht die Karte „Sound" (An/Aus, Lautstärke) in den Einstellungen jetzt ganz oben, vor „App-Sprache".
+
+**Entscheidungen (Vito):** Zahnrad öffnet die Einstellungen als Ebene über dem Spiel (nicht wie der ×-Knopf mit Pausieren/Beenden). Gleiches Zahnrad-Symbol wie im Hauptmenü.
+
+**Technik**
+- `rounds.js`: Im Kopf des Spiel-Sheets (`sheetBody()`) ersetzt der Zahnrad-Knopf (`#setgear`, gleiches Icon `GEARIC` wie im Hauptmenü) den bisherigen Lautsprecher-Knopf (`musIcon()`).
+- Neue Funktion `openSettingsOverlay()`: baut ein eigenes Element `#setov` (einmalig an `document.body` gehängt), füllt es mit `settingsView()` und zeigt es über dem Spiel-Sheet (`.setov`, `z-index:35`, das Sheet selbst liegt auf 30). Der Zurück-Pfeil darin schließt nur das Overlay (`ov.hidden=true`) statt wie sonst zum Startscreen zu navigieren – das laufende Spiel (`S`) bleibt währenddessen unberührt im Hintergrund stehen.
+- `bindSettings()` bekommt einen optionalen Parameter `root` (Standard: der normale Einstellungen-Bildschirm), damit dieselbe Funktion wortgleich auch die Felder im Overlay bedient. „Alles zurücksetzen" und „Sicherung einspielen" beenden zusätzlich ein offenes Spiel und schließen das Overlay, bevor sie den Zustand überschreiben, damit keine Spielreste mit neuen Daten kollidieren.
+- Einstellungen-Reihenfolge: Die Karte „Sound" steht jetzt vor „App-Sprache" (betrifft beide Stellen, da `settingsView()` für den normalen Bildschirm und das Overlay dieselbe Funktion ist). „Musik" bleibt an ihrem bisherigen Platz, da nur nach den Sound-Einstellungen gefragt war.
+- Der alte Lautsprecher-Knopf (`musIcon()`, `.musbtn`) bleibt im Code stehen, wird aber nirgends mehr aufgerufen – unschädlich, aber bei Gelegenheit aufräumbar.
+
+**Tests:** M10 in test4 geändert (prüfte bisher den Lautsprecher-Knopf im Modul, jetzt das Zahnrad) und um M10b/M10c erweitert: Antippen öffnet das Overlay mit „Sound" als erster Karte, Zurück-Pfeil schließt es wieder und das Spiel läuft unverändert weiter. Tests 2–5 grün. Zusätzlich mit Playwright/Chromium geprüft: Overlay liegt sichtbar über dem Spiel-Sheet, nach dem Schließen sind Quit-Knopf und Spielstand (`S`) noch da.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich das Ebenen-Layout (Overlay über Sheet) mit der Safe-Area und etwaigen Übergangs-Rucklern auf einem echten Gerät anfühlt.
+
+
+## Version 149 – Keine geschriebene Stufe/nächste Wiederholung mehr
+
+> **Unter dem Ergebnis jedes Moduls stand bisher ein Satz wie „Stufe 3 von 5. Nächste Wiederholung in 2 Tagen." (oder bei falsch/gerettet ähnlich) – das soll man nicht sehen.** Der Satz ist jetzt überall weg, Dewis Kommentar reicht als Rückmeldung. Im großen Level-up-Zwischenbildschirm fällt aus demselben Grund die Textzeile unter dem Stufen-Kreis weg – der Kreis mit der großen Zahl und die 5 Punkte darunter zeigen die Stufe schon bildlich.
+
+**Entscheidungen (Vito):** Unter dem Modul-Ergebnis bleibt gar kein Ersatz-Satz stehen. Im Level-up-Screen fällt die Zeile komplett weg (nicht nur der Wiederholungs-Teil).
+
+**Technik**
+- `resultNote()` in `rounds.js` ist die gemeinsame Stelle für alle Module (Tippen, Auswahl, Swipe, Lückensatz, Bausteine, Reihenfolge, Reels) – sie gibt für die Daily Round jetzt in allen drei Fällen (falsch, gerettet, normal richtig) einen leeren String zurück. Der Survival-Zweig (Punkte, Serie, „Ein Leben weniger.") ist unverändert, weil der nichts mit Stufe/Wiederholung zu tun hat.
+- `levelUp()`: Die Zeile `.lvl-sub` („Stufe {Level} von 5 · nächste Wiederholung …") ist entfernt. Übrig bleiben Beschriftung („Level up!"/„Gerettet!"/„Neues Wort!"/„Stufe gehalten"), der Stufen-Kreis mit der Zahl, die 5 Punkte darunter, das Wortpaar und Dewis Kommentar.
+- Die nun ungenutzten Übersetzungstexte (6 Varianten der beiden Sätze) bleiben in den Sprachdateien stehen, falls sie später wieder gebraucht werden – unschädlich.
+
+**Tests:** test4 D9 prüfte bisher den Wortlaut dieses Satzes bei falscher Antwort; jetzt prüft er stattdessen direkt im Spielstand, dass das Wort auf Stufe 0 fällt, und dass im Ergebnis kein „Stufe"/„Wiederholung"-Text mehr auftaucht. Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich der jetzt kürzere Ergebnis-Bildschirm (ohne den Satz) auf dem iPhone liest und ob er optisch leer wirkt.
