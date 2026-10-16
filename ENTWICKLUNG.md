@@ -1749,3 +1749,24 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Wie sich „Home" statt „Heute" auf Deutsch liest, ob die Leiste über dem Shop auf dem Gerät optisch stört oder zu viel wirkt.
 
+
+
+## Version 147 – Deutsche Flagge, keine Artikel mehr
+
+> **Zwei Korrekturen.** Im Deutschkurs zeigt der Sprachknopf oben links jetzt 🇩🇪 statt eines Globus. Und die Artikel aus Version 116 sind wieder raus: Aus „der Nachbar" wird „Nachbar", im Deutschkurs genauso wie bei den deutschen Bedeutungen im Englischkurs. Ziel der App ist ein spielerischer Einstieg, nicht perfekte Grammatik – die Artikel haben im Deutschkurs mehr gestört als geholfen.
+
+**Entscheidungen (Vito):** Artikel überall entfernen (Deutschkurs und Englischkurs). Wörter, die ohne Artikel gleich aussehen würden, nur einmal behalten – das Nomen fällt weg.
+
+**Technik**
+- Flagge: Die Zuordnung im Startscreen-Kopf kannte nur `id`/`en`, Deutsch fiel auf 🌐 zurück. `de:'🇩🇪'` ergänzt.
+- Neues Skript `data/strip_artikel.py` (Gegenstück zu `data/artikel.py`): entfernt in `data/en/*.txt` nur „der/die/das + ein einzelnes großgeschriebenes Wort" (314 Zeilen), doppelte Varianten danach fallen weg. Bewusst unverändert: „das dort" (that), „das hier" (this) – das sind Pronomen, keine Artikel –, „eine Million" (Zahl) und die feste Wendung „Die Rechnung bitte". Danach `make_en.py`, `make_de.py` und `data/align/emit.py` neu ausgeführt.
+- Deutschkurs jetzt **652 statt 655 Wörter:** „der Morgen", „das Essen", „der Arm" entfallen, weil sie ohne Artikel wie „morgen", „essen", „arm" aussähen (die bleiben). „dort" fällt nicht mit „das dort" zusammen, weil „das dort" seinen Artikel als Pronomen behält. Englischkurs unverändert 665 Wörter, nur die deutschen Bedeutungen ohne Artikel.
+- Zuordnungstabelle (`align.js`): Schlüssel des Deutschkurses folgen automatisch („de:nachbar:en"), 1 geprüfter Eintrag eines entfallenen Wortes fällt weg (1750 → 1749). Die Satz-Zuordnung selbst ändert sich nicht, weil die Sätze gleich bleiben.
+- `migrate()`: Fortschritt im Deutschkurs wandert auf die neuen Schlüssel („de:der nachbar" → „de:nachbar"), ebenso Tageslisten (`daily.lt`/`got`) und ein offener Run. Fortschritt der drei entfallenen Wörter wird gelöscht und **nicht** mit morgen/essen/arm vermischt; ein offener Run mit einem entfallenen Wort wird verworfen. Läuft bei jedem Start, findet nach dem ersten Mal nichts mehr.
+- Unverändert: Tippen akzeptiert weiterhin auch „der Nachbar" (`normDe` ignoriert einen führenden Artikel), Artikel in Sätzen gelten weiter als bekannte Füllwörter (`GLUE_DE`).
+
+**Nebeneffekt:** Ohne Artikel passen im Deutschkurs mehr Wörter in die Satz-Module: Lückensatz 43 → 56, Reihenfolge 99 → 190 Wörter.
+
+**Tests:** Neuer Block DK1–DK7 in test4 (Flagge, keine Artikel mehr außer Pronomen/Zahlen, die drei entfallenen Wörter, Übertragung von Fortschritt, Tagesliste und offenem Run, Englischkurs ohne Artikel). Tests 2–5 grün. Zusätzlich alle 652 Deutsch- und 665 Englischwörter in jedem passenden Modul gerendert, keine Fehler.
+
+**Nicht auf einem echten iPhone getestet:** Sprachausgabe der Wörter ohne Artikel (z. B. wie „Essen" vs. „essen" klingt, falls beides in einer Runde vorkommt), Flagge auf dem Gerät.

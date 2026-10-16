@@ -742,6 +742,26 @@ function toReels(E,force=true){
   E.click(E.$('.backbtn'));
   ok(!!E.$('.plan'),'NV7 Zurück aus dem Vokabelheft');
 }
+// --- Deutschkurs ohne Artikel, Flagge, Übertragung des alten Fortschritts (Version 147)
+{
+  const old={l:3,d:'2099-01-01',n:0};
+  const E=env({lang:'de',progress:{de:{'de:der nachbar':old,'de:der morgen':{l:5,d:'2099-01-01',n:0},'de:morgen':{l:1,d:'2099-01-01',n:0},'de:das dort':{l:2,d:'2099-01-01',n:0}}},
+    daily:{date:'2000-01-01',newCount:0,extra:0,lt:[],got:['de:die straße','de:das essen']}},'en','en-US');
+  ev(E,'render()');
+  ok(E.$('#chlang').textContent.trim()==='🇩🇪','DK1 Deutschkurs zeigt die deutsche Flagge');
+  const words=JSON.parse(ev(E,"JSON.stringify(curLang().words.map(w=>w.id))"));
+  const withArt=words.filter(w=>/^(der|die|das) [A-ZÄÖÜ]\S*$/.test(w));
+  ok(withArt.length===0&&words.includes('Nachbar')&&words.includes('das dort')&&words.includes('eine Million'),'DK2 Keine Wörter mit Artikel mehr, Pronomen und Zahlen bleiben ('+withArt.slice(0,3).join(', ')+')');
+  ok(!words.includes('Morgen')&&words.includes('morgen')&&!words.includes('Essen')&&words.includes('essen')&&!words.includes('Arm')&&words.includes('arm')&&words.length===652,'DK3 Morgen, Essen, Arm entfallen, morgen/essen/arm bleiben ('+words.length+')');
+  const P=JSON.parse(ev(E,'JSON.stringify(state.progress.de)'));
+  ok(P['de:nachbar']&&P['de:nachbar'].l===3&&!P['de:der nachbar'],'DK4 Fortschritt „der Nachbar“ wandert zu „Nachbar“');
+  ok(!P['de:der morgen']&&P['de:morgen'].l===1&&P['de:das dort'].l===2,'DK5 Entfallenes Wort wird gelöscht, nicht mit „morgen“ vermischt; „das dort“ bleibt');
+  ok(ev(E,"state.daily={date:today(),newCount:0,extra:0,lt:[],got:['de:die straße','de:das essen']};migrate();JSON.stringify(state.daily.got)")===JSON.stringify(['de:straße']),'DK6 Tagesliste umgeschrieben, entfallenes Wort raus');
+  ok(ev(E,"state.run={v:1,lang:'de',kind:'daily',i:0,items:[{k:'de:der nachbar',kind:'rev'}],missed:['de:der nachbar']};migrate();state.run.items[0].k+'|'+state.run.missed[0]")==='de:nachbar|de:nachbar'
+    &&ev(E,"state.run={v:1,lang:'de',kind:'daily',i:0,items:[{k:'de:der arm',kind:'rev'}],missed:[]};migrate();state.run")===null,'DK6b Offener Run: Schlüssel umgeschrieben, mit entfallenem Wort verworfen');
+  const en=JSON.parse(ev(E,"JSON.stringify(LANGS.en.cats.map(c=>c[1]).join('\\n'))"));
+  ok(/neighbor = Nachbar\b/.test(en)&&!/= (der|die|das) [A-ZÄÖÜ][^\s/]*\s*(\/|$)/m.test(en),'DK7 Englischkurs: deutsche Bedeutung ohne Artikel');
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();

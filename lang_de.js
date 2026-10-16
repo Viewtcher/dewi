@@ -1,5 +1,5 @@
 /* Deutsch-Kurs (erzeugt von data/make_de.py aus data/en/*.txt) */
-LANGS.de={id:'de',name:'Deutsch',native:'Deutsch',code:'DE',kp:'de:',needsEn:true,alts:{"entschuldigung": ["tut mir leid"], "gut": ["in Ordnung"], "du": ["Sie"], "dies": ["das hier", "hier"], "das dort": ["dort"], "einhundert": ["hundert"], "eintausend": ["tausend"], "eine million": ["Million"], "halb": ["Hälfte", "die Hälfte"], "der tag": ["Tag"], "der morgen": ["Morgen", "Vormittag", "der Vormittag"], "der nachmittag": ["Nachmittag"], "der abend": ["Abend"], "die nacht": ["Nacht"], "der mittag": ["Mittag"], "die mitternacht": ["Mitternacht"], "die woche": ["Woche"], "das wochenende": ["Wochenende"], "der monat": ["Monat"], "das jahr": ["Jahr"], "die stunde": ["Stunde"], "die minute": ["Minute"], "die sekunde": ["Sekunde"], "die zeit": ["Zeit"], "noch": ["immer noch"], "die familie": ["Familie"], "die mutter": ["Mutter"], "der vater": ["Vater"], "die eltern": ["Eltern"], "das kind": ["Kind"], "der sohn": ["Sohn"], "die tochter": ["Tochter"], "der bruder": ["Bruder"], "die schwester": ["Schwester"], "die großmutter": ["Großmutter", "Oma", "die Oma"], "der großvater": ["Großvater", "Opa", "der Opa"], "der onkel": ["Onkel"], "die tante": ["Tante"], "der cousin": ["Cousin", "Cousine", "die Cousine"], "der ehemann": ["Ehemann"], "die ehefrau": ["Ehefrau"], "das baby": ["Baby"], "der junge": ["Junge"], "das mädchen": ["Mädchen"], "der mann": ["Mann"], "die frau": ["Frau"], "die leute": ["Leute", "Menschen", "die Menschen"], "die person": ["Mensch", "Person", "der Mensch"], "der freund": ["Freund", "Freundin", "die Freundin"], "der nachbar": ["Nachbar"], "der gast": ["Gast"], "der lehrer": ["Lehrer", "Lehrerin", "die Lehrerin"], "der student": ["Schüler", "Student", "der Schüler"], "der arzt": ["Arzt", "die Ärztin", "Ärztin"], "der krankenpfleger": ["Krankenpfleger", "Krankenschwester", "die Krankenschwester"], "der polizist": ["Polizist", "Polizistin", "die Polizistin"], "der fahrer": ["Fahrer"], "der bauer": ["Bauer", "Landwirt", "der Landwirt"], "der koch": ["Koch", "Köchin", "die Köchin"], "der kellner": ["Kellner"], "der chef": ["Chef", "Chefin", "die Chefin"], "das essen": ["Essen", "Lebensmittel", "die Lebensmittel"], "das wasser": ["Wasser"], "der tee": ["Tee"], "der kaffee": ["Kaffee"], "die milch": ["Milch"], "der saft": ["Saft"], "das bier": ["Bier"], "der wein": ["Wein"], "das brot": ["Brot"], "der reis": ["Reis"], "das ei": ["Ei"], "das fleisch": ["Fleisch"], "das hähnchen": ["Huhn", "Hähnchen", "das Huhn"], "das rindfleisch": ["Rindfleisch"], "das schweinefleisch": ["Schweinefleisch"], "der fisch": ["Fisch"], "die suppe": ["Suppe"], "der salat": ["Salat"], "das gemüse": ["Gemüse"], "das obst": ["Frucht", "Obst", "die Frucht"], "der apfel": ["Apfel"], "die banane": ["Banane"], "die orange": ["Orange"], "die zitrone": ["Zitrone"], "die kartoffel": ["Kartoffel"], "die tomate": ["Tomate"], "die zwiebel": ["Zwiebel"], "der knoblauch": ["Knoblauch"], "die karotte": ["Karotte", "Möhre", "die Möhre"], "der käse": ["Käse"], "die butter": ["Butter"], "der zucker": ["Zucker"], "das salz": ["Salz"], "der pfeffer": ["Pfeffer"], "das öl": ["Öl"], "die nudeln": ["Nudeln"], "die pasta": ["Pasta"], "die pizza": ["Pizza"], "das sandwich": ["Sandwich"], "der kuchen": ["Kuchen"], "die schokolade": ["Schokolade"], "das eis": ["Eis"], "das frühstück": ["Frühstück"], "das mittagessen": ["Mittagessen"], "das abendessen": ["Abendessen"], "der snack": ["Imbiss", "Snack", "der Imbiss"], "die mahlzeit": ["Essen", "Mahlzeit", "das Essen"], "das restaurant": ["Restaurant"], "die speisekarte": ["Speisekarte"], "die rechnung": ["Rechnung"], "der tisch": ["Tisch"], "der teller": ["Teller"], "das glas": ["Glas"], "die tasse": ["Tasse"], "die flasche": ["Flasche"], "der löffel": ["Löffel"], "die gabel": ["Gabel"], "das messer": ["Messer"], "gehen": ["fahren"], "eintreten": ["betreten"], "verlassen": ["abfahren"], "ankommen": ["erreichen"], "aufwachen": ["erwachen"], "schauen": ["aussehen"], "zuschauen": ["ansehen"], "erzählen": ["sagen"], "anrufen": ["rufen"], "studieren": ["lernen"], "wissen": ["kennen"], "wollen": ["möchten"], "legen": ["stellen"], "machen": ["herstellen"], "tun": ["machen"], "putzen": ["reinigen"], "anfangen": ["starten"], "beenden": ["fertig werden"], "anhalten": ["aufhören"], "wohnen": ["leben"], "reiten": ["fahren"], "ändern": ["wechseln"], "anhaben": ["tragen"], "hochgewachsen": ["groß"], "leicht": ["einfach"], "ordentlich": ["sauber"], "frei": ["kostenlos"], "bereit": ["fertig"], "das haus": ["Haus"], "das zuhause": ["Zuhause"], "die wohnung": ["Wohnung"], "das zimmer": ["Zimmer"], "die küche": ["Küche"], "das badezimmer": ["Badezimmer"], "das schlafzimmer": ["Schlafzimmer"], "der garten": ["Garten"], "die straße": ["Straße"], "die landstraße": ["Landstraße", "Weg", "der Weg"], "die stadt": ["Stadt"], "die kleinstadt": ["Kleinstadt"], "das dorf": ["Dorf"], "das land": ["Land"], "die schule": ["Schule"], "die universität": ["Universität"], "das krankenhaus": ["Krankenhaus"], "der laden": ["Laden"], "der markt": ["Markt"], "der supermarkt": ["Supermarkt"], "die bank": ["Bank"], "die post": ["Post"], "die kirche": ["Kirche"], "das museum": ["Museum"], "die bibliothek": ["Bibliothek"], "der park": ["Park"], "der strand": ["Strand"], "das hotel": ["Hotel"], "das büro": ["Büro"], "die fabrik": ["Fabrik"], "der bauernhof": ["Bauernhof"], "die brücke": ["Brücke"], "der ort": ["Ort", "Platz", "der Platz"], "das gebäude": ["Gebäude"], "hinauf": ["oben"], "hinunter": ["unten"], "der norden": ["Norden"], "der süden": ["Süden"], "das auto": ["Auto"], "der bus": ["Bus"], "der zug": ["Zug"], "das fahrrad": ["Fahrrad"], "das motorrad": ["Motorrad"], "das taxi": ["Taxi"], "das flugzeug": ["Flugzeug"], "das boot": ["Boot"], "das schiff": ["Schiff"], "der bahnhof": ["Bahnhof"], "der flughafen": ["Flughafen"], "die fahrkarte": ["Fahrkarte", "Ticket", "das Ticket"], "der reisepass": ["Reisepass"], "das gepäck": ["Gepäck"], "der koffer": ["Koffer"], "die karte": ["Karte", "Stadtplan", "der Stadtplan"], "die reise": ["Ausflug", "Reise", "der Ausflug"], "der urlaub": ["Urlaub"], "der tourist": ["Tourist"], "die fahrt": ["Fahrt", "Reise", "die Reise"], "der körper": ["Körper"], "der kopf": ["Kopf"], "die haare": ["Haare"], "das gesicht": ["Gesicht"], "das auge": ["Auge"], "das ohr": ["Ohr"], "die nase": ["Nase"], "der mund": ["Mund"], "der zahn": ["Zahn"], "der hals": ["Hals", "Nacken", "der Nacken"], "die schulter": ["Schulter"], "der arm": ["Arm"], "die hand": ["Hand"], "der finger": ["Finger"], "der rücken": ["Rücken"], "der bauch": ["Bauch", "Magen", "der Magen"], "das bein": ["Bein"], "das knie": ["Knie"], "der fuß": ["Fuß"], "das herz": ["Herz"], "die haut": ["Haut"], "das blut": ["Blut"], "die medizin": ["Medikament", "Medizin", "das Medikament"], "der schmerz": ["Schmerz"], "das fieber": ["Fieber"], "die grippe": ["Grippe"], "der husten": ["Husten"], "die kopfschmerzen": ["Kopfschmerzen"], "der knochen": ["Knochen"], "die tablette": ["Tablette"], "die gesundheit": ["Gesundheit"], "wehtun": ["verletzen"], "die kleidung": ["Kleidung"], "das hemd": ["Hemd"], "das kleid": ["Kleid"], "der rock": ["Rock"], "die hose": ["Hose"], "die jacke": ["Jacke"], "der mantel": ["Mantel"], "der pullover": ["Pullover"], "der schuh": ["Schuh"], "die socke": ["Socke"], "der hut": ["Hut", "Mütze", "die Mütze"], "die tasche": ["Tasche"], "die brille": ["Brille"], "der ring": ["Ring"], "der regenschirm": ["Regenschirm"], "die farbe": ["Farbe"], "das gold": ["Gold", "golden"], "das silber": ["Silber", "silbern"], "die sonne": ["Sonne"], "der mond": ["Mond"], "der stern": ["Stern"], "der himmel": ["Himmel"], "die wolke": ["Wolke"], "der regen": ["Regen"], "der schnee": ["Schnee"], "der wind": ["Wind"], "der sturm": ["Sturm"], "das wetter": ["Wetter"], "der nebel": ["Nebel"], "das feuer": ["Feuer"], "die erde": ["Erde"], "das meer": ["Meer"], "der ozean": ["Ozean"], "der fluss": ["Fluss"], "der see": ["See"], "der berg": ["Berg"], "der wald": ["Wald"], "der baum": ["Baum"], "die blume": ["Blume"], "das gras": ["Gras"], "das blatt": ["Blatt"], "der stein": ["Stein"], "der sand": ["Sand"], "das tier": ["Tier"], "der hund": ["Hund"], "die katze": ["Katze"], "der vogel": ["Vogel"], "das pferd": ["Pferd"], "die kuh": ["Kuh"], "das schwein": ["Schwein"], "das schaf": ["Schaf"], "die maus": ["Maus"], "das kaninchen": ["Kaninchen"], "die schlange": ["Schlange"], "das insekt": ["Insekt"], "der elefant": ["Elefant"], "der affe": ["Affe"], "die tür": ["Tür"], "das fenster": ["Fenster"], "die wand": ["Wand"], "der boden": ["Boden"], "das dach": ["Dach"], "die treppe": ["Treppe"], "das bett": ["Bett"], "der stuhl": ["Stuhl"], "das sofa": ["Sofa"], "die lampe": ["Lampe"], "der schlüssel": ["Schlüssel"], "das handy": ["Handy", "Telefon", "das Telefon"], "der computer": ["Computer"], "der fernseher": ["Fernseher"], "das radio": ["Radio"], "das buch": ["Buch"], "die zeitung": ["Zeitung"], "der brief": ["Brief"], "das bild": ["Bild"], "das handtuch": ["Handtuch"], "die seife": ["Seife"], "die dusche": ["Dusche"], "die toilette": ["Toilette"], "der spiegel": ["Spiegel"], "die kiste": ["Kiste", "Schachtel", "die Schachtel"], "das ding": ["Ding", "Sache", "die Sache"], "das geld": ["Geld"], "der preis": ["Preis"], "das bargeld": ["Bargeld"], "die münze": ["Münze"], "der euro": ["Euro"], "der rabatt": ["Rabatt"], "der kunde": ["Kunde"], "das geschenk": ["Geschenk"], "der geldbeutel": ["Geldbeutel"], "die arbeitsstelle": ["Arbeitsstelle"], "der kollege": ["Kollege"], "die besprechung": ["Besprechung"], "die firma": ["Firma"], "das gehalt": ["Gehalt"], "die klasse": ["Klasse", "Unterricht", "der Unterricht"], "die unterrichtsstunde": ["Unterrichtsstunde"], "die hausaufgabe": ["Hausaufgabe"], "die prüfung": ["Prüfung"], "die frage": ["Frage"], "das wort": ["Wort"], "der satz": ["Satz"], "die sprache": ["Sprache"], "der stift": ["Stift"], "das papier": ["Papier"], "das heft": ["Heft"], "die e-mail": ["E-Mail"], "das projekt": ["Projekt"], "die aufgabe": ["Aufgabe"], "das problem": ["Problem"], "die idee": ["Idee"], "die uhr": ["Uhr"], "wenn": ["falls"], "also": ["deshalb"], "von": ["aus"], "zu": ["nach"], "an": ["bei"], "gerade": ["nur"], "die rechnung bitte": ["Rechnung bitte"]},cats:[
+LANGS.de={id:'de',name:'Deutsch',native:'Deutsch',code:'DE',kp:'de:',needsEn:true,alts:{"entschuldigung": ["tut mir leid"], "gut": ["in Ordnung"], "du": ["Sie"], "dies": ["das hier", "hier"], "das dort": ["dort"], "einhundert": ["hundert"], "eintausend": ["tausend"], "eine million": ["Million"], "halb": ["Hälfte"], "noch": ["immer noch"], "großmutter": ["Oma"], "großvater": ["Opa"], "cousin": ["Cousine"], "leute": ["Menschen"], "person": ["Mensch"], "freund": ["Freundin"], "lehrer": ["Lehrerin"], "student": ["Schüler"], "arzt": ["Ärztin"], "krankenpfleger": ["Krankenschwester"], "polizist": ["Polizistin"], "bauer": ["Landwirt"], "koch": ["Köchin"], "chef": ["Chefin"], "hähnchen": ["Huhn"], "obst": ["Frucht"], "karotte": ["Möhre"], "snack": ["Imbiss"], "mahlzeit": ["Essen"], "gehen": ["fahren"], "eintreten": ["betreten"], "verlassen": ["abfahren"], "ankommen": ["erreichen"], "aufwachen": ["erwachen"], "schauen": ["aussehen"], "zuschauen": ["ansehen"], "erzählen": ["sagen"], "anrufen": ["rufen"], "studieren": ["lernen"], "wissen": ["kennen"], "wollen": ["möchten"], "legen": ["stellen"], "machen": ["herstellen"], "tun": ["machen"], "putzen": ["reinigen"], "anfangen": ["starten"], "beenden": ["fertig werden"], "anhalten": ["aufhören"], "wohnen": ["leben"], "reiten": ["fahren"], "ändern": ["wechseln"], "anhaben": ["tragen"], "hochgewachsen": ["groß"], "leicht": ["einfach"], "ordentlich": ["sauber"], "frei": ["kostenlos"], "bereit": ["fertig"], "landstraße": ["Weg"], "ort": ["Platz"], "hinauf": ["oben"], "hinunter": ["unten"], "fahrkarte": ["Ticket"], "karte": ["Stadtplan"], "reise": ["Ausflug"], "fahrt": ["Reise"], "hals": ["Nacken"], "bauch": ["Magen"], "medizin": ["Medikament"], "wehtun": ["verletzen"], "hut": ["Mütze"], "gold": ["golden"], "silber": ["silbern"], "handy": ["Telefon"], "kiste": ["Schachtel"], "ding": ["Sache"], "klasse": ["Unterricht"], "wenn": ["falls"], "also": ["deshalb"], "von": ["aus"], "zu": ["nach"], "an": ["bei"], "gerade": ["nur"], "die rechnung bitte": ["Rechnung bitte"]},cats:[
 ["Begrüßung & Höflichkeit",`
 hallo = hello
 hi = hi
@@ -73,27 +73,26 @@ letzte = last
 halb = half
 `],
 ["Zeit & Wochentage",`
-der Tag = day
+Tag = day
 heute = today
 morgen = tomorrow
 gestern = yesterday
 jetzt = now
 später = later
 bald = soon
-der Morgen = morning
-der Nachmittag = afternoon
-der Abend = evening
-die Nacht = night
-der Mittag = noon
-die Mitternacht = midnight
-die Woche = week
-das Wochenende = weekend
-der Monat = month
-das Jahr = year
-die Stunde = hour
-die Minute = minute
-die Sekunde = second
-die Zeit = time
+Nachmittag = afternoon
+Abend = evening
+Nacht = night
+Mittag = noon
+Mitternacht = midnight
+Woche = week
+Wochenende = weekend
+Monat = month
+Jahr = year
+Stunde = hour
+Minute = minute
+Sekunde = second
+Zeit = time
 immer = always
 oft = often
 manchmal = sometimes
@@ -125,106 +124,105 @@ November = November
 Dezember = December
 `],
 ["Familie & Menschen",`
-die Familie = family
-die Mutter = mother
-der Vater = father
-die Eltern = parents
-das Kind = child
-der Sohn = son
-die Tochter = daughter
-der Bruder = brother
-die Schwester = sister
-die Großmutter = grandmother
-der Großvater = grandfather
-der Onkel = uncle
-die Tante = aunt
-der Cousin = cousin
-der Ehemann = husband
-die Ehefrau = wife
-das Baby = baby
-der Junge = boy
-das Mädchen = girl
-der Mann = man
-die Frau = woman
-die Leute = people
-die Person = person
-der Freund = friend
-der Nachbar = neighbor
+Familie = family
+Mutter = mother
+Vater = father
+Eltern = parents
+Kind = child
+Sohn = son
+Tochter = daughter
+Bruder = brother
+Schwester = sister
+Großmutter = grandmother
+Großvater = grandfather
+Onkel = uncle
+Tante = aunt
+Cousin = cousin
+Ehemann = husband
+Ehefrau = wife
+Baby = baby
+Junge = boy
+Mädchen = girl
+Mann = man
+Frau = woman
+Leute = people
+Person = person
+Freund = friend
+Nachbar = neighbor
 fester Freund = boyfriend
 feste Freundin = girlfriend
-der Gast = guest
-der Lehrer = teacher
-der Student = student
-der Arzt = doctor
-der Krankenpfleger = nurse
-der Polizist = police officer
-der Fahrer = driver
-der Bauer = farmer
-der Koch = cook
-der Kellner = waiter
-der Chef = boss
+Gast = guest
+Lehrer = teacher
+Student = student
+Arzt = doctor
+Krankenpfleger = nurse
+Polizist = police officer
+Fahrer = driver
+Bauer = farmer
+Koch = cook
+Kellner = waiter
+Chef = boss
 `],
 ["Essen & Trinken",`
 essen = eat
 trinken = drink
-das Essen = food
-das Wasser = water
-der Tee = tea
-der Kaffee = coffee
-die Milch = milk
-der Saft = juice
-das Bier = beer
-der Wein = wine
-das Brot = bread
-der Reis = rice
-das Ei = egg
-das Fleisch = meat
-das Hähnchen = chicken
-das Rindfleisch = beef
-das Schweinefleisch = pork
-der Fisch = fish
-die Suppe = soup
-der Salat = salad
-das Gemüse = vegetable
-das Obst = fruit
-der Apfel = apple
-die Banane = banana
-die Orange = orange
-die Zitrone = lemon
-die Kartoffel = potato
-die Tomate = tomato
-die Zwiebel = onion
-der Knoblauch = garlic
-die Karotte = carrot
-der Käse = cheese
-die Butter = butter
-der Zucker = sugar
-das Salz = salt
-der Pfeffer = pepper
-das Öl = oil
-die Nudeln = noodles
-die Pasta = pasta
-die Pizza = pizza
-das Sandwich = sandwich
-der Kuchen = cake
-die Schokolade = chocolate
-das Eis = ice cream
-das Frühstück = breakfast
-das Mittagessen = lunch
-das Abendessen = dinner
-der Snack = snack
-die Mahlzeit = meal
-das Restaurant = restaurant
-die Speisekarte = menu
-die Rechnung = bill
-der Tisch = table
-der Teller = plate
-das Glas = glass
-die Tasse = cup
-die Flasche = bottle
-der Löffel = spoon
-die Gabel = fork
-das Messer = knife
+Wasser = water
+Tee = tea
+Kaffee = coffee
+Milch = milk
+Saft = juice
+Bier = beer
+Wein = wine
+Brot = bread
+Reis = rice
+Ei = egg
+Fleisch = meat
+Hähnchen = chicken
+Rindfleisch = beef
+Schweinefleisch = pork
+Fisch = fish
+Suppe = soup
+Salat = salad
+Gemüse = vegetable
+Obst = fruit
+Apfel = apple
+Banane = banana
+Orange = orange
+Zitrone = lemon
+Kartoffel = potato
+Tomate = tomato
+Zwiebel = onion
+Knoblauch = garlic
+Karotte = carrot
+Käse = cheese
+Butter = butter
+Zucker = sugar
+Salz = salt
+Pfeffer = pepper
+Öl = oil
+Nudeln = noodles
+Pasta = pasta
+Pizza = pizza
+Sandwich = sandwich
+Kuchen = cake
+Schokolade = chocolate
+Eis = ice cream
+Frühstück = breakfast
+Mittagessen = lunch
+Abendessen = dinner
+Snack = snack
+Mahlzeit = meal
+Restaurant = restaurant
+Speisekarte = menu
+Rechnung = bill
+Tisch = table
+Teller = plate
+Glas = glass
+Tasse = cup
+Flasche = bottle
+Löffel = spoon
+Gabel = fork
+Messer = knife
 hungrig = hungry
 durstig = thirsty
 lecker = delicious
@@ -395,40 +393,40 @@ nur = only
 andere = other
 `],
 ["Orte & Gebäude",`
-das Haus = house
-das Zuhause = home
-die Wohnung = apartment
-das Zimmer = room
-die Küche = kitchen
-das Badezimmer = bathroom
-das Schlafzimmer = bedroom
-der Garten = garden
-die Straße = street
-die Landstraße = road
-die Stadt = city
-die Kleinstadt = town
-das Dorf = village
-das Land = country
-die Schule = school
-die Universität = university
-das Krankenhaus = hospital
-der Laden = shop
-der Markt = market
-der Supermarkt = supermarket
-die Bank = bank
-die Post = post office
-die Kirche = church
-das Museum = museum
-die Bibliothek = library
-der Park = park
-der Strand = beach
-das Hotel = hotel
-das Büro = office
-die Fabrik = factory
-der Bauernhof = farm
-die Brücke = bridge
-der Ort = place
-das Gebäude = building
+Haus = house
+Zuhause = home
+Wohnung = apartment
+Zimmer = room
+Küche = kitchen
+Badezimmer = bathroom
+Schlafzimmer = bedroom
+Garten = garden
+Straße = street
+Landstraße = road
+Stadt = city
+Kleinstadt = town
+Dorf = village
+Land = country
+Schule = school
+Universität = university
+Krankenhaus = hospital
+Laden = shop
+Markt = market
+Supermarkt = supermarket
+Bank = bank
+Post = post office
+Kirche = church
+Museum = museum
+Bibliothek = library
+Park = park
+Strand = beach
+Hotel = hotel
+Büro = office
+Fabrik = factory
+Bauernhof = farm
+Brücke = bridge
+Ort = place
+Gebäude = building
 `],
 ["Richtungen",`
 links = left
@@ -446,82 +444,81 @@ neben = next to
 zwischen = between
 drinnen = inside
 draußen = outside
-der Norden = north
-der Süden = south
+Norden = north
+Süden = south
 `],
 ["Reisen & Verkehr",`
-das Auto = car
-der Bus = bus
-der Zug = train
-das Fahrrad = bicycle
-das Motorrad = motorcycle
-das Taxi = taxi
-das Flugzeug = plane
-das Boot = boat
-das Schiff = ship
-der Bahnhof = station
-der Flughafen = airport
-die Fahrkarte = ticket
-der Reisepass = passport
-das Gepäck = luggage
-der Koffer = suitcase
-die Karte = map
-die Reise = trip
-der Urlaub = holiday
-der Tourist = tourist
-die Fahrt = journey
+Auto = car
+Bus = bus
+Zug = train
+Fahrrad = bicycle
+Motorrad = motorcycle
+Taxi = taxi
+Flugzeug = plane
+Boot = boat
+Schiff = ship
+Bahnhof = station
+Flughafen = airport
+Fahrkarte = ticket
+Reisepass = passport
+Gepäck = luggage
+Koffer = suitcase
+Karte = map
+Reise = trip
+Urlaub = holiday
+Tourist = tourist
+Fahrt = journey
 `],
 ["Körper & Gesundheit",`
-der Körper = body
-der Kopf = head
-die Haare = hair
-das Gesicht = face
-das Auge = eye
-das Ohr = ear
-die Nase = nose
-der Mund = mouth
-der Zahn = tooth
-der Hals = neck
-die Schulter = shoulder
-der Arm = arm
-die Hand = hand
-der Finger = finger
-der Rücken = back
-der Bauch = stomach
-das Bein = leg
-das Knie = knee
-der Fuß = foot
-das Herz = heart
-die Haut = skin
-das Blut = blood
-die Medizin = medicine
-der Schmerz = pain
-das Fieber = fever
-die Grippe = flu
-der Husten = cough
-die Kopfschmerzen = headache
-der Knochen = bone
-die Tablette = pill
-die Gesundheit = health
+Körper = body
+Kopf = head
+Haare = hair
+Gesicht = face
+Auge = eye
+Ohr = ear
+Nase = nose
+Mund = mouth
+Zahn = tooth
+Hals = neck
+Schulter = shoulder
+Hand = hand
+Finger = finger
+Rücken = back
+Bauch = stomach
+Bein = leg
+Knie = knee
+Fuß = foot
+Herz = heart
+Haut = skin
+Blut = blood
+Medizin = medicine
+Schmerz = pain
+Fieber = fever
+Grippe = flu
+Husten = cough
+Kopfschmerzen = headache
+Knochen = bone
+Tablette = pill
+Gesundheit = health
 wehtun = hurt
 `],
 ["Kleidung & Farben",`
-die Kleidung = clothes
-das Hemd = shirt
-das Kleid = dress
-der Rock = skirt
-die Hose = trousers
-die Jacke = jacket
-der Mantel = coat
-der Pullover = sweater
-der Schuh = shoe
-die Socke = sock
-der Hut = hat
-die Tasche = bag
-die Brille = glasses
-der Ring = ring
-der Regenschirm = umbrella
-die Farbe = color
+Kleidung = clothes
+Hemd = shirt
+Kleid = dress
+Rock = skirt
+Hose = trousers
+Jacke = jacket
+Mantel = coat
+Pullover = sweater
+Schuh = shoe
+Socke = sock
+Hut = hat
+Tasche = bag
+Brille = glasses
+Ring = ring
+Regenschirm = umbrella
+Farbe = color
 rot = red
 blau = blue
 grün = green
@@ -532,113 +529,113 @@ braun = brown
 grau = gray
 rosa = pink
 lila = purple
-das Gold = gold
-das Silber = silver
+Gold = gold
+Silber = silver
 `],
 ["Natur, Wetter & Tiere",`
-die Sonne = sun
-der Mond = moon
-der Stern = star
-der Himmel = sky
-die Wolke = cloud
-der Regen = rain
-der Schnee = snow
-der Wind = wind
-der Sturm = storm
-das Wetter = weather
-der Nebel = fog
-das Feuer = fire
-die Erde = earth
-das Meer = sea
-der Ozean = ocean
-der Fluss = river
-der See = lake
-der Berg = mountain
-der Wald = forest
-der Baum = tree
-die Blume = flower
-das Gras = grass
-das Blatt = leaf
-der Stein = stone
-der Sand = sand
-das Tier = animal
-der Hund = dog
-die Katze = cat
-der Vogel = bird
-das Pferd = horse
-die Kuh = cow
-das Schwein = pig
-das Schaf = sheep
-die Maus = mouse
-das Kaninchen = rabbit
-die Schlange = snake
-das Insekt = insect
-der Elefant = elephant
-der Affe = monkey
+Sonne = sun
+Mond = moon
+Stern = star
+Himmel = sky
+Wolke = cloud
+Regen = rain
+Schnee = snow
+Wind = wind
+Sturm = storm
+Wetter = weather
+Nebel = fog
+Feuer = fire
+Erde = earth
+Meer = sea
+Ozean = ocean
+Fluss = river
+See = lake
+Berg = mountain
+Wald = forest
+Baum = tree
+Blume = flower
+Gras = grass
+Blatt = leaf
+Stein = stone
+Sand = sand
+Tier = animal
+Hund = dog
+Katze = cat
+Vogel = bird
+Pferd = horse
+Kuh = cow
+Schwein = pig
+Schaf = sheep
+Maus = mouse
+Kaninchen = rabbit
+Schlange = snake
+Insekt = insect
+Elefant = elephant
+Affe = monkey
 `],
 ["Haus & Alltag",`
-die Tür = door
-das Fenster = window
-die Wand = wall
-der Boden = floor
-das Dach = roof
-die Treppe = stairs
-das Bett = bed
-der Stuhl = chair
-das Sofa = sofa
-die Lampe = lamp
-der Schlüssel = key
-das Handy = phone
-der Computer = computer
-der Fernseher = television
-das Radio = radio
-das Buch = book
-die Zeitung = newspaper
-der Brief = letter
-das Bild = picture
-das Handtuch = towel
-die Seife = soap
-die Dusche = shower
-die Toilette = toilet
-der Spiegel = mirror
-die Kiste = box
-das Ding = thing
+Tür = door
+Fenster = window
+Wand = wall
+Boden = floor
+Dach = roof
+Treppe = stairs
+Bett = bed
+Stuhl = chair
+Sofa = sofa
+Lampe = lamp
+Schlüssel = key
+Handy = phone
+Computer = computer
+Fernseher = television
+Radio = radio
+Buch = book
+Zeitung = newspaper
+Brief = letter
+Bild = picture
+Handtuch = towel
+Seife = soap
+Dusche = shower
+Toilette = toilet
+Spiegel = mirror
+Kiste = box
+Ding = thing
 `],
 ["Geld & Einkaufen",`
-das Geld = money
-der Preis = price
-das Bargeld = cash
-die Münze = coin
-der Euro = euro
-der Rabatt = discount
+Geld = money
+Preis = price
+Bargeld = cash
+Münze = coin
+Euro = euro
+Rabatt = discount
 Einkaufen = shopping
-der Kunde = customer
-das Geschenk = gift
-der Geldbeutel = wallet
+Kunde = customer
+Geschenk = gift
+Geldbeutel = wallet
 `],
 ["Arbeit & Schule",`
-die Arbeitsstelle = job
-der Kollege = colleague
-die Besprechung = meeting
-die Firma = company
-das Gehalt = salary
-die Klasse = class
-die Unterrichtsstunde = lesson
-die Hausaufgabe = homework
-die Prüfung = exam
-die Frage = question
-das Wort = word
-der Satz = sentence
-die Sprache = language
-der Stift = pen
-das Papier = paper
-das Heft = notebook
-die E-Mail = email
-das Projekt = project
-die Aufgabe = task
-das Problem = problem
-die Idee = idea
-die Uhr = clock
+Arbeitsstelle = job
+Kollege = colleague
+Besprechung = meeting
+Firma = company
+Gehalt = salary
+Klasse = class
+Unterrichtsstunde = lesson
+Hausaufgabe = homework
+Prüfung = exam
+Frage = question
+Wort = word
+Satz = sentence
+Sprache = language
+Stift = pen
+Papier = paper
+Heft = notebook
+E-Mail = email
+Projekt = project
+Aufgabe = task
+Problem = problem
+Idee = idea
+Uhr = clock
 `],
 ["Kleine Wörter",`
 und = and
@@ -763,27 +760,26 @@ eine Million | Die Stadt hat eine Million Einwohner. | The city has [one million
 erste | Das ist mein erster Tag. | This is my [first] day.
 letzte | Das ist der letzte Bus. | This is the [last] bus.
 halb | Ich möchte die Hälfte des Kuchens. | I want [half] of the cake.
-der Tag | Ich arbeite jeden Tag. | I work every [day].
+Tag | Ich arbeite jeden Tag. | I work every [day].
 heute | Heute ist ein guter Tag. | [Today] is a good day.
 morgen | Ich arbeite morgen. | I work [tomorrow].
 gestern | Ich war gestern zu Hause. | I was at home [yesterday].
 jetzt | Ich esse jetzt. | I am eating [now].
 später | Ich rufe dich später an. | I will call you [later].
 bald | Der Bus kommt bald. | The bus comes [soon].
-der Morgen | Ich trinke am Morgen Tee. | I drink tea in the [morning].
-der Nachmittag | Wir treffen uns am Nachmittag. | We meet in the [afternoon].
-der Abend | Ich koche am Abend. | I cook in the [evening].
-die Nacht | Die Nacht ist sehr ruhig. | The [night] is very quiet.
-der Mittag | Wir essen um Mittag zu Mittag. | We eat lunch at [noon].
-die Mitternacht | Die Party endet um Mitternacht. | The party ends at [midnight].
-die Woche | Ich arbeite fünf Tage in der Woche. | I work five days a [week].
-das Wochenende | Ich ruhe mich am Wochenende aus. | I rest on the [weekend].
-der Monat | Dieser Monat ist sehr voll. | This [month] is very busy.
-das Jahr | Dieses Jahr lerne ich Englisch. | This [year] I learn English.
-die Stunde | Der Film dauert eine Stunde. | The film takes one [hour].
-die Minute | Bitte warte eine Minute. | Please wait one [minute].
-die Sekunde | Warte bitte eine Sekunde. | Wait a [second], please.
-die Zeit | Ich habe heute keine Zeit. | I have no [time] today.
+Nachmittag | Wir treffen uns am Nachmittag. | We meet in the [afternoon].
+Abend | Ich koche am Abend. | I cook in the [evening].
+Nacht | Die Nacht ist sehr ruhig. | The [night] is very quiet.
+Mittag | Wir essen um Mittag zu Mittag. | We eat lunch at [noon].
+Mitternacht | Die Party endet um Mitternacht. | The party ends at [midnight].
+Woche | Ich arbeite fünf Tage in der Woche. | I work five days a [week].
+Wochenende | Ich ruhe mich am Wochenende aus. | I rest on the [weekend].
+Monat | Dieser Monat ist sehr voll. | This [month] is very busy.
+Jahr | Dieses Jahr lerne ich Englisch. | This [year] I learn English.
+Stunde | Der Film dauert eine Stunde. | The film takes one [hour].
+Minute | Bitte warte eine Minute. | Please wait one [minute].
+Sekunde | Warte bitte eine Sekunde. | Wait a [second], please.
+Zeit | Ich habe heute keine Zeit. | I have no [time] today.
 immer | Ich trinke immer Kaffee. | I [always] drink coffee.
 oft | Wir essen oft hier. | We [often] eat here.
 manchmal | Manchmal gehe ich zu Fuß zur Arbeit. | [Sometimes] I walk to work.
@@ -811,104 +807,103 @@ September | Die Blätter fallen im September. | The leaves fall in [September].
 Oktober | Der Oktober ist ein schöner Monat. | [October] is a nice month.
 November | Der November ist dunkel und kalt. | [November] is dark and cold.
 Dezember | Wir feiern im Dezember. | We celebrate in [December].
-die Familie | Ich liebe meine Familie. | I love my [family].
-die Mutter | Meine Mutter kocht gut. | My [mother] cooks well.
-der Vater | Mein Vater arbeitet in einer Bank. | My [father] works in a bank.
-die Eltern | Meine Eltern wohnen in Berlin. | My [parents] live in Berlin.
-das Kind | Das Kind spielt draußen. | The [child] plays outside.
-der Sohn | Ihr Sohn ist zehn Jahre alt. | Their [son] is ten years old.
-die Tochter | Ihre Tochter mag Musik. | Her [daughter] likes music.
-der Bruder | Mein Bruder spielt Fußball. | My [brother] plays football.
-die Schwester | Meine Schwester ist Ärztin. | My [sister] is a doctor.
-die Großmutter | Meine Oma erzählt gute Geschichten. | My [grandmother] tells good stories.
-der Großvater | Mein Opa wohnt auf dem Land. | My [grandfather] lives in the country.
-der Onkel | Mein Onkel hat ein großes Auto. | My [uncle] has a big car.
-die Tante | Meine Tante kommt am Sonntag. | My [aunt] comes on Sunday.
-der Cousin | Mein Cousin wohnt in London. | My [cousin] lives in London.
-der Ehemann | Ihr Ehemann ist Lehrer. | Her [husband] is a teacher.
-die Ehefrau | Seine Ehefrau arbeitet zu Hause. | His [wife] works at home.
-das Baby | Das Baby schläft jetzt. | The [baby] sleeps now.
-der Junge | Der Junge rennt schnell. | The [boy] runs fast.
-das Mädchen | Das Mädchen liest ein Buch. | The [girl] reads a book.
-der Mann | Der Mann wartet an der Bushaltestelle. | The [man] waits at the bus stop.
-die Frau | Die Frau kauft Brot. | The [woman] buys bread.
-die Leute | Viele Leute wohnen hier. | Many [people] live here.
-die Person | Er ist ein netter Mensch. | He is a nice [person].
-der Freund | Er ist mein bester Freund. | He is my best [friend].
-der Nachbar | Mein Nachbar ist sehr nett. | My [neighbor] is very kind.
+Familie | Ich liebe meine Familie. | I love my [family].
+Mutter | Meine Mutter kocht gut. | My [mother] cooks well.
+Vater | Mein Vater arbeitet in einer Bank. | My [father] works in a bank.
+Eltern | Meine Eltern wohnen in Berlin. | My [parents] live in Berlin.
+Kind | Das Kind spielt draußen. | The [child] plays outside.
+Sohn | Ihr Sohn ist zehn Jahre alt. | Their [son] is ten years old.
+Tochter | Ihre Tochter mag Musik. | Her [daughter] likes music.
+Bruder | Mein Bruder spielt Fußball. | My [brother] plays football.
+Schwester | Meine Schwester ist Ärztin. | My [sister] is a doctor.
+Großmutter | Meine Oma erzählt gute Geschichten. | My [grandmother] tells good stories.
+Großvater | Mein Opa wohnt auf dem Land. | My [grandfather] lives in the country.
+Onkel | Mein Onkel hat ein großes Auto. | My [uncle] has a big car.
+Tante | Meine Tante kommt am Sonntag. | My [aunt] comes on Sunday.
+Cousin | Mein Cousin wohnt in London. | My [cousin] lives in London.
+Ehemann | Ihr Ehemann ist Lehrer. | Her [husband] is a teacher.
+Ehefrau | Seine Ehefrau arbeitet zu Hause. | His [wife] works at home.
+Baby | Das Baby schläft jetzt. | The [baby] sleeps now.
+Junge | Der Junge rennt schnell. | The [boy] runs fast.
+Mädchen | Das Mädchen liest ein Buch. | The [girl] reads a book.
+Mann | Der Mann wartet an der Bushaltestelle. | The [man] waits at the bus stop.
+Frau | Die Frau kauft Brot. | The [woman] buys bread.
+Leute | Viele Leute wohnen hier. | Many [people] live here.
+Person | Er ist ein netter Mensch. | He is a nice [person].
+Freund | Er ist mein bester Freund. | He is my best [friend].
+Nachbar | Mein Nachbar ist sehr nett. | My [neighbor] is very kind.
 fester Freund | Ihr Freund ist Student. | Her [boyfriend] is a student.
 feste Freundin | Seine Freundin wohnt in Paris. | His [girlfriend] lives in Paris.
-der Gast | Wir haben heute einen Gast. | We have a [guest] today.
-der Lehrer | Der Lehrer ist nett. | The [teacher] is kind.
-der Student | Der Student liest ein Buch. | The [student] reads a book.
-der Arzt | Der Arzt hilft dem Kind. | The [doctor] helps the child.
-der Krankenpfleger | Die Krankenschwester arbeitet nachts. | The [nurse] works at night.
-der Polizist | Der Polizist hilft uns. | The [police officer] helps us.
-der Fahrer | Der Fahrer wartet draußen. | The [driver] waits outside.
-der Bauer | Der Bauer arbeitet auf dem Feld. | The [farmer] works in the field.
-der Koch | Der Koch macht Suppe. | The [cook] makes soup.
-der Kellner | Der Kellner bringt die Speisekarte. | The [waiter] brings the menu.
-der Chef | Mein Chef ist sehr beschäftigt. | My [boss] is very busy.
+Gast | Wir haben heute einen Gast. | We have a [guest] today.
+Lehrer | Der Lehrer ist nett. | The [teacher] is kind.
+Student | Der Student liest ein Buch. | The [student] reads a book.
+Arzt | Der Arzt hilft dem Kind. | The [doctor] helps the child.
+Krankenpfleger | Die Krankenschwester arbeitet nachts. | The [nurse] works at night.
+Polizist | Der Polizist hilft uns. | The [police officer] helps us.
+Fahrer | Der Fahrer wartet draußen. | The [driver] waits outside.
+Bauer | Der Bauer arbeitet auf dem Feld. | The [farmer] works in the field.
+Koch | Der Koch macht Suppe. | The [cook] makes soup.
+Kellner | Der Kellner bringt die Speisekarte. | The [waiter] brings the menu.
+Chef | Mein Chef ist sehr beschäftigt. | My [boss] is very busy.
 essen | Ich esse um sieben Frühstück. | I [eat] breakfast at seven.
 trinken | Ich trinke jeden Tag Wasser. | I [drink] water every day.
-das Essen | Das Essen hier ist gut. | The [food] here is good.
-das Wasser | Ich trinke ein Glas Wasser. | I drink a glass of [water].
-der Tee | Ich mag heißen Tee. | I like hot [tea].
-der Kaffee | Ich trinke am Morgen Kaffee. | I drink [coffee] in the morning.
-die Milch | Das Baby trinkt Milch. | The baby drinks [milk].
-der Saft | Ich möchte Orangensaft. | I want orange [juice].
-das Bier | Er trinkt ein kaltes Bier. | He drinks a cold [beer].
-der Wein | Wir trinken roten Wein. | We drink red [wine].
-das Brot | Ich kaufe frisches Brot. | I buy fresh [bread].
-der Reis | Wir essen Reis mit Fisch. | We eat [rice] with fish.
-das Ei | Ich esse ein Ei zum Frühstück. | I eat an [egg] for breakfast.
-das Fleisch | Ich esse kein Fleisch. | I do not eat [meat].
-das Hähnchen | Wir essen heute Abend Hähnchen. | We eat [chicken] tonight.
-das Rindfleisch | Das Rindfleisch ist sehr gut. | The [beef] is very good.
-das Schweinefleisch | Ich esse nie Schweinefleisch. | I never eat [pork].
-der Fisch | Wir essen am Freitag Fisch. | We eat [fish] on Friday.
-die Suppe | Die Suppe ist heiß. | The [soup] is hot.
-der Salat | Ich esse zum Mittagessen einen Salat. | I eat a [salad] for lunch.
-das Gemüse | Jedes Gemüse ist gesund. | Every [vegetable] is healthy.
-das Obst | Obst ist gut für dich. | [Fruit] is good for you.
-der Apfel | Ich esse jeden Tag einen Apfel. | I eat an [apple] every day.
-die Banane | Die Banane ist gelb. | The [banana] is yellow.
-die Orange | Ich esse eine Orange. | I eat an [orange].
-die Zitrone | Ich gebe Zitrone in meinen Tee. | I put [lemon] in my tea.
-die Kartoffel | Ich koche eine Kartoffel zum Abendessen. | I cook one [potato] for dinner.
-die Tomate | Die Tomate ist rot. | The [tomato] is red.
-die Zwiebel | Ich schneide die Zwiebel. | I cut the [onion].
-der Knoblauch | Ich mag Knoblauch im Essen. | I like [garlic] in my food.
-die Karotte | Das Kaninchen frisst eine Karotte. | The rabbit eats a [carrot].
-der Käse | Ich mag Käse auf meinem Brot. | I like [cheese] on my bread.
-die Butter | Ich tue Butter aufs Brot. | I put [butter] on the bread.
-der Zucker | Ich nehme Zucker in meinen Tee. | I take [sugar] in my tea.
-das Salz | Bitte gib mir das Salz. | Please pass the [salt].
-der Pfeffer | Ich gebe etwas Pfeffer dazu. | I add a little [pepper].
-das Öl | Ich koche mit Olivenöl. | I cook with olive [oil].
-die Nudeln | Wir essen Nudeln zum Abendessen. | We eat [noodles] for dinner.
-die Pasta | Ich mache heute Abend Pasta. | I make [pasta] tonight.
-die Pizza | Wir bestellen eine große Pizza. | We order a big [pizza].
-das Sandwich | Ich esse ein Sandwich zum Mittagessen. | I eat a [sandwich] for lunch.
-der Kuchen | Sie backt einen Kuchen. | She bakes a [cake].
-die Schokolade | Das Kind möchte Schokolade. | The child wants [chocolate].
-das Eis | Die Kinder lieben Eis. | The children love [ice cream].
-das Frühstück | Ich habe um sieben Frühstück. | I have [breakfast] at seven.
-das Mittagessen | Wir haben um zwölf Mittagessen. | We have [lunch] at noon.
-das Abendessen | Das Abendessen ist fertig. | [Dinner] is ready.
-der Snack | Ich esse um vier einen Snack. | I eat a [snack] at four.
-die Mahlzeit | Diese Mahlzeit ist sehr gut. | This [meal] is very good.
-das Restaurant | Wir essen in einem Restaurant. | We eat at a [restaurant].
-die Speisekarte | Kann ich bitte die Speisekarte sehen? | Can I see the [menu], please?
-die Rechnung | Die Rechnung, bitte. | The [bill], please.
-der Tisch | Wir möchten einen Tisch für zwei. | We want a [table] for two.
-der Teller | Der Teller steht auf dem Tisch. | The [plate] is on the table.
-das Glas | Ich brauche ein sauberes Glas. | I need a clean [glass].
-die Tasse | Sie trinkt aus einer Tasse. | She drinks from a [cup].
-die Flasche | Ich kaufe eine Flasche Wasser. | I buy a [bottle] of water.
-der Löffel | Ich esse Suppe mit einem Löffel. | I eat soup with a [spoon].
-die Gabel | Die Gabel liegt neben dem Teller. | The [fork] is next to the plate.
-das Messer | Das Messer ist sehr scharf. | The [knife] is very sharp.
+Wasser | Ich trinke ein Glas Wasser. | I drink a glass of [water].
+Tee | Ich mag heißen Tee. | I like hot [tea].
+Kaffee | Ich trinke am Morgen Kaffee. | I drink [coffee] in the morning.
+Milch | Das Baby trinkt Milch. | The baby drinks [milk].
+Saft | Ich möchte Orangensaft. | I want orange [juice].
+Bier | Er trinkt ein kaltes Bier. | He drinks a cold [beer].
+Wein | Wir trinken roten Wein. | We drink red [wine].
+Brot | Ich kaufe frisches Brot. | I buy fresh [bread].
+Reis | Wir essen Reis mit Fisch. | We eat [rice] with fish.
+Ei | Ich esse ein Ei zum Frühstück. | I eat an [egg] for breakfast.
+Fleisch | Ich esse kein Fleisch. | I do not eat [meat].
+Hähnchen | Wir essen heute Abend Hähnchen. | We eat [chicken] tonight.
+Rindfleisch | Das Rindfleisch ist sehr gut. | The [beef] is very good.
+Schweinefleisch | Ich esse nie Schweinefleisch. | I never eat [pork].
+Fisch | Wir essen am Freitag Fisch. | We eat [fish] on Friday.
+Suppe | Die Suppe ist heiß. | The [soup] is hot.
+Salat | Ich esse zum Mittagessen einen Salat. | I eat a [salad] for lunch.
+Gemüse | Jedes Gemüse ist gesund. | Every [vegetable] is healthy.
+Obst | Obst ist gut für dich. | [Fruit] is good for you.
+Apfel | Ich esse jeden Tag einen Apfel. | I eat an [apple] every day.
+Banane | Die Banane ist gelb. | The [banana] is yellow.
+Orange | Ich esse eine Orange. | I eat an [orange].
+Zitrone | Ich gebe Zitrone in meinen Tee. | I put [lemon] in my tea.
+Kartoffel | Ich koche eine Kartoffel zum Abendessen. | I cook one [potato] for dinner.
+Tomate | Die Tomate ist rot. | The [tomato] is red.
+Zwiebel | Ich schneide die Zwiebel. | I cut the [onion].
+Knoblauch | Ich mag Knoblauch im Essen. | I like [garlic] in my food.
+Karotte | Das Kaninchen frisst eine Karotte. | The rabbit eats a [carrot].
+Käse | Ich mag Käse auf meinem Brot. | I like [cheese] on my bread.
+Butter | Ich tue Butter aufs Brot. | I put [butter] on the bread.
+Zucker | Ich nehme Zucker in meinen Tee. | I take [sugar] in my tea.
+Salz | Bitte gib mir das Salz. | Please pass the [salt].
+Pfeffer | Ich gebe etwas Pfeffer dazu. | I add a little [pepper].
+Öl | Ich koche mit Olivenöl. | I cook with olive [oil].
+Nudeln | Wir essen Nudeln zum Abendessen. | We eat [noodles] for dinner.
+Pasta | Ich mache heute Abend Pasta. | I make [pasta] tonight.
+Pizza | Wir bestellen eine große Pizza. | We order a big [pizza].
+Sandwich | Ich esse ein Sandwich zum Mittagessen. | I eat a [sandwich] for lunch.
+Kuchen | Sie backt einen Kuchen. | She bakes a [cake].
+Schokolade | Das Kind möchte Schokolade. | The child wants [chocolate].
+Eis | Die Kinder lieben Eis. | The children love [ice cream].
+Frühstück | Ich habe um sieben Frühstück. | I have [breakfast] at seven.
+Mittagessen | Wir haben um zwölf Mittagessen. | We have [lunch] at noon.
+Abendessen | Das Abendessen ist fertig. | [Dinner] is ready.
+Snack | Ich esse um vier einen Snack. | I eat a [snack] at four.
+Mahlzeit | Diese Mahlzeit ist sehr gut. | This [meal] is very good.
+Restaurant | Wir essen in einem Restaurant. | We eat at a [restaurant].
+Speisekarte | Kann ich bitte die Speisekarte sehen? | Can I see the [menu], please?
+Rechnung | Die Rechnung, bitte. | The [bill], please.
+Tisch | Wir möchten einen Tisch für zwei. | We want a [table] for two.
+Teller | Der Teller steht auf dem Tisch. | The [plate] is on the table.
+Glas | Ich brauche ein sauberes Glas. | I need a clean [glass].
+Tasse | Sie trinkt aus einer Tasse. | She drinks from a [cup].
+Flasche | Ich kaufe eine Flasche Wasser. | I buy a [bottle] of water.
+Löffel | Ich esse Suppe mit einem Löffel. | I eat soup with a [spoon].
+Gabel | Die Gabel liegt neben dem Teller. | The [fork] is next to the plate.
+Messer | Das Messer ist sehr scharf. | The [knife] is very sharp.
 hungrig | Ich bin sehr hungrig. | I am very [hungry].
 durstig | Ich bin nach dem Lauf durstig. | I am [thirsty] after the run.
 lecker | Die Suppe ist lecker. | The soup is [delicious].
@@ -1073,40 +1068,40 @@ weniger | Ich esse weniger Zucker. | I eat [less] sugar.
 genug | Ich habe genug Geld. | I have [enough] money.
 nur | Ich habe nur einen Bruder. | I have [only] one brother.
 andere | Ich mag den anderen. | I like the [other] one.
-das Haus | Wir haben ein großes Haus. | We have a big [house].
-das Zuhause | Ich bin zu Hause. | I am at [home].
-die Wohnung | Wir mieten eine kleine Wohnung. | We rent a small [apartment].
-das Zimmer | Mein Zimmer ist klein. | My [room] is small.
-die Küche | Sie ist in der Küche. | She is in the [kitchen].
-das Badezimmer | Das Badezimmer ist sauber. | The [bathroom] is clean.
-das Schlafzimmer | Das Schlafzimmer ist ruhig. | The [bedroom] is quiet.
-der Garten | Der Garten ist schön. | The [garden] is beautiful.
-die Straße | Die Straße ist voll. | The [street] is busy.
-die Landstraße | Die Straße ist lang. | The [road] is long.
-die Stadt | Ich wohne in einer großen Stadt. | I live in a big [city].
-die Kleinstadt | Die Kleinstadt ist klein. | The [town] is small.
-das Dorf | Meine Oma lebt in einem Dorf. | My grandmother lives in a [village].
-das Land | Aus welchem Land kommst du? | Which [country] are you from?
-die Schule | Die Schule ist in der Nähe. | The [school] is near here.
-die Universität | Sie studiert an der Universität. | She studies at the [university].
-das Krankenhaus | Das Krankenhaus ist geöffnet. | The [hospital] is open.
-der Laden | Der Laden schließt um sechs. | The [shop] closes at six.
-der Markt | Wir kaufen Obst auf dem Markt. | We buy fruit at the [market].
-der Supermarkt | Der Supermarkt ist groß. | The [supermarket] is big.
-die Bank | Die Bank ist geschlossen. | The [bank] is closed.
-die Post | Die Post öffnet um neun. | The [post office] opens at nine.
-die Kirche | Die Kirche ist sehr alt. | The [church] is very old.
-das Museum | Das Museum ist kostenlos. | The [museum] is free.
-die Bibliothek | Ich lese in der Bibliothek. | I read in the [library].
-der Park | Die Kinder spielen im Park. | The children play in the [park].
-der Strand | Wir gehen am Strand spazieren. | We walk on the [beach].
-das Hotel | Das Hotel ist teuer. | The [hotel] is expensive.
-das Büro | Ich arbeite in einem Büro. | I work in an [office].
-die Fabrik | Er arbeitet in einer Fabrik. | He works in a [factory].
-der Bauernhof | Sie leben auf einem Bauernhof. | They live on a [farm].
-die Brücke | Die Brücke ist alt. | The [bridge] is old.
-der Ort | Das ist ein schöner Ort. | This is a nice [place].
-das Gebäude | Das Gebäude ist hoch. | The [building] is tall.
+Haus | Wir haben ein großes Haus. | We have a big [house].
+Zuhause | Ich bin zu Hause. | I am at [home].
+Wohnung | Wir mieten eine kleine Wohnung. | We rent a small [apartment].
+Zimmer | Mein Zimmer ist klein. | My [room] is small.
+Küche | Sie ist in der Küche. | She is in the [kitchen].
+Badezimmer | Das Badezimmer ist sauber. | The [bathroom] is clean.
+Schlafzimmer | Das Schlafzimmer ist ruhig. | The [bedroom] is quiet.
+Garten | Der Garten ist schön. | The [garden] is beautiful.
+Straße | Die Straße ist voll. | The [street] is busy.
+Landstraße | Die Straße ist lang. | The [road] is long.
+Stadt | Ich wohne in einer großen Stadt. | I live in a big [city].
+Kleinstadt | Die Kleinstadt ist klein. | The [town] is small.
+Dorf | Meine Oma lebt in einem Dorf. | My grandmother lives in a [village].
+Land | Aus welchem Land kommst du? | Which [country] are you from?
+Schule | Die Schule ist in der Nähe. | The [school] is near here.
+Universität | Sie studiert an der Universität. | She studies at the [university].
+Krankenhaus | Das Krankenhaus ist geöffnet. | The [hospital] is open.
+Laden | Der Laden schließt um sechs. | The [shop] closes at six.
+Markt | Wir kaufen Obst auf dem Markt. | We buy fruit at the [market].
+Supermarkt | Der Supermarkt ist groß. | The [supermarket] is big.
+Bank | Die Bank ist geschlossen. | The [bank] is closed.
+Post | Die Post öffnet um neun. | The [post office] opens at nine.
+Kirche | Die Kirche ist sehr alt. | The [church] is very old.
+Museum | Das Museum ist kostenlos. | The [museum] is free.
+Bibliothek | Ich lese in der Bibliothek. | I read in the [library].
+Park | Die Kinder spielen im Park. | The children play in the [park].
+Strand | Wir gehen am Strand spazieren. | We walk on the [beach].
+Hotel | Das Hotel ist teuer. | The [hotel] is expensive.
+Büro | Ich arbeite in einem Büro. | I work in an [office].
+Fabrik | Er arbeitet in einer Fabrik. | He works in a [factory].
+Bauernhof | Sie leben auf einem Bauernhof. | They live on a [farm].
+Brücke | Die Brücke ist alt. | The [bridge] is old.
+Ort | Das ist ein schöner Ort. | This is a nice [place].
+Gebäude | Das Gebäude ist hoch. | The [building] is tall.
 links | Biege hier links ab. | Turn [left] here.
 rechts | Biege an der Bank rechts ab. | Turn [right] at the bank.
 geradeaus | Gehe geradeaus. | Go [straight] on.
@@ -1122,76 +1117,75 @@ neben | Die Bank ist neben dem Laden. | The bank is [next to] the shop.
 zwischen | Der Park ist zwischen der Schule und der Bank. | The park is [between] the school and the bank.
 drinnen | Die Katze ist drinnen. | The cat is [inside].
 draußen | Die Kinder spielen draußen. | The children play [outside].
-der Norden | Der See ist im Norden. | The lake is in the [north].
-der Süden | Wir fahren im Winter in den Süden. | We go [south] in winter.
-das Auto | Ich habe ein rotes Auto. | I have a red [car].
-der Bus | Ich nehme den Bus zur Schule. | I take the [bus] to school.
-der Zug | Der Zug ist schnell. | The [train] is fast.
-das Fahrrad | Ich fahre mit dem Fahrrad zur Arbeit. | I ride my [bicycle] to work.
-das Motorrad | Er hat ein Motorrad. | He has a [motorcycle].
-das Taxi | Wir nehmen ein Taxi nach Hause. | We take a [taxi] home.
-das Flugzeug | Das Flugzeug hat Verspätung. | The [plane] is late.
-das Boot | Wir überqueren den See mit dem Boot. | We cross the lake by [boat].
-das Schiff | Das Schiff ist sehr groß. | The [ship] is very big.
-der Bahnhof | Der Bahnhof ist nah. | The [station] is near.
-der Flughafen | Der Flughafen ist weit von hier. | The [airport] is far from here.
-die Fahrkarte | Ich kaufe eine Fahrkarte. | I buy a [ticket].
-der Reisepass | Ich brauche meinen Reisepass. | I need my [passport].
-das Gepäck | Mein Gepäck ist schwer. | My [luggage] is heavy.
-der Koffer | Ich packe meinen Koffer. | I pack my [suitcase].
-die Karte | Ich brauche eine Karte der Stadt. | I need a [map] of the city.
-die Reise | Wir machen einen Ausflug ans Meer. | We take a [trip] to the sea.
-der Urlaub | Wir sind im Urlaub. | We are on [holiday].
-der Tourist | Der Tourist fragt nach dem Weg. | The [tourist] asks for the way.
-die Fahrt | Die Fahrt dauert zwei Stunden. | The [journey] takes two hours.
-der Körper | Der Körper braucht Wasser. | The [body] needs water.
-der Kopf | Mein Kopf tut weh. | My [head] hurts.
-die Haare | Sie hat lange Haare. | She has long [hair].
-das Gesicht | Wasche dein Gesicht. | Wash your [face].
-das Auge | Er hat ein blaues Auge. | He has a blue [eye].
-das Ohr | Mein Ohr tut weh. | My [ear] hurts.
-die Nase | Das Baby hat eine kleine Nase. | The baby has a small [nose].
-der Mund | Öffne deinen Mund. | Open your [mouth].
-der Zahn | Ich habe einen schmerzenden Zahn. | I have a sore [tooth].
-der Hals | Mein Nacken tut weh. | My [neck] hurts.
-die Schulter | Meine Schulter tut weh. | My [shoulder] hurts.
-der Arm | Er hat sich den Arm gebrochen. | He broke his [arm].
-die Hand | Gib mir deine Hand. | Give me your [hand].
-der Finger | Ich habe mir in den Finger geschnitten. | I cut my [finger].
-der Rücken | Mein Rücken tut weh. | My [back] hurts.
-der Bauch | Mein Magen tut weh. | My [stomach] hurts.
-das Bein | Mein Bein tut weh. | My [leg] hurts.
-das Knie | Mein Knie tut weh. | My [knee] hurts.
-der Fuß | Mein Fuß ist kalt. | My [foot] is cold.
-das Herz | Mein Herz ist stark. | My [heart] is strong.
-die Haut | Ihre Haut ist weich. | Her [skin] is soft.
-das Blut | Da ist Blut an meiner Hand. | There is [blood] on my hand.
-die Medizin | Ich nehme zweimal am Tag Medizin. | I take [medicine] twice a day.
-der Schmerz | Ich habe einen Schmerz im Rücken. | I have a [pain] in my back.
-das Fieber | Das Kind hat Fieber. | The child has a [fever].
-die Grippe | Ich habe die Grippe. | I have the [flu].
-der Husten | Ich habe einen schlimmen Husten. | I have a bad [cough].
-die Kopfschmerzen | Ich habe Kopfschmerzen. | I have a [headache].
-der Knochen | Der Hund hat einen Knochen. | The dog has a [bone].
-die Tablette | Nimm eine Tablette am Tag. | Take one [pill] a day.
-die Gesundheit | Gesundheit ist wichtig. | [Health] is important.
+Norden | Der See ist im Norden. | The lake is in the [north].
+Süden | Wir fahren im Winter in den Süden. | We go [south] in winter.
+Auto | Ich habe ein rotes Auto. | I have a red [car].
+Bus | Ich nehme den Bus zur Schule. | I take the [bus] to school.
+Zug | Der Zug ist schnell. | The [train] is fast.
+Fahrrad | Ich fahre mit dem Fahrrad zur Arbeit. | I ride my [bicycle] to work.
+Motorrad | Er hat ein Motorrad. | He has a [motorcycle].
+Taxi | Wir nehmen ein Taxi nach Hause. | We take a [taxi] home.
+Flugzeug | Das Flugzeug hat Verspätung. | The [plane] is late.
+Boot | Wir überqueren den See mit dem Boot. | We cross the lake by [boat].
+Schiff | Das Schiff ist sehr groß. | The [ship] is very big.
+Bahnhof | Der Bahnhof ist nah. | The [station] is near.
+Flughafen | Der Flughafen ist weit von hier. | The [airport] is far from here.
+Fahrkarte | Ich kaufe eine Fahrkarte. | I buy a [ticket].
+Reisepass | Ich brauche meinen Reisepass. | I need my [passport].
+Gepäck | Mein Gepäck ist schwer. | My [luggage] is heavy.
+Koffer | Ich packe meinen Koffer. | I pack my [suitcase].
+Karte | Ich brauche eine Karte der Stadt. | I need a [map] of the city.
+Reise | Wir machen einen Ausflug ans Meer. | We take a [trip] to the sea.
+Urlaub | Wir sind im Urlaub. | We are on [holiday].
+Tourist | Der Tourist fragt nach dem Weg. | The [tourist] asks for the way.
+Fahrt | Die Fahrt dauert zwei Stunden. | The [journey] takes two hours.
+Körper | Der Körper braucht Wasser. | The [body] needs water.
+Kopf | Mein Kopf tut weh. | My [head] hurts.
+Haare | Sie hat lange Haare. | She has long [hair].
+Gesicht | Wasche dein Gesicht. | Wash your [face].
+Auge | Er hat ein blaues Auge. | He has a blue [eye].
+Ohr | Mein Ohr tut weh. | My [ear] hurts.
+Nase | Das Baby hat eine kleine Nase. | The baby has a small [nose].
+Mund | Öffne deinen Mund. | Open your [mouth].
+Zahn | Ich habe einen schmerzenden Zahn. | I have a sore [tooth].
+Hals | Mein Nacken tut weh. | My [neck] hurts.
+Schulter | Meine Schulter tut weh. | My [shoulder] hurts.
+Hand | Gib mir deine Hand. | Give me your [hand].
+Finger | Ich habe mir in den Finger geschnitten. | I cut my [finger].
+Rücken | Mein Rücken tut weh. | My [back] hurts.
+Bauch | Mein Magen tut weh. | My [stomach] hurts.
+Bein | Mein Bein tut weh. | My [leg] hurts.
+Knie | Mein Knie tut weh. | My [knee] hurts.
+Fuß | Mein Fuß ist kalt. | My [foot] is cold.
+Herz | Mein Herz ist stark. | My [heart] is strong.
+Haut | Ihre Haut ist weich. | Her [skin] is soft.
+Blut | Da ist Blut an meiner Hand. | There is [blood] on my hand.
+Medizin | Ich nehme zweimal am Tag Medizin. | I take [medicine] twice a day.
+Schmerz | Ich habe einen Schmerz im Rücken. | I have a [pain] in my back.
+Fieber | Das Kind hat Fieber. | The child has a [fever].
+Grippe | Ich habe die Grippe. | I have the [flu].
+Husten | Ich habe einen schlimmen Husten. | I have a bad [cough].
+Kopfschmerzen | Ich habe Kopfschmerzen. | I have a [headache].
+Knochen | Der Hund hat einen Knochen. | The dog has a [bone].
+Tablette | Nimm eine Tablette am Tag. | Take one [pill] a day.
+Gesundheit | Gesundheit ist wichtig. | [Health] is important.
 wehtun | Tut es weh? | Does it [hurt]?
-die Kleidung | Ich wasche meine Kleidung. | I wash my [clothes].
-das Hemd | Er trägt ein weißes Hemd. | He wears a white [shirt].
-das Kleid | Sie hat ein neues Kleid. | She has a new [dress].
-der Rock | Sie trägt einen langen Rock. | She wears a long [skirt].
-die Hose | Ich brauche eine neue Hose. | I need new [trousers].
-die Jacke | Nimm deine Jacke. | Take your [jacket].
-der Mantel | Es ist kalt, nimm deinen Mantel. | It is cold, take your [coat].
-der Pullover | Ich trage einen warmen Pullover. | I wear a warm [sweater].
-der Schuh | Ich habe einen Schuh verloren. | I lost a [shoe].
-die Socke | Ich habe eine Socke. | I have one [sock].
-der Hut | Er trägt einen schwarzen Hut. | He wears a black [hat].
-die Tasche | Meine Tasche ist schwer. | My [bag] is heavy.
-die Brille | Ich brauche meine Brille. | I need my [glasses].
-der Ring | Sie trägt einen goldenen Ring. | She wears a gold [ring].
-der Regenschirm | Nimm einen Regenschirm mit. | Take an [umbrella].
-die Farbe | Welche Farbe hat dein Auto? | What [color] is your car?
+Kleidung | Ich wasche meine Kleidung. | I wash my [clothes].
+Hemd | Er trägt ein weißes Hemd. | He wears a white [shirt].
+Kleid | Sie hat ein neues Kleid. | She has a new [dress].
+Rock | Sie trägt einen langen Rock. | She wears a long [skirt].
+Hose | Ich brauche eine neue Hose. | I need new [trousers].
+Jacke | Nimm deine Jacke. | Take your [jacket].
+Mantel | Es ist kalt, nimm deinen Mantel. | It is cold, take your [coat].
+Pullover | Ich trage einen warmen Pullover. | I wear a warm [sweater].
+Schuh | Ich habe einen Schuh verloren. | I lost a [shoe].
+Socke | Ich habe eine Socke. | I have one [sock].
+Hut | Er trägt einen schwarzen Hut. | He wears a black [hat].
+Tasche | Meine Tasche ist schwer. | My [bag] is heavy.
+Brille | Ich brauche meine Brille. | I need my [glasses].
+Ring | Sie trägt einen goldenen Ring. | She wears a gold [ring].
+Regenschirm | Nimm einen Regenschirm mit. | Take an [umbrella].
+Farbe | Welche Farbe hat dein Auto? | What [color] is your car?
 rot | Der Apfel ist rot. | The apple is [red].
 blau | Das Meer ist blau. | The sea is [blue].
 grün | Das Gras ist grün. | The grass is [green].
@@ -1202,105 +1196,105 @@ braun | Der Hund ist braun. | The dog is [brown].
 grau | Der Himmel ist heute grau. | The sky is [gray] today.
 rosa | Sie hat eine rosa Tasche. | She has a [pink] bag.
 lila | Er trägt ein lila Hemd. | He wears a [purple] shirt.
-das Gold | Der Ring ist aus Gold. | The ring is [gold].
-das Silber | Der Löffel ist aus Silber. | The spoon is [silver].
-die Sonne | Die Sonne ist heiß. | The [sun] is hot.
-der Mond | Der Mond ist heute Nacht hell. | The [moon] is bright tonight.
-der Stern | Ich sehe einen Stern. | I see a [star].
-der Himmel | Der Himmel ist blau. | The [sky] is blue.
-die Wolke | Da ist eine Wolke am Himmel. | There is one [cloud] in the sky.
-der Regen | Der Regen ist stark. | The [rain] is heavy.
-der Schnee | Der Schnee ist weiß. | The [snow] is white.
-der Wind | Der Wind ist kalt. | The [wind] is cold.
-der Sturm | Heute Nacht kommt ein Sturm. | A [storm] comes tonight.
-das Wetter | Das Wetter ist heute schön. | The [weather] is nice today.
-der Nebel | Heute Morgen gibt es Nebel. | There is [fog] this morning.
-das Feuer | Das Feuer ist heiß. | The [fire] is hot.
-die Erde | Die Erde ist rund. | The [earth] is round.
-das Meer | Das Meer ist ruhig. | The [sea] is calm.
-der Ozean | Der Ozean ist tief. | The [ocean] is deep.
-der Fluss | Der Fluss ist lang. | The [river] is long.
-der See | Wir schwimmen im See. | We swim in the [lake].
-der Berg | Der Berg ist hoch. | The [mountain] is high.
-der Wald | Wir gehen im Wald spazieren. | We walk in the [forest].
-der Baum | Der Baum ist alt. | The [tree] is old.
-die Blume | Sie kauft eine Blume. | She buys a [flower].
-das Gras | Das Gras ist nass. | The [grass] is wet.
-das Blatt | Das Blatt ist grün. | The [leaf] is green.
-der Stein | Der Stein ist schwer. | The [stone] is heavy.
-der Sand | Der Sand ist heiß. | The [sand] is hot.
-das Tier | Welches Tier magst du? | Which [animal] do you like?
-der Hund | Mein Hund ist braun. | My [dog] is brown.
-die Katze | Die Katze schläft auf dem Bett. | The [cat] sleeps on the bed.
-der Vogel | Ein Vogel sitzt auf dem Baum. | A [bird] sits on the tree.
-das Pferd | Das Pferd rennt schnell. | The [horse] runs fast.
-die Kuh | Die Kuh gibt Milch. | The [cow] gives milk.
-das Schwein | Das Schwein ist auf dem Bauernhof. | The [pig] is on the farm.
-das Schaf | Das Schaf frisst Gras. | The [sheep] eats grass.
-die Maus | Die Katze sieht eine Maus. | The cat sees a [mouse].
-das Kaninchen | Das Kaninchen frisst eine Karotte. | The [rabbit] eats a carrot.
-die Schlange | Ich habe Angst vor der Schlange. | I am afraid of the [snake].
-das Insekt | Ein Insekt sitzt an der Wand. | An [insect] is on the wall.
-der Elefant | Der Elefant ist sehr groß. | The [elephant] is very big.
-der Affe | Der Affe mag Bananen. | The [monkey] likes bananas.
-die Tür | Bitte öffne die Tür. | Please open the [door].
-das Fenster | Schließ bitte das Fenster. | Close the [window], please.
-die Wand | Die Wand ist weiß. | The [wall] is white.
-der Boden | Der Boden ist sauber. | The [floor] is clean.
-das Dach | Das Dach ist rot. | The [roof] is red.
-die Treppe | Die Treppe ist steil. | The [stairs] are steep.
-das Bett | Das Bett ist weich. | The [bed] is soft.
-der Stuhl | Bitte nimm einen Stuhl. | Please take a [chair].
-das Sofa | Die Katze schläft auf dem Sofa. | The cat sleeps on the [sofa].
-die Lampe | Schalte die Lampe an. | Turn on the [lamp].
-der Schlüssel | Ich habe meinen Schlüssel verloren. | I lost my [key].
-das Handy | Mein Handy ist neu. | My [phone] is new.
-der Computer | Ich benutze bei der Arbeit einen Computer. | I use a [computer] at work.
-der Fernseher | Wir sehen abends Fernsehen. | We watch [television] at night.
-das Radio | Er hört Radio. | He listens to the [radio].
-das Buch | Ich lese ein gutes Buch. | I read a good [book].
-die Zeitung | Er liest die Zeitung. | He reads the [newspaper].
-der Brief | Ich schreibe einen Brief. | I write a [letter].
-das Bild | Das Bild ist schön. | The [picture] is beautiful.
-das Handtuch | Ich brauche ein sauberes Handtuch. | I need a clean [towel].
-die Seife | Benutze Seife und Wasser. | Use [soap] and water.
-die Dusche | Ich nehme morgens eine Dusche. | I take a [shower] in the morning.
-die Toilette | Wo ist die Toilette? | Where is the [toilet]?
-der Spiegel | Der Spiegel hängt an der Wand. | The [mirror] is on the wall.
-die Kiste | Die Kiste ist schwer. | The [box] is heavy.
-das Ding | Was ist dieses Ding? | What is this [thing]?
-das Geld | Ich brauche Geld. | I need [money].
-der Preis | Was ist der Preis? | What is the [price]?
-das Bargeld | Ich zahle in bar. | I pay in [cash].
-die Münze | Ich habe eine Münze. | I have one [coin].
-der Euro | Es kostet fünf Euro. | It costs five [euro].
-der Rabatt | Gibt es einen Rabatt? | Is there a [discount]?
+Gold | Der Ring ist aus Gold. | The ring is [gold].
+Silber | Der Löffel ist aus Silber. | The spoon is [silver].
+Sonne | Die Sonne ist heiß. | The [sun] is hot.
+Mond | Der Mond ist heute Nacht hell. | The [moon] is bright tonight.
+Stern | Ich sehe einen Stern. | I see a [star].
+Himmel | Der Himmel ist blau. | The [sky] is blue.
+Wolke | Da ist eine Wolke am Himmel. | There is one [cloud] in the sky.
+Regen | Der Regen ist stark. | The [rain] is heavy.
+Schnee | Der Schnee ist weiß. | The [snow] is white.
+Wind | Der Wind ist kalt. | The [wind] is cold.
+Sturm | Heute Nacht kommt ein Sturm. | A [storm] comes tonight.
+Wetter | Das Wetter ist heute schön. | The [weather] is nice today.
+Nebel | Heute Morgen gibt es Nebel. | There is [fog] this morning.
+Feuer | Das Feuer ist heiß. | The [fire] is hot.
+Erde | Die Erde ist rund. | The [earth] is round.
+Meer | Das Meer ist ruhig. | The [sea] is calm.
+Ozean | Der Ozean ist tief. | The [ocean] is deep.
+Fluss | Der Fluss ist lang. | The [river] is long.
+See | Wir schwimmen im See. | We swim in the [lake].
+Berg | Der Berg ist hoch. | The [mountain] is high.
+Wald | Wir gehen im Wald spazieren. | We walk in the [forest].
+Baum | Der Baum ist alt. | The [tree] is old.
+Blume | Sie kauft eine Blume. | She buys a [flower].
+Gras | Das Gras ist nass. | The [grass] is wet.
+Blatt | Das Blatt ist grün. | The [leaf] is green.
+Stein | Der Stein ist schwer. | The [stone] is heavy.
+Sand | Der Sand ist heiß. | The [sand] is hot.
+Tier | Welches Tier magst du? | Which [animal] do you like?
+Hund | Mein Hund ist braun. | My [dog] is brown.
+Katze | Die Katze schläft auf dem Bett. | The [cat] sleeps on the bed.
+Vogel | Ein Vogel sitzt auf dem Baum. | A [bird] sits on the tree.
+Pferd | Das Pferd rennt schnell. | The [horse] runs fast.
+Kuh | Die Kuh gibt Milch. | The [cow] gives milk.
+Schwein | Das Schwein ist auf dem Bauernhof. | The [pig] is on the farm.
+Schaf | Das Schaf frisst Gras. | The [sheep] eats grass.
+Maus | Die Katze sieht eine Maus. | The cat sees a [mouse].
+Kaninchen | Das Kaninchen frisst eine Karotte. | The [rabbit] eats a carrot.
+Schlange | Ich habe Angst vor der Schlange. | I am afraid of the [snake].
+Insekt | Ein Insekt sitzt an der Wand. | An [insect] is on the wall.
+Elefant | Der Elefant ist sehr groß. | The [elephant] is very big.
+Affe | Der Affe mag Bananen. | The [monkey] likes bananas.
+Tür | Bitte öffne die Tür. | Please open the [door].
+Fenster | Schließ bitte das Fenster. | Close the [window], please.
+Wand | Die Wand ist weiß. | The [wall] is white.
+Boden | Der Boden ist sauber. | The [floor] is clean.
+Dach | Das Dach ist rot. | The [roof] is red.
+Treppe | Die Treppe ist steil. | The [stairs] are steep.
+Bett | Das Bett ist weich. | The [bed] is soft.
+Stuhl | Bitte nimm einen Stuhl. | Please take a [chair].
+Sofa | Die Katze schläft auf dem Sofa. | The cat sleeps on the [sofa].
+Lampe | Schalte die Lampe an. | Turn on the [lamp].
+Schlüssel | Ich habe meinen Schlüssel verloren. | I lost my [key].
+Handy | Mein Handy ist neu. | My [phone] is new.
+Computer | Ich benutze bei der Arbeit einen Computer. | I use a [computer] at work.
+Fernseher | Wir sehen abends Fernsehen. | We watch [television] at night.
+Radio | Er hört Radio. | He listens to the [radio].
+Buch | Ich lese ein gutes Buch. | I read a good [book].
+Zeitung | Er liest die Zeitung. | He reads the [newspaper].
+Brief | Ich schreibe einen Brief. | I write a [letter].
+Bild | Das Bild ist schön. | The [picture] is beautiful.
+Handtuch | Ich brauche ein sauberes Handtuch. | I need a clean [towel].
+Seife | Benutze Seife und Wasser. | Use [soap] and water.
+Dusche | Ich nehme morgens eine Dusche. | I take a [shower] in the morning.
+Toilette | Wo ist die Toilette? | Where is the [toilet]?
+Spiegel | Der Spiegel hängt an der Wand. | The [mirror] is on the wall.
+Kiste | Die Kiste ist schwer. | The [box] is heavy.
+Ding | Was ist dieses Ding? | What is this [thing]?
+Geld | Ich brauche Geld. | I need [money].
+Preis | Was ist der Preis? | What is the [price]?
+Bargeld | Ich zahle in bar. | I pay in [cash].
+Münze | Ich habe eine Münze. | I have one [coin].
+Euro | Es kostet fünf Euro. | It costs five [euro].
+Rabatt | Gibt es einen Rabatt? | Is there a [discount]?
 Einkaufen | Ich gehe am Samstag einkaufen. | I go [shopping] on Saturday.
-der Kunde | Der Kunde wartet. | The [customer] is waiting.
-das Geschenk | Ich kaufe ein Geschenk für meine Mutter. | I buy a [gift] for my mother.
-der Geldbeutel | Ich habe meinen Geldbeutel verloren. | I lost my [wallet].
-die Arbeitsstelle | Ich habe eine neue Arbeitsstelle. | I have a new [job].
-der Kollege | Mein Kollege hilft mir. | My [colleague] helps me.
-die Besprechung | Die Besprechung beginnt um zehn. | The [meeting] starts at ten.
-die Firma | Er arbeitet für eine große Firma. | He works for a big [company].
-das Gehalt | Das Gehalt ist gut. | The [salary] is good.
-die Klasse | Die Klasse ist voll. | The [class] is full.
-die Unterrichtsstunde | Die Unterrichtsstunde ist interessant. | The [lesson] is interesting.
-die Hausaufgabe | Ich mache meine Hausaufgaben. | I do my [homework].
-die Prüfung | Ich habe morgen eine Prüfung. | I have an [exam] tomorrow.
-die Frage | Ich habe eine Frage. | I have a [question].
-das Wort | Ich lerne ein neues Wort. | I learn a new [word].
-der Satz | Lies den Satz. | Read the [sentence].
-die Sprache | Englisch ist eine schöne Sprache. | English is a nice [language].
-der Stift | Ich brauche einen Stift. | I need a [pen].
-das Papier | Ich brauche ein Stück Papier. | I need a piece of [paper].
-das Heft | Ich schreibe in mein Heft. | I write in my [notebook].
-die E-Mail | Ich schreibe eine E-Mail. | I write an [email].
-das Projekt | Das Projekt ist schwierig. | The [project] is difficult.
-die Aufgabe | Diese Aufgabe ist einfach. | This [task] is easy.
-das Problem | Ich habe ein Problem. | I have a [problem].
-die Idee | Das ist eine gute Idee. | That is a good [idea].
-die Uhr | Die Uhr hängt an der Wand. | The [clock] is on the wall.
+Kunde | Der Kunde wartet. | The [customer] is waiting.
+Geschenk | Ich kaufe ein Geschenk für meine Mutter. | I buy a [gift] for my mother.
+Geldbeutel | Ich habe meinen Geldbeutel verloren. | I lost my [wallet].
+Arbeitsstelle | Ich habe eine neue Arbeitsstelle. | I have a new [job].
+Kollege | Mein Kollege hilft mir. | My [colleague] helps me.
+Besprechung | Die Besprechung beginnt um zehn. | The [meeting] starts at ten.
+Firma | Er arbeitet für eine große Firma. | He works for a big [company].
+Gehalt | Das Gehalt ist gut. | The [salary] is good.
+Klasse | Die Klasse ist voll. | The [class] is full.
+Unterrichtsstunde | Die Unterrichtsstunde ist interessant. | The [lesson] is interesting.
+Hausaufgabe | Ich mache meine Hausaufgaben. | I do my [homework].
+Prüfung | Ich habe morgen eine Prüfung. | I have an [exam] tomorrow.
+Frage | Ich habe eine Frage. | I have a [question].
+Wort | Ich lerne ein neues Wort. | I learn a new [word].
+Satz | Lies den Satz. | Read the [sentence].
+Sprache | Englisch ist eine schöne Sprache. | English is a nice [language].
+Stift | Ich brauche einen Stift. | I need a [pen].
+Papier | Ich brauche ein Stück Papier. | I need a piece of [paper].
+Heft | Ich schreibe in mein Heft. | I write in my [notebook].
+E-Mail | Ich schreibe eine E-Mail. | I write an [email].
+Projekt | Das Projekt ist schwierig. | The [project] is difficult.
+Aufgabe | Diese Aufgabe ist einfach. | This [task] is easy.
+Problem | Ich habe ein Problem. | I have a [problem].
+Idee | Das ist eine gute Idee. | That is a good [idea].
+Uhr | Die Uhr hängt an der Wand. | The [clock] is on the wall.
 und | Brot und Butter. | Bread [and] butter.
 oder | Tee oder Kaffee? | Tea [or] coffee?
 aber | Ich bin müde, aber glücklich. | I am tired, [but] happy.

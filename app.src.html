@@ -3062,6 +3062,23 @@ function migrate(){
     state.list={};
     Object.keys(state.progress||{}).forEach(lg=>{const pr=state.progress[lg]||{};Object.keys(pr).forEach(k=>{if(pr[k]&&pr[k].d===FAR)pr[k].d=t0;});});
   }
+  /* Version 147: Der Deutschkurs hat keine Artikel mehr („de:der nachbar“ → „de:nachbar“). Fortschritt, Tageslisten und
+     ein offener Run wandern auf die neuen Schlüssel. „das dort“ ist ein Pronomen und bleibt. Der Morgen, das Essen und der Arm
+     sind entfallen (sie sähen ohne Artikel aus wie morgen, essen, arm) – ihr Fortschritt wird gelöscht, nicht vermischt.
+     Läuft bei jedem Start, findet nach dem ersten Mal aber nichts mehr. */
+  {
+    const DROP={'de:der morgen':1,'de:das essen':1,'de:der arm':1},KEEP={'de:das dort':1};
+    const nk=k=>{if(KEEP[k])return k;if(DROP[k])return null;const m=/^de:(?:der|die|das) (\S+)$/.exec(k);return m?'de:'+m[1]:k;};
+    const pr=state.progress&&state.progress.de;
+    if(pr)Object.keys(pr).forEach(k=>{const n=nk(k);if(n===k)return;if(n&&!pr[n])pr[n]=pr[k];delete pr[k];});
+    const d=state.daily;
+    if(d)['lt','got'].forEach(f=>{if(Array.isArray(d[f]))d[f]=d[f].map(k=>typeof k==='string'&&k.indexOf('de:')===0?nk(k):k).filter(k=>k!==null);});
+    const r=state.run;
+    if(r&&r.lang==='de'&&Array.isArray(r.items)){
+      if(r.items.some(x=>nk(x.k)===null))state.run=null;   // Run mit entfallenem Wort: verwerfen statt kaputt fortsetzen
+      else{r.items.forEach(x=>{x.k=nk(x.k);});if(Array.isArray(r.missed))r.missed=r.missed.map(nk);}
+    }
+  }
   /* Version 132: Diamanten werden Chips, Kontostand einmalig × 10 (chipV steht bewusst nicht in defaults()) */
   if(!state.chipV){
     state.chips=Math.max(state.chips|0,(state.gems|0)*10);state.chipShown=Math.min(state.chips,(state.gemShown|0)*10);
@@ -4105,7 +4122,7 @@ function homeView(){
     <p style="margin-top:6px">${t('{0} von {1} Wörtern begonnen','<b>'+(N-nNew)+'</b>',N)}</p>
     <div class="stack" role="img" aria-label="${bparts.map(p=>p.n+' '+p.l).join(', ')}">${bseg}</div></button>`;
   const streakHtml=`<div class="streak foot${st>0?' on':''}"><div class="sl">${flameSvg(st,false)}<b class="sn" aria-label="${st} ${st===1?t('Tag'):t('Tage')} ${t('in Folge')}">${st}</b></div><div class="dots">${week}</div></div>`;
-  return `<div class="top status"><button class="langbtn" id="chlang" aria-label="${t('Sprache wechseln')}: ${esc(t(L.name))}"><span aria-hidden="true">${{id:'🇮🇩',en:'🇬🇧'}[L.id]||'🌐'}</span></button><div class="topr">${chipPill()}<button class="iconbtn gearbtn" id="gear" type="button" data-v="settings" aria-label="${t('Einstellungen öffnen')}">${GEARIC}</button></div></div>
+  return `<div class="top status"><button class="langbtn" id="chlang" aria-label="${t('Sprache wechseln')}: ${esc(t(L.name))}"><span aria-hidden="true">${{id:'🇮🇩',en:'🇬🇧',de:'🇩🇪'}[L.id]||'🌐'}</span></button><div class="topr">${chipPill()}<button class="iconbtn gearbtn" id="gear" type="button" data-v="settings" aria-label="${t('Einstellungen öffnen')}">${GEARIC}</button></div></div>
   ${homeMascot(p,st,nFallen,doneToday,prog)}
   <section class="card plan">${planHtml}${streakHtml}</section>
   ${revHtml}
