@@ -1854,3 +1854,15 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test3 Abschnitt 0 neu: nur Englisch sichtbar, Englisch vorgewählt, Flaggen, Umschalten hin und zurück, „Weiter“ übernimmt. Alle vier Suiten grün. Die alte Prüfung „Handy-Sprache ist vorgeschlagen“ entfällt gewollt.
 
 **Nur auf einem echten iPhone prüfbar:** Wie die Flaggen-Emojis in den Zeilen aussehen (Größe/Ausrichtung), Ton beim Antippen.
+
+## Version 153 – Leistungsanzeige gegen das Heißwerden
+
+**Was:** Im Testbereich der Einstellungen gibt es einen Schalter „Leistungsanzeige“. Er blendet oben links eine kleine Anzeige ein: Bilder pro Sekunde, das längste Bild in ms, wie viele Bilder zu lahm waren, wie viele Animationen laufen und die drei häufigsten (Name×Anzahl).
+
+**Warum:** Vito meldet, dass das iPhone beim Spielen in Safari heiß wird und der Bildschirm dunkler schaltet, vor allem in Modulen/Runden. Statt zu raten, messen wir erst. Ursachen im Verdacht (nur Lesen im Code, nichts geändert): rund 48 Endlos-Animationen (viele verändern Schatten, Verläufe oder Filter und zwingen zum Neuzeichnen), `mix-blend-mode` in den Wochen-Stempeln, `backdrop-filter` hinter Fenstern, live berechnete Musik (Taktgeber alle 90 ms). Musik und Bildrate-Drosselung bleiben bewusst unberührt.
+
+**Technik:** `perfSet(on)` startet eine `requestAnimationFrame`-Schleife und `document.getAnimations()`; `state.perf` merkt den Schalter (kein Migrationsbedarf, fehlt = aus). Anzeige `#perf`, `pointer-events:none`, über allem. Läuft nur, wenn eingeschaltet.
+
+**Tests:** P1–P3 in test4 (aus, an + gemerkt, wieder aus). Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** Alles. Vito spielt mit eingeschalteter Anzeige und meldet, in welchem Modul die Werte schlecht sind (Bilder pro Sekunde unter 50, viele Animationen, auffällige Namen).

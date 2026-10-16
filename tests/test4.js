@@ -839,6 +839,14 @@ function toReels(E,force=true){
   ok(ev(O,'state.mvol')===0&&ev(O,'state.music')===false&&ev(O,'state.dvol')===60,'V28 Musik aus wird zu Regler 0, Dewis Stimme übernimmt die Effekt-Lautstärke');
   const P=env({music:true,mvol:50,musDef:1,holoDef:1,lang:'id',ui:'de',v:2},'de');
   ok(ev(P,'state.mvol')===50&&ev(P,'state.music')===true,'V29 Musik an bleibt unverändert');
+  // Version 153: Leistungsanzeige
+  const Q=env({lang:'id',ui:'de',v:2},'de');
+  Q.click(Q.$('[data-v="settings"]'));
+  ok(!Q.$('#perf')&&Q.$('#perftog').textContent==='Aus','P1 Leistungsanzeige startet aus');
+  Q.click(Q.$('#perftog'));
+  ok(!!Q.$('#perf')&&Q.$('#perftog').textContent==='An'&&Q.st().perf===true,'P2 Knopf schaltet die Anzeige an und merkt es');
+  Q.click(Q.$('#perftog'));
+  ok(!Q.$('#perf')&&Q.st().perf===false,'P3 Knopf schaltet sie wieder ab');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
