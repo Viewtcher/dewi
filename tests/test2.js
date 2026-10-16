@@ -187,7 +187,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   const s=E.st();
   ok(s.progress.id[first].l===1&&!Object.keys(s.list||{}).some(lg=>Object.keys(s.list[lg]||{}).length),'B4 Wort auf Stufe 1, keine Fehlerliste');
   ok(s.done[ev(E,'today()')]===true&&!(s.flawed&&s.flawed[ev(E,'today()')]),'B5 Tag zählt, kein grauer Stempel');
-  ok((s.chips|0)===200&&/×2 Royal Flush/.test(E.$('#epay').textContent),'B5b Erste Hand (1 Modul, Dewi zahlt): (100 + 0) × 1 × 2 = 200 Chips');
+  ok((s.chips|0)===200&&!!E.$('#ertitle')&&/ROYAL FLUSH/.test(E.$('#ertitle').textContent)&&/^100 ×1 ×2$/.test(E.$('#epay').textContent.trim()),'B5b Erste Hand (1 Modul, Dewi zahlt): (100 + 0) × 1 × 2 = 200 Chips, Royal Flush');
   E.click(E.$('#fin'));
   ok(/Heute geschafft/.test(E.$('#app').textContent),'B6 Home: geschafft');
   E.click(E.$('#gm'));ok(!!E.$('#surv')&&E.$('#surv').disabled,'B7 Survival sichtbar, aber gesperrt (zu wenig Wörter)');
@@ -285,7 +285,8 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   E.click(E.$('#start'));
   ok(/Big Blind 300/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===700,'P12 Kopfzeile zeigt die Hand, Einsatz abgebucht');
   ok(E.play({failSent:true,failType:true}),'P13 Hand mit lauter Fehlern läuft durch');
-  ok(ev(E,'state.chips')===700&&/×0/.test(E.$('#epay').textContent)&&/Einsatz weg/.test(E.$('#epay').textContent)&&!E.$('#egem'),'P14 ×0: keine Auszahlung, Einsatz weg');
+  ok(ev(E,'state.chips')===700&&/×0/.test(E.$('#epay').textContent)&&/Einsatz weg/.test(E.$('#epay').textContent)&&!!E.$('#egem.zero')&&E.$('#egn').textContent==='0'&&!E.$('#ertitle'),'P14 ×0: graue 0, keine Auszahlung, Einsatz weg (für Screenreader)');
+  ok(ev(E,'QUIPS.de.pay_zero').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&E.$$('.porow .pochip use[href="#chip-grey"]').length===5,'P14b ×0: bissiger Spruch, fünf graue Ergebnis-Chips');
   E.click(E.$('#fin'));
   // Pausieren, keine Verwerfen-Möglichkeit, Verfallen um Mitternacht
   ev(E,"window.__autoBlind='small'");nextDay(E);
@@ -305,7 +306,9 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   E.click(E.$('#start'));E.play();
   ok(/Serien-Bonus jetzt \+10 %/.test(E.$('#fin').textContent),'P20 Tag 7: Meilenstein mit „Serien-Bonus jetzt +10 %“');
   const ep=E.$('#epay')?E.$('#epay').textContent:'';
-  ok(/^100 ·/.test(ep)&&!/\+/.test(ep),'P21 Bonus nach der Serie vor der Hand: Tag 7 zahlt noch ohne Bonus ('+ep+')');
+  ok(/^100 ×5 ×2$/.test(ep.trim())&&!/\+/.test(ep),'P21 Bonus nach der Serie vor der Hand: Tag 7 zahlt noch ohne Bonus ('+ep+')');
+  ok(E.$('#egn').textContent==='+1.000'&&E.$$('.porow use[href="#chip-holo"]').length===5&&ev(E,'QUIPS.de.pay_rf').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&!!E.$('#dzone .dw.m-cash'),'P21b Royal Flush: +1.000, fünf Holo-Chips, Dewi mit Dollar-Augen und Spruch');
+  ok(/Weiter/.test(E.$('#endnext').textContent)&&!!E.$('#chippill2'),'P21c Erste Round: „Weiter“ führt zur Serie, Chip-Pille oben');
   E.click(E.$('#fin'));
   ok(ev(E,'blindOffer().pct')===10,'P22 Ab der nächsten Hand gilt +10 %');
   ev(E,"window.__autoBlind=null;state.chips=250;save();render()");
@@ -321,6 +324,14 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(/×0/.test(E.$('#pkmult').textContent)&&!!E.$('#dzone .dzhead .dw')&&!!E.$('#dzq'),'P26 Dewi-Zone mit Multiplikator ×0');
   E.click(E.$('#dzq'));ok(/Small Blind kostet ein Fehler nichts/.test(E.$('#dzbody').textContent),'P27 „?“ in der Hand erklärt die Regeln zum gewählten Blind');
   ev(E,"closeSheet();window.__autoBlind='small'");
+  ok(!!E.$('#ohint')&&/Small Blind 100 · ×0 · verfällt um Mitternacht/.test(E.$('#ohint').textContent),'P28 Startscreen: offene Hand mit Einsatz, Multiplikator und „verfällt um Mitternacht“');
+  ev(E,'window.__hour=21;render()');
+  ok(ev(E,'QUIPS.de.home_late').includes(E.$('#app .mascot .bubble').getAttribute('aria-label')),'P29 Ab 21 Uhr stichelt Dewi bei offener Hand');
+  ev(E,'window.__hour=20;render()');
+  ok(!ev(E,'QUIPS.de.home_late').includes(E.$('#app .mascot .bubble').getAttribute('aria-label')),'P30 Vor 21 Uhr kein Sticheln');
+  ev(E,'window.__hour=null');
+  E.click(E.$('#extra'));
+  E.play();ok(!E.$('#fin')&&ev(E,'sheet.hidden')===true&&!E.$('#ohint'),'P31 Folge-Hand: „Fertig“ schließt ohne Serien-Einblendung, Hinweis weg');
 }
 // --- P2) Poker-Screens während der Hand (Version 134)
 {

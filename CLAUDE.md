@@ -49,9 +49,10 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 134)
+## Offene Punkte (Stand Version 135)
 
-- **In Arbeit: Poker Phase 1** nach `konzept-poker-shop.md` (Etappen 131 Lernlogik ✓, 132 Chips ✓, 133 Poker-Regeln ✓, 134 Blind-Wahl + Hand ✓, 135 Auszahlung + Royal Flush + Startscreen). Konzeptbilder: Design-Canvas „dewi. Poker-Screens“, Reihe „Version 2“. Veröffentlichen erst nach Etappe 4.
+- **Poker Phase 1 fertig** (Versionen 131–135 nach `konzept-poker-shop.md`). Veröffentlichung auf `main` wartet auf Vitos OK. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
+- Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
 - Shop (Phase 2) nach den Erfahrungen aus Phase 1. Vorher Fragen stellen.
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.

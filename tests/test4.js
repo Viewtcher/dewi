@@ -512,10 +512,10 @@ function toReels(E,force=true){
   const css=E.d.querySelector('style').textContent;
   ok(/\.dw\.m-cash svg\{animation:dw-cash /.test(css)&&css.includes('@keyframes dw-cash{'),'E2 Dewi cash hat eine eigene Schleife');
   ok(/<text[^>]*>\$<\/text>/.test(ev(E,"dwSvg('cash')")),'E3 Dollar-Pupillen');
-  ok(ev(E,"typeof haptic==='function'&&['jackpot','lever','rwin','rbad','gems','chips','tossed'].every(k=>typeof SFX[k]==='function')"),'E4 Sounds & Haptik registriert');
+  ok(ev(E,"typeof haptic==='function'&&['jackpot','lever','rwin','rbad','gems','chips','chipclick','royal','tossed'].every(k=>typeof SFX[k]==='function')"),'E4 Sounds & Haptik registriert');
   ev(E,"state.ui='en';save()");
   ok(ev(E,"t('Hebel ziehen')")==='Pull the lever'&&ev(E,"t('Musik')")==='Music','E5 Englische Texte');
-  const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','chips','tossed'].forEach(k=>sfx(k))");
+  const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','chips','chipclick','royal','tossed'].forEach(k=>sfx(k))");
   ok(A.osc.length>n0+20,'E6 Alle Reels-Sounds erzeugen Töne ('+(A.osc.length-n0)+')');
 }
 {

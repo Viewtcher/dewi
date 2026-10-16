@@ -30,7 +30,7 @@ dewi/
 ├── playmodes.js          PLAYMODES: Playmode-Wahl für den Survival Mode (Random oder Solo)
 ├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
 ├── poker.js              Poker (seit Version 133): Blinds, Multiplikator, Royal Flush, Serien-Bonus, Auszahlung
-├── pokerui.js            Poker-Screens (seit Version 134): Blind-Wahl, Dewi-Zone, Dewi-Chips im Kopf, Multiplikator-Animation
+├── pokerui.js            Poker-Screens (seit Version 134/135): Blind-Wahl, Dewi-Zone, Dewi-Chips im Kopf, Multiplikator-Animation, Auszahlung, Royal Flush
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -200,6 +200,14 @@ Keine Leben. Ein Modul pro Wort, nie zweimal dasselbe Modul hintereinander (`cho
 `plan()` liefert `{fresh, review}` (das eine neue Wort oder `null`, Review-Wörter gemischt).
 
 - Der Tag zählt für die Serie, sobald eine Daily Round zu Ende gespielt wurde (`state.done`). Mit verlorenem Modul in der ersten Round des Tages zusätzlich `state.flawed[Tag]`: der Stempel ist grau, ohne Holo (`stampSvg(mood, phase, flawed)`).
+
+### 6.4a Daily Round als Pokerhand (seit Version 133, Screens seit 134/135)
+
+- Ablauf: „Play now“ → **Blind-Wahl** (Small 100 / Big 300) → Einführung → Review (die Hand) → **Auszahlung** (mit Royal Flush) → Serien-Einblendung (nur bei der ersten Round des Tages).
+- Wer zahlt: erste Round des Tages Dewi (Small), sonst man selbst; leeres Konto: Dewi rettet einmal am Tag, danach Hand ohne Einsatz.
+- Multiplikator ×0, +1 je geschafftem Modul; verloren: Small bleibt, Big −1 (nie unter 0). Royal Flush (alles geschafft) verdoppelt.
+- Auszahlung nur am Ende: `(Einsatz + Serien-Bonus) × Multiplikator`. Serien-Bonus nach der Serie vor der Hand: 7 +10 %, 14 +20 %, 30 +30 %, 50 +40 %, 100 +50 %, 365 +100 %.
+- Pausierte Daily-Hand verfällt um Mitternacht samt Einsatz; kein Verwerfen. Details: `poker.js` (Regeln) und `pokerui.js` (Screens).
 
 ### 6.5 Survival (früher Freeplay)
 
@@ -1519,3 +1527,31 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test2 P23–P27 (Blind-Wahl-Screen, Dewi-Zone, „?“ hin und zurück, Start mit Abbuchung, Chips im Kopf, Erklärung je Blind) und neuer Block Q1–Q10 (gestrichelter aktueller Chip, Multiplikator springt, Holo-Chips, kein kleiner Dewi im Ergebnis, Animation nur einmal, Big rutscht runter, Chips werden gold/grau, Dewi genervt, Chips nach dem Fortsetzen, Small blinkt grau). Dabei gefunden und behoben: Das „?“ mit Klasse `.qh` löste die Modul-Hilfe aus. Tests 2–5 grün. Zusätzlich im echten Chromium gemessen (ohne Screenshot): Blind-Wahl und Hand passen auf 390 × 844 und 375 × 667 ohne Scrollen, Kopf und Poker-Leiste ohne Überlauf, Chips im Kopf je 40 px.
 
 **Nicht auf einem echten iPhone getestet:** Wirkung von Archivo (offline im Test nicht geladen), Gleit- und Zahlen-Animationen, Chip-Klick und Haptik, Schimmer der Holo-Chips.
+
+
+## Version 135 – Poker-Screens: Auszahlung, Royal Flush, Startscreen (Poker Phase 1, Etappe 4b)
+
+> **Phase 1 ist fertig.** Das Ende der Hand ist jetzt eine eigene Bühne: Ergebnis-Chips fliegen ein, der Gewinn zählt als Heldenzahl hoch, darunter klein die Rechnung. Beim Royal Flush leuchtet „ROYAL FLUSH“ zwischen zwei Diamanten, Chips regnen und eine eigene Casino-Fanfare spielt. Bei ×0 rutscht der Einsatz-Chip zu Dewi, und es bleibt eine graue 0. Auf dem Startscreen zeigt eine offene Hand „Big Blind 300 · ×3 · verfällt um Mitternacht“, ab 21 Uhr stichelt Dewi. Grundlage: `konzept-poker-shop.md` Abschnitt 5, Design-Canvas „Auszahlung2“ und „Royal2“.
+
+**Entscheidungen (Vito):** eigene Casino-Fanfare für den Royal Flush; bei ×0 gleicher Aufbau mit grauer 0, der Chip rutscht zu Dewi; Abend-Sticheln ab 21 Uhr (Konzept: ca. 20 Uhr).
+
+**Technik (`pokerui.js`)**
+- `payoutStage(E)` ersetzt für Pokerhände den Endscreen aus Version 126 (`endResult` bleibt nur für Runs von vor Version 133). Aufbau: Chip-Pille (zählt vom alten zum neuen Kontostand hoch, `chipShown` wird gleich gesetzt, damit der Startscreen nicht noch einmal Chips einfliegen lässt), Dewi-Zone (erst nur Kopf, am Ende Spruch, „?“ erklärt die Rechnung), Ergebnis-Chips (Holo beim Royal Flush, sonst pink/gold, verloren grau), Heldenzahl in Archivo 64 px mit Einsatz-Chip davor, Rechnung „300 + 🔥90 ×5 ×2“ (Multiplikator gold), Knopf „Weiter“ (erste Round, dann Serie) bzw. „Fertig“.
+- Ablauf mit `stageSeq`/`countTo`: Chips einzeln (je 90 ms, Chip-Klick) → Heldenzahl → Rechnung → beim Royal Flush Titel, Aufblitzen des „×2“, Fanfare, Haptik, Chipregen → Hochzählen → Einrasten → Dewis Spruch → Knopf. Royal Flush ca. 4 s, normale Hand ca. 3 s, ein Tipp springt ans Ende.
+- ×0: kein Hochzählen; der Einsatz-Chip fliegt verkleinert zu Dewis Kopf, Heldenzahl grau „0“, für Screenreader „Einsatz weg“.
+- Sound `royal`: Lauf über acht Töne nach oben, Schlussakkord mit Bass, Glöckchen-Funkeln, Münzklackern.
+- Startscreen: `openHandHint()` unter „Weiterspielen“; `lateHand()` ab 21 Uhr bei offener Hand → Spruch `home_late` (Testhaken `window.__hour`).
+- Kleine iPhones (max. 700 px hoch): kompaktere Abstände und Heldenzahl 52 px; der Lichtschein hinter dem Royal Flush wird abgeschnitten (sonst ließ er den Screen scrollen).
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen)**
+- Royal Flush: „Okay. Respekt. Für genau drei Sekunden.“ · „Royal Flush. Ich tu so, als hätte ich's kommen sehen.“
+- Gute Hand (ab ×3): „{n} von {m}. Für deine Verhältnisse fast elegant.“ · „Solide Hand. Das Haus zahlt. Zähneknirschend.“
+- Knappe Hand (×1–×2): „Gewonnen ist gewonnen. Knapp ist auch eine Kunstform.“ · „Das reicht für ein Trinkgeld. An mich.“
+- ×0 mit eigenem Einsatz: „Danke für die Spende. Das Haus gewinnt immer.“ · „Dein Einsatz wohnt jetzt bei mir. Er fühlt sich wohl.“
+- ×0, Dewi hat gezahlt: „Nichts gewonnen, nichts verloren. Außer Würde.“ · „Gratis verzockt. Das muss man auch erst schaffen.“
+- Ab 21 Uhr: „Deine Hand liegt noch auf dem Tisch. Um Mitternacht kassiere ich sie.“ · „Tick, tack. Um Mitternacht gehört dein Einsatz mir.“
+- Erklärung „?“: „Einsatz plus Serien-Bonus, mal Multiplikator. Alles richtig gibt doppelt. Mathe, Darling. Keine Magie.“
+
+**Tests:** test2 B5b, P14/P14b, P21/P21b/P21c (Auszahlung, ×0, Royal Flush mit +1.000, Holo-Chips, Dewi mit Dollar-Augen), P28–P31 (Hinweis auf dem Startscreen, Sticheln ab 21 Uhr, nicht vorher, Folge-Hand schließt mit „Fertig“); test4 E4/E6 um `chipclick` und `royal`; test3 kennt die Stimmung `cash`. Tests 2–5 grün. Zusätzlich im echten Chromium mit echten Zeitabläufen (nicht im Testmodus) durchgespielt: Royal Flush, ×0 und normale Hand auf 390 × 844 und 375 × 667 ohne Fehler, ohne Scrollen, Endzustand vollständig (Heldenzahl, Pille, Spruch, Knopf).
+
+**Nicht auf einem echten iPhone getestet:** Fanfare und Chip-Klick, Haptik, Chipregen, Schrift Archivo, Gesamtlänge der Bühne. Prüfliste für Phase 1 siehe Bericht an Vito.

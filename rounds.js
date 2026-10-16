@@ -308,7 +308,8 @@ function showEnd(){
   const grew=st>S.streak0,gray=firstToday&&S.lost>0;
   /* Version 133: Chips gibt es nur noch aus der Auszahlung der Pokerhand (poker.js) */
   const P=S.hand&&!S.paidOut?handPayout(S.hand):null;S.paidOut=true;
-  endResult({total,st,grew,gray,chips:P?P.payout:0,pay:P,first:firstToday});
+  const E={total,st,grew,gray,chips:P?P.payout:0,pay:P,first:firstToday};
+  if(P)payoutStage(E);else endResult(E);   // Version 135: gestaltete Auszahlung; endResult nur noch für Runs von vor Version 133
 }
 /* ===== Bühnen-Helfer für die Endscreens (Version 126) =====
    Ein Ablaufplan (q) setzt Schritte zeitversetzt; ein Tipp auf die Bühne springt zum Endzustand.
@@ -349,7 +350,7 @@ function endResult(E){
   sheetBody(`<div class="smain endstage" id="est"><div class="kicker" style="--k:var(--c-pink)">${t('Round beendet')}</div>
     <div class="bigword es-big${S.lost===0?' perf':''}" id="ebig">${esc(full[0])}<span id="enum">0</span>${esc(full[1]||'')}</div>
     <p class="hint rv" id="esub">${t('Module geschafft')}</p>
-    ${E.chips?`<div class="chipline rv" id="egem">${chipSvg('pink')}<b id="egn">+0</b></div>`:''}${payoutLine(E.pay)}
+    ${E.chips?`<div class="chipline rv" id="egem">${chipSvg('pink')}<b id="egn">+0</b></div>`:''}
     <div class="rv" id="emas">${mascot(good,null,'sm')}</div>
     <button class="btn primary block rv" id="endnext">${E.first?t('Weiter'):t('Fertig')}</button></div>`);
   const q=stageSeq(),stage=$('#est');
@@ -366,7 +367,7 @@ function endResult(E){
     T+=cm+250;
     q.at(T-200,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(E.chips);g.classList.add('pulse');}});
   }
-  q.at(T,()=>{on('epay');on('emas');sfx(good);});
+  q.at(T,()=>{on('emas');sfx(good);});
   T+=450;
   q.at(T,()=>{$$('.rv',stage).forEach(e=>e.classList.add('on'));});
   $('#endnext').onclick=()=>{if(!$('#endnext').classList.contains('on'))return;if(E.first)streakMoment(E);else closeSheet();};   // Serie nur beim ersten Spielen des Tages

@@ -168,7 +168,7 @@ try{
   M.click(M.$('#start'));
   ok(!!M.$('#wtap'),'Einführung: zentriertes Wort');ok(!M.$('.intro1 .mascot'),'Einführung ohne Dewi');
   ok(M.play({failType:true}),'Sitzung mit Fehlern läuft');
-  ok(M.$$('.dw').length>=1&&M.$$('.dw').every(g=>/m-(haughty|bored|annoyed|sly|shades|sleep|mean|superior|uninterested|surprised)/.test(g.className)),'Ende: Dewi mit Stimmung');
+  ok(M.$$('.dw').length>=1&&M.$$('.dw').every(g=>/m-(haughty|bored|annoyed|sly|shades|sleep|mean|superior|uninterested|surprised|cash)/.test(g.className)),'Ende: Dewi mit Stimmung');
   M.click(M.$('#fin'));
   M.click(M.$('[data-v="settings"]'));
   ok(!!M.$('.mascot'),'Einstellungen: Dewi');
