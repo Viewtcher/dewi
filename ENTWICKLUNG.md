@@ -1804,3 +1804,19 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 D9 prüfte bisher den Wortlaut dieses Satzes bei falscher Antwort; jetzt prüft er stattdessen direkt im Spielstand, dass das Wort auf Stufe 0 fällt, und dass im Ergebnis kein „Stufe"/„Wiederholung"-Text mehr auftaucht. Tests 2–5 grün.
 
 **Nicht auf einem echten iPhone getestet:** Wie sich der jetzt kürzere Ergebnis-Bildschirm (ohne den Satz) auf dem iPhone liest und ob er optisch leer wirkt.
+
+
+## Version 150 – Tab-Leiste sitzt wirklich ganz unten
+
+> **Auf dem echten iPhone war unter der Tab-Leiste ein schmaler Spalt zu sehen** – nicht im App-Lila, sondern in der Standard-Hintergrundfarbe des Browsers (fast schwarz), die durchschimmerte. Das sah billig aus. Grund: Bei kurzen Bildschirmen (wie dem Startscreen) war die Seite selbst kürzer als das Display, darunter kam der Browser-Hintergrund statt unserem zum Vorschein, genau dort, wo die Leiste sitzt. Die Seite füllt jetzt immer mindestens die volle Bildschirmhöhe, mit unserem eigenen Hintergrund.
+
+**Entscheidungen (Vito):** Beheben wie vorgeschlagen (Seite füllt immer den ganzen Bildschirm).
+
+**Technik**
+- `html` bekommt `min-height:100%` und explizit `background:var(--bg)` (vorher nur auf `body` gesetzt, `html` selbst hatte keinen eigenen Hintergrund).
+- `body` bekommt zusätzlich `min-height:100vh` (mit `100dvh` als zweiter, modernerer Wert direkt danach – Browser, die `dvh` kennen, nehmen automatisch den zweiten).
+- Damit ist die Seite nie kürzer als der sichtbare Bildschirm, auch bei kurzen Ansichten wie dem Startscreen, und der Browser-eigene Hintergrund (der bei `color-scheme:dark` fast schwarz statt unserem Lila ist) kommt nirgends mehr zum Vorschein.
+
+**Tests:** Keine automatisierte Prüfung dafür möglich (reine Layout-Metrik auf echtem Gerät), Tests 2–5 bleiben unverändert grün. Zusätzlich mit Chromium im iPhone-Format (390×844) gemessen: Dokument- und Body-Höhe entsprechen jetzt exakt der Bildschirmhöhe, die Tab-Leiste endet exakt am unteren Rand (vorher kürzer als die Bildschirmhöhe bei kurzen Ansichten).
+
+**Nicht auf einem echten iPhone getestet:** Ob der Spalt auf dem Gerät jetzt wirklich weg ist – das war ja gerade der gemeldete Fehler, den ich nur im Code und in Chromium nachvollziehen konnte, nicht 1:1 auf dem iPhone.
