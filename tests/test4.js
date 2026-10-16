@@ -36,7 +36,7 @@ const asc=s=>s.replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').repla
 
 function env(pre,mode='de',lang='de-DE'){
   const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',pretendToBeVisual:true,beforeParse(win){
-    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;
+    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;win.__autoBlind="small";
     win.__aud={osc:[],noise:0,resumed:0,gain:null};
     win.AudioContext=function(){const A=win.__aud;this.currentTime=0;this.sampleRate=8000;this.state='suspended';this.destination={};
       this.resume=()=>{A.resumed++;this.state='running';};
@@ -249,7 +249,7 @@ function toReels(E,force=true){
   act(E,'(r.right+2)%3');ev(E,'S.cur.rl.toss(true)');
   ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.cur.ok')===false,'D7 Zweiter Fehler: Modul verloren');
   ok(ev(E,'S.wrong')>=1,'D8 Als Fehler gezählt');
-  ok(/kommt bald wieder/.test(E.$('.smain').textContent)&&!/Fehlerliste/.test(E.$('.smain').textContent),'D9 Wort kommt bald wieder, ohne Fehlerliste');
+  ok(/fällt auf Stufe 0 und kommt morgen wieder/.test(E.$('.smain').textContent)&&!/Fehlerliste/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0 und kommt morgen wieder, ohne Fehlerliste');
 }
 // --- Reduzierte Bewegung: Liste
 {
@@ -309,7 +309,7 @@ function toReels(E,force=true){
 {
   const E=fresh();
   ok(ev(E,'state.music')===true&&ev(E,'state.mvol')===35,'M1 Musik standardmäßig an');
-  ok(!E.$('.top .musbtn')&&!!E.$('.top #chlang.langbtn')&&!!E.$('.top .topr #gempill'),'M2 Kopfzeile: Flagge, Serie, Diamanten – kein Lautsprecher mehr');
+  ok(!E.$('.top .musbtn')&&!!E.$('.top #chlang.langbtn')&&!!E.$('.top .topr #chippill'),'M2 Kopfzeile: Flagge, Serie, Chips – kein Lautsprecher mehr');
   ev(E,'state.music=false');
   ok(ev(E,"(()=>{musTick();return MUS.mode;})()")===null,'M3 Aus: keine Musik');
   E.click(E.$('[data-v="settings"]'));E.click(E.$('[data-mus="true"]'));
@@ -512,10 +512,10 @@ function toReels(E,force=true){
   const css=E.d.querySelector('style').textContent;
   ok(/\.dw\.m-cash svg\{animation:dw-cash /.test(css)&&css.includes('@keyframes dw-cash{'),'E2 Dewi cash hat eine eigene Schleife');
   ok(/<text[^>]*>\$<\/text>/.test(ev(E,"dwSvg('cash')")),'E3 Dollar-Pupillen');
-  ok(ev(E,"typeof haptic==='function'&&['jackpot','lever','rwin','rbad','gems','tossed'].every(k=>typeof SFX[k]==='function')"),'E4 Sounds & Haptik registriert');
+  ok(ev(E,"typeof haptic==='function'&&['jackpot','lever','rwin','rbad','gems','chips','chipclick','royal','tossed'].every(k=>typeof SFX[k]==='function')"),'E4 Sounds & Haptik registriert');
   ev(E,"state.ui='en';save()");
   ok(ev(E,"t('Hebel ziehen')")==='Pull the lever'&&ev(E,"t('Musik')")==='Music','E5 Englische Texte');
-  const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','tossed'].forEach(k=>sfx(k))");
+  const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','chips','chipclick','royal','tossed'].forEach(k=>sfx(k))");
   ok(A.osc.length>n0+20,'E6 Alle Reels-Sounds erzeugen Töne ('+(A.osc.length-n0)+')');
 }
 {
@@ -529,7 +529,7 @@ function toReels(E,force=true){
   const N=ev(E,"LANGS.id.words.length");
   tw('[data-dev=p10]');
   ok(ev(E,"Object.keys(state.progress.id).length")===Math.round(N*.1),'V3 10 % = '+Math.round(N*.1));
-  ok(ev(E,"Object.keys(state.list.id).length")>0&&ev(E,"Object.keys(state.list.id).length")<=3&&ev(E,"Object.keys(state.list.id).every(k=>state.progress.id[k].l===0&&state.progress.id[k].d===FAR)"),'V4 Fehlerliste gefüllt');
+  ok(ev(E,"fallenWords().length")>0&&ev(E,"fallenWords().length")<=3&&ev(E,"fallenWords().every(w=>state.progress.id[w.k].d<=today()&&state.progress.id[w.k].n>=1)")&&ev(E,"JSON.stringify(state.list)")==='{}','V4 Einige Wörter auf Stufe 0, fällig, mit Fehlerzähler');
   ok(ev(E,"new Set(Object.values(state.progress.id).map(p=>p.l)).size")>=4,'V5 gemischte Stufen');
   ok(ev(E,"state.name")==='Vito','V6 Name bleibt');
   ev(E,"view='settings';render()");tw('[data-dev=all]');
@@ -632,6 +632,25 @@ function toReels(E,force=true){
     E.click(E.$('#chk'));
     ok(!!E.$('.res.good')&&ev(E,"S.cur.ok")===true,'R18 richtig gelöst mit festen Steinen');
   }
+}
+// --- Chips (Version 132)
+{
+  const E=fresh();
+  const m=ev(E,`(()=>{state=Object.assign(defaults(),{lang:'id',ui:'de',nameAsked:true,gems:123,gemShown:100,gemSurv:{d:today(),n:5}});delete state.chipV;migrate();return JSON.stringify([state.chips,state.chipShown,'gems' in state,'gemShown' in state,'gemSurv' in state,state.chipV]);})()`);
+  ok(m==='[1230,1000,false,false,false,1]','C1 Migration: Diamanten × 10 werden Chips ('+m+')');
+  ok(ev(E,`(()=>{const c=state.chips;migrate();migrate();return state.chips===c&&state.chipShown===1000;})()`),'C2 Migration greift nur einmal');
+  ok(ev(E,`(()=>{const s=Object.assign(defaults(),{lang:'id'});return !('chipV' in s)&&s.chips===0;})()`),'C2b chipV steht nicht in defaults()');
+  const ab=ev(E,`(()=>{state.ui='de';const a=[9999,10000,12549,999999,1000000,1250000].map(fmtChipShort).join('|');state.ui='en';const b=fmtChipShort(12549)+'|'+fmtChip(12549);state.ui='de';return a+'#'+b;})()`);
+  ok(ab==='9.999|10,0K|12,5K|999,9K|1,0M|1,2M#12.5K|12,549','C3 Abkürzung K/M mit einer Nachkommastelle, abgerundet, Komma/Punkt je Sprache ('+ab+')');
+  ok(ev(E,`(()=>{state.chips=0;state.chipSurv=null;const a=chipSurvival(10),b=chipSurvival(100),c=chipSurvival(10);return [a,b,c,state.chips].join()})()`)==='50,250,0,300','C4 Survival: 5 Chips pro Wort, höchstens 300 am Tag, kein Rekord-Bonus');
+  ev(E,"state.chips=4820;state.chipShown=4820;save();render()");
+  const pill=E.$('#chippill');
+  ok(!!pill&&pill.tagName!=='BUTTON'&&/4\.820/.test(pill.textContent)&&!!pill.querySelector('use[href="#chip-pink"]')&&!E.$('canvas.gem'),'C5 Pille: Dewi-Chip, volle Zahl unter 10.000, kein Knopf');
+  ev(E,"state.chips=12549;state.chipShown=12549;save();render()");
+  ok(/12,5K/.test(E.$('#chippill').textContent)&&/12\.549/.test(E.$('#chippill').getAttribute('aria-label')),'C5b Pille kürzt ab, Vorlesetext nennt die volle Zahl');
+  ok(['pink','gold','holo','grey','empty'].every(t=>!!E.d.getElementById('chip-'+t))&&!!E.d.getElementById('chipFaceClip')&&E.d.querySelectorAll('#chipsprite').length===1,'C6 Alle fünf Chip-Varianten einmal im Dokument');
+  ok(!/Diamant/.test(E.$('#app').textContent)&&!ev(E,"typeof GEMV!=='undefined'||typeof GEM_MILES!=='undefined'||typeof gemAdd!=='undefined'"),'C7 Keine Diamanten mehr in Anzeige und Code');
+  ok(ev(E,"(()=>{chipRain(5);const b=document.querySelector('.drain');const r=!!b&&b.querySelectorAll('use[href^=\"#chip-\"]').length===5;b&&b.remove();return r;})()")||ev(E,'reduceMotion()'),'C8 Reels-Regen besteht aus Chips');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

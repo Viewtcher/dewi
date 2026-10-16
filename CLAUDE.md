@@ -13,25 +13,30 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 
 ## Ablauf nach jeder Änderung
 
-1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `gems.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
+1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js`, `pokerui.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
 2. Bauen: `python build.py` (im Hauptordner). Erzeugt `index.html`.
 3. Testen: `npm test --prefix tests`. Alle vier Tests müssen grün sein (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“). Ändert sich gewolltes Verhalten, Tests anpassen und das offen sagen.
-4. In `ENTWICKLUNG.md` den nächsten Eintrag `## Version NN – Titel` anhängen: was, warum, Technik, Teststand und was nur auf einem echten iPhone prüfbar ist.
-5. Commit mit der Nachricht `Version NN – Titel` (darfst du selbst).
-6. **Push nur nach Vitos ausdrücklichem OK.** Ein Push auf `main` veröffentlicht die App. Vorher kurz sagen, was live geht.
-7. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
+4. **Keine Vorschau-Screenshots von selbst aus.** Bei optischen Änderungen kurz beschreiben, was sich zeigen sollte. Ein Screenshot (Playwright/Chromium) nur, wenn Vito ausdrücklich danach fragt. Spart Token, die ein Bild beim Ansehen kostet.
+5. In `ENTWICKLUNG.md` den nächsten Eintrag `## Version NN – Titel` anhängen: was, warum, Technik, Teststand und was nur auf einem echten iPhone prüfbar ist.
+6. Commit mit der Nachricht `Version NN – Titel` (darfst du selbst).
+7. **Push nach `entwicklung` darfst du selbst, ohne Nachfrage.** Das sichert die Version auf GitHub, verändert aber `main` nicht und veröffentlicht nichts.
+8. **Push nach `main` nur nach Vitos ausdrücklichem OK.** Das veröffentlicht die App. Vorher kurz sagen, was live geht.
+9. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
 
 ## Git-Regeln
 
-- Gearbeitet wird direkt auf `main`. Kein `git push --force`, kein `git reset --hard`, keine gelöschte Historie.
+- Gearbeitet wird auf dem Zweig `entwicklung`. Dorthin pushst du nach jeder fertigen, getesteten Version ohne Nachfrage, das ist nur eine Sicherung auf GitHub.
+- **Veröffentlicht wird nur über `main`.** Sagt Vito „jetzt aktualisieren“/„veröffentlichen“: `entwicklung` nach `main` mergen und pushen (schnelles Vorspulen, falls möglich). Das ist der einzige Push, der eine Bestätigung braucht.
+- Kein `git push --force`, kein `git reset --hard`, keine gelöschte Historie, auf keinem der beiden Zweige.
 - Alte Sicherungskopien (`data/*.bak.*`) braucht es nicht mehr, Git speichert jede Version. Die vorhandenen bleiben liegen.
-- Nach dem Push baut GitHub Actions die App erneut, führt die Tests aus und veröffentlicht nur, wenn alles grün ist (`.github/workflows/pages.yml`). Schlägt das fehl, bleibt die alte Version online.
+- Nach dem Push auf `main` baut GitHub Actions die App erneut, führt die Tests aus und veröffentlicht nur, wenn alles grün ist (`.github/workflows/pages.yml`). Schlägt das fehl, bleibt die alte Version online.
+- Arbeitet Vito zwischendurch auch in VS Code: dort vor dem Weitermachen `entwicklung` auschecken und synchronisieren (Pull), damit beide Seiten auf demselben Stand aufbauen.
 
 ## Wichtige Technik in Kürze
 
 - Ein Strict-Mode-IIFE in `app.src.html`; Includes über `/*@include datei*/`, die `build.py` einsetzt.
 - Spielstand nur im Browser: `localStorage`, Schlüssel `kata.v1`. Er hängt an der Adresse der Seite. Änderungen am Datenformat brauchen eine Migration in `migrate()`.
-- Testhaken: `window.__test`, `window.__run(code)`, `window.__introMs=0`.
+- Testhaken: `window.__test`, `window.__run(code)`, `window.__introMs=0`, `window.__autoBlind` (wählt den Blind ohne Fenster).
 - Details zu Aufbau, Begriffen, Lernlogik und allen Versionen: `ENTWICKLUNG.md`.
 
 ## Agenten
@@ -44,9 +49,11 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 130)
+## Offene Punkte (Stand Version 135)
 
-- Shop mit Kosmetik (Dewi-Outfits, Kachel-Themes, Soundtracks, Stempel; `CHARS` mit `price` vorbereitet). Vorher Fragen stellen.
+- **Poker Phase 1 fertig** (Versionen 131–135 nach `konzept-poker-shop.md`). Veröffentlichung auf `main` wartet auf Vitos OK. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
+- Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
+- Shop (Phase 2) nach den Erfahrungen aus Phase 1. Vorher Fragen stellen.
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.

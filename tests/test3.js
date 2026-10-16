@@ -35,7 +35,7 @@ const asc=s=>s.replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').repla
 
 function env(pre,mode='de',lang='de-DE'){
   const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',pretendToBeVisual:true,beforeParse(win){
-    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;
+    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;win.__autoBlind="small";
     win.__aud={osc:[],noise:0,resumed:0,gain:null};
     win.AudioContext=function(){const A=win.__aud;this.currentTime=0;this.sampleRate=8000;this.state='suspended';this.destination={};
       this.resume=()=>{A.resumed++;this.state='running';};
@@ -168,7 +168,7 @@ try{
   M.click(M.$('#start'));
   ok(!!M.$('#wtap'),'Einführung: zentriertes Wort');ok(!M.$('.intro1 .mascot'),'Einführung ohne Dewi');
   ok(M.play({failType:true}),'Sitzung mit Fehlern läuft');
-  ok(M.$$('.dw').length>=1&&M.$$('.dw').every(g=>/m-(haughty|bored|annoyed|sly|shades|sleep|mean|superior|uninterested|surprised)/.test(g.className)),'Ende: Dewi mit Stimmung');
+  ok(M.$$('.dw').length>=1&&M.$$('.dw').every(g=>/m-(haughty|bored|annoyed|sly|shades|sleep|mean|superior|uninterested|surprised|cash)/.test(g.className)),'Ende: Dewi mit Stimmung');
   M.click(M.$('#fin'));
   M.click(M.$('[data-v="settings"]'));
   ok(!!M.$('.mascot'),'Einstellungen: Dewi');
@@ -270,7 +270,7 @@ try{
   F.click(F.$('#nmskip'));ok(!!F.$('[data-lang]'),'Dann Lernsprache');
   // Anrede in Sprüchen
   const Q=env(base({name:'Vito',nameAsked:true}),'de');
-  const kinds=['pick','lang','home_new','home_due','home_done','home_sleep','home_list','home_streak','settings','intro','ok','ok_try2','ok_run','bad','bad_rare','bad_again','lvl_up','lvl_new','lvl_saved','lvl_hold','end_perfect','end_good','end_bad','name'];
+  const kinds=['pick','lang','home_new','home_due','home_done','home_sleep','home_fallen','home_streak','settings','intro','ok','ok_try2','ok_run','bad','bad_rare','bad_again','lvl_up','lvl_new','lvl_saved','lvl_hold','end_perfect','end_good','end_bad','name'];
   let withName=0,withNick=0,leak=0,total=0;const nickRe=/Choom|Chief|Digga|Boss|Bestie|Meister/;
   for(const k of kinds)for(let i=0;i<60;i++){const q=Q.w.sayQuip(k,{n:3,s:5,lv:4,w:'x'});total++;if(/\{\w+\}/.test(q.text))leak++;if(q.text.includes('Vito'))withName++;if(nickRe.test(q.text))withNick++;}
   ok(leak===0,'Keine unaufgelösten Platzhalter in '+total+' Sprüchen');

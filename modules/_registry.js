@@ -5,7 +5,7 @@
    - KARTE      ein Wort in einem Modul.
    - PLAYMODE   legt fest, welche Module eine Round einsetzt: Random (gemischt, nach Stufe) oder Solo (ein Modul).
    - ROUND      eine komplette Abfrage vom Start bis zum Ergebnis: Daily Round (Pflicht des Tages)
-                oder Freeplay (freiwillig, aus Wiederholungsliste oder Fehlerliste).
+                oder Survival (freiwillig, alle begonnenen Wörter, 3 Leben).
 
    Jedes Modul liegt in einer eigenen Datei unter modules/ und meldet sich mit registerModule an:
      id        kurze Kennung (blocks, typing, swipe, gap, choice, intro)

@@ -27,6 +27,7 @@ const PAIRS={de:pairsOf('de'),en:pairsOf('en')};
 const sentKeys=new Set(sEn.keys());
 console.log('Wörter',dEn.size,'EN-Sätze',sEn.size,'DE-Sätze',sDe.size);
 
+const lvl0=s=>Object.keys((s.progress||{}).id||{}).filter(k=>s.progress.id[k].l===0);
 const T=el=>{const c=el.cloneNode(true);c.querySelectorAll('.qh').forEach(q=>q.remove());return c.textContent;};
 let fails=0;const ok=(c,m)=>{console.log((c?'OK   ':'FEHL ')+m);if(!c)fails++;};
 const toks=s=>s.replace(/[.,!?;:"“”]/g,' ').split(/\s+/).filter(Boolean);
@@ -35,7 +36,7 @@ const asc=s=>s.replace(/ä/g,'ae').replace(/ö/g,'oe').replace(/ü/g,'ue').repla
 
 function env(pre,mode='de',lang='de-DE'){
   const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',pretendToBeVisual:true,beforeParse(win){
-    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;
+    win.scrollTo=()=>{};win.__swipeP=0;win.__introMs=0;win.__test=true;win.__autoBlind="small";
     win.__aud={osc:[],noise:0,resumed:0,gain:null};
     win.AudioContext=function(){const A=win.__aud;this.currentTime=0;this.sampleRate=8000;this.state='suspended';this.destination={};
       this.resume=()=>{A.resumed++;this.state='running';};
@@ -184,8 +185,9 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(kk.length>=2&&/Einführung/.test(kk[0])&&/Review · neues Wort/.test(kk[kk.length-1]),'B2 Einführung, dann das neue Wort am Ende');
   ok(/Modul (Tippen|Bausteine)/.test(kk[kk.length-1]),'B3 Am Ende ein schweres Modul');
   const s=E.st();
-  ok(s.progress.id[first].l===1&&Object.keys(s.list.id).length===0,'B4 Wort auf Stufe 1, Fehlerliste leer');
+  ok(s.progress.id[first].l===1&&!Object.keys(s.list||{}).some(lg=>Object.keys(s.list[lg]||{}).length),'B4 Wort auf Stufe 1, keine Fehlerliste');
   ok(s.done[ev(E,'today()')]===true&&!(s.flawed&&s.flawed[ev(E,'today()')]),'B5 Tag zählt, kein grauer Stempel');
+  ok((s.chips|0)===200&&!!E.$('#ertitle')&&/ROYAL FLUSH/.test(E.$('#ertitle').textContent)&&/^100 ×1 ×2$/.test(E.$('#epay').textContent.trim()),'B5b Erste Hand (1 Modul, Dewi zahlt): (100 + 0) × 1 × 2 = 200 Chips, Royal Flush');
   E.click(E.$('#fin'));
   ok(/Heute geschafft/.test(E.$('#app').textContent),'B6 Home: geschafft');
   E.click(E.$('#gm'));ok(!!E.$('#surv')&&E.$('#surv').disabled,'B7 Survival sichtbar, aber gesperrt (zu wenig Wörter)');
@@ -206,36 +208,156 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   }
   ok(all,'C2 12 Rounds laufen durch');
   ok(reps===0,'C3 Immer 5 Module, nie zweimal dasselbe hintereinander ('+reps+' Fehler)');
-  ok(Object.keys(E.st().list.id).length===0,'C4 Alles richtig: Fehlerliste leer');
+  ok(lvl0(E.st()).length===0,'C4 Alles richtig: kein Wort auf Stufe 0');
 }
-// --- D) Fehler: Fehlerliste, grauer Stempel, Reparatur
+// --- D) Fehler (Version 131): Stufe 0, morgen fällig, Vorrang im Review, grauer Stempel, keine Reparatur
 {
   const E=fresh();known(E,6);
-  const day0=ev(E,'today()');
+  const day0=ev(E,'today()'),day1=ev(E,'addDays(today(),1)');
   E.click(E.$('#start'));
   ok(E.play({failSent:true,failType:true}),'D1 Round mit lauter Fehlern läuft durch');
   let s=E.st();
-  const nl=Object.keys(s.list.id).length;
-  ok(nl>=1,'D2 verlorene Module landen auf der Fehlerliste ('+nl+')');
+  const f0=lvl0(s);
+  ok(f0.length===5&&f0.every(k=>s.progress.id[k].d===day1&&s.progress.id[k].n>=1),'D2 Verlorene Module: Stufe 0, morgen fällig, Fehlerzähler ('+f0.length+')');
   ok(s.done[day0]===true&&s.flawed[day0]===true,'D3 Tag zählt, aber als fehlerhaft markiert');
   E.click(E.$('#fin'));
   const btn=E.$(`[data-stamp="${day0}"]`);
   if(btn)E.click(btn);const sc=E.$('.sv-card');ok(btn&&btn.dataset.kind==='ok'&&sc&&!/grayscale/.test(sc.innerHTML)&&/pl-holo" style="display:none/.test(sc.innerHTML),'D4 Tag mit Fehlern: farbige Marke ohne Holo');
-  ok(!E.$('#vol')&&!E.$('#rvol'),'D5 Fehlerliste ohne Freeplay-Knöpfe');
-  ok(/Noch eine Runde/.test(E.$('.plan').textContent)&&!E.$('.card .missed'),'D6 Home: Reparatur-Knopf im Plan, keine eigene Karte');
+  ok(!E.$('#vol')&&!E.$('#rvol'),'D5 Keine Freeplay-Knöpfe');
+  ok(/Noch eine Runde/.test(E.$('.plan').textContent)&&!E.$('.card .missed')&&!/Reparatur/.test(E.$('#app').textContent),'D6 Home: „Noch eine Runde“, keine Reparatur');
   nextDay(E);
-  ok(/Play now/.test(E.$('#start').textContent),'D7 Nächster Tag: Play now');
+  ok(/Play now/.test(E.$('#start').textContent),'D7 Nächster Tag: Play now, keine Sperre');
+  const rv=ev(E,'plan().review.map(w=>w.k).join()').split(',');
+  ok(rv.length===4&&rv.every(k=>f0.indexOf(k)>=0),'D8 Vorrang: alle 4 Review-Wörter sind gefallene Wörter');
   E.click(E.$('#start'));
-  ok(/Reparatur · noch/.test(E.$('.kicker').textContent),'D8 Round beginnt mit der Reparatur');
-  // Dauerhaft scheitern: nie Einführung
-  const ok2=E.play({failSent:true,failType:true});
-  ok(!ok2&&!E.kicks.some(k=>/Einführung/.test(k)),'D9 Solange Fehler bleiben, kommt keine Einführung (Wörter werden wieder angestellt)');
-  ev(E,'closeSheet()');
-  E.click(E.$('#start'));
-  ok(E.play(),'D10 Mit richtigen Antworten läuft Reparatur + Einführung + Review durch');
-  ok(E.kicks.findIndex(k=>/Einführung/.test(k))>E.kicks.findLastIndex(k=>/Reparatur/.test(k)),'D11 Einführung erst nach der Reparatur');
-  ok(Object.keys(E.st().list.id).length===0,'D12 Fehlerliste danach leer');
+  ok(/Einführung/.test(E.$('.kicker').textContent),'D9 Round beginnt mit der Einführung');
+  ok(E.play(),'D10 Mit richtigen Antworten läuft die Round durch');
+  ok(!E.kicks.some(k=>/Reparatur/.test(k)),'D11 Keine Reparatur-Stage');
+  s=E.st();
+  ok(rv.every(k=>s.progress.id[k].l===1&&s.progress.id[k].n>=1)&&lvl0(s).length===1,'D12 Gerettete Wörter auf Stufe 1, Fehlerzähler bleibt, das fünfte wartet');
   ok(noRepeat(modsOf(E.kicks)),'D13 Auch hier nie dasselbe Modul hintereinander');
+  // Migration der alten Fehlerliste
+  const mg=ev(E,`(()=>{const ks=curLang().words.slice(40,43).map(w=>w.k);
+    state.progress.id[ks[0]]={l:0,d:FAR};state.progress.id[ks[1]]={l:0,d:FAR};state.progress.id[ks[2]]={l:0,d:FAR};
+    state.list={id:{[ks[0]]:{n:3,s:'2026-01-02'},[ks[1]]:{n:1,s:'2026-01-01'}}};migrate();
+    const p=state.progress.id;return JSON.stringify([p[ks[0]],p[ks[1]],p[ks[2]],state.list,today()]);})()`);
+  const M=JSON.parse(mg);
+  ok(M[0].l===0&&M[0].d==='2026-01-02'&&M[0].n===3&&M[1].d==='2026-01-01'&&M[1].n===1&&M[2].l===0&&M[2].d===M[4]&&JSON.stringify(M[3])==='{}','D14 Migration: Fehlerliste wird Stufe 0, sofort fällig, Zähler bleibt, Liste leer');
+  ok(ev(E,`(()=>{const p=state.progress.id,f=fallenWords().map(w=>w.k);return f[0]===curLang().words[41].k&&f[1]===curLang().words[40].k;})()`),'D15 Am längsten wartende zuerst');
+  ok(ev(E,'survivalWords().some(w=>state.progress.id[w.k].l===0)'),'D16 Survival enthält Wörter auf Stufe 0');
+  ev(E,'render()');E.click(E.$('.tab[data-v="book"]'));
+  const fb=E.$('[data-f="shaky"]');ok(!!fb&&/Wackelig/.test(fb.textContent)&&!E.$('[data-f="err"]'),'D17 Vokabelheft: Filter „Wackelig“ statt „Fehlerliste“');
+  E.click(fb);
+  const rows=E.$$('#vlist .row'),shakyN=ev(E,'curLang().words.filter(w=>isShaky(state.progress.id[w.k])).length');
+  ok(rows.length===shakyN&&rows.length>0&&E.$$('#vlist .tag.err').length===ev(E,'fallenWords().length')&&/wackelig/.test(E.$('#vlist').textContent)&&!/Fehlerliste/.test(E.$('#app').textContent),'D18 Filter zeigt Stufe 0–1, Marke „wackelig“ nur auf Stufe 0 ('+rows.length+')');
+}
+// --- P) Poker (Version 133)
+{
+  const E=fresh();known(E,6);
+  const P=ev(E,`(()=>{
+    const pay=(blind,res,pct)=>{const h={blind,stake:blind==='big'?300:100,paid:'self',pct:pct||0,mult:0,done:0,lost:0};h.bonus=Math.round(h.stake*h.pct/100);
+      res.forEach(ok=>handSettle(h,ok));const c=state.chips;const r=handPayout(h);state.chips=c;return r.net;};
+    const T=[1,1,1,1,1],F1=[1,1,1,1,0],F2=[1,1,1,0,0],F3=[1,1,0,0,0];
+    return JSON.stringify({s:[pay('small',T),pay('small',F1),pay('small',F2),pay('small',F3)],b:[pay('big',T),pay('big',F1),pay('big',F2),pay('big',F3)],
+      b30:(()=>{const h={blind:'big',stake:300,paid:'self',pct:30,bonus:90,mult:0,done:0,lost:0};T.forEach(ok=>handSettle(h,ok));const c=state.chips;const r=handPayout(h);state.chips=c;return r.payout;})(),
+      floor:(()=>{const h={blind:'big',stake:300,paid:'self',pct:0,bonus:0,mult:0,done:0,lost:0};[0,0,1,0].forEach(ok=>handSettle(h,ok));return h.mult;})(),
+      small0:(()=>{const h={blind:'small',stake:100,paid:'self',pct:0,bonus:0,mult:0,done:0,lost:0};[1,1,0,0].forEach(ok=>handSettle(h,ok));return h.mult;})()});})()`);
+  const R=JSON.parse(P);
+  ok(R.s.join()==='900,300,200,100','P1 Rechenbeispiele Small Blind 100: +900 / +300 / +200 / +100 ('+R.s+')');
+  ok(R.b.join()==='2700,600,0,-300','P2 Rechenbeispiele Big Blind 300: +2.700 / +600 / ±0 / −300 ('+R.b+')');
+  ok(R.b30===3900,'P3 30 Tage, Big Blind, Royal Flush: 390 × 10 = 3.900 ('+R.b30+')');
+  ok(R.floor===0&&R.small0===2,'P4 Multiplikator: Big nie unter ×0, Small bleibt bei Fehlern stehen');
+  ok(ev(E,'[6,7,13,14,29,30,49,50,99,100,364,365,999].map(bonusPct).join()')==='0,10,10,20,20,30,30,40,40,50,50,100,100','P5 Serien-Bonus-Stufen');
+  ok(ev(E,'STREAK_MILES.join()')==='7,14,30,50,100,365','P6 Meilensteine = Bonus-Stufen');
+  // Wer zahlt den Small Blind?
+  const day0=ev(E,'today()');
+  ok(ev(E,'(()=>{state.chips=0;return blindOffer().small.paid})()')==='dewi','P7 Erste Round des Tages: Dewi zahlt');
+  ev(E,`state.done['${day0}']=true;state.chips=150;save()`);
+  ok(ev(E,'blindOffer().small.paid')==='self'&&!ev(E,'blindOffer().big.ok'),'P8 Danach zahlt man selbst, Big ausgegraut ohne 300 Chips');
+  ev(E,'state.chips=40;save()');
+  ok(ev(E,'blindOffer().small.paid')==='rescue','P9 Leeres Konto: Dewi rettet');
+  ev(E,"handNew('small')");
+  ok(ev(E,'state.chips')===40&&ev(E,'daily().rescue')===true&&ev(E,'blindOffer().small.paid')==='none'&&ev(E,'blindOffer().small.stake')===0,'P10 Rettung nur einmal am Tag, danach ohne Einsatz');
+  ev(E,'state.chips=1000;save()');ev(E,"handNew('big')");
+  ok(ev(E,'state.chips')===700,'P11 Big Blind wird beim Start abgebucht');
+  // Echte Hand: Big Blind, alles falsch → ×0, Einsatz weg
+  ev(E,`delete state.done['${day0}'];state.chips=1000;state.chipShown=1000;save();render();window.__autoBlind='big'`);
+  E.click(E.$('#start'));
+  ok(/Big Blind 300/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===700,'P12 Kopfzeile zeigt die Hand, Einsatz abgebucht');
+  ok(E.play({failSent:true,failType:true}),'P13 Hand mit lauter Fehlern läuft durch');
+  ok(ev(E,'state.chips')===700&&/×0/.test(E.$('#epay').textContent)&&/Einsatz weg/.test(E.$('#epay').textContent)&&!!E.$('#egem.zero')&&E.$('#egn').textContent==='0'&&!E.$('#ertitle'),'P14 ×0: graue 0, keine Auszahlung, Einsatz weg (für Screenreader)');
+  ok(ev(E,'QUIPS.de.pay_zero').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&E.$$('.porow .pochip use[href="#chip-grey"]').length===5,'P14b ×0: bissiger Spruch, fünf graue Ergebnis-Chips');
+  E.click(E.$('#fin'));
+  // Pausieren, keine Verwerfen-Möglichkeit, Verfallen um Mitternacht
+  ev(E,"window.__autoBlind='small'");nextDay(E);
+  E.click(E.$('#start'));skipIntro(E);
+  ok(ev(E,'S.hand&&S.hand.paid')==='dewi','P15 Neuer Tag: wieder Dewis Small Blind');
+  ev(E,'closeSheet()');
+  ok(!!ev(E,"openRun('daily')")&&/Weiterspielen/.test(E.$('#start').textContent),'P16 Pausierte Hand: Weiterspielen');
+  E.click(E.$('#start'));ok(!!E.$('#pkrow')&&!E.$('.blindbox')&&!E.$('.askbox'),'P17 Start setzt die Hand fort, ohne Rückfrage');
+  ev(E,'closeSheet()');
+  ev(E,'startRound("survival")');
+  ok(!!E.$('.askbox')&&!E.$('#askgo')&&!!E.$('#askon'),'P18 Survival bei offener Hand: kein „Trotzdem neu starten“');
+  E.click(E.$('#askno'));
+  nextDay(E);
+  ok(!ev(E,"openRun('daily')")&&ev(E,'state.run')===null&&/Play now/.test(E.$('#start').textContent),'P19 Um Mitternacht verfällt die pausierte Hand');
+  // Meilenstein zeigt den neuen Bonus
+  ev(E,`(()=>{for(let i=1;i<=6;i++)state.done[addDays(today(),-i)]=true;save();render();})()`);
+  E.click(E.$('#start'));E.play();
+  ok(/Serien-Bonus jetzt \+10 %/.test(E.$('#fin').textContent),'P20 Tag 7: Meilenstein mit „Serien-Bonus jetzt +10 %“');
+  const ep=E.$('#epay')?E.$('#epay').textContent:'';
+  ok(/^100 ×5 ×2$/.test(ep.trim())&&!/\+/.test(ep),'P21 Bonus nach der Serie vor der Hand: Tag 7 zahlt noch ohne Bonus ('+ep+')');
+  ok(E.$('#egn').textContent==='+1.000'&&E.$$('.porow use[href="#chip-holo"]').length===5&&ev(E,'QUIPS.de.pay_rf').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&!!E.$('#dzone .dw.m-cash'),'P21b Royal Flush: +1.000, fünf Holo-Chips, Dewi mit Dollar-Augen und Spruch');
+  ok(/Weiter/.test(E.$('#endnext').textContent)&&!!E.$('#chippill2'),'P21c Erste Round: „Weiter“ führt zur Serie, Chip-Pille oben');
+  E.click(E.$('#fin'));
+  ok(ev(E,'blindOffer().pct')===10,'P22 Ab der nächsten Hand gilt +10 %');
+  ev(E,"window.__autoBlind=null;state.chips=250;save();render()");
+  E.click(E.$('#extra'));
+  const bs=E.$('#blindstage');
+  ok(!!bs&&E.$('#blind-big').disabled&&/\+10 %/.test(E.$('#bonuspill').textContent)&&/DEIN EINSATZ/.test(bs.textContent)&&!E.$('#pkrow'),'P23 Blind-Wahl als eigener Screen, Big ausgegraut bei 250 Chips, Bonus-Pille');
+  ok(!!E.$('#blindstage #dzone .dzhead .dw')&&!!E.$('#dzq')&&ev(E,'QUIPS.de.blind_self').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&!!E.$('#blindstage .actzone')&&!!E.$('#chippill2'),'P23b Dewi-Zone mit Spruch und „?“, Aktionszone, Chip-Pille');
+  E.click(E.$('#dzq'));ok(/Multiplikator/.test(E.$('#dzbody').textContent)&&E.$('#dzq').getAttribute('aria-expanded')==='true','P23c „?“ zeigt Dewis Erklärung');
+  E.click(E.$('#dzq'));ok(ev(E,'QUIPS.de.blind_self').includes(E.$('#dzbody .bubble').getAttribute('aria-label')),'P23d Nochmal „?“: zurück zum Spruch');
+  E.click(E.$('#blind-small'));
+  ok(!E.$('#blindstage')&&/Small Blind 100/.test(E.$('#pkrow').textContent)&&/\+10 %/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===150,'P24 Small gewählt: Hand startet, 100 abgebucht, Bonus +10 %');
+  ok(!!E.$('.sin.hand .ctrack')&&!E.$('.sin.hand .sbar')&&E.$$('.ctrack .dchip,.ctrack .cslot').length===ev(E,"S.items.filter(x=>x.kind!=='intro').length"),'P25 Kopf: Dewi-Chips statt Fortschrittsbalken');
+  ok(/×0/.test(E.$('#pkmult').textContent)&&!!E.$('#dzone .dzhead .dw')&&!!E.$('#dzq'),'P26 Dewi-Zone mit Multiplikator ×0');
+  E.click(E.$('#dzq'));ok(/Small Blind kostet ein Fehler nichts/.test(E.$('#dzbody').textContent),'P27 „?“ in der Hand erklärt die Regeln zum gewählten Blind');
+  ev(E,"closeSheet();window.__autoBlind='small'");
+  ok(!!E.$('#ohint')&&/Small Blind 100 · ×0 · verfällt um Mitternacht/.test(E.$('#ohint').textContent),'P28 Startscreen: offene Hand mit Einsatz, Multiplikator und „verfällt um Mitternacht“');
+  ev(E,'window.__hour=21;render()');
+  ok(ev(E,'QUIPS.de.home_late').includes(E.$('#app .mascot .bubble').getAttribute('aria-label')),'P29 Ab 21 Uhr stichelt Dewi bei offener Hand');
+  ev(E,'window.__hour=20;render()');
+  ok(!ev(E,'QUIPS.de.home_late').includes(E.$('#app .mascot .bubble').getAttribute('aria-label')),'P30 Vor 21 Uhr kein Sticheln');
+  ev(E,'window.__hour=null');
+  E.click(E.$('#extra'));
+  E.play();ok(!E.$('#fin')&&ev(E,'sheet.hidden')===true&&!E.$('#ohint'),'P31 Folge-Hand: „Fertig“ schließt ohne Serien-Einblendung, Hinweis weg');
+}
+// --- P2) Poker-Screens während der Hand (Version 134)
+{
+  const E=fresh();known(E,6);
+  const right=()=>{const w=T(E.$('.bigword')),idGl=!!E.$('.bigword[lang="id"]'),D=DICT.de;E.type(idGl?D.get(w.toLowerCase()).gl.split(' / ')[0].replace(/\(.*?\)/g,'').trim():[...D.values()].find(x=>x.gl===w).id);};
+  ev(E,"state.chips=1000;state.chipShown=1000;save();render();window.__autoBlind='big';window.__force='typing'");
+  E.click(E.$('#start'));skipIntro(E);
+  ok(!!E.$('.ctrack .dchip.now')&&!E.$('.ctrack .sh'),'Q1 Aktuelles Modul: gestrichelter Chip');
+  right();
+  ok(E.$('#pkmult').classList.contains('up')&&/×1/.test(E.$('#pkmult').textContent),'Q2 Geschafft: Multiplikator springt auf ×1');
+  ok(E.$$('.ctrack .sh').length===1&&!!E.$('.ctrack use[href="#chip-holo"]'),'Q3 Geschafft und Royal Flush noch drin: Holo-Chip');
+  ok(!E.$('.smain .mascot')&&!!E.$('#dzone .dw.m-superior'),'Q4 Kein kleiner Dewi im Ergebnis, Dewi oben überlegen');
+  E.click(E.$('#next'));
+  ok(!E.$('#pkmult').classList.contains('up'),'Q5 Animation nur einmal pro Modul');
+  E.type('qqq');E.type('qqq');E.type('qqq');
+  ok(E.$('#pkmult').classList.contains('down')&&!!E.$('#pkmult .o')&&/×0/.test(E.$('#pkmult .n').textContent),'Q6 Big Blind verloren: Zahl rutscht von ×1 auf ×0');
+  ok(!E.$('.ctrack .sh')&&!!E.$('.ctrack use[href="#chip-gold"]')&&!!E.$('.ctrack use[href="#chip-grey"]'),'Q7 Royal Flush weg: geschaffter Chip gold, verlorener grau');
+  ok(!!E.$('#dzone .dw.m-annoyed'),'Q8 Dewi genervt nach Fehler');
+  E.click(E.$('#next'));ev(E,'closeSheet()');
+  E.click(E.$('#start'));
+  ok(E.$$('.ctrack use[href="#chip-grey"]').length===1&&E.$$('.ctrack use[href="#chip-gold"]').length===1,'Q9 Nach dem Fortsetzen stimmen die Chips noch');
+  ev(E,"closeSheet();window.__autoBlind='small'");nextDay(E);
+  E.click(E.$('#start'));skipIntro(E);
+  E.type('qqq');E.type('qqq');E.type('qqq');
+  ok(E.$('#pkmult').classList.contains('hold')&&/×0/.test(E.$('#pkmult').textContent),'Q10 Small Blind verloren: Zahl bleibt und blinkt grau');
+  ev(E,"closeSheet();window.__force=null");
 }
 // --- E) Versuche je Modul
 {
@@ -254,7 +376,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   E.click(E.$('#next'));
   w=T(E.$('.bigword'));
   E.type('qqq');E.type('qqq');E.type('qqq');
-  ok(ev(E,'S.lost')===1&&Object.keys(E.st().list.id).length===1,'E4 Tippen: drei Fehler = Modul verloren, Fehlerliste');
+  ok(ev(E,'S.lost')===1&&lvl0(E.st()).length===1,'E4 Tippen: drei Fehler = Modul verloren, Stufe 0');
   ev(E,'closeSheet()');
   // Swipe: nur ein Versuch
   force('swipe');E.click(E.$('#start'));
@@ -319,7 +441,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   }
   ok(ev(E,'S.lives')<=0&&ev(E,'S.wrong')===3,'F10 Nach 3 Fehlern ist Schluss ('+ev(E,'S.wrong')+')');
   ok(JSON.stringify(E.st().progress)!==progBefore||true,'F11 (Fortschritt geprüft)');
-  ok(Object.keys(E.st().list.id).length===0,'F12 Survival-Fehler füllen die Fehlerliste nicht');
+  ok(lvl0(E.st()).length===0,'F12 Survival-Fehler setzen kein Wort auf Stufe 0');
   ok(E.st().best.id.random===rec1,'F13 Kein neuer Rekord: alter bleibt');
   ok(/Noch [\d.]+ bis zum Rekord/.test(E.$('.smain').textContent),'F14 Hinweis „Noch X bis zum Rekord“');
 }

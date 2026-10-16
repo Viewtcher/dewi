@@ -28,6 +28,9 @@ dewi/
 │                         Bindet die Dateien unten über Zeilen wie /*@include modules/swipe.js*/ ein.
 ├── rounds.js             ROUNDS: startRound, Wort-Reihe (showItem, nextStep), Kennzeile, finish, levelUp, showEnd
 ├── playmodes.js          PLAYMODES: Playmode-Wahl für den Survival Mode (Random oder Solo)
+├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
+├── poker.js              Poker (seit Version 133): Blinds, Multiplikator, Royal Flush, Serien-Bonus, Auszahlung
+├── pokerui.js            Poker-Screens (seit Version 134/135): Blind-Wahl, Dewi-Zone, Dewi-Chips im Kopf, Multiplikator-Animation, Auszahlung, Royal Flush
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -71,13 +74,14 @@ python build.py         # erzeugt index.html (unter Linux/Mac: python3 build.py)
 | Aufgabe | **Karte** | Ein Wort in einem Modul, die kleinste Einheit | „eine Swipe-Karte“ |
 | Ablauf | **Playmode** | Welche Module eine Round einsetzt | **Random** (gemischt, nach Stufe) und **Solo** (ein einziges Modul für alle Wörter, z. B. „Solo Swipe“) |
 | Runde | **Round** | Eine komplette Abfrage vom Start bis zum Ergebnis | siehe unten |
-| Runde | **Daily Round** | Die Pflicht des Tages, immer Playmode Random, ohne Leben. Stages: **Reparatur** (Fehlerliste), **Einführung** (neues Wort), **Review** (4 bekannte Wörter + neues Wort am Ende) | `startRound('daily')` |
-| Runde | **Survival** (früher Freeplay) | Freiwillig, erst nach der Daily Round: alle bekannten Wörter einmal, 3 Leben insgesamt, ein Versuch pro Karte, Highscore je Playmode | `startRound('survival')`, `openPlaymodes('survival')` |
-| Topf | **Fehlerliste** | Wörter mit verlorenem Modul. Solange sie gefüllt ist, beginnt jede Daily Round mit der Reparatur | `listWords()` |
+| Runde | **Daily Round** | Die Pflicht des Tages, immer Playmode Random, ohne Leben, gespielt als **Pokerhand** (seit Version 133). Stages: **Einführung** (neues Wort), **Review** (4 bekannte Wörter + neues Wort am Ende) | `startRound('daily')` |
+| Poker | **Hand · Blind · Multiplikator · Royal Flush** | Hand = alle gewerteten Module einer Daily Round. Blind = Einsatz (Small 100, Big 300). Multiplikator = ×0 + 1 je geschafftem Modul. Royal Flush = alles geschafft, Multiplikator × 2 | `poker.js` |
+| Runde | **Survival** (früher Freeplay) | Freiwillig, erst nach der Daily Round: alle begonnenen Wörter (auch Stufe 0) einmal, 3 Leben insgesamt, ein Versuch pro Karte, Highscore je Playmode | `startRound('survival')`, `openPlaymodes('survival')` |
+| Zustand | **Wackelig** | Wörter auf Stufe 0 oder 1 (Filter im Vokabelheft). Stufe 0 heißt: ein Modul wurde verloren, das Wort ist morgen fällig und hat im Review Vorrang | `isShaky()`, `fallenWords()` |
 
 Weitere feste Wörter: **Stufe** (0 bis 5) des Wortes, **Kennzeile** (die farbige Zeile oben im Modul, z. B. „WIEDERHOLUNG · STUFE 1 · MODUL SWIPE · INS DEUTSCHE · SOLO“), **Kennenlernen** (Phase für neue Wörter, kein Modul mit Wertung).
 
-Früher gebrauchte, jetzt nicht mehr verwendete Wörter: „Satz-Übung“ (war die Gruppe aus Auswahl, Lückensatz, Bausteine und Swipe), „Abfrage/Sitzung“ (jetzt Round) und „freiwillig üben“ (jetzt Survival), „Freeplay“ und „Wiederholungsliste“ (seit Version 35 entfallen).
+Früher gebrauchte, jetzt nicht mehr verwendete Wörter: „Fehlerliste“ und „Reparatur“ (seit Version 131 entfallen), „Satz-Übung“ (war die Gruppe aus Auswahl, Lückensatz, Bausteine und Swipe), „Abfrage/Sitzung“ (jetzt Round) und „freiwillig üben“ (jetzt Survival), „Freeplay“ und „Wiederholungsliste“ (seit Version 35 entfallen).
 
 ### So sagt man Änderungen
 - „Im Modul Swipe soll der falsche Vorschlag schwerer sein“
@@ -162,47 +166,56 @@ Abdeckung: 652 von 678 Wörtern. Die 26 Alltagssätze (Kategorie „Sätze für 
 
 **Qualitätshinweis:** Die Sätze sind einfach gehalten und wurden maschinell geschrieben. Einzelne unnatürliche Formulierungen sind möglich; eine Durchsicht durch eine Muttersprachlerin oder einen Muttersprachler ist empfohlen.
 
-## 6. Lernlogik (Stand Version 35)
+## 6. Lernlogik (Stand Version 131)
 
 ### 6.1 Daily Round
 
-Keine Leben. Ein Modul pro Wort, nie zweimal dasselbe Modul hintereinander (`chooseModule`). Fehlerrecht: Bausteine, Lückensatz, Auswahl **1 Fehler** (2 Versuche), Tippen **2 Fehler** (3 Versuche), Swipe **kein** Fehler. Verlorenes Modul = Wort auf die Fehlerliste. Es gibt keine Anzeige dafür (vorerst).
+Keine Leben. Ein Modul pro Wort, nie zweimal dasselbe Modul hintereinander (`chooseModule`). Fehlerrecht: Bausteine, Lückensatz, Auswahl, Reels **1 Fehler** (2 Versuche), Tippen **2 Fehler** (3 Versuche), Swipe **kein** Fehler. Keine Sperre: die Daily Round ist immer spielbar.
 
 | Stage | Inhalt |
 |---|---|
-| Reparatur | nur bei gefüllter Fehlerliste: jedes Wort bekommt 1 zufälliges Modul. Bestanden = Wort verlässt die Liste (Stufe 1). Verloren = Wort wird am Ende der Reparatur mit anderem Modul wieder angestellt, bis die Liste leer ist. Erst dann kommt die Einführung |
-| Einführung | genau 1 neues Wort (Wort, Bedeutung, Beispielsatz, Dewi). „Weiter“ ist 3 Sekunden gesperrt (Countdown, Test-Schalter `window.__introMs`) |
-| Review | 4 bekannte Wörter: die 2 am längsten überfälligen + 2 zufällige fällige, aufgefüllt mit noch nicht fälligen (früheste zuerst). Ohne neues Wort 5 Wörter. Zum Schluss das neue Wort noch einmal, bevorzugt mit Tippen oder Bausteine |
+| Einführung | genau 1 neues Wort (Kennenlernen in drei Takten, keine Wertung) |
+| Review | 4 bekannte Wörter, Auswahl in dieser Reihenfolge: **1.** fällige Wörter auf Stufe 0, am längsten wartende zuerst; **2.** die 2 am längsten überfälligen; **3.** zufällige weitere fällige; **4.** aufgefüllt mit noch nicht fälligen (früheste Fälligkeit zuerst). In der Round gemischt. Ohne neues Wort 5 Wörter. Zum Schluss das neue Wort noch einmal, bevorzugt mit Tippen oder Bausteine |
 
 - Ohne bekannte Wörter besteht die erste Round nur aus Einführung und neuem Wort am Ende.
-- Die Daily Round ist „gesperrt“, solange die Fehlerliste gefüllt ist: der Start führt zuerst durch die Reparatur.
-- „Noch eine neue Vokabel“ startet eine weitere Daily Round mit einem neuen Wort.
+- Sind mehr als 4 Wörter auf Stufe 0 fällig, kommen die übrigen an den nächsten Tagen dran.
+- „Noch eine Runde“ startet eine weitere Daily Round mit einem neuen Wort (solange es ungesehene Wörter gibt).
 
-### 6.2 Bewertung
+### 6.2 Bewertung (`record()`)
 
-- **Richtig:** Stufe +1 (max. 5), nächster Termin nach `INTERVALS = [1, 3, 7, 14, 30]` Tagen. Reparatur: Stufe 1. Neues Wort am Ende: Stufe 1.
-- **Verloren:** Wort geht auf die Fehlerliste (`n` +1), Stufe 0, `d = FAR`. Scheitert ein Reparatur-Wort mehrfach in derselben Round, zählt `n` nur einmal.
+- **Richtig:** Stufe +1 (max. 5), nächster Termin nach `INTERVALS = [1, 3, 7, 14, 30]` Tagen. Ein Wort auf Stufe 0 steigt so auf Stufe 1 und kommt morgen wieder („Gerettet!“). Neues Wort am Ende: Stufe 1.
+- **Verloren:** Stufe 0, fällig **morgen**, Fehlerzähler `n` des Wortes +1. Der Zähler bleibt auch nach dem Retten im Wort (`progress[k].n`), damit Dewi „Zum {n}. Mal …“ sagen kann (`bad_again` ab `n` ≥ 2).
 - Die Einführung wird nicht gewertet.
+- Datenform eines Wortes: `{l: Stufe 0–5, d: fällig ab 'JJJJ-MM-TT', n: Fehler insgesamt (nur wenn > 0)}`.
 
-### 6.3 Fehlerliste
+### 6.3 Wackelige Wörter (ersetzt die Fehlerliste)
 
-- Dynamische Liste pro Sprache mit Fehlerzähler `n` und Datum `s`. Auf dem Startbildschirm als Info-Karte ohne Knöpfe (Anzahl, bis zu 8 Wörter mit Fehlerzahl). Filter „Fehlerliste“ im Vokabelheft.
-- Die Fehlerliste wird nur in der Reparatur-Stage der Daily Round geleert. Survival greift nicht darauf zu.
+- Die Fehlerliste, die Reparatur-Stage und jede Sperre der Daily Round sind mit Version 131 entfallen.
+- Vokabelheft: Filter **„Wackelig“** zeigt Wörter auf Stufe 0 und 1 (`isShaky`). Die Marke **„wackelig“** steht nur an Wörtern auf Stufe 0. Englisch „Shaky“ / „shaky“.
+- Startscreen: Dewi stichelt, wenn 4 oder mehr Wörter auf Stufe 0 stehen (`home_fallen`).
+- **Migration (in `migrate()`, läuft bei jedem Start und nach dem Einspielen alter Sicherungen):** Wörter aus `state.list` gehen auf Stufe 0, fällig ab dem Tag, an dem sie auf die Liste kamen (spätestens heute), Fehlerzähler übernommen; danach ist `state.list` leer. Wörter mit der alten Fälligkeit `FAR` werden heute fällig. Offene Runs mit Reparatur-Karten verfallen.
 
 ### 6.4 Tagesplan, Serie und Stempel
 
-`plan()` liefert `{repair, fresh, review}` (Fehlerlisten-Wörter, das eine neue Wort oder `null`, Review-Wörter gemischt).
+`plan()` liefert `{fresh, review}` (das eine neue Wort oder `null`, Review-Wörter gemischt).
 
-- Der Tag zählt für die Serie, sobald eine Daily Round zu Ende gespielt wurde (`state.done`). Mit verlorenem Modul zusätzlich `state.flawed[Tag]`: der Stempel ist grau, ohne Holo (`stampSvg(mood, phase, flawed)`).
-- Ist die Daily Round gesperrt, rettet man den Tag, indem man am selben Tag die Fehlerliste repariert und die Daily Round spielt. Sonst reißt die Serie.
+- Der Tag zählt für die Serie, sobald eine Daily Round zu Ende gespielt wurde (`state.done`). Mit verlorenem Modul in der ersten Round des Tages zusätzlich `state.flawed[Tag]`: der Stempel ist grau, ohne Holo (`stampSvg(mood, phase, flawed)`).
+
+### 6.4a Daily Round als Pokerhand (seit Version 133, Screens seit 134/135)
+
+- Ablauf: „Play now“ → **Blind-Wahl** (Small 100 / Big 300) → Einführung → Review (die Hand) → **Auszahlung** (mit Royal Flush) → Serien-Einblendung (nur bei der ersten Round des Tages).
+- Wer zahlt: erste Round des Tages Dewi (Small), sonst man selbst; leeres Konto: Dewi rettet einmal am Tag, danach Hand ohne Einsatz.
+- Multiplikator ×0, +1 je geschafftem Modul; verloren: Small bleibt, Big −1 (nie unter 0). Royal Flush (alles geschafft) verdoppelt.
+- Auszahlung nur am Ende: `(Einsatz + Serien-Bonus) × Multiplikator`. Serien-Bonus nach der Serie vor der Hand: 7 +10 %, 14 +20 %, 30 +30 %, 50 +40 %, 100 +50 %, 365 +100 %.
+- Pausierte Daily-Hand verfällt um Mitternacht samt Einsatz; kein Verwerfen. Details: `poker.js` (Regeln) und `pokerui.js` (Screens).
 
 ### 6.5 Survival (früher Freeplay)
 
 - Spielbar erst nach der Daily Round und mit mindestens 5 bekannten Wörtern. Die Karte auf dem Startbildschirm ist immer sichtbar; vorher ist der Knopf gesperrt und nennt den Grund.
 - Playmode: Random oder Solo (ein Modul), Rekord je Playmode (`state.best[lang][playmode]`).
-- Alle bekannten Wörter (ohne Fehlerlisten-Wörter) je einmal, gemischt. **3 Leben insgesamt**, pro Karte ein Versuch, auch beim Tippen. Alle geschafft = Round gewonnen.
+- Alle begonnenen Wörter (seit Version 131 auch Stufe 0) je einmal, gemischt. **3 Leben insgesamt**, pro Karte ein Versuch, auch beim Tippen. Alle geschafft = Round gewonnen.
 - Score: 1 Punkt je richtigem Wort, Serienbonus bei 3 in Folge +2, 5 +3, 10 +5, 15 +8, danach alle 5 weiteren +8. Ein Fehler setzt die Serie zurück.
-- Richtig: Stufe +1 und neuer Termin, aber nur einmal pro Tag und Wort (`daily.got`). Falsch: ändert nichts am Fortschritt, keine Fehlerliste.
+- Richtig: Stufe +1 und neuer Termin, aber nur einmal pro Tag und Wort (`daily.got`). Ein Wort auf Stufe 0 lässt sich so auch im Survival retten. Falsch: ändert nichts am Fortschritt.
 - Neuer Rekord: Feier (Dewi, Konfetti, Sound). Sonst „Noch X bis zum Rekord“.
 
 ## 7. Oberfläche und Effekte
@@ -1418,3 +1431,127 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Nicht übernommen:** `concept/` (Konzeptbilder, für die App nicht nötig; Vito hat sie als `2a-`/`2b-dewi-konzept.zip` im Claude-Chat) und `out/dewi-projekt.zip` (alter Projekt-Schnappschuss vom 9. Okt.). Alles andere ist im Repository.
 
 **App selbst unverändert.** Tests im neuen Ordner und in einer frischen Kopie wie in GitHub Actions grün. Nicht auf einem echten iPhone getestet; der Umzug selbst (GitHub, Pages, Spielstand übertragen) passiert erst auf Vitos PC.
+
+
+## Version 131 – Lernlogik ohne Fehlerliste (Poker Phase 1, Etappe 1)
+
+> **Die Fehlerliste ist weg.** Ein verlorenes Modul setzt das Wort auf Stufe 0, es ist morgen fällig und kommt im Review zuerst dran. Keine Reparatur-Stage, keine Sperre der Daily Round mehr. Grundlage: `konzept-poker-shop.md` (Nova, 16.10.2026), Abschnitt 1.
+
+**Entscheidungen (Vito):** Plan in vier Etappen freigegeben (131 Lernlogik, 132 Chips, 133 Poker-Regeln, 134 Poker-Screens), veröffentlicht wird erst nach Etappe 4. Name im Vokabelheft „Wackelig“ (Stufe 0–1). Survival enthält jetzt auch Wörter auf Stufe 0. Sind mehr als 4 Wörter auf Stufe 0 fällig, kommen die am längsten wartenden zuerst. Für spätere Etappen schon entschieden: Serien-Bonus gilt auch auf Dewis Gratis-Blind; während der Hand ändern sich nur Kopfzeile und Poker-Leiste, die Module bleiben; Meilensteine an den Bonus-Stufen (7, 14, 30, 50, 100, 365); kleine Flamme im neuen Stil jetzt, große später; Diamant nur noch Zierde beim Royal Flush; Marlin entwirft alle neuen Sprüche, Vito prüft.
+
+**Technik**
+- `record()`: richtig = Stufe +1 (Stufe 0 → 1, morgen); verloren = `{l:0, d:morgen, n:n+1}`. Rückgabe `saved:true`, wenn ein Wort von Stufe 0 gerettet wurde („Gerettet!“, Dewi `lvl_saved`, Hinweis „Geschafft. Das Wort kommt morgen wieder (Stufe 1).“).
+- `plan()` ohne `repair`: Vorrang für fällige Stufe-0-Wörter (`fallenWords()`, nach Fälligkeit sortiert), danach die bisherige Auswahl. `dailyCards()`, Kennzeile, Run-Speicher (`rf`, `cleared`) und `settleCard()` ohne Reparatur-Zweige.
+- `listOf()`/`listWords()` entfallen, neu `isShaky()` und `fallenWords()`. Der Fehlerzähler liegt jetzt im Wort (`progress[k].n`); `bad_again` gilt für jedes Wort mit `n` ≥ 2.
+- Migration in `migrate()` (siehe 6.3), wiederholbar und gefahrlos bei leerer Liste. `openRun()` verwirft Runs mit Reparatur-Karten.
+- Hinweis nach verlorenem Modul: „Das Wort fällt auf Stufe 0 und kommt morgen wieder.“ (vorher „… kommt bald wieder.“).
+- Startscreen: kein „Reparatur“ mehr, „Noch eine Runde“ erscheint, solange es neue Wörter gibt. Dewi-Spruch `home_list` heißt jetzt `home_fallen` (ab 4 Wörtern auf Stufe 0), Texte ohne Fehlerliste. `lvl_saved` umformuliert.
+- Testbereich: die 1–3 „Fehlerwörter“ sind jetzt Wörter auf Stufe 0 (gestern fällig, mit Fehlerzähler).
+- Doku: Kapitel 2a und 6 neu geschrieben.
+
+**Neue Sprüche und Texte (Entwurf Marlin, bitte prüfen)**
+- `home_fallen`: „{n} Wörter sind auf Stufe 0 gerutscht. Ich sag nix. Ich guck nur sehr laut.“ · „{n} Wörter wackeln. Ich hab sie im Blick. Und dich auch.“ · mit Name: „{who}, {n} Wörter auf Stufe 0. Ich sag nix. Ich starre nur.“ (EN entsprechend)
+- `lvl_saved`: „Gerettet! Von Stufe 0 zurück ins Leben. Redemption Arc.“ · „Na endlich, das Wort steht wieder. Wurde auch Zeit.“
+
+**Tests:** test2 Abschnitt D neu (Stufe 0 + morgen fällig + Zähler, grauer Stempel, keine Sperre, Vorrang im Review, keine Reparatur, Retten auf Stufe 1, Migration der alten Liste, Reihenfolge „am längsten wartend“, Survival mit Stufe 0, Vokabelheft-Filter und Marke); B4, C4, E4, F12 angepasst; test3 Spruchschlüssel `home_fallen`; test4 D9 (neuer Hinweistext) und V4 (Testbereich). Dabei gefunden und behoben: Beim allerersten Fehler eines neuen Wortes wäre der Fehlerzähler leer geblieben. Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet.** Zu prüfen nach Etappe 4: Vokabelheft-Filter „Wackelig“, Spruch auf dem Startscreen, Übergang eines alten Spielstands mit Fehlerliste.
+
+
+## Version 132 – Chips als Währung (Poker Phase 1, Etappe 2)
+
+> **Aus Diamanten werden Chips.** Der Dewi-Chip (Novas Bauteil aus dem Design-Canvas „dewi. Poker-Screens“) ersetzt den Diamanten in der Pille, auf den Endscreens und im Reels-Regen. Alte Kontostände werden einmalig × 10 gerechnet. Grundlage: `konzept-poker-shop.md`, Abschnitte 0 und 4.
+
+**Entscheidungen (Vito):** eigener Chip-Sound (Klackern statt Glitzer); die Pille ist bis zum Shop nur Anzeige (kein Knopf); der Chip in der Pille steht ruhig, alle paar Sekunden läuft ein Glanz darüber.
+
+**Technik**
+- Neue Datei `chips.js` ersetzt `gems.js`. Der Chip liegt einmal pro Variante (pink, gold, holo, grau, leer) als `<symbol>` in einer unsichtbaren Sammlung im Dokument (`chipSprite()` beim Start) und wird über `chipSvg(tone, klasse)` mit `<use>` eingesetzt. Verläufe und Gesichtsmaske gibt es nur einmal. CSS-Klasse `.dchip` (`.chip` war schon für Knöpfe vergeben).
+- Zustand: `state.chips`, `state.chipShown`, `state.chipSurv`. Migration in `migrate()`: `chips = gems × 10`, `chipShown = gemShown × 10`, alte Felder werden gelöscht, Merker `chipV` (steht bewusst nicht in `defaults()`, sonst würde die Umrechnung übersprungen).
+- Pille `#chippill`: ab 10.000 abgekürzt mit einer Nachkommastelle, abgerundet (`fmtChipShort`: 12,5K · 1,2M, Komma bei Deutsch, Punkt bei Englisch). Vorlesetext nennt die volle Zahl. Überall sonst volle Zahl (`fmtChip`).
+- Survival: `chipSurvival(words)` = 5 pro Wort, höchstens 300 pro Tag, kein Rekord-Bonus mehr. Endscreen-Zeile `chipLine()`.
+- Entfallen: `GEMV.daily/perfect/word`, `GEM_MILES` (Meilenstein-Auszahlungen), der Wort-Bonus nach jedem Modul, der 3D-Diamant (`GEM`, Canvas-Schleife). Der Endscreen der Daily Round kennt jetzt `E.chips` (ab Version 133 die Auszahlung der Pokerhand).
+- Reels: `chipRain()` statt `diamondRain()` (pinke, goldene und Holo-Chips), Sound `chips`.
+- Sound `chips`: fünf kurze Klacker (Rauschen + kurzer Rechteck-Klick + dumpfer Ton), wird beim Einfliegen in die Pille und auf Endscreens gespielt. Der Glitzer `gems` bleibt für spätere Holo- und Royal-Flush-Momente.
+- Schrift Archivo (variabel, auch breit und kursiv) wird jetzt mitgeladen, für die Heldenzahlen ab Version 133/134.
+- Texte: „sammle Chips“ in der Gamemodes-Erklärung, „{0} Chips“.
+
+**Übergang bis Version 133:** Die Daily Round bringt keine Chips. Chips gibt es nur im Survival.
+
+**Tests:** test4 neuer Block „Chips“ (C1–C8: Migration × 10 und nur einmal, Abkürzung, Survival-Grenze, Pille, Varianten, keine Diamanten mehr, Chipregen), M2 und E4/E6 angepasst; test2 B5b (keine Chips aus der Daily Round). Zusätzlich im echten Chromium über Pixelfarben geprüft (ohne Screenshot): Chip in der Pille 28 × 28 px, Gesicht und Rand in den richtigen Farben, alle fünf Varianten. Dabei gefunden und behoben: Zusammenstoß mit der vorhandenen Klasse `.chip`. Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet:** Klang des Chip-Klackerns, Glanz in der Pille, Darstellung der Chips in Safari.
+
+
+## Version 133 – Poker-Regeln (Poker Phase 1, Etappe 3)
+
+> **Die Daily Round ist eine Pokerhand.** Vor jeder Hand wählt man Small Blind (100) oder Big Blind (300). Jedes geschaffte Modul hebt den Multiplikator um 1, alles geschafft verdoppelt ihn (Royal Flush). Am Ende zahlt das Haus (Einsatz + Serien-Bonus) × Multiplikator aus. Grundlage: `konzept-poker-shop.md`, Abschnitte 2 und 3. Die Screens sind noch ein Behelf, gestaltet wird in Version 134.
+
+**Entscheidungen (Vito):** Der Serien-Bonus richtet sich nach der Serie **vor** der Hand (was die Flamme bei der Blind-Wahl zeigt). Royal Flush gilt immer, auch bei kleinen Händen. Ist das Konto leer und Dewi hat heute schon gerettet, spielt man **ohne Einsatz** weiter (Auszahlung 0), damit Lernen nie an Chips scheitert.
+
+**Regeln (alle in `poker.js`)**
+- Erste Daily Round des Tages: Small Blind zahlt Dewi; Big Blind freiwillig, voller Betrag selbst. „Noch eine Runde“: beide selbst. Reicht das Konto nicht für den Small Blind, zahlt ihn Dewi einmal am Tag (`daily().rescue`), danach Hand ohne Einsatz. Der eigene Einsatz wird beim Start abgebucht.
+- Multiplikator ×0, +1 je geschafftem Modul. Verloren: Small bleibt stehen, Big −1 (nie unter 0). Das Kennenlernen zählt nicht.
+- Royal Flush: alle Module geschafft → × 2. Auszahlung nur am Ende: `(Einsatz + Bonus) × Multiplikator`. Bonus = Einsatz × Prozent, gerundet.
+- Serien-Bonus: 7 +10 %, 14 +20 %, 30 +30 %, 50 +40 %, 100 +50 %, 365 +100 % (`BONUS_STEPS`). Meilenstein-Moment genau an diesen Tagen (`STREAK_MILES`) mit „Serien-Bonus jetzt +X %“; 60 und jedes 100. ist kein Meilenstein mehr (außer 100).
+- Offene Hand: X oder Schließen pausiert (wie der offene Run aus Version 114, jetzt mit `hand` und `date`). Eine pausierte Daily-Hand verfällt um Mitternacht samt Einsatz (`openRun`). Eine Hand, die gerade auf dem Bildschirm läuft, darf über Mitternacht zu Ende gespielt werden.
+- Kein Verwerfen: „Play now“ und „Noch eine Runde“ setzen eine offene Hand fort; der Startscreen zeigt dann „Weiterspielen“. Survival-Start bei offener Hand fragt ohne „Trotzdem neu starten“. Survival selbst bleibt wie bisher.
+
+**Behelf bis Version 134:** Blind-Wahl als kleines Fenster (`chooseBlind`), Zeile „Small Blind 100 · +10 % … ×3“ im Kopf der Round (`pokerRow`), auf dem Endscreen die Chip-Zeile und die Rechnung (`payoutLine`, z. B. „100 + 10 · ×5 · ×2 Royal Flush“, bei ×0 mit eigenem Einsatz „Einsatz weg“).
+
+**Tests:** test2 neuer Block P (P1–P24): alle Rechenbeispiele aus dem Konzept (Small +900/+300/+200/+100, Big +2.700/+600/±0/−300, 30 Tage Big Royal Flush 3.900), Multiplikator-Grenzen, Bonus-Stufen, Meilensteine, wer zahlt (Dewi, selbst, Rettung, ohne Einsatz), Abbuchung, echte Hand mit ×0, Pausieren, kein Verwerfen, Verfallen um Mitternacht, Meilenstein an Tag 7, Bonus erst ab der nächsten Hand, Blind-Wahl-Fenster. B5b: erste Hand bringt 200 Chips. In allen Testdateien wählt `window.__autoBlind="small"` den Blind automatisch (nur mit `window.__test`). Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet.** Kein eigener iPhone-Check nötig, die Screens kommen in Version 134.
+
+
+## Version 134 – Poker-Screens: Blind-Wahl und Hand (Poker Phase 1, Etappe 4a)
+
+> **Die Hand sieht jetzt aus wie im Konzept.** „Play now“ öffnet die Blind-Wahl als eigenen Screen: Dewi oben mit Spruch und „?“, in der Mitte „DEIN EINSATZ“ mit Bonus-Pille und zwei großen Dewi-Chips. Ein Tipp auf einen Chip, er gleitet weg, die Hand beginnt. Während der Hand zeigen Dewi-Chips im Kopf den Fortschritt, darunter Dewis Kopf und die Poker-Leiste mit dem goldenen Multiplikator. Grundlage: `konzept-poker-shop.md` Abschnitte 0 und 5, Design-Canvas „dewi. Poker-Screens“, Reihe „Version 2“ (Blind2, Hand2).
+
+**Entscheidungen (Vito):** Etappe 4 in zwei Versionen (134 Blind-Wahl und Hand, 135 Auszahlung, Royal Flush, Startscreen). Blind-Wahl als ganzer Screen. Dewis Gesicht reagiert während der Hand auf jedes Modul (ohne Text). Auf den Ergebnis-Screens der Module entfällt während der Hand der kleine Dewi samt Spruch, weil oben schon ihr Kopf sitzt.
+
+**Technik (neue Datei `pokerui.js`)**
+- `showBlindStage(kind, o)`: Screen im Round-Blatt mit X (schließen ohne Einsatz), Chip-Pille (`chipPill('chippill2')`), Dewi-Zone (Kopf 76 px + Sprechblase mit Schreibmaschine), „DEIN EINSATZ“ + Bonus-Pille (kleine Flamme im neuen Stil, `FLAME_SM`), zwei Chip-Knöpfe (pink Small, gold Big; Schild GRATIS / RETTUNG / OHNE EINSATZ; Big ausgegraut ohne 300 Chips), leere Aktionszone (56 px). Tipp: Chip gleitet weg (0,42 s), Sound `chips`, dann `startRound`. Ersetzt das Behelfsfenster aus Version 133.
+- `chipTrack()` im Kopf statt Fortschrittsbalken und Zähler: geschafft = Holo-Chip mit Schimmer, solange der Royal Flush möglich ist, sonst pink (Small) bzw. gold (Big); verloren = grau; aktuell = gestrichelt; offen = leerer Kreis. Das Ergebnis je Karte steht in `items[i].ok` und wird mit dem offenen Run gespeichert.
+- `handZone()` = Dewi-Kopf (`h.face`, gesetzt in `handSettle`: überlegen, ab ×4 Dollar-Augen, solange Royal Flush drin; sonst überheblich; nach Fehler genervt) + `pkBar()` (Einsatz-Chip, Bonus, Multiplikator in Archivo 52 px kursiv, breit, gold). Das „?“ (`.dzq`, eigene Klasse, nicht `.qh`, weil daran die Modul-Hilfe hängt) tauscht die Leiste gegen Dewis Erklärung, passend zum Blind.
+- Multiplikator-Animation einmal pro Karte (`c.pkAnim`): +1 springt hoch mit Chip-Klick (`chipclick`, Haptik), −1 rutscht runter (alte Zahl fällt weg, neue kommt von oben), verloren beim Small Blind blinkt die Zahl grau.
+- Modul Reels: Dewi unter dem Automaten ist in der Hand ausgeblendet, ihr Gesicht oben übernimmt die Stimmung der Reels-Sprüche.
+- Neue Sprüche `blind_dewi`, `blind_self`, `blind_rescue`, `blind_none` (DE/EN, siehe unten), Hilfetexte für Blind-Wahl und Hand.
+- Survival unverändert (Balken, Score, Leben).
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen)**
+- Gratis: „Small Blind geht heute aufs Haus. Gewöhn dich nicht dran.“ · „Der Small Blind ist geschenkt. Der Big Blind ist Charakter.“
+- Selbst zahlen: „Dein Geld, deine Entscheidung. Ich würde Big nehmen. Aber ich mach ja auch keine Fehler.“ · „Einsatz bitte. Das Haus wartet nicht gern.“
+- Rettung: „Pleite? Süß. Den Small Blind übernehme ich. Einmal.“ · „Ich leih dir was. Zinsen zahlst du in Respekt.“
+- Ohne Einsatz: „Keine Chips, keine Rettung mehr. Spiel trotzdem, für die Ehre.“ · „Heute spielst du um nichts. Lernen tust du trotzdem.“
+
+**Tests:** test2 P23–P27 (Blind-Wahl-Screen, Dewi-Zone, „?“ hin und zurück, Start mit Abbuchung, Chips im Kopf, Erklärung je Blind) und neuer Block Q1–Q10 (gestrichelter aktueller Chip, Multiplikator springt, Holo-Chips, kein kleiner Dewi im Ergebnis, Animation nur einmal, Big rutscht runter, Chips werden gold/grau, Dewi genervt, Chips nach dem Fortsetzen, Small blinkt grau). Dabei gefunden und behoben: Das „?“ mit Klasse `.qh` löste die Modul-Hilfe aus. Tests 2–5 grün. Zusätzlich im echten Chromium gemessen (ohne Screenshot): Blind-Wahl und Hand passen auf 390 × 844 und 375 × 667 ohne Scrollen, Kopf und Poker-Leiste ohne Überlauf, Chips im Kopf je 40 px.
+
+**Nicht auf einem echten iPhone getestet:** Wirkung von Archivo (offline im Test nicht geladen), Gleit- und Zahlen-Animationen, Chip-Klick und Haptik, Schimmer der Holo-Chips.
+
+
+## Version 135 – Poker-Screens: Auszahlung, Royal Flush, Startscreen (Poker Phase 1, Etappe 4b)
+
+> **Phase 1 ist fertig.** Das Ende der Hand ist jetzt eine eigene Bühne: Ergebnis-Chips fliegen ein, der Gewinn zählt als Heldenzahl hoch, darunter klein die Rechnung. Beim Royal Flush leuchtet „ROYAL FLUSH“ zwischen zwei Diamanten, Chips regnen und eine eigene Casino-Fanfare spielt. Bei ×0 rutscht der Einsatz-Chip zu Dewi, und es bleibt eine graue 0. Auf dem Startscreen zeigt eine offene Hand „Big Blind 300 · ×3 · verfällt um Mitternacht“, ab 21 Uhr stichelt Dewi. Grundlage: `konzept-poker-shop.md` Abschnitt 5, Design-Canvas „Auszahlung2“ und „Royal2“.
+
+**Entscheidungen (Vito):** eigene Casino-Fanfare für den Royal Flush; bei ×0 gleicher Aufbau mit grauer 0, der Chip rutscht zu Dewi; Abend-Sticheln ab 21 Uhr (Konzept: ca. 20 Uhr).
+
+**Technik (`pokerui.js`)**
+- `payoutStage(E)` ersetzt für Pokerhände den Endscreen aus Version 126 (`endResult` bleibt nur für Runs von vor Version 133). Aufbau: Chip-Pille (zählt vom alten zum neuen Kontostand hoch, `chipShown` wird gleich gesetzt, damit der Startscreen nicht noch einmal Chips einfliegen lässt), Dewi-Zone (erst nur Kopf, am Ende Spruch, „?“ erklärt die Rechnung), Ergebnis-Chips (Holo beim Royal Flush, sonst pink/gold, verloren grau), Heldenzahl in Archivo 64 px mit Einsatz-Chip davor, Rechnung „300 + 🔥90 ×5 ×2“ (Multiplikator gold), Knopf „Weiter“ (erste Round, dann Serie) bzw. „Fertig“.
+- Ablauf mit `stageSeq`/`countTo`: Chips einzeln (je 90 ms, Chip-Klick) → Heldenzahl → Rechnung → beim Royal Flush Titel, Aufblitzen des „×2“, Fanfare, Haptik, Chipregen → Hochzählen → Einrasten → Dewis Spruch → Knopf. Royal Flush ca. 4 s, normale Hand ca. 3 s, ein Tipp springt ans Ende.
+- ×0: kein Hochzählen; der Einsatz-Chip fliegt verkleinert zu Dewis Kopf, Heldenzahl grau „0“, für Screenreader „Einsatz weg“.
+- Sound `royal`: Lauf über acht Töne nach oben, Schlussakkord mit Bass, Glöckchen-Funkeln, Münzklackern.
+- Startscreen: `openHandHint()` unter „Weiterspielen“; `lateHand()` ab 21 Uhr bei offener Hand → Spruch `home_late` (Testhaken `window.__hour`).
+- Kleine iPhones (max. 700 px hoch): kompaktere Abstände und Heldenzahl 52 px; der Lichtschein hinter dem Royal Flush wird abgeschnitten (sonst ließ er den Screen scrollen).
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen)**
+- Royal Flush: „Okay. Respekt. Für genau drei Sekunden.“ · „Royal Flush. Ich tu so, als hätte ich's kommen sehen.“
+- Gute Hand (ab ×3): „{n} von {m}. Für deine Verhältnisse fast elegant.“ · „Solide Hand. Das Haus zahlt. Zähneknirschend.“
+- Knappe Hand (×1–×2): „Gewonnen ist gewonnen. Knapp ist auch eine Kunstform.“ · „Das reicht für ein Trinkgeld. An mich.“
+- ×0 mit eigenem Einsatz: „Danke für die Spende. Das Haus gewinnt immer.“ · „Dein Einsatz wohnt jetzt bei mir. Er fühlt sich wohl.“
+- ×0, Dewi hat gezahlt: „Nichts gewonnen, nichts verloren. Außer Würde.“ · „Gratis verzockt. Das muss man auch erst schaffen.“
+- Ab 21 Uhr: „Deine Hand liegt noch auf dem Tisch. Um Mitternacht kassiere ich sie.“ · „Tick, tack. Um Mitternacht gehört dein Einsatz mir.“
+- Erklärung „?“: „Einsatz plus Serien-Bonus, mal Multiplikator. Alles richtig gibt doppelt. Mathe, Darling. Keine Magie.“
+
+**Tests:** test2 B5b, P14/P14b, P21/P21b/P21c (Auszahlung, ×0, Royal Flush mit +1.000, Holo-Chips, Dewi mit Dollar-Augen), P28–P31 (Hinweis auf dem Startscreen, Sticheln ab 21 Uhr, nicht vorher, Folge-Hand schließt mit „Fertig“); test4 E4/E6 um `chipclick` und `royal`; test3 kennt die Stimmung `cash`. Tests 2–5 grün. Zusätzlich im echten Chromium mit echten Zeitabläufen (nicht im Testmodus) durchgespielt: Royal Flush, ×0 und normale Hand auf 390 × 844 und 375 × 667 ohne Fehler, ohne Scrollen, Endzustand vollständig (Heldenzahl, Pille, Spruch, Knopf).
+
+**Nicht auf einem echten iPhone getestet:** Fanfare und Chip-Klick, Haptik, Chipregen, Schrift Archivo, Gesamtlänge der Bühne. Prüfliste für Phase 1 siehe Bericht an Vito.
