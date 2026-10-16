@@ -69,6 +69,11 @@ ${CHIP_TONES.map(chipSymbol).join('')}</defs></svg>`;
 }
 /* Ein Chip zum Einsetzen: chipSvg('gold','big') */
 const chipSvg=(tone,cls)=>`<svg class="dchip${cls?' '+cls:''}" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><use href="#chip-${(CHIP_T[tone]||tone==='empty')?tone:'pink'}"/></svg>`;
+/* Rückseite für den Münz-Flip bei der Blind-Auswahl (Version 143): schlichte Prägung, kein Dewi-Gesicht */
+function chipBackSvg(tone){
+  const c=CHIP_T[tone]||CHIP_T.pink;
+  return `<svg class="dchip" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle cx="100" cy="100" r="92" fill="${c.base}" stroke="${c.edge}" stroke-width="9"/><circle cx="100" cy="100" r="68" fill="none" stroke="${c.hoodIn||c.inner}" stroke-width="5" stroke-dasharray="9 8"/><text x="100" y="120" text-anchor="middle" font-family="'Bricolage Grotesque',Arial,sans-serif" font-weight="800" font-size="60" fill="${c.hoodIn||c.inner}">d.</text></svg>`;
+}
 
 function chipAdd(n){n=Math.max(0,Math.round(n)||0);if(!n)return 0;state.chips=(state.chips|0)+n;save();return n;}
 /* Survival: 5 Chips pro geschafftem Wort, höchstens 300 pro Tag. Kein Rekord-Bonus (sonst: Rekord um 1 knacken und aussteigen). */

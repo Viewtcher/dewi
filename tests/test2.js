@@ -325,14 +325,14 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(E.$('#pkhelp').hidden,'P26b Erklärung zu Beginn zu');
   E.click(E.$('#pkq'));ok(!E.$('#pkhelp').hidden&&/Small Blind kostet ein Fehler nichts/.test(E.$('#pkhelp').textContent),'P27 „?“ an der Zeile erklärt die Regeln zum gewählten Blind');
   ev(E,"closeSheet();window.__autoBlind='small'");
-  ok(!!E.$('#ohint')&&/Small Blind 100 · ×0 · verfällt um Mitternacht/.test(E.$('#ohint').textContent),'P28 Startscreen: offene Hand mit Einsatz, Multiplikator und „verfällt um Mitternacht“');
+  ok(!E.$('#ohint')&&!!E.$('#extra')&&!!ev(E,"openRun('daily')"),'P28 Startscreen: offene Hand ohne Hinweiszeile, „Weiterspielen“ da');
   ev(E,'window.__hour=21;render()');
   ok(ev(E,'QUIPS.de.home_late').includes(E.$('#app .mascot .bubble').getAttribute('aria-label')),'P29 Ab 21 Uhr stichelt Dewi bei offener Hand');
   ev(E,'window.__hour=20;render()');
   ok(!ev(E,'QUIPS.de.home_late').includes(E.$('#app .mascot .bubble').getAttribute('aria-label')),'P30 Vor 21 Uhr kein Sticheln');
   ev(E,'window.__hour=null');
   E.click(E.$('#extra'));
-  E.play();ok(!E.$('#fin')&&ev(E,'sheet.hidden')===true&&!E.$('#ohint'),'P31 Folge-Hand: „Fertig“ schließt ohne Serien-Einblendung, Hinweis weg');
+  E.play();ok(!E.$('#fin')&&ev(E,'sheet.hidden')===true,'P31 Folge-Hand: „Fertig“ schließt ohne Serien-Einblendung');
 }
 // --- P2) Poker-Screens während der Hand (Version 134)
 {

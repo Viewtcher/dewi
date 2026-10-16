@@ -280,15 +280,17 @@ ul.rows{list-style:none;margin:0 0 10px 3px;padding:0;border-left:3px solid var(
 .bschip:active{transform:translateY(2px);box-shadow:0 2px 0 #120a1a}
 .bschip:disabled{opacity:.38;filter:grayscale(.7)}
 .bscwrap{position:relative;width:120px;height:120px;max-width:100%;display:block;transform-style:preserve-3d}
-.bscwrap .dchip{width:100%;height:100%;display:block;backface-visibility:visible}
+.bscface{position:absolute;inset:0;backface-visibility:hidden}
+.bscface .dchip{width:100%;height:100%;display:block}
+.bscback{transform:rotateY(180deg)}
 .bsv{font:700 20px/1 var(--display)}
 .bsl{font:700 11px/1 var(--display);letter-spacing:.14em;color:var(--muted)}
 .bsbadge{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#f566b9;color:#2a1630;border-radius:999px;padding:3px 10px;font:800 11px/1 var(--display);letter-spacing:.08em;white-space:nowrap}
-/* Version 142: der gewählte Blind-Chip dreht sich einmal um die senkrechte Achse und glänzt, statt wegzurutschen */
-.bschip.go .bscwrap{animation:bsspin .5s ease-in-out forwards}
-@keyframes bsspin{0%{transform:rotateY(0) scale(1);opacity:1}65%{transform:rotateY(300deg) scale(1.05);opacity:1}100%{transform:rotateY(360deg) scale(.82);opacity:0}}
-.bschip.go .bscwrap::after{content:'';position:absolute;inset:-6%;border-radius:50%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.9) 50%,transparent 62%);opacity:0;animation:bsshine .5s ease-in-out forwards}
-@keyframes bsshine{0%,15%{opacity:0;transform:translateX(-120%)}45%,60%{opacity:1}100%{opacity:0;transform:translateX(120%)}}
+/* Version 143: echter Münz-Flip – der gewählte Blind-Chip zeigt beim Drehen kurz seine Rückseite und glänzt dabei */
+.bschip.go .bscwrap{animation:bsflip .5s cubic-bezier(.4,.15,.2,1) forwards}
+@keyframes bsflip{0%{transform:rotateY(0) scale(1);opacity:1}55%{transform:rotateY(300deg) scale(1.1);opacity:1}100%{transform:rotateY(360deg) scale(.82);opacity:0}}
+.bschip.go .bscwrap::after{content:'';position:absolute;inset:-6%;border-radius:50%;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.95) 50%,transparent 62%);opacity:0;animation:bsshine .5s ease-in-out forwards;z-index:2}
+@keyframes bsshine{0%,38%{opacity:0;transform:translateX(-120%)}50%,62%{opacity:1}100%{opacity:0;transform:translateX(120%)}}
 .actzone{height:56px;flex:none}
 .ctrack{flex:1;display:grid;grid-template-columns:repeat(var(--n,5),minmax(0,1fr));justify-items:center;align-items:center;gap:4px;min-width:0}
 .ctrack .dchip,.ctrack .cslot{width:100%;max-width:40px;aspect-ratio:1;display:block}
@@ -332,17 +334,22 @@ ul.rows{list-style:none;margin:0 0 10px 3px;padding:0;border-left:3px solid var(
 .poline{display:flex;align-items:center;gap:8px;margin:0;font:700 15px/1 var(--display);color:var(--muted)}
 .poline i{font-style:normal;color:var(--faint)}
 .pobonus{display:inline-flex;align-items:center;gap:3px}
-.pomult{color:#ffc23d}
-.pomult.flash{animation:pmflash .7s ease-out}
-@keyframes pmflash{0%{text-shadow:0 0 0 #fff}30%{transform:scale(1.35);text-shadow:0 0 18px #fff}100%{transform:none;text-shadow:none}}
-.pomult{display:inline-block}
+.pomult{color:#ffc23d;display:inline-block}
+/* Verdopplung bei Royal Flush (Version 143): Betrag knallt hoch, ×2-Marke schlägt ein, ganzer Screen zuckt und blitzt kurz auf */
+.pohero b.slam{animation:eslam .5s cubic-bezier(.2,1.8,.3,1)}
+@keyframes eslam{0%{transform:scale(1)}35%{transform:scale(1.5);text-shadow:0 0 24px #ffd84d,0 0 48px #ff92d2}65%{transform:scale(.94)}100%{transform:scale(1);text-shadow:none}}
+.rfx2{display:inline-block;margin-left:4px;color:#fff;background:linear-gradient(90deg,#ff92d2,#ffc23d);-webkit-background-clip:text;background-clip:text;transform:scale(0)}
+.rfx2.punch{animation:rfx2punch .55s cubic-bezier(.2,1.8,.3,1) forwards}
+@keyframes rfx2punch{0%{transform:scale(0) rotate(-14deg)}55%{transform:scale(1.5) rotate(4deg)}100%{transform:scale(1.15) rotate(0)}}
+.paystage.dbl{animation:stageShake .5s cubic-bezier(.2,1,.3,1)}
+@keyframes stageShake{0%{transform:translate3d(0,0,0)}12%{transform:translate3d(-9px,0,0)}26%{transform:translate3d(8px,-4px,0)}40%{transform:translate3d(-6px,3px,0)}55%{transform:translate3d(5px,-2px,0)}70%{transform:translate3d(-3px,1px,0)}85%{transform:translate3d(2px,0,0)}100%{transform:translate3d(0,0,0)}}
+.paystage.dbl::after{content:'';position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,rgba(255,255,255,.9),rgba(255,200,61,.35) 45%,rgba(255,200,61,0) 72%);pointer-events:none;opacity:0;animation:stageFlash .5s ease-out}
+@keyframes stageFlash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
 .rftitle{display:flex;align-items:center;gap:8px}
 .rftitle span{font:800 15px/1 var(--display);letter-spacing:.18em;background:linear-gradient(90deg,#ff92d2,#a888ff,#5aa9ff,#35dcd2);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rfdia{width:22px;height:22px;display:block}
 .actbtn{min-height:56px;flex:none}
-.ohint{margin:10px 0 0;text-align:center;font-size:13px;color:var(--muted)}
-.ohint b{font:italic 800 15px/1 'Archivo',var(--display);font-stretch:125%;color:#ffc23d}
-@media (prefers-reduced-motion:reduce){.paystage .rv,.pochip{transition:none}.pomult.flash{animation:none}}
+@media (prefers-reduced-motion:reduce){.paystage .rv,.pochip{transition:none}.pohero b.slam,.rfx2.punch,.paystage.dbl,.paystage.dbl::after{animation:none}}
 /* Kleine iPhones (z. B. SE, 667 px hoch): kompakter, damit Auszahlung und Royal Flush ohne Scrollen passen */
 @media (max-height:700px){.sin.poker{gap:12px}.pomain{gap:14px}.phc{width:52px;height:52px}.pohero b{font-size:52px}.dzone{min-height:84px}.bscwrap{width:104px;height:104px}}
 @media (prefers-reduced-motion:reduce){.pkm span,.bschip.go .bscwrap,.bschip.go .bscwrap::after,.ctrack .sh{animation:none!important}}
@@ -8118,6 +8125,20 @@ const SFX={
   lockin(c){[1047,1319,1568].forEach((f,i)=>tone(c,f,i*.035,.5,{type:'triangle',v:.16}));tone(c,131,0,.3,{v:.3,to:98});[3136,3951].forEach((f,i)=>tone(c,f,.08+i*.05,.1,{v:.06}));},
   /* Chips (Version 132): kurzes Klackern wie Casino-Chips, die aufeinanderfallen */
   chips(c){[0,.05,.092,.15,.19].forEach((t,i)=>{noise(c,t,.03,.11-i*.015,3200+i*450);tone(c,1900+i*170,t,.028,{type:'square',v:.022});tone(c,240-i*14,t,.05,{v:.06});});},
+  /* Blind-Auswahl (Version 143): kurzes Schwirren passend zum Münz-Flip, endet mit einem kleinen Glanz-Funkeln */
+  spinchip(c){
+    for(let i=0;i<9;i++){const tt=i*.046;noise(c,tt,.03,.05-i*.003,2500+i*230);tone(c,860+i*75,tt,.03,{type:'square',v:.022});}
+    tone(c,170,0,.4,{type:'sawtooth',v:.1,to:260});
+    [2637,3136,3951].forEach((f,i)=>tone(c,f,.34+i*.03,.16,{type:'triangle',v:.065}));
+    noise(c,.37,.1,.045,9000);
+  },
+  /* Verdopplung bei Royal Flush (Version 143): wuchtiger Impact-Schlag, dann ein heller, aufsteigender Glanz */
+  doubleup(c){
+    tone(c,52,0,.55,{v:.55,to:26});tone(c,104,0,.32,{type:'sawtooth',v:.24,to:38});
+    noise(c,0,.14,.4,150);noise(c,.025,.06,.32,4600);tone(c,1700,.025,.06,{type:'square',v:.09,to:550});
+    [0,.06,.12,.18,.25,.33].forEach((t,i)=>tone(c,1200+i*260,.16+t,.15,{type:'triangle',v:.1-i*.01,to:(1200+i*260)*1.3}));
+    [2200,2800,3500,4200].forEach((f,i)=>tone(c,f,.22+i*.045,.18,{v:.05}));
+  },
   /* Royal Flush (Version 135): eigene Casino-Fanfare – Lauf nach oben, großer Schlussakkord, Glöckchen und Münzregen */
   royal(c){[523,659,784,1047,784,1047,1319,1568].forEach((f,i)=>{tone(c,f,i*.085,.2,{type:'square',v:.055});tone(c,f*2,i*.085,.1,{type:'triangle',v:.045});});
     [1047,1319,1568,2093].forEach((f,i)=>tone(c,f,.74+i*.012,1.2,{type:'triangle',v:.12}));tone(c,131,.74,.9,{v:.26,to:98});tone(c,196,.74,.9,{v:.12});noise(c,.74,.7,.045,9000);
@@ -8532,11 +8553,11 @@ function homeView(){
   let planHtml;
   if(!doneToday){
     planHtml=`<h2>Daily Round ${cqBtn('daily')}</h2>${cqText('daily')}
-      <button class="btn primary block pulse" id="start">${openRun('daily')?t('Weiterspielen'):'Play now'}</button>${openHandHint()}`;
+      <button class="btn primary block pulse" id="start">${openRun('daily')?t('Weiterspielen'):'Play now'}</button>`;
   }else{
     const oh=openRun('daily');   // Version 133: offene Hand statt neuer Runde
     planHtml=`<h2 class="dn">${t('Heute geschafft')} ${cqBtn('daily')}</h2>${cqText('daily')}
-      ${oh||nF?'<div class="btns" style="margin-top:14px"><button class="btn block light" id="extra">'+(oh?t('Weiterspielen'):t('Noch eine Runde'))+'</button></div>'+openHandHint():''}`;
+      ${oh||nF?'<div class="btns" style="margin-top:14px"><button class="btn block light" id="extra">'+(oh?t('Weiterspielen'):t('Noch eine Runde'))+'</button></div>':''}`;
   }
   const GMIC='<svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5" fill="#fff"/><path d="M7 10v5M4.5 12.5h5" stroke="#1d4ed8" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.5" r="1.4" fill="#ff3d9a"/><circle cx="18.5" cy="13.8" r="1.4" fill="#ffc83d"/></svg>';
   const revHtml=`<section class="card gmcard"><div class="gmrow"><button class="gmmain" id="gm" type="button" aria-label="${t('Gamemodes öffnen')}">${GMIC}<b>${t('Gamemodes')}</b></button>${cqBtn('gm')}<svg class="gmgo" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>${cqText('gm')}</section>`;
@@ -8819,6 +8840,11 @@ ${CHIP_TONES.map(chipSymbol).join('')}</defs></svg>`;
 }
 /* Ein Chip zum Einsetzen: chipSvg('gold','big') */
 const chipSvg=(tone,cls)=>`<svg class="dchip${cls?' '+cls:''}" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><use href="#chip-${(CHIP_T[tone]||tone==='empty')?tone:'pink'}"/></svg>`;
+/* Rückseite für den Münz-Flip bei der Blind-Auswahl (Version 143): schlichte Prägung, kein Dewi-Gesicht */
+function chipBackSvg(tone){
+  const c=CHIP_T[tone]||CHIP_T.pink;
+  return `<svg class="dchip" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><circle cx="100" cy="100" r="92" fill="${c.base}" stroke="${c.edge}" stroke-width="9"/><circle cx="100" cy="100" r="68" fill="none" stroke="${c.hoodIn||c.inner}" stroke-width="5" stroke-dasharray="9 8"/><text x="100" y="120" text-anchor="middle" font-family="'Bricolage Grotesque',Arial,sans-serif" font-weight="800" font-size="60" fill="${c.hoodIn||c.inner}">d.</text></svg>`;
+}
 
 function chipAdd(n){n=Math.max(0,Math.round(n)||0);if(!n)return 0;state.chips=(state.chips|0)+n;save();return n;}
 /* Survival: 5 Chips pro geschafftem Wort, höchstens 300 pro Tag. Kein Rekord-Bonus (sonst: Rekord um 1 knacken und aussteigen). */
@@ -9012,8 +9038,8 @@ function showBlindStage(kind,o){
     <div class="bsmain">
       <div class="bshead"><span class="eyebrow2">${t('DEIN EINSATZ')}</span>${bonusPill(B.pct,'bonuspill')}</div>
       <div class="bsgrid">
-        <button class="bschip" id="blind-small" type="button" aria-label="Small Blind ${B.small.stake?fmtChip(B.small.stake):t('ohne Einsatz')}${badge?' · '+badge:''}">${badge?`<span class="bsbadge" aria-hidden="true">${badge}</span>`:''}<span class="bscwrap">${chipSvg('pink')}</span><span class="bsv" aria-hidden="true">${B.small.stake?fmtChip(B.small.stake):'0'}</span><span class="bsl" aria-hidden="true">SMALL</span></button>
-        <button class="bschip" id="blind-big" type="button" aria-label="Big Blind ${fmtChip(BLINDS.big)}"${B.big.ok?'':' disabled'}><span class="bscwrap">${chipSvg('gold')}</span><span class="bsv" aria-hidden="true">${fmtChip(BLINDS.big)}</span><span class="bsl" aria-hidden="true">BIG</span></button>
+        <button class="bschip" id="blind-small" type="button" aria-label="Small Blind ${B.small.stake?fmtChip(B.small.stake):t('ohne Einsatz')}${badge?' · '+badge:''}">${badge?`<span class="bsbadge" aria-hidden="true">${badge}</span>`:''}<span class="bscwrap"><span class="bscface bscfront">${chipSvg('pink')}</span><span class="bscface bscback">${chipBackSvg('pink')}</span></span><span class="bsv" aria-hidden="true">${B.small.stake?fmtChip(B.small.stake):'0'}</span><span class="bsl" aria-hidden="true">SMALL</span></button>
+        <button class="bschip" id="blind-big" type="button" aria-label="Big Blind ${fmtChip(BLINDS.big)}"${B.big.ok?'':' disabled'}><span class="bscwrap"><span class="bscface bscfront">${chipSvg('gold')}</span><span class="bscface bscback">${chipBackSvg('gold')}</span></span><span class="bsv" aria-hidden="true">${fmtChip(BLINDS.big)}</span><span class="bsl" aria-hidden="true">BIG</span></button>
       </div>
     </div>
     <div class="actzone" aria-hidden="true"></div></div>`;
@@ -9023,7 +9049,7 @@ function showBlindStage(kind,o){
   let go=false;
   const pick=(b,btn)=>{
     if(go||btn.disabled)return;go=true;
-    sfx('chips');haptic(20);
+    sfx('spinchip');haptic(20);   // Version 143: Schwirr-Sound passend zum Münz-Flip
     btn.classList.add('go');
     const start=()=>startRound(kind,Object.assign({},o,{blind:b,force:1}));
     if(window.__test||reduceMotion())start();else setTimeout(start,520);   // Version 142: wartet die Dreh+Glanz-Animation ab (.5s)
@@ -9088,7 +9114,7 @@ function payoutStage(E){
       ${rf?`<div class="rftitle rv" id="ertitle">${DIAMOND}<span>ROYAL FLUSH</span>${DIAMOND}</div>`:''}
       <div class="porow" role="img" aria-label="${t('{0} von {1} Modulen geschafft',okN,mods.length)}">${mods.map((x,i)=>`<span class="pochip" id="poc${i}">${chipSvg(x.ok?won:'grey','pc')}</span>`).join('')}</div>
       <div class="pohero rv${zero?' zero':''}" id="egem"><span class="phw">${chipSvg(tone,'phc')}</span><b id="egn">${zero?'0':'+0'}</b></div>
-      <p class="poline rv" id="epay">${fmtChip(P.stake)}${P.bonus?` <i>+</i> <span class="pobonus">${FLAME_SM}${fmtChip(P.bonus)}</span>`:''} <span class="pomult" id="epm">×${P.mult}${rf?' ×2':''}</span>${zero&&P.paid==='self'?`<span class="vh"> · ${t('Einsatz weg')}</span>`:''}</p>
+      <p class="poline rv" id="epay">${fmtChip(P.stake)}${P.bonus?` <i>+</i> <span class="pobonus">${FLAME_SM}${fmtChip(P.bonus)}</span>`:''} <span class="pomult" id="epm">×${P.mult}${rf?' <span class="rfx2" id="erfx2" hidden aria-hidden="true">×2</span>':''}</span>${zero&&P.paid==='self'?`<span class="vh"> · ${t('Einsatz weg')}</span>`:''}</p>
     </div>
     <button class="btn primary block actbtn rv" id="endnext">${E.first?t('Weiter'):t('Fertig')}</button></div>`;
   sheet.scrollTop=0;
@@ -9109,13 +9135,30 @@ function payoutStage(E){
         c.animate([{transform:'none',opacity:1},{transform:`translate(${b.left+b.width/2-a.left-a.width/2}px,${b.top+b.height/2-a.top-a.height/2}px) scale(.35)`,opacity:0}],{duration:650,easing:'cubic-bezier(.5,0,.75,0)',fill:'forwards'});}
       else if(c)c.classList.add('gone');});
     T+=600;
+  }else if(rf){
+    /* Version 143: erst der einfache Betrag, dann ein wuchtiger Moment, wenn er sich verdoppelt */
+    const base=Math.round(P.payout/2);
+    T+=300;q2.at(T,()=>{on('ertitle');sfx('royal');haptic([30,60,30,60,50]);chipRain(46,['holo','gold','pink']);});T+=550;
+    const cm=Math.min(900,400+base*.3);
+    T+=200;
+    q2.at(T,()=>{countTo($('#egn'),0,base,cm,v=>'+'+fmtChip(v),q2,true);if(pillN)countTo(pillN,before,before+base,cm,fmtChipShort,q2,false);});
+    T+=cm+280;
+    q2.at(T,()=>{
+      const m=$('#erfx2'),g=$('#egn'),st=$('#est');
+      if(m){m.hidden=false;m.classList.add('punch');}
+      if(st)st.classList.add('dbl');
+      sfx('doubleup');haptic([50,30,50,30,120]);
+      if(g){g.textContent='+'+fmtChip(P.payout);g.classList.add('slam');}
+      if(pillN)pillN.textContent=fmtChipShort(after);
+      burst($('#egem'),70);
+    });
+    T+=650;
   }else{
-    if(rf){T+=300;q2.at(T,()=>{on('ertitle');const m=$('#epm');if(m)m.classList.add('flash');sfx('royal');haptic([30,60,30,60,50]);chipRain(46,['holo','gold','pink']);});T+=550;}
     const cm=Math.min(1100,450+P.payout*.3);
     T+=200;
     q2.at(T,()=>{countTo($('#egn'),0,P.payout,cm,v=>'+'+fmtChip(v),q2,true);if(pillN)countTo(pillN,before,after,cm,fmtChipShort,q2,false);});
     T+=cm+150;
-    q2.at(T,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(P.payout);g.classList.add('pulse');}if(pillN)pillN.textContent=fmtChipShort(after);sfx('lockin');burst($('#egem'),rf?60:30);});
+    q2.at(T,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(P.payout);g.classList.add('pulse');}if(pillN)pillN.textContent=fmtChipShort(after);sfx('lockin');burst($('#egem'),30);});
   }
   T+=420;
   q2.at(T,()=>{dzFace(face);const b=$('#dzbody');if(b&&!b.querySelector('.bubble'))b.innerHTML=dzBubble(q.text);sfx(rf?'end_perfect':zero?'end_bad':'end_good');});
@@ -9123,11 +9166,6 @@ function payoutStage(E){
   q2.at(T,()=>{$$('.rv,.pochip',stage).forEach(e=>e.classList.add('on'));});
   $('#endnext').onclick=()=>{if(!$('#endnext').classList.contains('on'))return;q2.stop();if(E.first)streakMoment(E);else closeSheet();};
   if(window.__test)$$('.rv,.pochip',stage).forEach(e=>e.classList.add('on'));
-}
-/* Startscreen: Hinweis unter „Weiterspielen“, z. B. „Big Blind 300 · ×3 · verfällt um Mitternacht“ */
-function openHandHint(){
-  const r=openRun('daily'),h=r&&r.hand;if(!h)return '';
-  return `<p class="ohint" id="ohint">${h.blind==='big'?'Big Blind':'Small Blind'} ${h.stake?fmtChip(h.stake):t('ohne Einsatz')} · <b>×${h.mult}</b> · ${t('verfällt um Mitternacht')}</p>`;
 }
 /* Abend-Sticheln: ab 21 Uhr bei offener Hand (Testhaken window.__hour) */
 const hourNow=()=>window.__test&&typeof window.__hour==='number'?window.__hour:new Date().getHours();

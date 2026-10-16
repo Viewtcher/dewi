@@ -1682,3 +1682,21 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Wie die Drehung mit Glanz auf dem Gerät wirkt (Timing, Haptik dazu), ob die Einstellungen ohne Erklärtexte noch selbsterklärend genug sind.
 
+
+## Version 143 – Echter Münz-Flip, eigener Dreh-Sound, wuchtige Verdopplung bei Royal Flush
+
+> **Drei Korrekturen an der Daily Round.** Die Zeile „Small Blind 100 · ×0 · verfällt um Mitternacht“ unter „Weiterspielen“ ist weg. Die Blind-Chips drehen sich beim Antippen jetzt wirklich als Münze mit Vorder- und Rückseite (nicht mehr nur ein flaches Drehbild) und haben einen eigenen, dazu passenden Dreh-Sound statt des alten Chip-Klackerns. Und wenn am Ende der Daily Round ein Royal Flush den Betrag verdoppelt, passiert das jetzt in zwei Schritten mit Wumms: erst der normale Betrag, dann ein kräftiger Schlag mit Sound, Vibration, einer „×2“-Marke, die einschlägt, und der ganze Bildschirm zuckt und blitzt kurz auf.
+
+**Entscheidungen (Vito):** Echter Münz-Flip (statt nur schnellerem Drehbild). Neuer eigener Dreh-Sound (statt den Chip-Klack-Sound zu verlängern). Erst normal zählen, dann sichtbar verdoppeln (statt den verdoppelten Betrag sofort anzuzeigen). Die Verdopplungs-Animation lässt den ganzen Bildschirm kurz mitreagieren (statt nur den Betragsbereich).
+
+**Technik**
+- `openHandHint()` und die Zeile „Small Blind … · verfällt um Mitternacht“ komplett entfernt (Funktion, beide Aufrufstellen unter „Weiterspielen“, `.ohint`-CSS).
+- Echter Münz-Flip: `chips.js` bekommt `chipBackSvg(tone)` für eine passende Rückseite (gleiche Farben wie die Vorderseite). Die Blind-Buttons zeigen jetzt `.bscwrap` mit zwei übereinanderliegenden Seiten (`.bscface.bscfront`/`.bscback`, Rückseite per `backface-visibility` vorgedreht). `@keyframes bsflip` dreht den Chip einmal um 360°, dabei wird bei 180° kurz die Rückseite sichtbar; `bsshine` läuft wie bisher als Glanzstreifen quer drüber. Rundenstart wartet weiterhin die 0,5 Sek. ab.
+- Eigener Sound: neue `spinchip`-Stimme in der `SFX`-Tabelle (kurzes Schwirren mit einem kleinen Funkeln am Ende), ersetzt den bisherigen `chips`-Sound bei der Blind-Auswahl.
+- Royal-Flush-Verdopplung in `payoutStage()` (`pokerui.js`): Statt direkt den verdoppelten Betrag hochzuzählen, zählt die Zahl zuerst auf den einfachen Betrag (`Math.round(Auszahlung/2)`). Nach einer kurzen Pause: die „×2“-Marke (`#erfx2`, bis dahin per `hidden` versteckt) schlägt mit einer Lupen-Animation ein (`.rfx2.punch`/`@keyframes rfx2punch`), die Zahl macht einen Sprung nach oben und zurück (`.slam`/`@keyframes eslam`), ein neuer wuchtiger `doubleup`-Sound (tiefer Schlag, kurzer Knack, dann ein helles Funkeln) spielt zusammen mit einem kräftigeren Vibrationsmuster, und der ganze Auszahlungs-Bildschirm zuckt kurz (`.paystage.dbl`/`@keyframes stageShake`) und blitzt einmal weiß-golden auf (`::after`-Overlay, `@keyframes stageFlash`). Dann steht der tatsächliche, verdoppelte Betrag da. Die alte, unbenutzte `pomult.flash`/`pmflash`-Hervorhebung ist entfernt (sie wurde durch die neue „×2“-Marke ersetzt).
+- `#epay` zeigt jetzt bei Royal Flush „Einsatz ×Multiplikator ×2“ (die „×2“ als eigenes, anfangs verstecktes Element) statt einer festen Zahl.
+
+**Tests:** test2 P28/P31 (keine Hinweiszeile mehr beim offenen Hand-Zustand) angepasst. B5b und P21 (Royal-Flush-Texte) an das neue Leerzeichen vor „×2“ angepasst, prüfen inhaltlich weiterhin denselben verdoppelten Betrag. Tests 2–5 grün (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“).
+
+**Nicht auf einem echten iPhone getestet:** Wie der Münz-Flip mit echter Perspektive wirkt, die Lautstärke/Balance des neuen Dreh- und Verdopplungs-Sounds, ob das Bildschirm-Zucken auf dem Gerät angenehm wuchtig oder zu heftig wirkt, das neue Vibrationsmuster bei der Verdopplung.
+
