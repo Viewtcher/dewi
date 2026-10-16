@@ -1770,3 +1770,21 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** Neuer Block DK1–DK7 in test4 (Flagge, keine Artikel mehr außer Pronomen/Zahlen, die drei entfallenen Wörter, Übertragung von Fortschritt, Tagesliste und offenem Run, Englischkurs ohne Artikel). Tests 2–5 grün. Zusätzlich alle 652 Deutsch- und 665 Englischwörter in jedem passenden Modul gerendert, keine Fehler.
 
 **Nicht auf einem echten iPhone getestet:** Sprachausgabe der Wörter ohne Artikel (z. B. wie „Essen" vs. „essen" klingt, falls beides in einer Runde vorkommt), Flagge auf dem Gerät.
+
+
+## Version 148 – Zahnrad statt Lautstärke im Spiel, Sound-Einstellungen ganz oben
+
+> **Im Spiel (Daily Round, Survival) steht oben rechts jetzt das Zahnrad statt des Lautsprecher-Knopfs** – die Sound-Einstellungen sind sowieso dort erreichbar. Tippt man es an, legen sich die Einstellungen als Ebene übers laufende Spiel, ohne irgendetwas zu pausieren oder zu beenden; der Zurück-Pfeil führt exakt zurück ins Spiel. Dafür steht die Karte „Sound" (An/Aus, Lautstärke) in den Einstellungen jetzt ganz oben, vor „App-Sprache".
+
+**Entscheidungen (Vito):** Zahnrad öffnet die Einstellungen als Ebene über dem Spiel (nicht wie der ×-Knopf mit Pausieren/Beenden). Gleiches Zahnrad-Symbol wie im Hauptmenü.
+
+**Technik**
+- `rounds.js`: Im Kopf des Spiel-Sheets (`sheetBody()`) ersetzt der Zahnrad-Knopf (`#setgear`, gleiches Icon `GEARIC` wie im Hauptmenü) den bisherigen Lautsprecher-Knopf (`musIcon()`).
+- Neue Funktion `openSettingsOverlay()`: baut ein eigenes Element `#setov` (einmalig an `document.body` gehängt), füllt es mit `settingsView()` und zeigt es über dem Spiel-Sheet (`.setov`, `z-index:35`, das Sheet selbst liegt auf 30). Der Zurück-Pfeil darin schließt nur das Overlay (`ov.hidden=true`) statt wie sonst zum Startscreen zu navigieren – das laufende Spiel (`S`) bleibt währenddessen unberührt im Hintergrund stehen.
+- `bindSettings()` bekommt einen optionalen Parameter `root` (Standard: der normale Einstellungen-Bildschirm), damit dieselbe Funktion wortgleich auch die Felder im Overlay bedient. „Alles zurücksetzen" und „Sicherung einspielen" beenden zusätzlich ein offenes Spiel und schließen das Overlay, bevor sie den Zustand überschreiben, damit keine Spielreste mit neuen Daten kollidieren.
+- Einstellungen-Reihenfolge: Die Karte „Sound" steht jetzt vor „App-Sprache" (betrifft beide Stellen, da `settingsView()` für den normalen Bildschirm und das Overlay dieselbe Funktion ist). „Musik" bleibt an ihrem bisherigen Platz, da nur nach den Sound-Einstellungen gefragt war.
+- Der alte Lautsprecher-Knopf (`musIcon()`, `.musbtn`) bleibt im Code stehen, wird aber nirgends mehr aufgerufen – unschädlich, aber bei Gelegenheit aufräumbar.
+
+**Tests:** M10 in test4 geändert (prüfte bisher den Lautsprecher-Knopf im Modul, jetzt das Zahnrad) und um M10b/M10c erweitert: Antippen öffnet das Overlay mit „Sound" als erster Karte, Zurück-Pfeil schließt es wieder und das Spiel läuft unverändert weiter. Tests 2–5 grün. Zusätzlich mit Playwright/Chromium geprüft: Overlay liegt sichtbar über dem Spiel-Sheet, nach dem Schließen sind Quit-Knopf und Spielstand (`S`) noch da.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich das Ebenen-Layout (Overlay über Sheet) mit der Safe-Area und etwaigen Übergangs-Rucklern auf einem echten Gerät anfühlt.

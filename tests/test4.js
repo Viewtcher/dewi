@@ -330,7 +330,11 @@ function toReels(E,force=true){
   // Reels: Synthwave
   knownReels(E,8);ev(E,'state.done[today()]=true;save();render()');
   E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
-  ok(!!E.$('.sin .musbtn'),'M10 Lautsprecher auch im Modul');
+  ok(!!E.$('.sin #setgear')&&!E.$('.sin .musbtn'),'M10 Zahnrad statt Lautsprecher im Modul (Version 148)');
+  E.click(E.$('#setgear'));
+  ok(!!E.$('#setov')&&!E.$('#setov').hidden&&E.$('#setov .card .eyebrow').textContent===ev(E,"t('Sound')"),'M10b Zahnrad öffnet Einstellungen übers Spiel, Sound-Karte ganz oben');
+  E.click(E.$('#setov .backbtn'));
+  ok(E.$('#setov').hidden&&!!E.$('.sin.hand, .sin')&&!!E.$('#quit'),'M10c Zurück führt ins laufende Spiel zurück, nichts wurde beendet');
   ev(E,'musTick()');ok(ev(E,'MUS.mode')==='synth','M11 In Reels spielt der Synthwave-Soundtrack');
   E.click(E.$('#quit'));ev(E,'musTick()');ok(ev(E,'MUS.mode')==='lofi','M12 Zurück in der App wieder Lo-Fi');
   E.click(E.$('[data-v="settings"]'));

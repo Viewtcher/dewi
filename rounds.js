@@ -161,8 +161,9 @@ function sheetBody(inner){
   const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
   const hand=S.kind==='daily'&&S.hand&&S.i<S.items.length;   // Version 134: Pokerhand mit Dewi-Chips und Dewi-Zone
   const prog=hand?chipTrack():`<div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div>`;
-  sheet.innerHTML=`<div class="sin${hand?' hand':''}"><div class="shead"><button class="iconbtn" id="quit" aria-label="${hand?t('Round pausieren'):t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${prog}${musIcon()}</div>${scoreRow()}${hand?handZone():''}${inner}</div>`;
+  sheet.innerHTML=`<div class="sin${hand?' hand':''}"><div class="shead"><button class="iconbtn" id="quit" aria-label="${hand?t('Round pausieren'):t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${prog}<button class="iconbtn" id="setgear" aria-label="${t('Einstellungen öffnen')}">${GEARIC}</button></div>${scoreRow()}${hand?handZone():''}${inner}</div>`;
   $('#quit').onclick=closeSheet;
+  $('#setgear').onclick=openSettingsOverlay;   // Version 148: Zahnrad statt Lautstärke-Knopf, Sound-Einstellungen liegen dort sowieso ganz oben
   if(hand)handAfterRender();
   sheet.scrollTop=0;
   if(S.kind==='survival'&&S.score>(S.shown||0))setTimeout(scoreTick,350);

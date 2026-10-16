@@ -403,6 +403,7 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .sheet{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}
 .sheet.shop-open{z-index:5}   /* Version 146: im Shop bleibt die Tab-Leiste sichtbar, sie liegt dafür über dem Sheet statt darunter */
 .sheet.shop-open .sin.shop{padding-bottom:104px}
+.setov{position:fixed;inset:0;z-index:35;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}   /* Version 148: Einstellungen als Ebene übers laufende Spiel */
 .sin{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;gap:18px;padding:max(14px,env(safe-area-inset-top,0px)) 16px max(24px,env(safe-area-inset-bottom,0px))}
 .shead{display:flex;align-items:center;gap:14px}
 .iconbtn{width:44px;height:44px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center}
@@ -8703,14 +8704,14 @@ function settingsView(){
   const L=curLang(),t0=today();
   return `<div class="top"><div class="topl">${BACKBTN_()}<h1 id="sethead">${t('Einstellungen')}</h1></div></div>
   ${mascot('settings',null,'')}
+  <section class="card set"><div class="eyebrow">${t('Sound')}</div>
+    <div class="seg two" role="radiogroup" aria-label="${t('Sound')}">${[[true,t('An')],[false,t('Aus')]].map(u=>`<button role="radio" data-snd="${u[0]}" aria-checked="${(state.sound!==false)===u[0]}">${u[1]}</button>`).join('')}</div>
+    <label class="vol"><span>${t('Lautstärke')}</span><input type="range" id="vol" min="0" max="100" step="5" value="${+state.vol||0}" aria-label="${t('Lautstärke')}"></label></section>
   <section class="card set"><div class="eyebrow">${t('App-Sprache')}</div>
     <div class="seg two" role="radiogroup" aria-label="${t('App-Sprache')}">${[['de','Deutsch'],['en','English']].map(u=>`<button role="radio" data-ui="${u[0]}" aria-checked="${state.ui===u[0]}">${u[1]}</button>`).join('')}</div></section>
   <section class="card set"><div class="eyebrow">${t('Dein Name')}</div>
     <form id="nmsf" class="nmrow"><input class="field" id="nmin" type="text" maxlength="20" autocomplete="given-name" autocapitalize="words" enterkeyhint="done" placeholder="${t('Name eingeben')}" aria-label="${t('Dein Name')}" value="${esc(state.name||'')}"><button class="btn" type="submit">${t('Speichern')}</button></form>
     <p class="hint" id="nmflash"></p></section>
-  <section class="card set"><div class="eyebrow">${t('Sound')}</div>
-    <div class="seg two" role="radiogroup" aria-label="${t('Sound')}">${[[true,t('An')],[false,t('Aus')]].map(u=>`<button role="radio" data-snd="${u[0]}" aria-checked="${(state.sound!==false)===u[0]}">${u[1]}</button>`).join('')}</div>
-    <label class="vol"><span>${t('Lautstärke')}</span><input type="range" id="vol" min="0" max="100" step="5" value="${+state.vol||0}" aria-label="${t('Lautstärke')}"></label></section>
   <section class="card set"><div class="eyebrow">${t('Musik')}</div>
     <div class="seg two" role="radiogroup" aria-label="${t('Musik')}">${[[true,t('An')],[false,t('Aus')]].map(u=>`<button role="radio" data-mus="${u[0]}" aria-checked="${(state.music===true)===u[0]}">${u[1]}</button>`).join('')}</div>
     <div data-trkrow ${state.music===true?'':'hidden'}><div class="seg three" role="radiogroup" aria-label="${t('Soundtrack')}" style="margin-top:12px">${[['lofi','Lo-Fi'],['arcade','Arcade'],['holo',t('Holo-Aufstieg')]].map(u=>`<button role="radio" data-trk="${u[0]}" aria-checked="${trackOf()===u[0]}">${u[1]}</button>`).join('')}</div></div>
@@ -8751,41 +8752,56 @@ function twoStep(btn,armed,fn){
     else{clearTimeout(timer);on=false;btn.textContent=orig;btn.classList.remove('danger');fn();}
   };
 }
-function bindSettings(){
-  $('#nmsf',app).onsubmit=e=>{e.preventDefault();state.name=cleanName($('#nmin',app).value);state.nameAsked=true;save();$('#nmin',app).value=state.name;const f=$('#nmflash',app);f.textContent=t('Gespeichert.');f.style.color='var(--good)';};
-  $$('[data-ui]',app).forEach(b=>b.onclick=()=>{state.ui=b.dataset.ui;save();render();});
-  $$('.seg button[data-snd]',app).forEach(b=>b.onclick=()=>{state.sound=b.dataset.snd==='true';save();$$('.seg button[data-snd]',app).forEach(x=>x.setAttribute('aria-checked',String(x===b)));if(state.sound)sfx('pop');});
-  $$('[data-mus]',app).forEach(b=>b.onclick=()=>musSet(b.dataset.mus==='true'));
-  $$('[data-trk]',app).forEach(b=>b.onclick=()=>{state.mtrack=b.dataset.trk;save();musRefresh();musTick();sfx('pop');});
-  $('#mvol',app).oninput=e=>{state.mvol=+e.target.value;save();if(state.music)musCtx();musRefresh();};
-  $('#vol',app).oninput=e=>{state.vol=+e.target.value;save();const n=Date.now();if(n-SND.last>140){SND.last=n;sfx('pop');}};
-  $('#exp').onclick=()=>{
+function bindSettings(root){
+  root=root||app;
+  const ov=root!==app?root:null;   // Version 148: dieselbe Funktion füllt auch das Einstellungen-Overlay im Spiel
+  const closeOv=()=>{if(ov){ov.hidden=true;}};
+  const endRoundIfOpen=()=>{if(S){closeSheet();}};
+  $('#nmsf',root).onsubmit=e=>{e.preventDefault();state.name=cleanName($('#nmin',root).value);state.nameAsked=true;save();$('#nmin',root).value=state.name;const f=$('#nmflash',root);f.textContent=t('Gespeichert.');f.style.color='var(--good)';};
+  $$('[data-ui]',root).forEach(b=>b.onclick=()=>{state.ui=b.dataset.ui;save();if(ov){closeOv();}render();});
+  $$('.seg button[data-snd]',root).forEach(b=>b.onclick=()=>{state.sound=b.dataset.snd==='true';save();$$('.seg button[data-snd]',root).forEach(x=>x.setAttribute('aria-checked',String(x===b)));if(state.sound)sfx('pop');});
+  $$('[data-mus]',root).forEach(b=>b.onclick=()=>musSet(b.dataset.mus==='true'));
+  $$('[data-trk]',root).forEach(b=>b.onclick=()=>{state.mtrack=b.dataset.trk;save();musRefresh();musTick();sfx('pop');});
+  $('#mvol',root).oninput=e=>{state.mvol=+e.target.value;save();if(state.music)musCtx();musRefresh();};
+  $('#vol',root).oninput=e=>{state.vol=+e.target.value;save();const n=Date.now();if(n-SND.last>140){SND.last=n;sfx('pop');}};
+  $('#exp',root).onclick=()=>{
     const data=JSON.stringify({app:'kata',v:2,exported:new Date().toISOString(),data:backupData()});   // Version 137: alles außer offener Hand
-    const box=$('#expbox');box.value=data;box.hidden=false;$('#copy').hidden=false;box.select();$('#flash1').textContent='';
+    const box=$('#expbox',root);box.value=data;box.hidden=false;$('#copy',root).hidden=false;box.select();$('#flash1',root).textContent='';
   };
-  $('#copy').onclick=()=>{
-    const box=$('#expbox');
-    const ok=()=>{$('#flash1').textContent=t('Kopiert.');};
-    const fallback=()=>{box.select();$('#flash1').textContent=t('Text ist markiert. Jetzt manuell kopieren.');};
+  $('#copy',root).onclick=()=>{
+    const box=$('#expbox',root);
+    const ok=()=>{$('#flash1',root).textContent=t('Kopiert.');};
+    const fallback=()=>{box.select();$('#flash1',root).textContent=t('Text ist markiert. Jetzt manuell kopieren.');};
     try{navigator.clipboard.writeText(box.value).then(ok,fallback);}catch(e){fallback();}
   };
-  twoStep($('#imp'),t('Wirklich ersetzen? Nochmal tippen'),()=>{
+  twoStep($('#imp',root),t('Wirklich ersetzen? Nochmal tippen'),()=>{
     try{
-      const o=JSON.parse($('#impbox').value);
+      const o=JSON.parse($('#impbox',root).value);
       if(!o||o.app!=='kata'||!o.data||typeof o.data.progress!=='object')throw new Error('x');
+      endRoundIfOpen();closeOv();
       state=Object.assign(defaults(),o.data,{dayOffset:0});migrate();save();render();
-    }catch(e){$('#flash2').style.color='var(--bad)';$('#flash2').textContent=t('Das ist keine gültige Sicherung.');render_keep();}
+    }catch(e){$('#flash2',root).style.color='var(--bad)';$('#flash2',root).textContent=t('Das ist keine gültige Sicherung.');render_keep();}
   });
-  $('#devwordsf',app).onsubmit=e=>{e.preventDefault();devSetWords(+$('#devwords',app).value||0);$('#devwords',app).value='';};
-  $('#devwordsreset',app).onclick=()=>{state.progress[curLang().id]={};save();render();};
-  $('#devchipsf',app).onsubmit=e=>{e.preventDefault();devSetChips(+$('#devchips',app).value||0);$('#devchips',app).value='';};
-  $('#devchipsreset',app).onclick=()=>{state.chips=0;state.chipShown=0;save();render();};
-  $('#chlang2').onclick=()=>{state.lang=null;save();render();};
-  $('#skip').onclick=()=>{state.dayOffset=(state.dayOffset||0)+1;save();render();};
-  $('#unskip').onclick=()=>{state.dayOffset=0;save();render();};
-  twoStep($('#reset'),t('Wirklich alles löschen? Nochmal tippen'),()=>{state=defaults();migrate();save();view='home';render();});
+  $('#devwordsf',root).onsubmit=e=>{e.preventDefault();devSetWords(+$('#devwords',root).value||0);$('#devwords',root).value='';};
+  $('#devwordsreset',root).onclick=()=>{state.progress[curLang().id]={};save();render();};
+  $('#devchipsf',root).onsubmit=e=>{e.preventDefault();devSetChips(+$('#devchips',root).value||0);$('#devchips',root).value='';};
+  $('#devchipsreset',root).onclick=()=>{state.chips=0;state.chipShown=0;save();render();};
+  $('#chlang2',root).onclick=()=>{endRoundIfOpen();closeOv();state.lang=null;save();render();};
+  $('#skip',root).onclick=()=>{state.dayOffset=(state.dayOffset||0)+1;save();render();};
+  $('#unskip',root).onclick=()=>{state.dayOffset=0;save();render();};
+  twoStep($('#reset',root),t('Wirklich alles löschen? Nochmal tippen'),()=>{endRoundIfOpen();closeOv();state=defaults();migrate();save();view='home';render();});
 }
 function render_keep(){/* Fehlermeldung bleibt stehen, Ansicht wird nicht neu gebaut */}
+/* Version 148: Einstellungen im Spiel (Daily Round, Survival) als Ebene über dem Sheet statt des Lautstärke-Knopfs.
+   Schließen führt exakt zurück ins laufende Spiel, nichts wird pausiert oder beendet. */
+function openSettingsOverlay(){
+  let ov=$('#setov');
+  if(!ov){ov=document.createElement('div');ov.id='setov';ov.className='setov';ov.hidden=true;document.body.appendChild(ov);}
+  ov.innerHTML=`<div class="sin">${settingsView()}</div>`;
+  ov.hidden=false;
+  $('.backbtn',ov).onclick=()=>{ov.hidden=true;};   // im Spiel führt der Zurück-Pfeil zurück ins laufende Spiel, nicht zum Startscreen
+  bindSettings(ov);
+}
 
 /* ===== modules/_registry.js ===== */
 /* ===== Modul-Register =====
@@ -9527,8 +9543,9 @@ function sheetBody(inner){
   const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
   const hand=S.kind==='daily'&&S.hand&&S.i<S.items.length;   // Version 134: Pokerhand mit Dewi-Chips und Dewi-Zone
   const prog=hand?chipTrack():`<div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div>`;
-  sheet.innerHTML=`<div class="sin${hand?' hand':''}"><div class="shead"><button class="iconbtn" id="quit" aria-label="${hand?t('Round pausieren'):t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${prog}${musIcon()}</div>${scoreRow()}${hand?handZone():''}${inner}</div>`;
+  sheet.innerHTML=`<div class="sin${hand?' hand':''}"><div class="shead"><button class="iconbtn" id="quit" aria-label="${hand?t('Round pausieren'):t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${prog}<button class="iconbtn" id="setgear" aria-label="${t('Einstellungen öffnen')}">${GEARIC}</button></div>${scoreRow()}${hand?handZone():''}${inner}</div>`;
   $('#quit').onclick=closeSheet;
+  $('#setgear').onclick=openSettingsOverlay;   // Version 148: Zahnrad statt Lautstärke-Knopf, Sound-Einstellungen liegen dort sowieso ganz oben
   if(hand)handAfterRender();
   sheet.scrollTop=0;
   if(S.kind==='survival'&&S.score>(S.shown||0))setTimeout(scoreTick,350);
