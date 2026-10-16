@@ -1700,3 +1700,18 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Wie der Münz-Flip mit echter Perspektive wirkt, die Lautstärke/Balance des neuen Dreh- und Verdopplungs-Sounds, ob das Bildschirm-Zucken auf dem Gerät angenehm wuchtig oder zu heftig wirkt, das neue Vibrationsmuster bei der Verdopplung.
 
+
+## Version 144 – Vom linken Rand zurückwischen
+
+> **Neue Geste.** Im Vokabelheft und in den Einstellungen kommt man jetzt auch zurück zum Startbildschirm, wenn man vom linken Bildschirmrand nach rechts wischt – wie der bekannte Zurück-Wisch auf dem iPhone. Der Pfeil oben links bleibt zusätzlich da.
+
+**Entscheidungen (Vito):** Gilt nur für die normalen Menüs (Vokabelheft, Einstellungen), nicht für Shop, Spielmodus-Auswahl, Blind-Auswahl oder eine laufende Lernrunde – dort gibt es schon andere Wisch-Gesten (irgendwo wischen = weiter, das Swipe-Modul), die sich sonst in die Quere kämen. Schmaler Rand-Bereich wie beim iPhone (rund 24 px). Kein mitziehender Bildschirm, nur ein einfacher Schwellenwert, der sofort zurückspringt.
+
+**Technik**
+- Ein globaler `pointerdown`/`pointerup`-Zuhörer (einmalig gesetzt, nicht bei jedem `render()`) merkt sich die Startposition, wenn sie innerhalb von 24 px vom linken Rand liegt, kein Sheet offen ist (`sheet.hidden`) und kein Bedienelement getroffen wurde. Beim Loslassen: mindestens 60 px nach rechts, höchstens 70 px hoch/runter (dieselben Schwellen wie beim bestehenden „irgendwo wischen = weiter" in `rounds.js`) und aktuell `view==='book'` oder `'settings'` → `go('home')`, genau wie ein Klick auf den Zurück-Pfeil.
+- Da die Prüfung `sheet.hidden` verlangt, greift die Geste nie, während Shop, Spielmodus-Auswahl, Blind-Auswahl oder eine Runde offen sind (die laufen alle über das `#sheet`-Overlay), und auch nicht auf dem Startbildschirm selbst (da gibt es kein Zurück-Ziel).
+
+**Tests:** Keine automatisierten Tests für Touch-Gesten (die Testumgebung simuliert kein Pointer-Dragging); Tests 2–5 unverändert grün. Im echten Chromium mit simulierten Zeigerereignissen geprüft: Wisch vom Rand bringt im Vokabelheft und in den Einstellungen zurück zum Start, auf dem Startbildschirm passiert nichts, ein Wisch, der nicht am Rand beginnt, löst nichts aus.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich die Geste mit echtem Finger und echtem Safari-Verhalten (z. B. gleichzeitiges Scrollen) anfühlt, ob 24 px als Trefferbereich am Gerät leicht genug zu treffen sind.
+

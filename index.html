@@ -8433,6 +8433,22 @@ function openStamp(d,from){
 let view='home',bookQ='',bookQraw='',bookF='all';
 const openCats=new Set();
 const app=$('#app'),sheet=$('#sheet');
+/* Version 144: Vom linken Bildschirmrand nach rechts wischen = zurück, wie der Pfeil oben links.
+   Nur auf den normalen Bildschirmen (Vokabelheft, Einstellungen), nicht während ein Sheet offen ist. */
+(function(){
+  const EDGE=24,DX_MIN=60,DY_MAX=70,SKIP='button,a,input,textarea,select,label,[role=button]';
+  let p0=null;
+  document.addEventListener('pointerdown',e=>{
+    p0=(!sheet.hidden||e.clientX>EDGE||e.target.closest(SKIP))?null:{x:e.clientX,y:e.clientY};
+  });
+  document.addEventListener('pointerup',e=>{
+    const p=p0;p0=null;
+    if(!p||!sheet.hidden||(view!=='book'&&view!=='settings'))return;
+    const dx=e.clientX-p.x,dy=e.clientY-p.y;
+    if(dx>DX_MIN&&Math.abs(dy)<DY_MAX)go('home');
+  });
+  document.addEventListener('pointercancel',()=>{p0=null;});
+})();
 /* Version 122: Auf einem Ergebnis-Screen (.res) führt ein Tipp irgendwo weiter,
    nicht nur der „Weiter“-Knopf. Bedienelemente lösen selbst aus; die Einführung hat kein .res. */
 sheet.addEventListener('click',e=>{
