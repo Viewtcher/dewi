@@ -259,7 +259,7 @@ function finish(typedOk){
     ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
   try{n.focus({preventScroll:true});}catch(e){}
-  if(ok&&S.kind!=='survival'){levelUp(c,r);if(type==='new'||r.level>c.lvl)S.gw=(S.gw|0)+gemAdd(GEMV.word);}
+  if(ok&&S.kind!=='survival')levelUp(c,r);
 }
 
 function levelUp(c,r){
@@ -282,7 +282,7 @@ function levelUp(c,r){
 }
 
 /* ===== Endscreen der Daily Round (Version 110) =====
-   Zwei Momente statt einer Wand: erst das Ergebnis mit den Diamanten und Dewis Kommentar,
+   Zwei Momente statt einer Wand: erst das Ergebnis (ab Version 133 mit der Auszahlung der Pokerhand) und Dewis Kommentar,
    dann die Serie allein groß. Danach schließt sich die Round von selbst. */
 function showEnd(){
   if(S.kind==='survival')return showSurvivalEnd();
@@ -295,10 +295,8 @@ function showEnd(){
   save();
   const total=S.right+S.wrong,st=streak();
   const grew=st>S.streak0,gray=firstToday&&S.lost>0;
-  let gD=0,gP=0,gM=0;
-  if(firstToday){gD=gemAdd(GEMV.daily);if(S.lost===0)gP=gemAdd(GEMV.perfect);if(grew&&GEM_MILES[st])gM=gemAdd(GEM_MILES[st]);}
-  const gW=S.gw|0,gT=gD+gP+gM+gW;
-  endResult({total,st,grew,gray,gD,gP,gM,gW,gT,first:firstToday});
+  /* Version 132: Tages-, Perfekt-, Wort- und Meilenstein-Diamanten entfallen. Chips gibt es ab Version 133 aus der Pokerhand (E.chips). */
+  endResult({total,st,grew,gray,chips:0,first:firstToday});
 }
 /* ===== Bühnen-Helfer für die Endscreens (Version 126) =====
    Ein Ablaufplan (q) setzt Schritte zeitversetzt; ein Tipp auf die Bühne springt zum Endzustand.
@@ -332,14 +330,14 @@ function stageTap(q,stage){
     q.skip();
   });
 }
-/* Schritt 1: „x von y“ zählt hoch, Diamanten fliegen einzeln ein, dann Dewi und Weiter */
+/* Schritt 1: „x von y“ zählt hoch, dann der Gewinn in Chips (falls es einen gibt), dann Dewi und Weiter */
 function endResult(E){
   const good=S.lost===0?'end_perfect':S.right/Math.max(1,E.total)>=.6?'end_good':'end_bad';
   const full=t('{0} von {1}','\u0001',E.total).split('\u0001');
   sheetBody(`<div class="smain endstage" id="est"><div class="kicker" style="--k:var(--c-pink)">${t('Round beendet')}</div>
     <div class="bigword es-big${S.lost===0?' perf':''}" id="ebig">${esc(full[0])}<span id="enum">0</span>${esc(full[1]||'')}</div>
     <p class="hint rv" id="esub">${t('Module geschafft')}</p>
-    ${E.gT?`<div class="gemline rv" id="egem">${GEMIC}<b id="egn">+0</b></div>`:''}
+    ${E.chips?`<div class="chipline rv" id="egem">${chipSvg('pink')}<b id="egn">+0</b></div>`:''}
     <div class="rv" id="emas">${mascot(good,null,'sm')}</div>
     <button class="btn primary block rv" id="endnext">${E.first?t('Weiter'):t('Fertig')}</button></div>`);
   const q=stageSeq(),stage=$('#est');
@@ -350,10 +348,11 @@ function endResult(E){
   T+=cd+120;
   q.at(T,()=>{const b=$('#ebig');if(b)b.classList.add('lock');sfx('lockin');haptic(25);on('esub');if(S.lost===0)burst($('#ebig'),34);});
   T+=520;
-  if(E.gT){
-    q.at(T,()=>{on('egem');CNT.p=.6;sfx('gemitem');countTo($('#egn'),0,E.gT,Math.min(900,350+E.gT*35),v=>'+'+v,q,true);});
-    T+=Math.min(900,350+E.gT*35)+250;
-    q.at(T-200,()=>{const g=$('#egn');if(g){g.textContent='+'+E.gT;g.classList.add('pulse');}});
+  if(E.chips){
+    const cm=Math.min(1100,450+E.chips*.4);
+    q.at(T,()=>{on('egem');sfx('chips');countTo($('#egn'),0,E.chips,cm,v=>'+'+fmtChip(v),q,true);});
+    T+=cm+250;
+    q.at(T-200,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(E.chips);g.classList.add('pulse');}});
   }
   q.at(T,()=>{on('emas');sfx(good);});
   T+=450;
@@ -410,7 +409,7 @@ function showSurvivalEnd(){
   S.i=S.items.length;
   const all=S.words>=S.items.length&&S.lives>0,best=S.best,rec=S.score>best;
   if(rec){bestStore()[S.playmode]=S.score;}
-  const gS=gemSurvival(S.words,rec&&S.score>0);
+  const gS=chipSurvival(S.words);   // Version 132: 5 Chips pro Wort, max. 300 am Tag, kein Rekord-Bonus
   save();
   const pmName=S.playmode==='random'?t('Random'):playmodeLabel(S.playmode);
   const mood=rec||all?'end_perfect':S.words>=5?'end_good':'end_bad';
@@ -419,7 +418,7 @@ function showSurvivalEnd(){
     <div class="bigword es-big${rec?' recd':''}" id="ebig"><span id="snum">${fmtSc(0)}</span></div>
     <p class="hint">${t('Punkte')} · ${t('{0} Wörter geschafft',S.words)}</p>
     <p class="${rec?'es-rec':'hint'} rv" id="srec">${rec?t('Neuer Rekord! Vorher: {0}',fmtSc(best)):(best?t('Rekord: {0}. Noch {1} bis zum Rekord.',fmtSc(best),fmtSc(best-S.score+1)):'')}</p>
-    <div class="rv" id="sgem">${gemLine(gS,[])}</div>
+    <div class="rv" id="sgem">${chipLine(gS)}</div>
     <div class="rv" id="smas">${mascot(mood,null,'sm')}</div>
     <div class="es-btns rv" id="sbtn"><button class="btn primary block" id="again">${t('Nochmal spielen')}</button>
     <button class="btn block" id="fin">${t('Fertig')}</button></div></div>`);
@@ -432,7 +431,7 @@ function showSurvivalEnd(){
   let T=300+cd+100;
   q.at(T,()=>{const b=$('#ebig');if(b)b.classList.add('lock');sfx(rec?'milestone':'lockin');haptic(rec?[30,60,30,60,50]:25);on('srec');if(rec)burst($('#ebig'),80);});
   T+=rec?900:500;
-  q.at(T,()=>{on('sgem');if(gS)sfx('gemitem');});T+=450;
+  q.at(T,()=>{on('sgem');if(gS)sfx('chips');});T+=450;
   q.at(T,()=>{on('smas');sfx(mood);});T+=400;
   q.at(T,()=>{on('sbtn');});
   if(window.__test){$$('.rv',stage).forEach(e=>e.classList.add('on'));}

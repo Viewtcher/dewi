@@ -309,7 +309,7 @@ function toReels(E,force=true){
 {
   const E=fresh();
   ok(ev(E,'state.music')===true&&ev(E,'state.mvol')===35,'M1 Musik standardmäßig an');
-  ok(!E.$('.top .musbtn')&&!!E.$('.top #chlang.langbtn')&&!!E.$('.top .topr #gempill'),'M2 Kopfzeile: Flagge, Serie, Diamanten – kein Lautsprecher mehr');
+  ok(!E.$('.top .musbtn')&&!!E.$('.top #chlang.langbtn')&&!!E.$('.top .topr #chippill'),'M2 Kopfzeile: Flagge, Serie, Chips – kein Lautsprecher mehr');
   ev(E,'state.music=false');
   ok(ev(E,"(()=>{musTick();return MUS.mode;})()")===null,'M3 Aus: keine Musik');
   E.click(E.$('[data-v="settings"]'));E.click(E.$('[data-mus="true"]'));
@@ -512,10 +512,10 @@ function toReels(E,force=true){
   const css=E.d.querySelector('style').textContent;
   ok(/\.dw\.m-cash svg\{animation:dw-cash /.test(css)&&css.includes('@keyframes dw-cash{'),'E2 Dewi cash hat eine eigene Schleife');
   ok(/<text[^>]*>\$<\/text>/.test(ev(E,"dwSvg('cash')")),'E3 Dollar-Pupillen');
-  ok(ev(E,"typeof haptic==='function'&&['jackpot','lever','rwin','rbad','gems','tossed'].every(k=>typeof SFX[k]==='function')"),'E4 Sounds & Haptik registriert');
+  ok(ev(E,"typeof haptic==='function'&&['jackpot','lever','rwin','rbad','gems','chips','tossed'].every(k=>typeof SFX[k]==='function')"),'E4 Sounds & Haptik registriert');
   ev(E,"state.ui='en';save()");
   ok(ev(E,"t('Hebel ziehen')")==='Pull the lever'&&ev(E,"t('Musik')")==='Music','E5 Englische Texte');
-  const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','tossed'].forEach(k=>sfx(k))");
+  const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','chips','tossed'].forEach(k=>sfx(k))");
   ok(A.osc.length>n0+20,'E6 Alle Reels-Sounds erzeugen Töne ('+(A.osc.length-n0)+')');
 }
 {
@@ -632,6 +632,25 @@ function toReels(E,force=true){
     E.click(E.$('#chk'));
     ok(!!E.$('.res.good')&&ev(E,"S.cur.ok")===true,'R18 richtig gelöst mit festen Steinen');
   }
+}
+// --- Chips (Version 132)
+{
+  const E=fresh();
+  const m=ev(E,`(()=>{state=Object.assign(defaults(),{lang:'id',ui:'de',nameAsked:true,gems:123,gemShown:100,gemSurv:{d:today(),n:5}});delete state.chipV;migrate();return JSON.stringify([state.chips,state.chipShown,'gems' in state,'gemShown' in state,'gemSurv' in state,state.chipV]);})()`);
+  ok(m==='[1230,1000,false,false,false,1]','C1 Migration: Diamanten × 10 werden Chips ('+m+')');
+  ok(ev(E,`(()=>{const c=state.chips;migrate();migrate();return state.chips===c&&state.chipShown===1000;})()`),'C2 Migration greift nur einmal');
+  ok(ev(E,`(()=>{const s=Object.assign(defaults(),{lang:'id'});return !('chipV' in s)&&s.chips===0;})()`),'C2b chipV steht nicht in defaults()');
+  const ab=ev(E,`(()=>{state.ui='de';const a=[9999,10000,12549,999999,1000000,1250000].map(fmtChipShort).join('|');state.ui='en';const b=fmtChipShort(12549)+'|'+fmtChip(12549);state.ui='de';return a+'#'+b;})()`);
+  ok(ab==='9.999|10,0K|12,5K|999,9K|1,0M|1,2M#12.5K|12,549','C3 Abkürzung K/M mit einer Nachkommastelle, abgerundet, Komma/Punkt je Sprache ('+ab+')');
+  ok(ev(E,`(()=>{state.chips=0;state.chipSurv=null;const a=chipSurvival(10),b=chipSurvival(100),c=chipSurvival(10);return [a,b,c,state.chips].join()})()`)==='50,250,0,300','C4 Survival: 5 Chips pro Wort, höchstens 300 am Tag, kein Rekord-Bonus');
+  ev(E,"state.chips=4820;state.chipShown=4820;save();render()");
+  const pill=E.$('#chippill');
+  ok(!!pill&&pill.tagName!=='BUTTON'&&/4\.820/.test(pill.textContent)&&!!pill.querySelector('use[href="#chip-pink"]')&&!E.$('canvas.gem'),'C5 Pille: Dewi-Chip, volle Zahl unter 10.000, kein Knopf');
+  ev(E,"state.chips=12549;state.chipShown=12549;save();render()");
+  ok(/12,5K/.test(E.$('#chippill').textContent)&&/12\.549/.test(E.$('#chippill').getAttribute('aria-label')),'C5b Pille kürzt ab, Vorlesetext nennt die volle Zahl');
+  ok(['pink','gold','holo','grey','empty'].every(t=>!!E.d.getElementById('chip-'+t))&&!!E.d.getElementById('chipFaceClip')&&E.d.querySelectorAll('#chipsprite').length===1,'C6 Alle fünf Chip-Varianten einmal im Dokument');
+  ok(!/Diamant/.test(E.$('#app').textContent)&&!ev(E,"typeof GEMV!=='undefined'||typeof GEM_MILES!=='undefined'||typeof gemAdd!=='undefined'"),'C7 Keine Diamanten mehr in Anzeige und Code');
+  ok(ev(E,"(()=>{chipRain(5);const b=document.querySelector('.drain');const r=!!b&&b.querySelectorAll('use[href^=\"#chip-\"]').length===5;b&&b.remove();return r;})()")||ev(E,'reduceMotion()'),'C8 Reels-Regen besteht aus Chips');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

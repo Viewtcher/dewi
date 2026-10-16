@@ -28,6 +28,7 @@ dewi/
 │                         Bindet die Dateien unten über Zeilen wie /*@include modules/swipe.js*/ ein.
 ├── rounds.js             ROUNDS: startRound, Wort-Reihe (showItem, nextStep), Kennzeile, finish, levelUp, showEnd
 ├── playmodes.js          PLAYMODES: Playmode-Wahl für den Survival Mode (Random oder Solo)
+├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -1444,3 +1445,27 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test2 Abschnitt D neu (Stufe 0 + morgen fällig + Zähler, grauer Stempel, keine Sperre, Vorrang im Review, keine Reparatur, Retten auf Stufe 1, Migration der alten Liste, Reihenfolge „am längsten wartend“, Survival mit Stufe 0, Vokabelheft-Filter und Marke); B4, C4, E4, F12 angepasst; test3 Spruchschlüssel `home_fallen`; test4 D9 (neuer Hinweistext) und V4 (Testbereich). Dabei gefunden und behoben: Beim allerersten Fehler eines neuen Wortes wäre der Fehlerzähler leer geblieben. Tests 2–5 grün.
 
 **Nicht auf einem echten iPhone getestet.** Zu prüfen nach Etappe 4: Vokabelheft-Filter „Wackelig“, Spruch auf dem Startscreen, Übergang eines alten Spielstands mit Fehlerliste.
+
+
+## Version 132 – Chips als Währung (Poker Phase 1, Etappe 2)
+
+> **Aus Diamanten werden Chips.** Der Dewi-Chip (Novas Bauteil aus dem Design-Canvas „dewi. Poker-Screens“) ersetzt den Diamanten in der Pille, auf den Endscreens und im Reels-Regen. Alte Kontostände werden einmalig × 10 gerechnet. Grundlage: `konzept-poker-shop.md`, Abschnitte 0 und 4.
+
+**Entscheidungen (Vito):** eigener Chip-Sound (Klackern statt Glitzer); die Pille ist bis zum Shop nur Anzeige (kein Knopf); der Chip in der Pille steht ruhig, alle paar Sekunden läuft ein Glanz darüber.
+
+**Technik**
+- Neue Datei `chips.js` ersetzt `gems.js`. Der Chip liegt einmal pro Variante (pink, gold, holo, grau, leer) als `<symbol>` in einer unsichtbaren Sammlung im Dokument (`chipSprite()` beim Start) und wird über `chipSvg(tone, klasse)` mit `<use>` eingesetzt. Verläufe und Gesichtsmaske gibt es nur einmal. CSS-Klasse `.dchip` (`.chip` war schon für Knöpfe vergeben).
+- Zustand: `state.chips`, `state.chipShown`, `state.chipSurv`. Migration in `migrate()`: `chips = gems × 10`, `chipShown = gemShown × 10`, alte Felder werden gelöscht, Merker `chipV` (steht bewusst nicht in `defaults()`, sonst würde die Umrechnung übersprungen).
+- Pille `#chippill`: ab 10.000 abgekürzt mit einer Nachkommastelle, abgerundet (`fmtChipShort`: 12,5K · 1,2M, Komma bei Deutsch, Punkt bei Englisch). Vorlesetext nennt die volle Zahl. Überall sonst volle Zahl (`fmtChip`).
+- Survival: `chipSurvival(words)` = 5 pro Wort, höchstens 300 pro Tag, kein Rekord-Bonus mehr. Endscreen-Zeile `chipLine()`.
+- Entfallen: `GEMV.daily/perfect/word`, `GEM_MILES` (Meilenstein-Auszahlungen), der Wort-Bonus nach jedem Modul, der 3D-Diamant (`GEM`, Canvas-Schleife). Der Endscreen der Daily Round kennt jetzt `E.chips` (ab Version 133 die Auszahlung der Pokerhand).
+- Reels: `chipRain()` statt `diamondRain()` (pinke, goldene und Holo-Chips), Sound `chips`.
+- Sound `chips`: fünf kurze Klacker (Rauschen + kurzer Rechteck-Klick + dumpfer Ton), wird beim Einfliegen in die Pille und auf Endscreens gespielt. Der Glitzer `gems` bleibt für spätere Holo- und Royal-Flush-Momente.
+- Schrift Archivo (variabel, auch breit und kursiv) wird jetzt mitgeladen, für die Heldenzahlen ab Version 133/134.
+- Texte: „sammle Chips“ in der Gamemodes-Erklärung, „{0} Chips“.
+
+**Übergang bis Version 133:** Die Daily Round bringt keine Chips. Chips gibt es nur im Survival.
+
+**Tests:** test4 neuer Block „Chips“ (C1–C8: Migration × 10 und nur einmal, Abkürzung, Survival-Grenze, Pille, Varianten, keine Diamanten mehr, Chipregen), M2 und E4/E6 angepasst; test2 B5b (keine Chips aus der Daily Round). Zusätzlich im echten Chromium über Pixelfarben geprüft (ohne Screenshot): Chip in der Pille 28 × 28 px, Gesicht und Rand in den richtigen Farben, alle fünf Varianten. Dabei gefunden und behoben: Zusammenstoß mit der vorhandenen Klasse `.chip`. Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet:** Klang des Chip-Klackerns, Glanz in der Pille, Darstellung der Chips in Safari.

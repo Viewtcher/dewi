@@ -187,6 +187,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   const s=E.st();
   ok(s.progress.id[first].l===1&&!Object.keys(s.list||{}).some(lg=>Object.keys(s.list[lg]||{}).length),'B4 Wort auf Stufe 1, keine Fehlerliste');
   ok(s.done[ev(E,'today()')]===true&&!(s.flawed&&s.flawed[ev(E,'today()')]),'B5 Tag zählt, kein grauer Stempel');
+  ok((s.chips|0)===0&&!E.$('#egem'),'B5b Daily Round bringt (bis Version 133) keine Chips mehr');
   E.click(E.$('#fin'));
   ok(/Heute geschafft/.test(E.$('#app').textContent),'B6 Home: geschafft');
   E.click(E.$('#gm'));ok(!!E.$('#surv')&&E.$('#surv').disabled,'B7 Survival sichtbar, aber gesperrt (zu wenig Wörter)');

@@ -3,19 +3,6 @@
    Richtig: Walze rastet grün ein. Falsch: Walze zuckt rot und dreht wieder an (ein Fehler ist frei, im Survival nicht).
    Jackpot (alles beim ersten Stopp) ist nur Show und ändert nichts an Stufen oder Punkten. */
 const RL_ROW=44,RL_FAST=10,RL_SLOW=2.2;   // Wörter pro Sekunde: alle rasen, nur die aktive Walze wird langsam
-/* Kurzer Diamantenregen über den ganzen Bildschirm */
-function diamondRain(n){
-  if(reduceMotion())return;
-  const box=document.createElement('div');box.className='drain';box.setAttribute('aria-hidden','true');
-  const cols=[['#ff7ac6','#ffc2e6','#c93a96'],['#7ae7ff','#d3f6ff','#35a8c9'],['#ffffff','#f1e6ff','#b9a2e6'],['#c9a6ff','#eadcff','#8a63d4'],['#ffe27a','#fff3b8','#d9a520']];
-  for(let i=0;i<n;i++){
-    const c=cols[i%cols.length],sz=16+Math.random()*20,g=document.createElement('i');
-    g.style.cssText=`left:${(Math.random()*100).toFixed(1)}%;width:${sz.toFixed(0)}px;height:${sz.toFixed(0)}px;--dx:${(Math.random()*80-40).toFixed(0)}px;--r:${(Math.random()*540-270).toFixed(0)}deg;animation-duration:${(1.1+Math.random()*.9).toFixed(2)}s;animation-delay:${(Math.random()*.7).toFixed(2)}s`;
-    g.innerHTML=`<svg viewBox="0 0 24 24"><path d="M5 3h14l5 6-12 13L0 9z" fill="${c[0]}" stroke="#2a1630" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 3L8 9h8l3-6z" fill="${c[1]}"/><path d="M0 9h8l4 13zM24 9h-8l-4 13z" fill="${c[2]}" opacity=".85"/><path d="M8 9l4 13 4-13z" fill="${c[0]}"/><path d="M6 5l2 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>`;
-    box.appendChild(g);
-  }
-  document.body.appendChild(box);setTimeout(()=>box.remove(),2900);
-}
 /* Reels gibt es nur, wenn alle drei Walzen Wörter tragen, die schon gelernt sind (und zusammen im Satz stehen). Das Fenster aus drei Wörtern
    weicht unbekannten Wörtern aus; findet sich keins, kommt Reels für dieses Wort nicht vor (Ersatzmodul bzw. im Solo übersprungen).
    Es gibt keine vorgesetzten (geschenkten) Walzen: alle drei müssen selbst gestoppt werden. */
@@ -136,9 +123,9 @@ function showReels(w){
       if(jack){const e=el(i);if(e)e.classList.add('gold');}
     });
     paintAll();
-    if(win)diamondRain(jack?46:28);
+    if(win)chipRain(jack?46:28);   // Version 132: Chipregen statt Diamanten
     if(jack){sfx('jackpot');haptic([30,40,30,40,30,40,80]);const b=cab||sheet;burst(b,46);setTimeout(()=>alive()&&burst(b,34),350);}
-    else if(win){sfx('gems');haptic([20,30,20]);}
+    else if(win){sfx('chips');haptic([20,30,20]);}
     else{sfx('end_bad');}
     say(jack?'reels_jackpot':win?'reels_win':'reels_lose');
     const L2=D.toLang==='id'?L.code.toLowerCase():state.ui;

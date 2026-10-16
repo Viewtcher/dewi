@@ -11,7 +11,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="apple-touch-icon" href="icon.png">
 <link rel="icon" href="icon.png">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&family=Lilita+One&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&family=Lilita+One&display=swap">
 <style>
 /* Layout: eine schmale Heftseite, unten Tab-Leiste. Farben: dunkles Aubergine und Pink passend zu Dewi; Regenbogen-Akzente bleiben. */
 :root{
@@ -44,19 +44,22 @@ h2{font:700 18px/1.2 var(--display);margin:0}
 .app{max-width:480px;margin:0 auto;padding:18px 16px 104px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .brand{display:flex;align-items:center;gap:9px;font:700 22px/1 var(--display);letter-spacing:-.01em}
-.brand .gem{width:30px;height:30px;display:block;filter:drop-shadow(0 0 5px rgba(168,136,255,.55))}
 .brand b{color:var(--c-pink);font-weight:700}
-.gempill{display:inline-flex;align-items:center;gap:4px;min-height:36px;padding:0 12px 0 4px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:400 18px/1 var(--num);letter-spacing:.01em;font-variant-numeric:tabular-nums}
-.gempill .gem{width:28px;height:28px;display:block;filter:drop-shadow(0 0 5px rgba(168,136,255,.55))}
-.gempill b{font:600 17px/1 var(--display);letter-spacing:0;font-variant-numeric:tabular-nums}
-.gempill.bump{animation:gembump .22s ease-out}
-@keyframes gembump{40%{transform:scale(1.14);border-color:#b48cff;box-shadow:0 0 14px rgba(180,140,255,.6)}}
-.gemfly{position:fixed;z-index:60;width:26px;height:26px;pointer-events:none;filter:drop-shadow(0 0 6px rgba(180,140,255,.8))}
-.gemfly svg,.gemline svg{width:100%;height:100%;display:block}
-.gemline{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 8px;margin:14px auto 4px;padding:10px 16px;border-radius:14px;background:rgba(125,77,255,.14);border:1px solid rgba(180,140,255,.35);max-width:340px}
-.gemline svg{width:22px;height:22px}
-.gemline b{font:400 22px/1 var(--num);color:#e2d1ff;text-shadow:0 2px 0 rgba(40,10,90,.6)}
-.gemline small{flex-basis:100%;text-align:center;color:var(--muted);font-size:12px}
+/* Chips (Version 132): Pille mit Dewi-Chip, ruhiger Glanz alle paar Sekunden */
+.chippill{display:inline-flex;align-items:center;gap:5px;min-height:36px;padding:0 12px 0 4px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink)}
+.chippill .chipwrap{position:relative;width:28px;height:28px;border-radius:50%;overflow:hidden;flex:none}
+.chippill .chipwrap .dchip{width:100%;height:100%;display:block}
+.chippill .chipwrap::after{content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.6) 50%,transparent 65%);transform:translateX(-130%);animation:chipshine 6s ease-in-out 1.5s infinite}
+@keyframes chipshine{0%,78%{transform:translateX(-130%)}92%,100%{transform:translateX(130%)}}
+.chippill b{font:600 17px/1 var(--display);letter-spacing:0;font-variant-numeric:tabular-nums}
+.chippill.bump{animation:chipbump .22s ease-out}
+@keyframes chipbump{40%{transform:scale(1.14);border-color:#f566b9;box-shadow:0 0 14px rgba(245,102,185,.55)}}
+.chipfly{position:fixed;z-index:60;width:26px;height:26px;pointer-events:none;filter:drop-shadow(0 2px 3px rgba(0,0,0,.45))}
+.chipfly svg,.chipline svg,.drain .dchip{width:100%;height:100%;display:block}
+.chipline{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px auto 4px;padding:10px 16px;border-radius:14px;background:rgba(245,102,185,.12);border:1px solid rgba(245,102,185,.35);max-width:340px}
+.chipline svg{width:26px;height:26px}
+.chipline b{font:600 22px/1 var(--display);color:var(--ink);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){.chippill .chipwrap::after{animation:none;opacity:0}}
 .brand em{font-style:italic;font-weight:600;font-size:.82em;letter-spacing:0;color:var(--c-cyan)}
 .eyebrow{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .hint{color:var(--muted);font-size:14px}
@@ -394,7 +397,7 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .es-rec{font:800 16px/1.2 var(--display);letter-spacing:.06em;color:#ffd166;text-shadow:0 0 14px rgba(255,190,70,.6)}
 .es-parts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 10px;max-width:340px}
 .es-parts span{font-size:13px;color:var(--muted);padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface)}
-.endstage .gemline b.pulse{animation:eslock .5s ease-out}
+.endstage .chipline b.pulse{animation:eslock .5s ease-out}
 .es-btns{display:grid;gap:10px;width:100%}
 .endstage .btn.rv{width:100%}
 @media (prefers-reduced-motion:reduce){.endstage .rv{transition:none}.es-big,.es-big.recd.lock{animation:none!important}}
@@ -674,7 +677,7 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .stpill .fl{width:18px;height:22px;--sh:4px}
 .stpill b{font:600 17px/1 var(--display);font-variant-numeric:tabular-nums}
 .stpill.on{color:#ffc83d;border-color:rgba(255,150,60,.4)}
-.status .gempill{min-height:40px}
+.status .chippill{min-height:40px}
 .langchip{padding:0 12px 0 10px;gap:6px;font-weight:800;letter-spacing:.04em}
 .langchip .flag{font-size:18px;line-height:1}
 .iconbtn.sm{width:36px;height:36px}.musbtn svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
@@ -7341,7 +7344,7 @@ DE_SENT_RAW.split('\n').forEach(l=>{
 const EN={"Fast! Achte auf die Schreibweise. Noch 1 Versuch.": "Almost! Watch the spelling. 1 try left.", "Fast! Achte auf die Schreibweise. Noch {0} Versuche.": "Almost! Watch the spelling. {0} tries left.", "Kleiner Tippfehler. Richtig geschrieben: {0}": "Small typo. Correct spelling: {0}", "Wiederholungsliste": "Review list", "zum Nachholen.": "to catch up on.", "Heute ist nur eine Wiederholung Pflicht.": "Only one review is mandatory today.", "Freeplay: nachholen": "Freeplay: catch up", "Dazu kommen täglich eine Wiederholung und ein Wort aus der Fehlerliste.": "On top of that there is one review and one word from the error list each day.", "Leben": "Lives", "Lückensatz": "Fill the gap", "Setze das fehlende Wort ein.": "Fill in the missing word.", "Nicht ganz. Versuch es nochmal.": "Not quite. Try again.", "Setze den Satz aus den Bausteinen zusammen. Du hast 3 Leben.": "Put the sentence together from the blocks. You have 3 lives.", "Heute": "Today", "Vokabelheft": "Wordbook", "Einstellungen": "Settings", "Hauptmenü": "Main menu", "Round": "Round", "Indonesisch": "Indonesian","Deutsch": "German","ins Deutsche": "into German", "Begrüßung & Höflichkeit": "Greetings & politeness", "Pronomen & Fragewörter": "Pronouns & question words", "Zahlen": "Numbers", "Zeit & Wochentage": "Time & weekdays", "Monate": "Months", "Familie & Menschen": "Family & people", "Essen & Trinken": "Food & drink", "Verben": "Verbs", "Adjektive & Mengenwörter": "Adjectives & quantities", "Orte & Gebäude": "Places & buildings", "Richtungen": "Directions", "Reisen & Verkehr": "Travel & transport", "Körper & Gesundheit": "Body & health", "Kleidung & Farben": "Clothes & colors", "Natur, Wetter & Tiere": "Nature, weather & animals", "Haus & Alltag": "Home & daily life", "Geld & Einkaufen": "Money & shopping", "Arbeit & Schule": "Work & school", "Kleine Wörter": "Small words", "Sätze für den Alltag": "Everyday sentences", "Welche Sprache lernst du?": "Which language are you learning?", "Dewi hilft dir beim Wörterlernen. Dein Fortschritt bleibt auf diesem Gerät.": "Dewi helps you learn words. Your progress stays on this device.", "{0} Wörter": "{0} words", "Weitere Sprachen lassen sich später ergänzen.": "More languages can be added later.", "erledigt": "done", "offen": "open", "Heute dran": "Due today", "Wiederholung": "review", "Wiederholungen": "reviews", "neue Vokabel": "new word", "neue Vokabeln": "new words", "aus der Fehlerliste": "from the error list", "Daily Round starten": "Start Daily Round", "Heute geschafft": "Done for today", "Heute ist nichts fällig.": "Nothing is due today.", "Morgen kommt 1 Wiederholung dran.": "1 review is due tomorrow.", "Morgen kommen {0} Wiederholungen dran.": "{0} reviews are due tomorrow.", "Morgen steht noch keine Wiederholung an.": "No reviews are due tomorrow yet.", "Noch eine neue Vokabel": "One more new word", "Fehlerliste": "Error list", "Wort": "word", "Wörter": "words", "zum Wiederholen.": "to review.", "Eins davon ist heute Pflicht.": "One of them is mandatory today.", "Die Pflicht für heute ist erledigt.": "Today’s mandatory word is done.", "Ab morgen ist täglich ein Wort daraus Pflicht.": "From tomorrow, one word from it is mandatory every day.", "Freeplay: weiter üben": "Freeplay: keep practicing", "Stufe {0}": "Level {0}", "Noch neu": "Not started", "Sprache wechseln": "Change language", "Tag": "day", "Tage": "days", "in Folge": "in a row", "Fortschritt": "Progress", "{0} von {1} Wörtern begonnen": "{0} of {1} words started", "Flamme: {0} {1} in Folge": "Flame: {0} {1} in a row", "Suchen auf Indonesisch oder Deutsch": "Search in Indonesian or German", "Suchen auf Indonesisch oder Englisch": "Search in Indonesian or English", "Suchen auf Englisch oder Deutsch": "Search in English or German", "Suchen": "Search", "Filter": "Filter", "Alle": "All", "Fällig": "Due", "Gelernt": "Learned", "Neu": "New", "Treffer": "matches", "Nichts gefunden.": "Nothing found.", "fällig": "due", "Fehlerliste ×{0}": "Error list ×{0}", "Wackelig": "Shaky", "wackelig": "shaky", "Das Wort fällt auf Stufe 0 und kommt morgen wieder.": "The word drops to level 0 and comes back tomorrow.", "Stufe {0} von 5": "Level {0} of 5", "App-Sprache": "App language", "Gilt für die Oberfläche und für die Bedeutungen der Wörter.": "Applies to the interface and to the meanings of the words.", "Neue Vokabeln pro Tag": "New words per day", "Dazu kommen immer alle fälligen Wiederholungen und ein Wort aus der Fehlerliste.": "All due reviews and one word from the error list are always added.", "Tägliche Erinnerung": "Daily reminder", "Eine Web-App kann sich nicht selbst melden. Das übernimmt dein iPhone, die Uhrzeit stellst du dort ein.": "A web app cannot notify you by itself. Your iPhone does that; you set the time there.", "So richtest du sie ein": "How to set it up", "Kurzbefehle-App öffnen, Tab „Automation“, „+“, „Tageszeit“.": "Open the Shortcuts app, go to the “Automation” tab, tap “+”, then “Time of Day”.", "Uhrzeit wählen, „Täglich“, „Sofort ausführen“.": "Choose a time, “Daily”, “Run Immediately”.", "Aktion „URL öffnen“ mit der Adresse dieser App hinzufügen.": "Add the action “Open URL” with this app’s address.", "Je nach iOS-Version musst du die Mitteilung antippen oder das iPhone entsperren, damit sich die Seite öffnet.": "Depending on your iOS version you may need to tap the notification or unlock the iPhone for the page to open.", "Alternative: In der Erinnerungen-App eine tägliche Erinnerung mit der Adresse als Link anlegen.": "Alternative: create a daily reminder in the Reminders app with the address as a link.", "Sicherung": "Backup", "Kopiere den Text in eine Notiz. Zum Wiederherstellen fügst du ihn unten ein.": "Copy the text into a note. To restore, paste it below.", "Sicherung erstellen": "Create backup", "Kopieren": "Copy", "Sicherung hier einfügen": "Paste backup here", "Sicherung einspielen": "Restore backup", "Wirklich ersetzen? Nochmal tippen": "Really replace? Tap again", "Das ist keine gültige Sicherung.": "This is not a valid backup.", "Kopiert.": "Copied.", "Text ist markiert. Jetzt manuell kopieren.": "Text is selected. Copy it manually now.", "Lernsprache": "Learning language", "{0} ändern": "Change {0}", "Testen": "Testing", "Simuliert einen späteren Tag, damit du die Wiederholungen siehst. Aktuelles Datum in der App:": "Simulates a later day so you can see the reviews. Current date in the app:", "Einen Tag vorspulen": "Skip one day ahead", "Zurück auf heute": "Back to today", "Alles zurücksetzen": "Reset everything", "Wirklich alles löschen? Nochmal tippen": "Really delete everything? Tap again", "Round beenden": "End round", "Kennenlernen": "Getting to know", "Satz-Übung": "Sentence exercise", "Tippen": "Typing", "Neue Vokabel · Phase {0} von {1}": "New word · phase {0} of {1}", "Wiederholung · Stufe {0}": "Review · level {0}", "ins Deutsche": "into German", "ins Englische": "into English", "ins Indonesische": "into Indonesian", "Präg dir das Wort und den Satz ein. Gleich wendest du es an.": "Memorize the word and the sentence. You will use it in a moment.", "Weiter": "Next", "Was bedeutet das markierte Wort?": "What does the highlighted word mean?", "Richtig": "Correct", "Nicht ganz": "Not quite", "Bausteine": "Building blocks", "Setze den Satz aus den Bausteinen zusammen. Du hast einen Versuch.": "Build the sentence from the blocks. You have one try.", "Dein Satz": "Your sentence", "Prüfen": "Check", "Deine Antwort": "Your answer", "Antwort tippen": "Type your answer", "Versuche übrig": "tries left", "Nicht ganz. Noch 1 Versuch.": "Not quite. 1 try left.", "Nicht ganz. Noch {0} Versuche.": "Not quite. {0} tries left.", " Tipp: beginnt mit „{0}“.": " Hint: starts with “{0}”.", "Leider falsch": "Wrong", "Auch richtig: {0}": "Also correct: {0}", "Geschafft. Das Wort verlässt die Fehlerliste und kommt morgen wieder (Stufe 1).": "Done. The word leaves the error list and comes back tomorrow (level 1).", "Stufe {0} von 5. Nächste Wiederholung morgen.": "Level {0} of 5. Next review tomorrow.", "Stufe {0} von 5. Nächste Wiederholung in {1} Tagen.": "Level {0} of 5. Next review in {1} days.", "Das Wort bleibt auf der Fehlerliste (Fehler: {0}).": "The word stays on the error list (errors: {0}).", "Eine Übung davor war falsch.": "An earlier exercise was wrong.", "Das Wort kommt auf die Fehlerliste.": "The word goes on the error list.", "Gerettet!": "Rescued!", "Neues Wort!": "New word!", "Level up!": "Level up!", "Stufe gehalten": "Level kept", "Stufe {0} von 5 · nächste Wiederholung morgen": "Level {0} of 5 · next review tomorrow", "Stufe {0} von 5 · nächste Wiederholung in {1} Tagen": "Level {0} of 5 · next review in {1} days", "Round beendet": "Round finished", "{0} von {1}": "{0} of {1}", "komplett richtig beantwortet": "answered fully correct", "Serie verlängert!": "Streak extended!", "Die Serie läuft weiter.": "Your streak continues.", "Von der Fehlerliste gestrichen:": "Removed from the error list:", "Neu auf der Fehlerliste:": "New on the error list:", "Fertig": "Done","Reels": "Reels","Hebel ziehen, Walzen beim richtigen Wort stoppen": "Pull the lever, stop each reel on the right word","Ziehe den Hebel. Tippe dann jede Walze an, sobald das richtige Wort auf der Linie steht.": "Pull the lever. Then tap each reel when the right word is on the line.","Wähle für jede Stelle das richtige Wort.": "Pick the right word for each position.","Hebel ziehen": "Pull the lever","Walze {0} stoppen": "Stop reel {0}","Walze {0}": "Reel {0}","Jackpot!": "Jackpot!", "Testbereich": "Test area", "Springt in eine Lernphase. Dein echter Fortschritt wird vorher gesichert.": "Jumps to a learning phase. Your real progress is backed up first.", "Testphase aktiv": "Test phase active", "Erster Start": "First start", "2 Wörter": "2 words", "10 Wörter": "10 words", "10 %": "10 %", "50 %": "50 %", "Alle Wörter": "All words", "Echten Fortschritt wiederherstellen": "Restore real progress", "Testbereich verstecken": "Hide test area", "Wirklich springen? Nochmal tippen": "Really jump? Tap again", "Wirklich wiederherstellen? Nochmal tippen": "Really restore? Tap again",
 "Gamemodes": "Game modes","Gamemodes öffnen": "Open game modes","Reihenfolge": "Word order","Wörter in die richtige Reihenfolge schieben": "Drag the words into the right order","Zieh die Kacheln in die richtige Reihenfolge.": "Drag the tiles into the right order.","Enttäuscht": "Disappointed","verpasst": "missed","Noch Lust auf mehr? Spiele weiter, mit Leben, Score und Rekorden.": "Want more? Keep playing, with lives, score and records.","Spiele über die Daily Round hinaus, mit Leben, Score und Rekorden.": "Games beyond the Daily Round, with lives, score and records.","Mehr Gamemodes kommen": "More game modes to come",
 "Noch zu wenige passende Wörter ({0}/{1})": "Not enough matching words yet ({0}/{1})",
-"Serie von {0}: ein Herz kommt zurück!": "Streak of {0}: a heart comes back!","Hilfe zu diesem Modul": "Help for this module","Herz zurück": "Heart restored","{0} richtige in Folge": "{0} correct in a row","Tippen zum Fortfahren": "Tap to continue","Holo-Aufstieg": "Holo Ascent","Drei Soundtracks zur Wahl: ruhiger Lo-Fi, bunter Arcade oder Holo-Aufstieg. Im Modul Reels kommt bei Holo-Aufstieg ein Arpeggio dazu, bei Lo-Fi und Arcade ein eigener Synthwave.": "Three soundtracks to choose from: calm Lo-Fi, colorful Arcade or Holo Ascent. In the Reels module, Holo Ascent adds an arpeggio; Lo-Fi and Arcade get their own synthwave.","Noch eine Runde": "One more round","Das Wort kommt gleich nochmal dran.": "The word comes up again shortly.","Das Wort kommt bald wieder.": "The word comes back soon.","Geschafft. Das Wort kommt morgen wieder (Stufe 1).": "Done. The word comes back tomorrow (level 1).","Meilenstein!": "Milestone!","Daily Round": "Daily Round","{0} Punkte": "{0} points","Offener Run": "Open run","Weiterspielen": "Continue","noch {0} Wörter": "{0} words left","{0} Leben übrig": "{0} lives left","Offener Run: {0}": "Open run: {0}","Wenn du neu startest, ist der alte Run weg.": "Starting over discards it.","Trotzdem neu starten": "Start over anyway","Abbrechen": "Cancel","Deine Serie": "Your streak","Neues Wort": "New word","Tippe das Wort an.": "Tap the word.","Antippen zum Fortfahren": "Tap to continue","Aussprache anhören": "Hear it","Erkennst du es wieder?": "Do you recognise it?","Jetzt im Satz": "Now in a sentence","Fast! Schau nochmal hin.": "Close! Take another look.","Wische den Automaten nach links.": "Swipe the machine off to the left.","Automaten wegwerfen": "Throw the machine away","Musik": "Music","Musik-Lautstärke": "Music volume","Ein ruhiger Lo-Fi-Loop in der App (oder alternativ ein bunter Arcade-Loop) und ein eigener Synthwave-Soundtrack im Modul Reels. Standardmäßig aus.": "A calm lo-fi loop in the app (or, alternatively, a colorful arcade loop) and its own synthwave soundtrack in the Reels module. Off by default.","Die Walzen rasen. Ziehe den Hebel: Die linke Walze wird langsam. Tippe auf den Automaten, wenn das richtige Wort in der Mitte steht. Dann wird die nächste Walze langsam.": "The reels race. Pull the lever: the left reel slows down. Tap the machine when the right word is in the middle. Then the next reel slows down.","Walzen stoppen": "Stop the reels","Ziehe den Hebel. Tippe dann irgendwo auf den Automaten, wenn das richtige Wort auf der Linie steht. Die Walzen rasten von links nach rechts ein.": "Pull the lever. Then tap anywhere on the machine when the right word is on the line. The reels lock in from left to right.","Alles beim ersten Stopp getroffen.": "Every reel hit on the first stop.","Die richtige Lösung": "The correct answer", "Gesperrt: erst die Daily Round für heute schaffen.": "Locked: finish today's Daily Round first.", "Gesperrt: du brauchst mindestens {0} bekannte Wörter, jetzt {1}.": "Locked: you need at least {0} known words, you have {1}.", "3 Leben": "3 lives", "Alle Module gemischt, nie zweimal dasselbe hintereinander": "All modules mixed, never the same one twice in a row", "Daily Round · Einführung": "Daily Round · Introduction", "Daily Round · Reparatur · noch {0}": "Daily Round · Repair · {0} to go", "Daily Round · Review {0} von {1}": "Daily Round · Review {0} of {1}", "Daily Round · Review · neues Wort": "Daily Round · Review · new word", "Das Wort bleibt auf der Fehlerliste und kommt gleich nochmal dran.": "The word stays on the error list and comes up again shortly.", "Die Daily Round ist gesperrt, bis die Liste leer ist.": "The Daily Round is locked until the list is empty.", "Die Fehlerliste muss zuerst leer werden. Danach geht es mit dem neuen Wort weiter.": "The error list has to be cleared first. Then the new word follows.", "Die nächste Daily Round startet mit der Reparatur der Fehlerliste.": "The next Daily Round starts by repairing the error list.", "Ein Leben weniger.": "One life less.", "Fast! Achte auf die Schreibweise.": "Almost! Watch the spelling.", "Fehlerliste reparieren": "Repair error list", "Heute gibt es einen grauen Stempel. Ohne verlorenes Modul bekommst du den vollen mit Holo.": "Today's stamp is grey. Without a lost module you get the full holo stamp.", "Jede Frage hat nur einen Versuch. Drei falsche Antworten und die Round ist vorbei. Je mehr Wörter du schaffst, desto höher dein Score.": "Every question has just one try. Three wrong answers and the round is over. The more words you get, the higher your score.", "Module geschafft": "Modules passed", "Neuer Rekord! Vorher: {0}": "New record! Before: {0}","Neuer Rekord!": "New record!","Erklärung": "Explanation","Starte einen kurzen zufälligen Run und lerne eine neue Vokabel!": "Start a short random run and learn a new word!","Keine Lust auf neue Vokabeln? Vertiefe was du bereits kennst und sammle Diamanten, indem du deinen Highscore steigerst!": "Not in the mood for new words? Deepen what you already know and collect diamonds by beating your high score!","{0} Diamanten": "{0} gems","Perfekt": "Perfect","{0} Tage Serie": "{0}-day streak","Starte deine Serie": "Start your streak","Soundtrack": "Soundtrack","Spiele jederzeit, mit Leben, Score und Rekorden.": "Play any time, with lives, score and records.", "Noch kein Rekord.": "No record yet.", "Nochmal spielen": "Play again", "Punkte": "points", "Rekord: {0}": "Record: {0}", "Rekord: {0}. Noch {1} bis zum Rekord.": "Record: {0}. {1} more to beat it.", "Reparatur": "Repair", "Reparatur starten": "Start repair", "Review": "Review", "Setze den Satz aus den Bausteinen zusammen.": "Put the sentence together from the blocks.", "Survival": "Survival", "Survival beendet": "Survival over", "Survival komplett geschafft!": "Survival cleared!", "Survival starten": "Start Survival", "Survival · {0} Punkte": "Survival · {0} points", "Weiter in {0}": "Next in {0}", "mit Fehlern": "with mistakes", "mit Fehlern erledigt": "done with mistakes", "zum Reparieren.": "to repair.", "{0} Wörter geschafft": "{0} words passed", "{0} Wörter, 3 Leben, ein Versuch pro Frage. Wie weit kommst du?": "{0} words, 3 lives, one try per question. How far can you get?", "{0} in Folge": "{0} in a row",  "Modul {0}": "Module {0}", "Solo": "Solo", "Playmode": "Playmode", "Freeplay": "Freeplay", "Random": "Random", "Alle Module gemischt, passend zur Stufe, wie in der Daily Round": "All modules mixed by level, as in the Daily Round", "Solo · nur ein Modul": "Solo · one module only", "Wörter pro Round": "Words per round", "Wie willst du üben?": "How do you want to practice?", "Zufällig": "Random", "Alle Übungen gemischt: Bausteine, Tippen, Swipe und mehr, wie bisher": "All exercises mixed: building blocks, typing, swipe and more, as before", "Standard": "Default", "Satz aus Wortkacheln zusammensetzen": "Build the sentence from word tiles", "Übersetzung selbst schreiben": "Write the translation yourself", "Zwei Vorschläge, einer stimmt": "Two options, one is right", "Fehlendes Wort im Satz einsetzen": "Fill in the missing word", "Richtige Bedeutung aus vier Optionen": "Pick the right meaning from four options", "Auswahl": "Choice", "Bald mehr": "More soon", "Hören, Paare, Puzzle …": "Listening, pairs, puzzle …", "Wörter pro Runde": "Words per round", "Alle {0}": "All {0}", "Zurück": "Back", "Nur {0}": "Only {0}", "NEU": "NEW", "Swipe": "Swipe", "Wische die Karte zur richtigen Übersetzung oder tippe sie an.": "Swipe the card toward the right translation or tap it.", "Sound": "Sound", "An": "On", "Aus": "Off", "Lautstärke": "Volume", "Dewi quatscht, klickt und stempelt. Hier schaltest du alle Töne ein oder aus.": "Dewi chats, clicks and stamps. Switch all sounds on or off here.", "Wie heißt du?": "What’s your name?", "Dewi spricht dich damit an. Der Name bleibt nur auf diesem Gerät.": "Dewi will call you this. The name stays on this device only.", "Dein Name": "Your name", "Name eingeben": "Enter your name", "Leer lassen: Dewi nennt dich dann „Choom“ und Co.": "Leave empty: Dewi will call you “Choom” and the like.", "Überspringen": "Skip", "Speichern": "Save", "Gespeichert.": "Saved.", "Schelmisch": "Sly", "Cool": "Cool", "Überlegen": "Superior", "Überheblich": "Haughty", "Überrascht": "Surprised", "Gemein": "Mean", "Gelangweilt": "Bored", "Zufrieden": "Content", "Genervt": "Annoyed", "Schlafend": "Sleeping", "Marke ansehen": "View stamp", "Schließen": "Close", "Ziehen, um die Marke zu neigen.": "Drag to lift and tilt the stamp."};
+"Serie von {0}: ein Herz kommt zurück!": "Streak of {0}: a heart comes back!","Hilfe zu diesem Modul": "Help for this module","Herz zurück": "Heart restored","{0} richtige in Folge": "{0} correct in a row","Tippen zum Fortfahren": "Tap to continue","Holo-Aufstieg": "Holo Ascent","Drei Soundtracks zur Wahl: ruhiger Lo-Fi, bunter Arcade oder Holo-Aufstieg. Im Modul Reels kommt bei Holo-Aufstieg ein Arpeggio dazu, bei Lo-Fi und Arcade ein eigener Synthwave.": "Three soundtracks to choose from: calm Lo-Fi, colorful Arcade or Holo Ascent. In the Reels module, Holo Ascent adds an arpeggio; Lo-Fi and Arcade get their own synthwave.","Noch eine Runde": "One more round","Das Wort kommt gleich nochmal dran.": "The word comes up again shortly.","Das Wort kommt bald wieder.": "The word comes back soon.","Geschafft. Das Wort kommt morgen wieder (Stufe 1).": "Done. The word comes back tomorrow (level 1).","Meilenstein!": "Milestone!","Daily Round": "Daily Round","{0} Punkte": "{0} points","Offener Run": "Open run","Weiterspielen": "Continue","noch {0} Wörter": "{0} words left","{0} Leben übrig": "{0} lives left","Offener Run: {0}": "Open run: {0}","Wenn du neu startest, ist der alte Run weg.": "Starting over discards it.","Trotzdem neu starten": "Start over anyway","Abbrechen": "Cancel","Deine Serie": "Your streak","Neues Wort": "New word","Tippe das Wort an.": "Tap the word.","Antippen zum Fortfahren": "Tap to continue","Aussprache anhören": "Hear it","Erkennst du es wieder?": "Do you recognise it?","Jetzt im Satz": "Now in a sentence","Fast! Schau nochmal hin.": "Close! Take another look.","Wische den Automaten nach links.": "Swipe the machine off to the left.","Automaten wegwerfen": "Throw the machine away","Musik": "Music","Musik-Lautstärke": "Music volume","Ein ruhiger Lo-Fi-Loop in der App (oder alternativ ein bunter Arcade-Loop) und ein eigener Synthwave-Soundtrack im Modul Reels. Standardmäßig aus.": "A calm lo-fi loop in the app (or, alternatively, a colorful arcade loop) and its own synthwave soundtrack in the Reels module. Off by default.","Die Walzen rasen. Ziehe den Hebel: Die linke Walze wird langsam. Tippe auf den Automaten, wenn das richtige Wort in der Mitte steht. Dann wird die nächste Walze langsam.": "The reels race. Pull the lever: the left reel slows down. Tap the machine when the right word is in the middle. Then the next reel slows down.","Walzen stoppen": "Stop the reels","Ziehe den Hebel. Tippe dann irgendwo auf den Automaten, wenn das richtige Wort auf der Linie steht. Die Walzen rasten von links nach rechts ein.": "Pull the lever. Then tap anywhere on the machine when the right word is on the line. The reels lock in from left to right.","Alles beim ersten Stopp getroffen.": "Every reel hit on the first stop.","Die richtige Lösung": "The correct answer", "Gesperrt: erst die Daily Round für heute schaffen.": "Locked: finish today's Daily Round first.", "Gesperrt: du brauchst mindestens {0} bekannte Wörter, jetzt {1}.": "Locked: you need at least {0} known words, you have {1}.", "3 Leben": "3 lives", "Alle Module gemischt, nie zweimal dasselbe hintereinander": "All modules mixed, never the same one twice in a row", "Daily Round · Einführung": "Daily Round · Introduction", "Daily Round · Reparatur · noch {0}": "Daily Round · Repair · {0} to go", "Daily Round · Review {0} von {1}": "Daily Round · Review {0} of {1}", "Daily Round · Review · neues Wort": "Daily Round · Review · new word", "Das Wort bleibt auf der Fehlerliste und kommt gleich nochmal dran.": "The word stays on the error list and comes up again shortly.", "Die Daily Round ist gesperrt, bis die Liste leer ist.": "The Daily Round is locked until the list is empty.", "Die Fehlerliste muss zuerst leer werden. Danach geht es mit dem neuen Wort weiter.": "The error list has to be cleared first. Then the new word follows.", "Die nächste Daily Round startet mit der Reparatur der Fehlerliste.": "The next Daily Round starts by repairing the error list.", "Ein Leben weniger.": "One life less.", "Fast! Achte auf die Schreibweise.": "Almost! Watch the spelling.", "Fehlerliste reparieren": "Repair error list", "Heute gibt es einen grauen Stempel. Ohne verlorenes Modul bekommst du den vollen mit Holo.": "Today's stamp is grey. Without a lost module you get the full holo stamp.", "Jede Frage hat nur einen Versuch. Drei falsche Antworten und die Round ist vorbei. Je mehr Wörter du schaffst, desto höher dein Score.": "Every question has just one try. Three wrong answers and the round is over. The more words you get, the higher your score.", "Module geschafft": "Modules passed", "Neuer Rekord! Vorher: {0}": "New record! Before: {0}","Neuer Rekord!": "New record!","Erklärung": "Explanation","Starte einen kurzen zufälligen Run und lerne eine neue Vokabel!": "Start a short random run and learn a new word!","Keine Lust auf neue Vokabeln? Vertiefe was du bereits kennst und sammle Chips, indem du deinen Highscore steigerst!": "Not in the mood for new words? Deepen what you already know and collect chips by beating your high score!","{0} Chips": "{0} chips","Perfekt": "Perfect","{0} Tage Serie": "{0}-day streak","Starte deine Serie": "Start your streak","Soundtrack": "Soundtrack","Spiele jederzeit, mit Leben, Score und Rekorden.": "Play any time, with lives, score and records.", "Noch kein Rekord.": "No record yet.", "Nochmal spielen": "Play again", "Punkte": "points", "Rekord: {0}": "Record: {0}", "Rekord: {0}. Noch {1} bis zum Rekord.": "Record: {0}. {1} more to beat it.", "Reparatur": "Repair", "Reparatur starten": "Start repair", "Review": "Review", "Setze den Satz aus den Bausteinen zusammen.": "Put the sentence together from the blocks.", "Survival": "Survival", "Survival beendet": "Survival over", "Survival komplett geschafft!": "Survival cleared!", "Survival starten": "Start Survival", "Survival · {0} Punkte": "Survival · {0} points", "Weiter in {0}": "Next in {0}", "mit Fehlern": "with mistakes", "mit Fehlern erledigt": "done with mistakes", "zum Reparieren.": "to repair.", "{0} Wörter geschafft": "{0} words passed", "{0} Wörter, 3 Leben, ein Versuch pro Frage. Wie weit kommst du?": "{0} words, 3 lives, one try per question. How far can you get?", "{0} in Folge": "{0} in a row",  "Modul {0}": "Module {0}", "Solo": "Solo", "Playmode": "Playmode", "Freeplay": "Freeplay", "Random": "Random", "Alle Module gemischt, passend zur Stufe, wie in der Daily Round": "All modules mixed by level, as in the Daily Round", "Solo · nur ein Modul": "Solo · one module only", "Wörter pro Round": "Words per round", "Wie willst du üben?": "How do you want to practice?", "Zufällig": "Random", "Alle Übungen gemischt: Bausteine, Tippen, Swipe und mehr, wie bisher": "All exercises mixed: building blocks, typing, swipe and more, as before", "Standard": "Default", "Satz aus Wortkacheln zusammensetzen": "Build the sentence from word tiles", "Übersetzung selbst schreiben": "Write the translation yourself", "Zwei Vorschläge, einer stimmt": "Two options, one is right", "Fehlendes Wort im Satz einsetzen": "Fill in the missing word", "Richtige Bedeutung aus vier Optionen": "Pick the right meaning from four options", "Auswahl": "Choice", "Bald mehr": "More soon", "Hören, Paare, Puzzle …": "Listening, pairs, puzzle …", "Wörter pro Runde": "Words per round", "Alle {0}": "All {0}", "Zurück": "Back", "Nur {0}": "Only {0}", "NEU": "NEW", "Swipe": "Swipe", "Wische die Karte zur richtigen Übersetzung oder tippe sie an.": "Swipe the card toward the right translation or tap it.", "Sound": "Sound", "An": "On", "Aus": "Off", "Lautstärke": "Volume", "Dewi quatscht, klickt und stempelt. Hier schaltest du alle Töne ein oder aus.": "Dewi chats, clicks and stamps. Switch all sounds on or off here.", "Wie heißt du?": "What’s your name?", "Dewi spricht dich damit an. Der Name bleibt nur auf diesem Gerät.": "Dewi will call you this. The name stays on this device only.", "Dein Name": "Your name", "Name eingeben": "Enter your name", "Leer lassen: Dewi nennt dich dann „Choom“ und Co.": "Leave empty: Dewi will call you “Choom” and the like.", "Überspringen": "Skip", "Speichern": "Save", "Gespeichert.": "Saved.", "Schelmisch": "Sly", "Cool": "Cool", "Überlegen": "Superior", "Überheblich": "Haughty", "Überrascht": "Surprised", "Gemein": "Mean", "Gelangweilt": "Bored", "Zufrieden": "Content", "Genervt": "Annoyed", "Schlafend": "Sleeping", "Marke ansehen": "View stamp", "Schließen": "Close", "Ziehen, um die Marke zu neigen.": "Drag to lift and tilt the stamp."};
 function t(s){
   let r=s;if(state.ui==='en'&&EN[s]!==undefined)r=EN[s];
   if(arguments.length<2)return r;
@@ -7385,7 +7388,7 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random
 
 /* ---------- Zustand ---------- */
 const FAR='9999-12-31';   // bis Version 130: Fälligkeit für Wörter auf der Fehlerliste. Nur noch für die Migration alter Stände.
-const defaults=()=>({v:2,lang:null,ui:null,dayOffset:0,progress:{},list:null,daily:{date:'',newCount:0,extra:0,lt:[],got:[]},done:{},flawed:{},best:{},quips:true,form:[],stamps:{},name:'',nameAsked:false,sound:true,vol:40,music:true,musDef:1,char:'dewi',chars:['dewi'],mvol:35,mtrack:'lofi',roundN:10,gems:0,gemShown:0,gemSurv:null});
+const defaults=()=>({v:2,lang:null,ui:null,dayOffset:0,progress:{},list:null,daily:{date:'',newCount:0,extra:0,lt:[],got:[]},done:{},flawed:{},best:{},quips:true,form:[],stamps:{},name:'',nameAsked:false,sound:true,vol:40,music:true,musDef:1,char:'dewi',chars:['dewi'],mvol:35,mtrack:'lofi',roundN:10,chips:0,chipShown:0,chipSurv:null});
 let state=load();migrate();
 function load(){try{const raw=localStorage.getItem(STORE);if(raw)return Object.assign(defaults(),JSON.parse(raw));}catch(e){}return defaults();}
 function save(){try{localStorage.setItem(STORE,JSON.stringify(state));}catch(e){}}
@@ -7416,6 +7419,11 @@ function migrate(){
     });
     state.list={};
     Object.keys(state.progress||{}).forEach(lg=>{const pr=state.progress[lg]||{};Object.keys(pr).forEach(k=>{if(pr[k]&&pr[k].d===FAR)pr[k].d=t0;});});
+  }
+  /* Version 132: Diamanten werden Chips, Kontostand einmalig × 10 (chipV steht bewusst nicht in defaults()) */
+  if(!state.chipV){
+    state.chips=Math.max(state.chips|0,(state.gems|0)*10);state.chipShown=Math.min(state.chips,(state.gemShown|0)*10);
+    delete state.gems;delete state.gemShown;delete state.gemSurv;state.chipV=1;
   }
   if(!state.musDef){state.musDef=1;state.music=true;if(!(+state.mvol>0))state.mvol=35;}   // Version 103: Musik ist jetzt standardmäßig an (einmalig auch für bestehende Stände)
   if(!state.holoDef){state.holoDef=1;state.mtrack='holo';}   // Version 129: Holo-Aufstieg ist der neue Standard-Soundtrack (einmalig für alle Stände)
@@ -7754,7 +7762,7 @@ const MOODS={
    Jeder Charakter ist ein Eintrag in CHARS. Neuen Charakter ergänzen = ein Eintrag mit:
      id, name, color (Schild/Rand der Sprechblase), art(mood) → HTML der Figur,
      quips {de:{kind:[…]},en:{…}} und moods {kind:[…]} (fehlt ein kind, springt Dewi ein),
-     blip(mood,ch) (optional: eigene Tipp-Stimme), price (Diamanten, für den späteren Shop).
+     blip(mood,ch) (optional: eigene Tipp-Stimme), price (Chips, für den späteren Shop).
    Spielstand: state.chars = Liste der besessenen Charaktere, state.char = aktiver. */
 const CHARS={
   dewi:{id:'dewi',name:'Dewi',color:'#ff4fa3',art:m=>dwSvg(m),quips:QUIPS,moods:MOODS,price:0}
@@ -7947,7 +7955,9 @@ const SFX={
   counttick(c){const f=620+CNT.p*900;tone(c,f,0,.045,{type:'triangle',v:.1,to:f*1.08});},
   /* Zahl rastet ein */
   lockin(c){[1047,1319,1568].forEach((f,i)=>tone(c,f,i*.035,.5,{type:'triangle',v:.16}));tone(c,131,0,.3,{v:.3,to:98});[3136,3951].forEach((f,i)=>tone(c,f,.08+i*.05,.1,{v:.06}));},
-  /* Diamanten-Posten: Münz-Pling, wird mit jedem Posten höher */
+  /* Chips (Version 132): kurzes Klackern wie Casino-Chips, die aufeinanderfallen */
+  chips(c){[0,.05,.092,.15,.19].forEach((t,i)=>{noise(c,t,.03,.11-i*.015,3200+i*450);tone(c,1900+i*170,t,.028,{type:'square',v:.022});tone(c,240-i*14,t,.05,{v:.06});});},
+  /* Gewinn-Posten auf Endscreens: Münz-Pling, wird mit jedem Posten höher */
   gemitem(c){const f=1175*(1+CNT.p*.5);tone(c,f,0,.22,{type:'triangle',v:.17});tone(c,f*1.5,.05,.2,{type:'triangle',v:.1});tone(c,f*2,.05,.12,{v:.04});},
   /* neues Wort: leises Glocken-Pling */
   wordin(c){tone(c,1319,0,.35,{type:'triangle',v:.14});tone(c,1976,.05,.3,{type:'triangle',v:.08});tone(c,2637,.08,.2,{v:.04});},
@@ -8262,71 +8272,6 @@ function render(){
 function go(v){view=v;render();try{window.scrollTo(0,0);}catch(e){}}
 $$('.tab',tabs).forEach(b=>b.onclick=()=>go(b.dataset.v));
 
-/* Logo: echter 3D-Diamant (Brillantschliff mit 8 Seiten), per Canvas gezeichnet und im Loop gedreht.
-   Flächen werden nach Tiefe sortiert, die Farbe folgt Holo-Verlauf + Licht, dazu Funken. Kein Haken wie bei den Stempeln. */
-const GEM=(()=>{
-  const N=8,V=[],F=[];
-  const ring=(r,y,off)=>{const a=[];for(let i=0;i<N;i++){const t=(i+off)/N*Math.PI*2;a.push(V.push([Math.cos(t)*r,y,Math.sin(t)*r])-1);}return a;};
-  const tb=ring(.52,-.5,0),gd=ring(1,0,.5),ap=V.push([0,1.05,0])-1;
-  F.push({v:tb.slice().reverse(),k:'table'});
-  for(let i=0;i<N;i++){const a=tb[i],b=tb[(i+1)%N],c=gd[(i+1)%N],d=gd[i];F.push({v:[a,d,c,b],k:'crown'});}
-  for(let i=0;i<N;i++){F.push({v:[gd[i],ap,gd[(i+1)%N]],k:'pav'});}
-  const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
-  const norm=v=>{const l=Math.hypot(v[0],v[1],v[2])||1;return[v[0]/l,v[1]/l,v[2]/l];};
-  F.forEach((f,ix)=>{
-    const p=f.v.map(q=>V[q]);f.n=norm(cross(sub(p[1],p[0]),sub(p[2],p[0])));
-    // nach außen ausrichten
-    const c=p.reduce((s,q)=>[s[0]+q[0]/p.length,s[1]+q[1]/p.length,s[2]+q[2]/p.length],[0,0,0]);
-    if(f.n[0]*c[0]+f.n[1]*(c[1]-.2)+f.n[2]*c[2]<0)f.n=f.n.map(x=>-x);
-    f.id=ix;
-  });
-  const stars=[[.18,-.3,.9,2.4,0],[-.3,.35,.9,3,1.1],[.28,.6,.9,2.7,1.8]];
-  function draw(cv,t){
-    const dpr=Math.min(window.devicePixelRatio||1,3),W=cv.clientWidth||26,H=cv.clientHeight||26;
-    if(cv.width!==Math.round(W*dpr)){cv.width=Math.round(W*dpr);cv.height=Math.round(H*dpr);}
-    const g=cv.getContext('2d');if(!g)return;
-    g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,W,H);
-    const ry=t*1.25,tilt=.42,cy=Math.cos(ry),sy=Math.sin(ry),cx=Math.cos(tilt),sx=Math.sin(tilt);
-    const rot=p=>{let x=p[0]*cy+p[2]*sy,z=-p[0]*sy+p[2]*cy,y=p[1];const y2=y*cx-z*sx,z2=y*sx+z*cx;return[x,y2,z2];};
-    const sc=Math.min(W,H)*.4,ox=W/2,oy=H*.46;
-    const P=V.map(rot);
-    const vis=[];
-    F.forEach(f=>{
-      const n=rot(f.n);if(n[2]<=0.02)return;           // Rückseiten weglassen (Kamera schaut entlang -z, sichtbar = z>0)
-      const z=f.v.reduce((s,q)=>s+P[q][2],0)/f.v.length;
-      vis.push({f,n,z});
-    });
-    vis.sort((a,b)=>a.z-b.z);
-    vis.forEach(({f,n})=>{
-      const L=Math.max(0,n[0]*-.4+n[1]*-.7+n[2]*.6);
-      const hue=290+42*Math.sin(t*1.1+f.id*.8+n[0]*1.6+n[1]*.9);   // nur Blau-Violett-Rosa (248–332°)
-      const base=f.k==="table"?68:f.k==="crown"?58:46;
-      const light=Math.min(74,base+L*16);
-      g.beginPath();f.v.forEach((q,i)=>{const p=P[q],x=ox+p[0]*sc,y=oy+p[1]*sc;i?g.lineTo(x,y):g.moveTo(x,y);});g.closePath();
-      g.fillStyle=`hsl(${hue} 78% ${light}%)`;g.fill();
-      g.strokeStyle=`rgba(255,255,255,${.35+L*.35})`;g.lineWidth=.7;g.lineJoin='round';g.stroke();
-      // Glanz: helle Fläche, wenn sie zum Licht zeigt
-      if(L>.78){g.fillStyle=`rgba(255,255,255,${(L-.78)*.9})`;g.fill();}
-    });
-    // Funken
-    stars.forEach(s=>{
-      const ph=((t*.9+s[4])%s[3])/s[3];if(ph>.45)return;
-      const a=Math.sin(ph/.45*Math.PI),p=rot([s[0],s[1],0.6]),x=ox+p[0]*sc,y=oy+p[1]*sc,r=2.6*a;
-      g.fillStyle=`rgba(255,255,255,${a})`;g.beginPath();g.moveTo(x,y-r);g.lineTo(x+r*.25,y-r*.25);g.lineTo(x+r,y);g.lineTo(x+r*.25,y+r*.25);g.lineTo(x,y+r);g.lineTo(x-r*.25,y+r*.25);g.lineTo(x-r,y);g.lineTo(x-r*.25,y-r*.25);g.closePath();g.fill();
-    });
-  }
-  let started=false;
-  function start(){
-    if(started)return;started=true;
-    const tick=ms=>{
-      const t=reduceMotion()?.6:ms/1000;
-      document.querySelectorAll('canvas.gem').forEach(c=>draw(c,t));
-      requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }
-  return {start,draw};
-})();
 const LOCKIC='<svg class="ico-lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.3" class="dot"/></svg>';
 const BRAND='<div class="brand"><span>dewi<b>.</b></span></div>';
 /* Sprachauswahl: antippen merkt die Wahl, erst „Weiter“ übernimmt sie (Version 120) */
@@ -8388,7 +8333,7 @@ function langView(){
   <p class="hint" style="margin-top:16px">${t('Weitere Sprachen lassen sich später ergänzen.')}</p>`;
 }
 
-const CQ={daily:'Starte einen kurzen zufälligen Run und lerne eine neue Vokabel!',gm:'Keine Lust auf neue Vokabeln? Vertiefe was du bereits kennst und sammle Diamanten, indem du deinen Highscore steigerst!'};
+const CQ={daily:'Starte einen kurzen zufälligen Run und lerne eine neue Vokabel!',gm:'Keine Lust auf neue Vokabeln? Vertiefe was du bereits kennst und sammle Chips, indem du deinen Highscore steigerst!'};
 function cqBtn(k){return `<button class="cq" type="button" data-cq="${k}" aria-expanded="false" aria-label="${t('Erklärung')}">?</button>`;}
 function cqText(k){return `<p class="cqtext" id="cq-${k}" hidden>${t(CQ[k])}</p>`;}
 function stPill(st){return `<div class="stpill${st>0?' on':''}" role="img" aria-label="${t('Flamme: {0} {1} in Folge',st,st===1?t('Tag'):t('Tage'))}">${flameSvg(st,false)}<b>${st}</b></div>`;}
@@ -8431,7 +8376,7 @@ function homeView(){
   const parts=[5,4,3,2,1,0].map(n=>({c:LVCOL[n],n:lv[n],l:t('Stufe {0}',n)})).concat([{c:'var(--raised)',n:nNew,l:t('Noch neu'),isNew:true}]);
   const seg=parts.filter(p=>p.n>0).map(p=>`<i style="width:${(p.n/N*100).toFixed(2)}%;background:${p.c}"></i>`).join('');
   const legend=parts.map(p=>`<span><em style="background:${p.c}${p.isNew?';border:1px solid var(--line)':''}"></em>${p.l}<b>${p.n}</b></span>`).join('');
-  return `<div class="top status"><button class="langbtn" id="chlang" aria-label="${t('Sprache wechseln')}: ${esc(t(L.name))}"><span aria-hidden="true">${{id:'🇮🇩',en:'🇬🇧'}[L.id]||'🌐'}</span></button><div class="topr">${stPill(st)}${gemPill()}</div></div>
+  return `<div class="top status"><button class="langbtn" id="chlang" aria-label="${t('Sprache wechseln')}: ${esc(t(L.name))}"><span aria-hidden="true">${{id:'🇮🇩',en:'🇬🇧'}[L.id]||'🌐'}</span></button><div class="topr">${stPill(st)}${chipPill()}</div></div>
   ${homeMascot(p,st,nFallen,doneToday,prog)}
   <section class="card plan">${planHtml}${streakHtml}</section>
   ${revHtml}
@@ -8459,7 +8404,7 @@ function bindHome(){
   const e=$('#extra');if(e)e.onclick=()=>startRound('daily');
   $('#chlang').onclick=()=>{state.lang=null;save();render();};
   $$('.cq',app).forEach(b=>b.onclick=()=>{const p=$('#cq-'+b.dataset.cq,app);if(!p)return;const open=p.hidden;p.hidden=!open;b.setAttribute('aria-expanded',String(open));b.classList.toggle('on',open);});
-  setTimeout(gemFly,450);
+  setTimeout(chipFly,450);
 }
 
 function bookView(){
@@ -8645,48 +8590,119 @@ const MODULES=[],MOD={};
 function registerModule(m){MODULES.push(m);MOD[m.id]=m;}
 function resolveModule(id,w){let m=MOD[id],g=0;while(m&&m.can&&!m.can(w)&&m.fallback&&g++<5)m=MOD[m.fallback];return m?m.id:id;}
 
-/* ===== gems.js ===== */
-/* ===== Diamanten (Version 91) =====
-   Währung für den späteren Shop. state.gems = Kontostand, state.gemShown = was der Zähler zuletzt gezeigt hat.
-   Gutschriften landen sofort in state.gems (nichts geht verloren, wenn man eine Round abbricht);
-   auf dem Startscreen fliegen dann die Diamanten in die Pille und die Zahl tickt bis zum Kontostand hoch.
-   Mittel großzügig: ein normales Cosmetic (ca. 150–200) kostet etwa eine Woche tägliches Spielen. */
-const GEMV={daily:10,perfect:5,word:1,survRec:10,survCap:30};
-const GEM_MILES={3:10,7:25,14:50,30:100,50:150,100:300,365:1000};
-const GEMIC='<svg class="gemic" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h10l4 6-9 12L3 9z" fill="#b48cff"/><path d="M3 9h18L12 21z" fill="#7d4dff"/><path d="M7 3l2.5 6L12 3l2.5 6L17 3" fill="none" stroke="#fff" stroke-opacity=".7" stroke-width="1"/><path d="M3 9h18" stroke="#fff" stroke-opacity=".55" stroke-width="1"/><path d="M9.5 9L12 21l2.5-12" fill="#a77bff"/></svg>';
-function gemAdd(n){n=Math.max(0,Math.round(n)||0);if(!n)return 0;state.gems=(state.gems|0)+n;save();return n;}
-/* Survival: halb so viele Diamanten wie geschaffte Wörter, +10 für einen neuen Rekord; höchstens 30 pro Tag */
-function gemSurvival(words,rec){
-  const t0=today(),g=state.gemSurv&&state.gemSurv.d===t0?state.gemSurv:(state.gemSurv={d:t0,n:0});
-  const want=Math.floor(words/2)+(rec?GEMV.survRec:0),n=Math.max(0,Math.min(want,GEMV.survCap-g.n));
-  g.n+=n;return gemAdd(n);
+/* ===== chips.js ===== */
+/* ===== Chips (Version 132, ersetzt die Diamanten aus Version 91) =====
+   Einzige Währung der App. state.chips = Kontostand, state.chipShown = was die Pille zuletzt gezeigt hat.
+   Gutschriften landen sofort in state.chips (nichts geht verloren, wenn man eine Round abbricht);
+   auf dem Startscreen fliegen dann Chips in die Pille und die Zahl tickt bis zum Kontostand hoch.
+   Quellen in Phase 1: Survival (hier) und ab Version 133 die Auszahlung der Daily-Pokerhand (poker.js).
+   Umstellung alter Stände: migrate() rechnet Diamanten einmalig × 10 in Chips um.
+
+   Der Dewi-Chip (Novas Bauteil „Dewi-Chip“, Design-Canvas „dewi. Poker-Screens“) liegt einmal als SVG-Symbol
+   pro Variante im Dokument und wird über <use> eingesetzt. So kosten auch 40 Chips im Regen fast nichts. */
+const CHIPV={survWord:5,survCap:300};
+const CHIP_TONES=['pink','gold','holo','grey','empty'];
+
+/* Varianten: Grundfarbe, Innenring, Kanten, Dewi (Kapuze, Gesicht, Wangen, Neigung, Stimmung) */
+const CHIP_T={
+  pink:{base:'#f566b9',inner:'#d94da0',edge:'#2a1630',faceOp:1,mood:'haughty',rot:-9,hood:'#f566b9',hoodIn:'#d044a0',face:'#fffaf2',cheek:'#ff9fb4'},
+  gold:{base:'#ffc23d',inner:'#e9a422',edge:'#2a1630',faceOp:1,mood:'cash',rot:-4,hood:'#ffc23d',hoodIn:'#e09a12',face:'#fff6e0',cheek:'#ffb37a'},
+  holo:{base:'url(#chipHoloG)',inner:'url(#chipHoloG2)',edge:'#2a1630',faceOp:1,mood:'superior',rot:-14,hood:'url(#dwHoloHood)',hoodIn:'#c9b6ff',face:'#fffaf2',cheek:'#ff9fd8'},
+  grey:{base:'#4a2f63',inner:'#3a2450',edge:'#251634',faceOp:.55,mood:'sad',rot:3,hood:'#8a7a9a',hoodIn:'#6f6080',face:'#d9d0e0',cheek:'#b9a8c6'}
+};
+const CHIP_STAR='M0 -9 L2.5 -2.5 L9 0 L2.5 2.5 L0 9 L-2.5 2.5 L-9 0 L-2.5 -2.5Z';
+const CHIP_FACE={
+  haughty:'<path d="M54 88 Q69 83 84 90" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M116 84 Q131 65 146 76" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="68" cy="112" rx="19" ry="20" fill="#fff" stroke="#2a1630" stroke-width="3"/><ellipse cx="70" cy="119" rx="13" ry="13" fill="#6fb2de"/><circle cx="70" cy="119" r="7.5" fill="#2a1630"/><circle cx="65" cy="113" r="4.2" fill="#fff"/><path d="M49 104 Q68 92 87 106 L87 92 L49 92Z" fill="#d3aef0"/><path d="M49 104 Q68 99 87 106" stroke="#2a1630" stroke-width="4" fill="none"/><ellipse cx="132" cy="112" rx="19" ry="20" fill="#fff" stroke="#2a1630" stroke-width="3"/><ellipse cx="134" cy="119" rx="13" ry="13" fill="#6fb2de"/><circle cx="134" cy="119" r="7.5" fill="#2a1630"/><circle cx="129" cy="113" r="4.2" fill="#fff"/><path d="M113 106 Q132 92 151 104 L151 92 L113 92Z" fill="#d3aef0"/><path d="M113 106 Q132 99 151 104" stroke="#2a1630" stroke-width="4" fill="none"/><path d="M91 143 Q97 148 102 144 Q108 148 113 140" stroke="#2a1630" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M92 144 Q100 152 111 142 Q104 150 92 144Z" fill="#e0295a" stroke="#2a1630" stroke-width="1.8" stroke-linejoin="round"/>',
+  cash:'<path d="M54 80 Q69 72 84 80" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M116 80 Q131 72 146 80" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="68" cy="112" rx="19" ry="20" fill="#fff" stroke="#2a1630" stroke-width="3"/><circle cx="68" cy="113" r="14.5" fill="#2fcf5e" stroke="#0e7a33" stroke-width="2"/><text x="68" y="121" text-anchor="middle" font-size="22" font-weight="900" font-family="Arial,Helvetica,sans-serif" fill="#ffe27a" stroke="#0e7a33" stroke-width=".8">$</text><ellipse cx="132" cy="112" rx="19" ry="20" fill="#fff" stroke="#2a1630" stroke-width="3"/><circle cx="132" cy="113" r="14.5" fill="#2fcf5e" stroke="#0e7a33" stroke-width="2"/><text x="132" y="121" text-anchor="middle" font-size="22" font-weight="900" font-family="Arial,Helvetica,sans-serif" fill="#ffe27a" stroke="#0e7a33" stroke-width=".8">$</text><path d="M87 140 Q100 162 113 140 Q100 146 87 140Z" fill="#e0295a" stroke="#2a1630" stroke-width="2.8" stroke-linejoin="round"/><path d="M91 142 Q100 148 109 142 L108 146 Q100 151 92 146Z" fill="#fff"/>',
+  superior:'<path d="M54 88 Q69 84 84 88" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M116 82 Q131 68 146 78" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M51 106 Q68 126 85 106" stroke="#2a1630" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M51 106 Q46 110 40 114" stroke="#2a1630" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="68" cy="105" rx="16" ry="5" fill="#d3aef0" opacity=".85"/><path d="M115 106 Q132 126 149 106" stroke="#2a1630" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M149 106 Q154 110 160 114" stroke="#2a1630" stroke-width="3.5" stroke-linecap="round" fill="none"/><ellipse cx="132" cy="105" rx="16" ry="5" fill="#d3aef0" opacity=".85"/><path d="M91 143 Q97 148 102 144 Q108 148 113 140" stroke="#2a1630" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M92 144 Q100 152 111 142 Q104 150 92 144Z" fill="#e0295a" stroke="#2a1630" stroke-width="1.8" stroke-linejoin="round"/>',
+  sad:'<path d="M54 93 Q69 83 84 81" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M116 81 Q131 83 146 93" stroke="#2a1630" stroke-width="4" fill="none" stroke-linecap="round"/><ellipse cx="68" cy="112" rx="19" ry="20" fill="#fff" stroke="#2a1630" stroke-width="3"/><circle cx="68" cy="121" r="11" fill="#6fb2de"/><circle cx="68" cy="121" r="7" fill="#2a1630"/><circle cx="64" cy="116" r="3.6" fill="#fff"/><path d="M50 106 L86 100 L86 94 Q68 88 50 98Z" fill="#d3aef0"/><path d="M50 106 L86 100" stroke="#2a1630" stroke-width="4"/><ellipse cx="132" cy="112" rx="19" ry="20" fill="#fff" stroke="#2a1630" stroke-width="3"/><circle cx="132" cy="121" r="11" fill="#6fb2de"/><circle cx="132" cy="121" r="7" fill="#2a1630"/><circle cx="128" cy="116" r="3.6" fill="#fff"/><path d="M114 100 L150 106 L150 98 Q132 88 114 94Z" fill="#d3aef0"/><path d="M114 100 L150 106" stroke="#2a1630" stroke-width="4"/><path d="M90 150 Q100 140 110 150" stroke="#2a1630" stroke-width="3.4" fill="none" stroke-linecap="round"/>'
+};
+const CHIP_EXTRA={
+  cash:`<g fill="#ffe27a" stroke="#2a1630" stroke-width="1.6" stroke-linejoin="round"><path transform="translate(14 60) scale(1.4)" d="${CHIP_STAR}"/><path transform="translate(188 52) scale(1.7)" d="${CHIP_STAR}"/></g>`,
+  superior:`<g fill="#fff" stroke="#2a1630" stroke-width="1.6" stroke-linejoin="round"><path transform="translate(18 52) scale(1.3)" d="${CHIP_STAR}"/><path transform="translate(186 40) scale(1.6)" d="${CHIP_STAR}"/><path transform="translate(176 96)" d="${CHIP_STAR}"/></g>`,
+  sad:'<path d="M52 140 q-7 11 0 15 q7 -4 0 -15Z" fill="#8fd3ff" stroke="#2a1630" stroke-width="2" stroke-linejoin="round"/><circle cx="50" cy="150" r="1.6" fill="#fff"/>',
+  haughty:''
+};
+/* Ein Symbol je Variante: Casino-Rand mit Kartensymbolen und Kronen, gestrichelter Ring, Dewi in der Mitte */
+function chipSymbol(tone){
+  if(tone==='empty')return '<symbol id="chip-empty" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="#3a2450" fill-opacity=".35" stroke="#f566b9" stroke-width="10" stroke-dasharray="20 14"/></symbol>';
+  const c=CHIP_T[tone],edge='M146.0 13.5 A98 98 0 0 1 186.5 54.0 L163.6 66.2 A72 72 0 0 0 133.8 36.4 Z',crown='M88 21 L88 10 L94 15 L100 7 L106 15 L112 10 L112 21 Z';
+  const rot4=d=>[0,90,180,270].map(a=>`<path d="${d}"${a?` transform="rotate(${a} 100 100)"`:''}/>`).join('');
+  return `<symbol id="chip-${tone}" viewBox="0 0 200 200">
+<circle cx="100" cy="100" r="98" fill="${c.base}"/>
+<g fill="${c.edge}">${rot4(edge)}</g>
+<g fill="#fff6fb"><path transform="translate(160 40) rotate(45) scale(1.15)" d="M0 5 C-8 -1 -6 -8 0 -4 C6 -8 8 -1 0 5Z"/><g transform="translate(160 160) rotate(135) scale(1.05)"><circle cx="0" cy="-4" r="3.2"/><circle cx="-4" cy="1.5" r="3.2"/><circle cx="4" cy="1.5" r="3.2"/><path d="M-1.4 1 L1.4 1 L2.4 7 L-2.4 7Z"/></g><path transform="translate(40 160) rotate(225) scale(1.15)" d="M0 -7 L5 0 L0 7 L-5 0Z"/><path transform="translate(40 40) rotate(315) scale(1.05)" d="M0 -7 C-7 0 -7 5 -2 4 L-3 8 H3 L2 4 C7 5 7 0 0 -7Z"/></g>
+<g fill="#fff6fb" stroke="#2a1630" stroke-width="1.2" stroke-linejoin="round">${rot4(crown)}</g>
+<circle cx="100" cy="100" r="70" fill="${c.inner}"/>
+<circle cx="100" cy="100" r="66" fill="none" stroke="#fff6fb" stroke-width="5" stroke-dasharray="7 7"/>
+<circle cx="100" cy="100" r="61" fill="${c.base}"/>
+<g clip-path="url(#chipFaceClip)" opacity="${c.faceOp}"><svg x="29" y="37" width="142" height="132" viewBox="-6 -2 212 196"><g transform="rotate(${c.rot} 100 120)">
+<path d="M26 92 Q22 30 46 16 Q58 10 96 46Z" fill="${c.hood}" stroke="#2a1630" stroke-width="4" stroke-linejoin="round"/><path d="M44 62 Q42 34 52 28 Q62 30 74 46Z" fill="${c.hoodIn}"/><path d="M174 92 Q178 30 154 16 Q142 10 104 46Z" fill="${c.hood}" stroke="#2a1630" stroke-width="4" stroke-linejoin="round"/><path d="M156 62 Q158 34 148 28 Q138 30 126 46Z" fill="${c.hoodIn}"/>
+<path d="M100 38 C48 38 14 70 14 112 C14 126 18 136 24 146 L14 156 L28 156 C44 176 70 182 100 182 C130 182 156 176 172 156 L186 156 L176 146 C182 136 186 126 186 112 C186 70 152 38 100 38Z" fill="${c.hood}" stroke="#2a1630" stroke-width="4" stroke-linejoin="round"/>
+<path d="M100 62 C54 62 30 84 30 114 C30 126 34 134 38 140 L30 148 L44 148 C56 164 78 170 100 170 C122 170 144 164 156 148 L170 148 L162 140 C166 134 170 126 170 114 C170 84 146 62 100 62Z" fill="${c.face}" stroke="#2a1630" stroke-width="3.5" stroke-linejoin="round"/>
+<ellipse cx="50" cy="132" rx="13" ry="8" fill="${c.cheek}" opacity=".75"/><ellipse cx="150" cy="132" rx="13" ry="8" fill="${c.cheek}" opacity=".75"/>
+<path d="M96 78 q-7 -6 -1 -11 q7 -2 6 4 q-1 4 -5 3" stroke="#2a1630" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M97 132 Q100 129 103 132 Q100 135 97 132Z" fill="#e0788e" stroke="#2a1630" stroke-width="1.8"/>
+${CHIP_FACE[c.mood]}</g>${CHIP_EXTRA[c.mood]}</svg></g>
+<circle cx="100" cy="100" r="61" fill="none" stroke="${c.edge}" stroke-width="2.5" stroke-opacity=".5"/>
+<circle cx="100" cy="100" r="97" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="2"/>
+</symbol>`;
 }
-function gemPill(){
-  const v=Math.min(state.gemShown|0,state.gems|0);
-  return `<button class="gempill" id="gempill" type="button" aria-label="${t('{0} Diamanten',state.gems|0)}"><canvas class="gem" width="44" height="44" aria-hidden="true"></canvas><b>${fmtGem(v)}</b></button>`;
+/* Einmal beim Start: unsichtbare Sammlung aller Varianten plus Verläufe und Gesichtsmaske */
+function chipSprite(){
+  if(document.getElementById('chipsprite'))return;
+  const box=document.createElement('div');box.id='chipsprite';box.setAttribute('aria-hidden','true');
+  box.style.cssText='position:absolute;width:0;height:0;overflow:hidden';
+  box.innerHTML=`<svg width="0" height="0" focusable="false"><defs>
+<linearGradient id="chipHoloG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff92d2"/><stop offset=".3" stop-color="#a888ff"/><stop offset=".55" stop-color="#5aa9ff"/><stop offset=".78" stop-color="#35dcd2"/><stop offset="1" stop-color="#ffc23d"/></linearGradient>
+<linearGradient id="chipHoloG2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd1ec"/><stop offset=".4" stop-color="#c9b6ff"/><stop offset=".75" stop-color="#9fe9e3"/><stop offset="1" stop-color="#ffe08a"/></linearGradient>
+<linearGradient id="dwHoloHood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7fd0"/><stop offset=".35" stop-color="#9d7bff"/><stop offset=".65" stop-color="#4fb6ff"/><stop offset="1" stop-color="#3fe0c8"/></linearGradient>
+<clipPath id="chipFaceClip"><circle cx="100" cy="100" r="61"/></clipPath>
+${CHIP_TONES.map(chipSymbol).join('')}</defs></svg>`;
+  document.body.appendChild(box);
 }
-function fmtGem(n){return String(n|0).replace(/\B(?=(\d{3})+(?!\d))/g,state.ui==='de'?'.':',');}
-/* Zeile auf dem Endscreen: „+18“ mit Aufschlüsselung */
-function gemLine(total,parts){
+/* Ein Chip zum Einsetzen: chipSvg('gold','big') */
+const chipSvg=(tone,cls)=>`<svg class="dchip${cls?' '+cls:''}" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><use href="#chip-${(CHIP_T[tone]||tone==='empty')?tone:'pink'}"/></svg>`;
+
+function chipAdd(n){n=Math.max(0,Math.round(n)||0);if(!n)return 0;state.chips=(state.chips|0)+n;save();return n;}
+/* Survival: 5 Chips pro geschafftem Wort, höchstens 300 pro Tag. Kein Rekord-Bonus (sonst: Rekord um 1 knacken und aussteigen). */
+function chipSurvival(words){
+  const t0=today(),g=state.chipSurv&&state.chipSurv.d===t0?state.chipSurv:(state.chipSurv={d:t0,n:0});
+  const n=Math.max(0,Math.min(Math.max(0,words|0)*CHIPV.survWord,CHIPV.survCap-g.n));
+  g.n+=n;return chipAdd(n);
+}
+/* Zahlen: volle Zahl mit Tausenderpunkt (Deutsch) bzw. -komma (Englisch) */
+function fmtChip(n){return String(n|0).replace(/\B(?=(\d{3})+(?!\d))/g,state.ui==='de'?'.':',');}
+/* Nur für die Pille: ab 10.000 mit K/M und einer Nachkommastelle (12,5K · 1,2M), abgerundet, damit nie mehr angezeigt wird als da ist */
+function fmtChipShort(n){
+  n=n|0;if(n<10000)return fmtChip(n);
+  const dec=state.ui==='de'?',':'.';
+  const [v,u]=n<1e6?[Math.floor(n/100)/10,'K']:[Math.floor(n/1e5)/10,'M'];
+  return v.toFixed(1).replace('.',dec)+u;
+}
+function chipPill(){
+  const v=Math.min(state.chipShown|0,state.chips|0);
+  return `<div class="chippill" id="chippill" role="img" aria-label="${t('{0} Chips',fmtChip(state.chips|0))}"><span class="chipwrap">${chipSvg('pink')}</span><b>${fmtChipShort(v)}</b></div>`;
+}
+/* Zeile auf den Endscreens: Chip und „+300“ */
+function chipLine(total){
   if(!total)return '';
-  const p=parts.filter(x=>x[1]>0).map(x=>`${x[0]} +${x[1]}`).join(' · ');
-  return `<div class="gemline">${GEMIC}<b>+${total}</b>${p?`<small>${p}</small>`:''}</div>`;
+  return `<div class="chipline">${chipSvg('pink')}<b>+${fmtChip(total)}</b></div>`;
 }
-/* Startscreen: Diamanten fliegen in die Pille, die Zahl tickt hoch */
-function gemFly(){
-  const pill=$('#gempill');if(!pill)return;
-  const from=state.gemShown|0,to=state.gems|0;
-  if(to<=from){if(to<from){state.gemShown=to;save();}return;}
-  state.gemShown=to;save();
+/* Startscreen: Chips fliegen in die Pille, die Zahl tickt hoch */
+function chipFly(){
+  const pill=$('#chippill');if(!pill)return;
+  const from=state.chipShown|0,to=state.chips|0;
+  if(to<=from){if(to<from){state.chipShown=to;save();}return;}
+  state.chipShown=to;save();
   const num=$('b',pill);
-  if(reduceMotion()||typeof requestAnimationFrame!=='function'||!document.body.animate){num.textContent=fmtGem(to);return;}
+  if(reduceMotion()||typeof requestAnimationFrame!=='function'||!document.body.animate){num.textContent=fmtChipShort(to);return;}
   const pr=pill.getBoundingClientRect(),tx=pr.left+16,ty=pr.top+pr.height/2;
   const src=$('.plan')||$('.mascot'),sr=src?src.getBoundingClientRect():{left:innerWidth/2-20,top:innerHeight/2,width:40,height:40};
   const cx=sr.left+sr.width/2,cy=Math.min(innerHeight*.6,sr.top+sr.height/2);
-  const k=Math.min(12,Math.max(3,to-from));let landed=0;
-  sfx('gems',150);
+  const k=Math.min(12,Math.max(3,Math.ceil((to-from)/50)));let landed=0;
+  sfx('chips',150);
   for(let i=0;i<k;i++){
-    const el=document.createElement('div');el.className='gemfly';el.innerHTML=GEMIC;
+    const el=document.createElement('div');el.className='chipfly';el.innerHTML=chipSvg('pink');
     const a=i/k*Math.PI*2,r=40+((i*37)%30);
     const sx=cx+Math.cos(a)*r,sy=cy+Math.sin(a)*r*.6;
     el.style.left=sx+'px';el.style.top=sy+'px';
@@ -8698,13 +8714,26 @@ function gemFly(){
       {transform:`translate(calc(-50% + ${tx-sx}px),calc(-50% + ${ty-sy}px)) scale(.55)`,opacity:.9}
     ],{duration:d+260,delay:i*55,easing:'cubic-bezier(.55,0,.75,.4)',fill:'forwards'}).onfinish=()=>{
       el.remove();landed++;
-      const v=Math.round(from+(to-from)*landed/k);num.textContent=fmtGem(v);
+      const v=Math.round(from+(to-from)*landed/k);num.textContent=fmtChipShort(v);
       pill.classList.remove('bump');void pill.offsetWidth;pill.classList.add('bump');
       sfx('tick');
     };
   }
 }
-window.__gem={add:gemAdd,surv:gemSurvival};
+/* Chipregen über den ganzen Bildschirm (Reels-Gewinn, später Royal Flush) */
+function chipRain(n,tones){
+  if(reduceMotion())return;
+  const tn=tones||['pink','gold','holo'];
+  const box=document.createElement('div');box.className='drain';box.setAttribute('aria-hidden','true');
+  for(let i=0;i<n;i++){
+    const sz=18+Math.random()*20,g=document.createElement('i');
+    g.style.cssText=`left:${(Math.random()*100).toFixed(1)}%;width:${sz.toFixed(0)}px;height:${sz.toFixed(0)}px;--dx:${(Math.random()*80-40).toFixed(0)}px;--r:${(Math.random()*540-270).toFixed(0)}deg;animation-duration:${(1.1+Math.random()*.9).toFixed(2)}s;animation-delay:${(Math.random()*.7).toFixed(2)}s`;
+    g.innerHTML=chipSvg(tn[i%tn.length]);
+    box.appendChild(g);
+  }
+  document.body.appendChild(box);setTimeout(()=>box.remove(),2900);
+}
+window.__chip={add:chipAdd,surv:chipSurvival,short:fmtChipShort};
 
 /* ===== rounds.js ===== */
 /* ===== Rounds =====
@@ -8968,7 +8997,7 @@ function finish(typedOk){
     ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
   try{n.focus({preventScroll:true});}catch(e){}
-  if(ok&&S.kind!=='survival'){levelUp(c,r);if(type==='new'||r.level>c.lvl)S.gw=(S.gw|0)+gemAdd(GEMV.word);}
+  if(ok&&S.kind!=='survival')levelUp(c,r);
 }
 
 function levelUp(c,r){
@@ -8991,7 +9020,7 @@ function levelUp(c,r){
 }
 
 /* ===== Endscreen der Daily Round (Version 110) =====
-   Zwei Momente statt einer Wand: erst das Ergebnis mit den Diamanten und Dewis Kommentar,
+   Zwei Momente statt einer Wand: erst das Ergebnis (ab Version 133 mit der Auszahlung der Pokerhand) und Dewis Kommentar,
    dann die Serie allein groß. Danach schließt sich die Round von selbst. */
 function showEnd(){
   if(S.kind==='survival')return showSurvivalEnd();
@@ -9004,10 +9033,8 @@ function showEnd(){
   save();
   const total=S.right+S.wrong,st=streak();
   const grew=st>S.streak0,gray=firstToday&&S.lost>0;
-  let gD=0,gP=0,gM=0;
-  if(firstToday){gD=gemAdd(GEMV.daily);if(S.lost===0)gP=gemAdd(GEMV.perfect);if(grew&&GEM_MILES[st])gM=gemAdd(GEM_MILES[st]);}
-  const gW=S.gw|0,gT=gD+gP+gM+gW;
-  endResult({total,st,grew,gray,gD,gP,gM,gW,gT,first:firstToday});
+  /* Version 132: Tages-, Perfekt-, Wort- und Meilenstein-Diamanten entfallen. Chips gibt es ab Version 133 aus der Pokerhand (E.chips). */
+  endResult({total,st,grew,gray,chips:0,first:firstToday});
 }
 /* ===== Bühnen-Helfer für die Endscreens (Version 126) =====
    Ein Ablaufplan (q) setzt Schritte zeitversetzt; ein Tipp auf die Bühne springt zum Endzustand.
@@ -9041,14 +9068,14 @@ function stageTap(q,stage){
     q.skip();
   });
 }
-/* Schritt 1: „x von y“ zählt hoch, Diamanten fliegen einzeln ein, dann Dewi und Weiter */
+/* Schritt 1: „x von y“ zählt hoch, dann der Gewinn in Chips (falls es einen gibt), dann Dewi und Weiter */
 function endResult(E){
   const good=S.lost===0?'end_perfect':S.right/Math.max(1,E.total)>=.6?'end_good':'end_bad';
   const full=t('{0} von {1}','\u0001',E.total).split('\u0001');
   sheetBody(`<div class="smain endstage" id="est"><div class="kicker" style="--k:var(--c-pink)">${t('Round beendet')}</div>
     <div class="bigword es-big${S.lost===0?' perf':''}" id="ebig">${esc(full[0])}<span id="enum">0</span>${esc(full[1]||'')}</div>
     <p class="hint rv" id="esub">${t('Module geschafft')}</p>
-    ${E.gT?`<div class="gemline rv" id="egem">${GEMIC}<b id="egn">+0</b></div>`:''}
+    ${E.chips?`<div class="chipline rv" id="egem">${chipSvg('pink')}<b id="egn">+0</b></div>`:''}
     <div class="rv" id="emas">${mascot(good,null,'sm')}</div>
     <button class="btn primary block rv" id="endnext">${E.first?t('Weiter'):t('Fertig')}</button></div>`);
   const q=stageSeq(),stage=$('#est');
@@ -9059,10 +9086,11 @@ function endResult(E){
   T+=cd+120;
   q.at(T,()=>{const b=$('#ebig');if(b)b.classList.add('lock');sfx('lockin');haptic(25);on('esub');if(S.lost===0)burst($('#ebig'),34);});
   T+=520;
-  if(E.gT){
-    q.at(T,()=>{on('egem');CNT.p=.6;sfx('gemitem');countTo($('#egn'),0,E.gT,Math.min(900,350+E.gT*35),v=>'+'+v,q,true);});
-    T+=Math.min(900,350+E.gT*35)+250;
-    q.at(T-200,()=>{const g=$('#egn');if(g){g.textContent='+'+E.gT;g.classList.add('pulse');}});
+  if(E.chips){
+    const cm=Math.min(1100,450+E.chips*.4);
+    q.at(T,()=>{on('egem');sfx('chips');countTo($('#egn'),0,E.chips,cm,v=>'+'+fmtChip(v),q,true);});
+    T+=cm+250;
+    q.at(T-200,()=>{const g=$('#egn');if(g){g.textContent='+'+fmtChip(E.chips);g.classList.add('pulse');}});
   }
   q.at(T,()=>{on('emas');sfx(good);});
   T+=450;
@@ -9119,7 +9147,7 @@ function showSurvivalEnd(){
   S.i=S.items.length;
   const all=S.words>=S.items.length&&S.lives>0,best=S.best,rec=S.score>best;
   if(rec){bestStore()[S.playmode]=S.score;}
-  const gS=gemSurvival(S.words,rec&&S.score>0);
+  const gS=chipSurvival(S.words);   // Version 132: 5 Chips pro Wort, max. 300 am Tag, kein Rekord-Bonus
   save();
   const pmName=S.playmode==='random'?t('Random'):playmodeLabel(S.playmode);
   const mood=rec||all?'end_perfect':S.words>=5?'end_good':'end_bad';
@@ -9128,7 +9156,7 @@ function showSurvivalEnd(){
     <div class="bigword es-big${rec?' recd':''}" id="ebig"><span id="snum">${fmtSc(0)}</span></div>
     <p class="hint">${t('Punkte')} · ${t('{0} Wörter geschafft',S.words)}</p>
     <p class="${rec?'es-rec':'hint'} rv" id="srec">${rec?t('Neuer Rekord! Vorher: {0}',fmtSc(best)):(best?t('Rekord: {0}. Noch {1} bis zum Rekord.',fmtSc(best),fmtSc(best-S.score+1)):'')}</p>
-    <div class="rv" id="sgem">${gemLine(gS,[])}</div>
+    <div class="rv" id="sgem">${chipLine(gS)}</div>
     <div class="rv" id="smas">${mascot(mood,null,'sm')}</div>
     <div class="es-btns rv" id="sbtn"><button class="btn primary block" id="again">${t('Nochmal spielen')}</button>
     <button class="btn block" id="fin">${t('Fertig')}</button></div></div>`);
@@ -9141,7 +9169,7 @@ function showSurvivalEnd(){
   let T=300+cd+100;
   q.at(T,()=>{const b=$('#ebig');if(b)b.classList.add('lock');sfx(rec?'milestone':'lockin');haptic(rec?[30,60,30,60,50]:25);on('srec');if(rec)burst($('#ebig'),80);});
   T+=rec?900:500;
-  q.at(T,()=>{on('sgem');if(gS)sfx('gemitem');});T+=450;
+  q.at(T,()=>{on('sgem');if(gS)sfx('chips');});T+=450;
   q.at(T,()=>{on('smas');sfx(mood);});T+=400;
   q.at(T,()=>{on('sbtn');});
   if(window.__test){$$('.rv',stage).forEach(e=>e.classList.add('on'));}
@@ -9926,19 +9954,6 @@ registerModule({id:'choice',name:()=>t('Auswahl'),desc:()=>t('Richtige Bedeutung
    Richtig: Walze rastet grün ein. Falsch: Walze zuckt rot und dreht wieder an (ein Fehler ist frei, im Survival nicht).
    Jackpot (alles beim ersten Stopp) ist nur Show und ändert nichts an Stufen oder Punkten. */
 const RL_ROW=44,RL_FAST=10,RL_SLOW=2.2;   // Wörter pro Sekunde: alle rasen, nur die aktive Walze wird langsam
-/* Kurzer Diamantenregen über den ganzen Bildschirm */
-function diamondRain(n){
-  if(reduceMotion())return;
-  const box=document.createElement('div');box.className='drain';box.setAttribute('aria-hidden','true');
-  const cols=[['#ff7ac6','#ffc2e6','#c93a96'],['#7ae7ff','#d3f6ff','#35a8c9'],['#ffffff','#f1e6ff','#b9a2e6'],['#c9a6ff','#eadcff','#8a63d4'],['#ffe27a','#fff3b8','#d9a520']];
-  for(let i=0;i<n;i++){
-    const c=cols[i%cols.length],sz=16+Math.random()*20,g=document.createElement('i');
-    g.style.cssText=`left:${(Math.random()*100).toFixed(1)}%;width:${sz.toFixed(0)}px;height:${sz.toFixed(0)}px;--dx:${(Math.random()*80-40).toFixed(0)}px;--r:${(Math.random()*540-270).toFixed(0)}deg;animation-duration:${(1.1+Math.random()*.9).toFixed(2)}s;animation-delay:${(Math.random()*.7).toFixed(2)}s`;
-    g.innerHTML=`<svg viewBox="0 0 24 24"><path d="M5 3h14l5 6-12 13L0 9z" fill="${c[0]}" stroke="#2a1630" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 3L8 9h8l3-6z" fill="${c[1]}"/><path d="M0 9h8l4 13zM24 9h-8l-4 13z" fill="${c[2]}" opacity=".85"/><path d="M8 9l4 13 4-13z" fill="${c[0]}"/><path d="M6 5l2 3" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>`;
-    box.appendChild(g);
-  }
-  document.body.appendChild(box);setTimeout(()=>box.remove(),2900);
-}
 /* Reels gibt es nur, wenn alle drei Walzen Wörter tragen, die schon gelernt sind (und zusammen im Satz stehen). Das Fenster aus drei Wörtern
    weicht unbekannten Wörtern aus; findet sich keins, kommt Reels für dieses Wort nicht vor (Ersatzmodul bzw. im Solo übersprungen).
    Es gibt keine vorgesetzten (geschenkten) Walzen: alle drei müssen selbst gestoppt werden. */
@@ -10059,9 +10074,9 @@ function showReels(w){
       if(jack){const e=el(i);if(e)e.classList.add('gold');}
     });
     paintAll();
-    if(win)diamondRain(jack?46:28);
+    if(win)chipRain(jack?46:28);   // Version 132: Chipregen statt Diamanten
     if(jack){sfx('jackpot');haptic([30,40,30,40,30,40,80]);const b=cab||sheet;burst(b,46);setTimeout(()=>alive()&&burst(b,34),350);}
-    else if(win){sfx('gems');haptic([20,30,20]);}
+    else if(win){sfx('chips');haptic([20,30,20]);}
     else{sfx('end_bad');}
     say(jack?'reels_jackpot':win?'reels_win':'reels_lose');
     const L2=D.toLang==='id'?L.code.toLowerCase():state.ui;
@@ -10875,8 +10890,8 @@ window.MUS=MUS;
 const PROPER_EXTRA='Tom Anna Paul Emma Sam Lisa Mark Peter London Paris Spain France Italy England American British Europe Indonesia Bali Jakarta Germany Berlin Bandung Medan Vito Dewi Rina Indonesian English Independence Day Monday Tuesday Wednesday Thursday Friday Saturday Sunday January February March April May June July August September October November December Indonesien Deutschland Montag Dienstag Mittwoch Donnerstag Freitag Samstag Sonntag Januar Februar März Juni Juli Oktober Dezember'.split(' ');
 /* Kulanz bei der Rechtschreibung: erlaubte Tippfehler = Länge / Teiler, Teiler je Stufe. Stufe 5 ist exakt. */
 const TYPO_DIV=[4,4,6,9,14,Infinity];
+chipSprite();
 render();
-GEM.start();
 if(window.__test)window.__run=c=>eval(c);   // Prüfstand: nur wenn die Testumgebung es einschaltet
 })();
 </script>
