@@ -10,7 +10,7 @@ Du arbeitest an dewi., Vitos Vokabel-App für sein iPhone (Duolingo-Light mit vi
 
 Wichtige Orte und Abläufe (Projektordner = Repository `dewi`, Regeln auch in `CLAUDE.md`):
 - `ENTWICKLUNG.md` ist die Entwicklungsdokumentation. Lies sie vor jeder Arbeit und hänge nach jeder Änderung den nächsten Eintrag „## Version NN" an (was, warum, Technik, Teststand, „nicht auf einem echten iPhone getestet").
-- Quelle ist `app.src.html` plus die per `/*@include*/` eingebundenen Dateien (`rounds.js`, `playmodes.js`, `gems.js`, `modules/*.js`, `lang_*.js`, `align.js`). `python build.py` baut daraus `index.html`. Bearbeite nie `index.html` direkt.
+- Quelle ist `app.src.html` plus die per `/*@include*/` eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js` (ab Version 133), `music.js`, `dewi-music.js`, `modules/*.js`, `lang_*.js`, `align.js`). `python build.py` baut daraus `index.html`. Bearbeite nie `index.html` direkt.
 - Tests laufen mit jsdom (`tests/test2.js` bis `test5.js`, `npm test --prefix tests`). Nach jeder Änderung bauen und alle Tests ausführen. Passe Tests an, wenn sich das gewollte Verhalten ändert, und sag das offen dazu.
 - Sicherungskopien unter `data/` sind nicht mehr nötig: Git speichert jede Version. Nach jeder Version committen (`Version NN – Titel`), pushen nur nach Vitos ausdrücklichem OK.
 
