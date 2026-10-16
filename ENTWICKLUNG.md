@@ -1651,3 +1651,18 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Antippbarkeit der ganzen Karte als Knopf, Wirkung ohne die Shop-Kachel im Alltag.
 
+
+## Version 141 – Chip-Stapel wieder weg, Pfeil an der Vokabelheft-Kachel
+
+> **Zwei kleine Korrekturen.** Der drehende Chip-Stapel in der Daily-Round-Kachel ist wieder raus, er war zu unruhig fürs Auge. Die Vokabelheft-Kachel hat jetzt oben rechts denselben kleinen Pfeil wie die Gamemodes-Kachel, damit klar ist, dass man sie antippen kann.
+
+**Entscheidung (Vito):** Chip-Stapel entfernen. Pfeil-Symbol wie bei Gamemodes ergänzen.
+
+**Technik**
+- `chipStack()` und das zugehörige CSS (`.dstack`, `@keyframes dsspin`) entfernt, `.plan h2` ohne den dafür reservierten Platz rechts.
+- Vokabelheft-Kachel: neue Kopfzeile `.bookrow` stellt „Fortschritt“ und einen Pfeil (`.bookgo`, gleiche Form wie `.gmgo`, in `var(--muted)`) nebeneinander.
+
+**Tests:** test4 NV2 prüft jetzt, dass kein Chip-Stapel mehr da ist; NV3 prüft zusätzlich den Pfeil. Tests 2–5 grün. Im echten Chromium gemessen (390 × 844 und 375 × 667): kein Überlauf, Pfeil sitzt sauber in der Ecke.
+
+**Nicht auf einem echten iPhone getestet:** Wie ruhig die Daily-Round-Kachel jetzt wirkt.
+

@@ -512,20 +512,13 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 /* Vokabelheft-Kachel auf dem Startscreen: wie die alte Fortschritt-Karte, aber antippbar (Version 140) */
 .bookcard{display:block;width:100%;box-sizing:border-box;appearance:none;-webkit-appearance:none;font:inherit;text-align:left;cursor:pointer}
 .bookcard:active{transform:translateY(1px)}
+.bookrow{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .bookprog{margin:0 0 16px}
 .topl{display:flex;align-items:center;gap:10px;min-width:0}
 .backbtn svg{width:20px;height:20px;stroke-width:2.6}
 .gearbtn{width:40px;height:40px;color:var(--ink)}.gearbtn svg{width:20px;height:20px;stroke-width:2.2}
 /* Chip-Stapel in der Daily Round (Version 139) */
-.plan .dstack{position:absolute;top:12px;right:14px;width:36px;height:40px;perspective:120px;pointer-events:none;z-index:1}
-.dstack .dsd{position:absolute;left:2px;width:32px;height:11px;filter:drop-shadow(0 3px 0 #8f1f62)}
-.dstack .dsd svg{display:block;width:100%;height:100%}
-.dstack .d1{bottom:0}.dstack .d2{bottom:6px}
-.dstack .dstop{position:absolute;left:5px;bottom:13px;width:26px;height:26px;transform-style:preserve-3d;animation:dsspin 2.8s linear infinite;filter:drop-shadow(0 2px 0 rgba(40,10,90,.45))}
-.dstack .dstop svg{display:block;width:100%;height:100%;backface-visibility:visible}
-@keyframes dsspin{to{transform:rotateY(360deg)}}
-@media (prefers-reduced-motion:reduce){.dstack .dstop{animation:none}}
-.plan h2{padding-right:44px}
+
 button.chippill{font:inherit;cursor:pointer}
 /* Shop-Screen (Version 138) */
 .sin.shop{gap:12px;height:100%;min-height:0;box-sizing:border-box}
@@ -3945,9 +3938,6 @@ const LOCKIC='<svg class="ico-lock" viewBox="0 0 24 24" aria-hidden="true"><rect
 const GEARIC='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>';
 /* Version 139: Zurück-Pfeil für Vokabelheft und Einstellungen (die Tab-Leiste ist weg) */
 const BACKBTN_=()=>`<button class="iconbtn backbtn" type="button" data-v="home" aria-label="${t('Zurück')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>`;
-/* Version 139: Chip-Stapel oben rechts in der Daily Round, der obere Chip dreht sich */
-function chipStack(){const d='<svg class="dchip" viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true" focusable="false"><use href="#chip-pink"/></svg>';
-  return `<span class="dstack" aria-hidden="true"><i class="dsd d1">${d}</i><i class="dsd d2">${d}</i><i class="dstop">${chipSvg('gold')}</i></span>`;}
 const BRAND='<div class="brand"><span>dewi<b>.</b></span></div>';
 /* Sprachauswahl: antippen merkt die Wahl, erst „Weiter“ übernimmt sie (Version 120) */
 function bindPick(sel,key,goSel,done,preview){
@@ -4051,13 +4041,13 @@ function homeView(){
   const bparts=[5,4,3,2,1,0].map(n=>({c:LVCOL[n],n:lv[n],l:t('Stufe {0}',n)})).concat([{c:'var(--raised)',n:nNew,l:t('Noch neu')}]);
   const bseg=bparts.filter(p=>p.n>0).map(p=>`<i style="width:${(p.n/N*100).toFixed(2)}%;background:${p.c}"></i>`).join('');
   const bookHtml=`<button class="card prog bookcard" id="bookbtn" type="button" data-v="book" aria-label="${t('Vokabelheft öffnen')}">
-    <div class="eyebrow">${t('Fortschritt')}</div>
+    <div class="bookrow"><div class="eyebrow">${t('Fortschritt')}</div><svg class="bookgo" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="var(--muted)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
     <p style="margin-top:6px">${t('{0} von {1} Wörtern begonnen','<b>'+(N-nNew)+'</b>',N)}</p>
     <div class="stack" role="img" aria-label="${bparts.map(p=>p.n+' '+p.l).join(', ')}">${bseg}</div></button>`;
   const streakHtml=`<div class="streak foot${st>0?' on':''}"><div class="sl">${flameSvg(st,false)}<b class="sn" aria-label="${st} ${st===1?t('Tag'):t('Tage')} ${t('in Folge')}">${st}</b></div><div class="dots">${week}</div></div>`;
   return `<div class="top status"><button class="langbtn" id="chlang" aria-label="${t('Sprache wechseln')}: ${esc(t(L.name))}"><span aria-hidden="true">${{id:'🇮🇩',en:'🇬🇧'}[L.id]||'🌐'}</span></button><div class="topr">${chipPill()}<button class="iconbtn gearbtn" id="gear" type="button" data-v="settings" aria-label="${t('Einstellungen öffnen')}">${GEARIC}</button></div></div>
   ${homeMascot(p,st,nFallen,doneToday,prog)}
-  <section class="card plan">${chipStack()}${planHtml}${streakHtml}</section>
+  <section class="card plan">${planHtml}${streakHtml}</section>
   ${revHtml}
   ${bookHtml}`;
 }

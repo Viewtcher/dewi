@@ -720,8 +720,8 @@ function toReels(E,force=true){
 {
   const E=fresh();ev(E,'render()');
   ok(!E.$('#tabs')&&!E.$('.stpill')&&!!E.$('.status #chippill')&&!!E.$('.status #gear'),'NV1 Keine Tab-Leiste, keine Streak-Pille, oben Chips und Zahnrad');
-  ok(E.$$('.plan .dstack .dsd').length===2&&!!E.$('.plan .dstack .dstop .dchip'),'NV2 Daily Round: zwei gestapelte Chips und ein drehender obendrauf');
-  ok(!!E.$('.bookcard.card.prog')&&!!E.$('.bookcard .stack')&&!E.$('.bookcard .legend'),'NV3 Vokabelheft-Kachel wie die alte Fortschritt-Karte (Balken, ohne Stufen-Liste)');
+  ok(!E.$('.plan .dstack'),'NV2 Daily Round ohne Chip-Stapel (Version 141, zu unruhig)');
+  ok(!!E.$('.bookcard.card.prog')&&!!E.$('.bookcard .stack')&&!E.$('.bookcard .legend')&&!!E.$('.bookcard .bookgo'),'NV3 Vokabelheft-Kachel wie die alte Fortschritt-Karte, mit Pfeil wie Gamemodes');
   E.click(E.$('#gear'));
   ok(!!E.$('#sethead')&&!!E.$('.backbtn[data-v="home"]'),'NV4 Zahnrad öffnet die Einstellungen mit Zurück-Pfeil');
   E.click(E.$('.backbtn'));
