@@ -1732,3 +1732,20 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Wie die Leiste mit der Haus-Leiste/Safe-Area auf einem echten Gerät zusammenspielt, Treffergenauigkeit der drei Reiter mit dem Finger.
 
+
+## Version 146 – „Heute" heißt „Home", Leiste auch im Shop, Pfeil mittig auf der Vokabelheft-Kachel
+
+> **Drei kleine Korrekturen.** Der erste Reiter heißt jetzt „Home" statt „Heute" (auf Deutsch und Englisch gleich). Die Tab-Leiste bleibt jetzt auch sichtbar, während der Shop offen ist – Heute und Vokabelheft schließen den Shop dabei automatisch mit, wenn man sie antippt. Der Pfeil auf der Vokabelheft-Kachel sitzt jetzt mittig auf der ganzen Kachel statt oben in der Kopfzeile.
+
+**Entscheidungen (Vito):** „Home" auf Deutsch und Englisch gleich (statt „Start").
+
+**Technik**
+- Reiter-Beschriftung: `data-k="Heute"` → `data-k="Home"`, EN-Eintrag `"Home": "Home"` ergänzt.
+- Leiste im Shop: `.sheet` bekommt beim Öffnen des Shops die Klasse `shop-open` (`openShop()`), die per CSS ihren `z-index` unter den der Leiste senkt (`.sheet.shop-open{z-index:5}`, Leiste bleibt bei 10) – die Leiste liegt dadurch über dem Shop statt darunter. Damit der „Kaufen/Ausrüsten"-Knopf am unteren Rand des Shops nicht unter der Leiste verschwindet, bekommt `.sin.shop` in diesem Zustand 104 px Platz unten (derselbe Wert wie beim `.app`-Innenabstand für die Leiste). Die Klasse wird beim Schließen eines beliebigen Sheets in `closeSheet()` wieder entfernt, damit sie nicht an den nächsten Bildschirm (Spielmodus-Auswahl, Blind-Auswahl) weitergegeben wird – nur der Shop bekommt die sichtbare Leiste, wie gewünscht.
+- Heute/Vokabelheft-Reiter schließen beim Antippen zuerst einen offenen Shop (`if(SHOP)closeShop();`) und wechseln dann erst die Ansicht, damit die Leiste auch im Shop normal funktioniert statt nur sichtbar, aber wirkungslos zu sein. Der Shop-Reiter selbst wird beim Öffnen aktiv markiert (`aria-current`), weil er sonst als einziger Bildschirm ohne markierten Reiter dagestanden hätte.
+- Pfeil auf der Vokabelheft-Kachel: `.bookcard` bekommt `position:relative` und rechts 46 px Platz; `.bookgo` sitzt jetzt absolut positioniert, senkrecht mittig auf der ganzen Kachel (`top:50%;transform:translateY(-50%)`) statt in der Kopfzeile neben der Eyebrow.
+
+**Tests:** test3 prüft die englische Leiste jetzt auf „Home" statt „Today". test4 NV1d2/d3 (jetzt NV1d2/e/f/g) um die Prüfung erweitert, dass die Leiste im Shop sichtbar bleibt und der Shop-Reiter aktiv markiert ist, und dass Vokabelheft/Heute den Shop beim Antippen mitschließen. Tests 2–5 grün. Im echten Chromium gemessen: Pfeil weicht nur 2 px von der exakten Kachel-Mitte ab und überlappt weder den Fortschrittstext noch den Balken (selbst bei „678 Wörtern", dem größten vorkommenden Zahlenwert); im Shop sitzt der „Kaufen"-Knopf 36 px über der Leiste, nicht darunter verdeckt.
+
+**Nicht auf einem echten iPhone getestet:** Wie sich „Home" statt „Heute" auf Deutsch liest, ob die Leiste über dem Shop auf dem Gerät optisch stört oder zu viel wirkt.
+

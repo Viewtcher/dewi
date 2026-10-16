@@ -719,12 +719,18 @@ function toReels(E,force=true){
 {
   const E=fresh();ev(E,'render()');
   ok(!!E.$('#tabs')&&!E.$('.stpill')&&!!E.$('.status #chippill')&&!!E.$('.status #gear'),'NV1 Tab-Leiste da, keine Streak-Pille, oben Chips und Zahnrad');
-  ok(!!E.$('.tab[data-v="home"]')&&!!E.$('.tab[data-v="book"]')&&!!E.$('#shoptab')&&!E.$('.tab[data-v="settings"]'),'NV1b Leiste zeigt Heute, Vokabelheft, Shop statt Einstellungen');
-  ok(E.$('.tab[data-v="home"]').getAttribute('aria-current')==='page'&&!E.$('.tab[data-v="book"]').getAttribute('aria-current'),'NV1c Heute-Reiter ist aktiv markiert');
+  ok(!!E.$('.tab[data-v="home"]')&&!!E.$('.tab[data-v="book"]')&&!!E.$('#shoptab')&&!E.$('.tab[data-v="settings"]'),'NV1b Leiste zeigt Home, Vokabelheft, Shop statt Einstellungen');
+  ok(E.$('.tab[data-v="home"]').getAttribute('aria-current')==='page'&&!E.$('.tab[data-v="book"]').getAttribute('aria-current'),'NV1c Home-Reiter ist aktiv markiert');
   E.click(E.$('#shoptab'));
   ok(!!E.$('#shop'),'NV1d Shop-Reiter öffnet den Shop');
+  ok(ev(E,"sheet.classList.contains('shop-open')")&&!E.$('#tabs').hidden&&E.$('#shoptab').getAttribute('aria-current')==='page','NV1d2 Im Shop bleibt die Leiste da, Shop-Reiter aktiv markiert');
   E.click(E.$('#quit'));
-  ok(!E.$('#shop')&&!!E.$('.plan'),'NV1e Shop schließen führt zurück zum Startscreen');
+  ok(!E.$('#shop')&&!!E.$('.plan')&&!ev(E,"sheet.classList.contains('shop-open')"),'NV1e Shop schließen (×) führt zurück zum Startscreen');
+  E.click(E.$('#shoptab'));
+  E.click(E.$('.tab[data-v="book"]'));
+  ok(!E.$('#shop')&&!!E.$('#q')&&!ev(E,"sheet.classList.contains('shop-open')"),'NV1f Vokabelheft-Reiter schließt den Shop mit und öffnet das Heft');
+  E.click(E.$('.tab[data-v="home"]'));
+  ok(!!E.$('.plan'),'NV1g Heute-Reiter zurück zum Startscreen');
   ok(!E.$('.plan .dstack'),'NV2 Daily Round ohne Chip-Stapel (Version 141, zu unruhig)');
   ok(!!E.$('.bookcard.card.prog')&&!!E.$('.bookcard .stack')&&!E.$('.bookcard .legend')&&!!E.$('.bookcard .bookgo'),'NV3 Vokabelheft-Kachel wie die alte Fortschritt-Karte, mit Pfeil wie Gamemodes');
   E.click(E.$('#gear'));

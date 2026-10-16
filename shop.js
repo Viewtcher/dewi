@@ -79,7 +79,9 @@ function applyTheme(id){try{const r=document.documentElement;if(id&&id!=='classi
 let SHOP=null;   // {tab, sel, mine} solange der Shop offen ist
 function openShop(){
   SHOP={tab:'cos',sel:null,mine:false};
-  sheet.hidden=false;document.body.style.overflow='hidden';
+  sheet.hidden=false;sheet.classList.add('shop-open');document.body.style.overflow='hidden';
+  $$('.tab',tabs).forEach(b=>b.removeAttribute('aria-current'));
+  $('#shoptab',tabs).setAttribute('aria-current','page');   // Version 146: Leiste bleibt im Shop sichtbar, Shop-Reiter wird aktiv markiert
   renderShop();
 }
 function closeShop(){SHOP=null;applyTheme(equipOf('theme'));closeSheet();}
