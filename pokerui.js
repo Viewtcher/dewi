@@ -49,8 +49,8 @@ function showBlindStage(kind,o){
     <div class="bsmain">
       <div class="bshead"><span class="eyebrow2">${t('DEIN EINSATZ')}</span>${bonusPill(B.pct,'bonuspill')}</div>
       <div class="bsgrid">
-        <button class="bschip" id="blind-small" type="button" aria-label="Small Blind ${B.small.stake?fmtChip(B.small.stake):t('ohne Einsatz')}${badge?' · '+badge:''}">${badge?`<span class="bsbadge" aria-hidden="true">${badge}</span>`:''}${chipSvg('pink','bsc')}<span class="bsv" aria-hidden="true">${B.small.stake?fmtChip(B.small.stake):'0'}</span><span class="bsl" aria-hidden="true">SMALL</span></button>
-        <button class="bschip" id="blind-big" type="button" aria-label="Big Blind ${fmtChip(BLINDS.big)}"${B.big.ok?'':' disabled'}>${chipSvg('gold','bsc')}<span class="bsv" aria-hidden="true">${fmtChip(BLINDS.big)}</span><span class="bsl" aria-hidden="true">BIG</span></button>
+        <button class="bschip" id="blind-small" type="button" aria-label="Small Blind ${B.small.stake?fmtChip(B.small.stake):t('ohne Einsatz')}${badge?' · '+badge:''}">${badge?`<span class="bsbadge" aria-hidden="true">${badge}</span>`:''}<span class="bscwrap">${chipSvg('pink')}</span><span class="bsv" aria-hidden="true">${B.small.stake?fmtChip(B.small.stake):'0'}</span><span class="bsl" aria-hidden="true">SMALL</span></button>
+        <button class="bschip" id="blind-big" type="button" aria-label="Big Blind ${fmtChip(BLINDS.big)}"${B.big.ok?'':' disabled'}><span class="bscwrap">${chipSvg('gold')}</span><span class="bsv" aria-hidden="true">${fmtChip(BLINDS.big)}</span><span class="bsl" aria-hidden="true">BIG</span></button>
       </div>
     </div>
     <div class="actzone" aria-hidden="true"></div></div>`;
@@ -63,7 +63,7 @@ function showBlindStage(kind,o){
     sfx('chips');haptic(20);
     btn.classList.add('go');
     const start=()=>startRound(kind,Object.assign({},o,{blind:b,force:1}));
-    if(window.__test||reduceMotion())start();else setTimeout(start,420);
+    if(window.__test||reduceMotion())start();else setTimeout(start,520);   // Version 142: wartet die Dreh+Glanz-Animation ab (.5s)
   };
   $('#blind-small').onclick=e=>pick('small',e.currentTarget);
   $('#blind-big').onclick=e=>pick('big',e.currentTarget);

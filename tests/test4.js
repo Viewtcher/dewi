@@ -518,26 +518,25 @@ function toReels(E,force=true){
   const A=E.w.__aud,n0=A.osc.length;ev(E,"state.sound=true;state.vol=40;['tick','lever','whirr','thunk','rwin','rbad','jackpot','gems','chips','chipclick','royal','tossed'].forEach(k=>sfx(k))");
   ok(A.osc.length>n0+20,'E6 Alle Reels-Sounds erzeugen Töne ('+(A.osc.length-n0)+')');
 }
+// --- Testbereich: immer sichtbar, Wörter/Chips per Textfeld + Enter (Version 142)
 {
   const E=fresh();
-  ev(E,"state.lang='id';state.name='Vito';state.nameAsked=true;state.progress.id={};state.progress.id[LANGS.id.words[0].k]={l:2,d:today()};save()");
+  const submit=id=>ev(E,"document.querySelector('"+id+"').dispatchEvent(new Event('submit',{bubbles:true,cancelable:true}))");
+  ev(E,"state.lang='id';state.name='Vito';state.nameAsked=true;state.chips=250;state.progress.id={};state.progress.id[LANGS.id.words[0].k]={l:2,d:today()};save()");
   ev(E,"view='settings';render()");
-  ok(!ev(E,"!!document.querySelector('#devcard')"),'V1 Testbereich anfangs versteckt');
-  for(let i=0;i<7;i++)ev(E,"document.querySelector('#sethead').click()");
-  ok(ev(E,"!!document.querySelector('#devcard')"),'V2 nach 7 Tipps sichtbar');
-  const tw=sel=>{ev(E,"document.querySelector('"+sel+"').click()");ev(E,"document.querySelector('"+sel+"').click()");};
+  ok(!!E.$('#devcard')&&!!E.$('#devwords')&&!!E.$('#devchips'),'V1 Testbereich sofort sichtbar, ohne Geheim-Tipps');
   const N=ev(E,"LANGS.id.words.length");
-  tw('[data-dev=p10]');
-  ok(ev(E,"Object.keys(state.progress.id).length")===Math.round(N*.1),'V3 10 % = '+Math.round(N*.1));
-  ok(ev(E,"fallenWords().length")>0&&ev(E,"fallenWords().length")<=3&&ev(E,"fallenWords().every(w=>state.progress.id[w.k].d<=today()&&state.progress.id[w.k].n>=1)")&&ev(E,"JSON.stringify(state.list)")==='{}','V4 Einige Wörter auf Stufe 0, fällig, mit Fehlerzähler');
-  ok(ev(E,"new Set(Object.values(state.progress.id).map(p=>p.l)).size")>=4,'V5 gemischte Stufen');
-  ok(ev(E,"state.name")==='Vito','V6 Name bleibt');
-  ev(E,"view='settings';render()");tw('[data-dev=all]');
-  ok(ev(E,"Object.keys(state.progress.id).length")===N,'V7 alle Wörter');
-  ev(E,"view='settings';render()");tw('[data-dev=first]');
-  ok(ev(E,"state.lang")===null&&ev(E,"state.name")==='','V8 Erster Start leer');
-  ev(E,"state.lang='id';state.ui='de';state.nameAsked=true;view='settings';render()");tw('#devrestore');
-  ok(ev(E,"Object.keys(state.progress.id).length")===1&&ev(E,"state.name")==='Vito'&&!ev(E,"state.devTest"),'V9 Wiederherstellen = echter Stand');
+  E.$('#devwords').value='10';submit('#devwordsf');
+  ok(ev(E,"Object.keys(state.progress.id).length")===10&&ev(E,"Object.values(state.progress.id).every(p=>p.l===1&&p.d===today())"),'V2 10 Wörter auf Stufe 1, heute fällig');
+  ok(ev(E,"state.name")==='Vito'&&ev(E,"state.chips")===250,'V3 Name und Chips bleiben unberührt');
+  ev(E,"view='settings';render()");E.click(E.$('#devwordsreset'));
+  ok(ev(E,"Object.keys(state.progress.id).length")===0,'V4 Zurücksetzen leert die Wörter');
+  ev(E,"view='settings';render()");E.$('#devchips').value='9999';submit('#devchipsf');
+  ok(ev(E,'state.chips')===9999&&ev(E,'state.chipShown')===9999,'V5 Chips per Textfeld gesetzt');
+  ev(E,"view='settings';render()");E.click(E.$('#devchipsreset'));
+  ok(ev(E,'state.chips')===0&&ev(E,'state.chipShown')===0,'V6 Zurücksetzen leert die Chips');
+  ev(E,"view='settings';render()");E.$('#devwords').value=String(N+50);submit('#devwordsf');
+  ok(ev(E,"Object.keys(state.progress.id).length")===N,'V7 Eingabe über der Wortzahl wird gekappt');
 }
 {
   const E=fresh();

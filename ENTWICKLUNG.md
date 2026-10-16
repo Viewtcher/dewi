@@ -1666,3 +1666,19 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nicht auf einem echten iPhone getestet:** Wie ruhig die Daily-Round-Kachel jetzt wirkt.
 
+
+## Version 142 – Blind-Chip dreht sich, schlankere Einstellungen, Testbereich mit Textfeldern
+
+> **Drei Korrekturen auf einmal.** Beim Antippen eines Blind-Chips in der Daily Round dreht sich der Chip jetzt einmal um die senkrechte Achse und glänzt dabei, statt wegzurutschen. Die Einstellungen haben ihre Erklärtexte verloren – die Bedienelemente sprechen für sich, nur „Tägliche Erinnerung“ ist als reiner Erklär-Abschnitt ganz raus. Der Testbereich ist jetzt immer sichtbar (keine sieben Tipps mehr auf die Überschrift) und funktioniert über zwei Textfelder: Anzahl Wörter freischalten und Anzahl Chips, jeweils mit eigenem Zurücksetzen-Knopf, wirkt sofort beim Drücken von Enter.
+
+**Entscheidungen (Vito):** Chip-Drehung ersetzt den bisherigen Abgang. „Tägliche Erinnerung“ fällt als Abschnitt komplett weg. Testbereich wirkt sofort bei Enter, ohne automatische Sicherung im Hintergrund. Freigeschaltete Wörter einfach auf Stufe 1, heute fällig (keine gestreuten Stufen mehr).
+
+**Technik**
+- `pokerui.js`/CSS: `.bschip.go .bscwrap` dreht sich mit `rotateY(360deg)` und schrumpft dabei aus (`bsspin`, 0,5 Sek.), ein Glanzstreifen läuft einmal quer über den Chip (`bsshine`). Rundenstart wartet jetzt 520 ms statt 420 ms. Ersetzt das alte Wegrutschen (`bsgo`).
+- `settingsView()`: alle `<p class="hint">`-Erklärsätze entfernt außer der Sicherungs-/Namens-Rückmeldung (`#nmflash`, jetzt leer) und dem Testdatum bei „Testen“ (nur noch das Datum, ohne Erklärsatz). Abschnitt „Tägliche Erinnerung“ komplett gestrichen.
+- Testbereich: `devCard()` ohne Sichtbarkeits-Flag, keine sieben Tipps auf `#sethead`, kein `state.dev`/`state.devTest` mehr. Zwei Formulare `#devwordsf`/`#devchipsf` mit Zahlenfeld, Enter löst `devSetWords()`/`devSetChips()` aus (Wörter: die ersten X Wörter auf Stufe 1, heute fällig, Rest unberührt; Chips: direkt gesetzt). Je ein „Zurücksetzen“-Knopf daneben (Wörter: Fortschritt der Lernsprache leeren; Chips: auf 0). Die alte Sicherung/Wiederherstellung des echten Standes (`DEV_BAK`, „Testphase aktiv“) ist komplett entfallen, ebenso die sechs Lernphasen-Knöpfe.
+
+**Tests:** Neuer Block V1–V7 in test4 für den Testbereich (sofort sichtbar, Eingabe setzt Wörter/Chips, Zurücksetzen, Kappung über die Wortzahl hinaus). Keine Tests verweisen mehr auf die entfernten Beschreibungstexte. Tests 2–5 grün. Im echten Chromium geprüft: Chip-Drehung läuft (`bsspin`, 0,5 s), Einstellungen zeigen nur noch Bedienelemente plus Testdatum, Testbereich ist ohne Geheim-Tipps sofort da.
+
+**Nicht auf einem echten iPhone getestet:** Wie die Drehung mit Glanz auf dem Gerät wirkt (Timing, Haptik dazu), ob die Einstellungen ohne Erklärtexte noch selbsterklärend genug sind.
+

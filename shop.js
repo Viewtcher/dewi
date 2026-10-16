@@ -47,7 +47,7 @@ function shieldMoment(){
   return el;
 }
 /* Sicherung (Version 137): alles außer der offenen Hand und den Test-Merkern */
-const BACKUP_SKIP=['run','dayOffset','dev','devTest','shieldNote'];
+const BACKUP_SKIP=['run','dayOffset','shieldNote'];
 function backupData(){const d={};Object.keys(state).forEach(k=>{if(BACKUP_SKIP.indexOf(k)<0)d[k]=state[k];});return d;}
 
 /* ===== Shop-Screen (Version 138) =====
