@@ -310,11 +310,43 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(ev(E,'blindOffer().pct')===10,'P22 Ab der nächsten Hand gilt +10 %');
   ev(E,"window.__autoBlind=null;state.chips=250;save();render()");
   E.click(E.$('#extra'));
-  const bb=E.$('.blindbox');
-  ok(!!bb&&E.$('#blind-big').disabled&&/Serien-Bonus \+10 %/.test(bb.textContent)&&!E.$('#pkrow'),'P23 Blind-Wahl erscheint vor der Hand, Big ausgegraut bei 250 Chips');
+  const bs=E.$('#blindstage');
+  ok(!!bs&&E.$('#blind-big').disabled&&/\+10 %/.test(E.$('#bonuspill').textContent)&&/DEIN EINSATZ/.test(bs.textContent)&&!E.$('#pkrow'),'P23 Blind-Wahl als eigener Screen, Big ausgegraut bei 250 Chips, Bonus-Pille');
+  ok(!!E.$('#blindstage #dzone .dzhead .dw')&&!!E.$('#dzq')&&ev(E,'QUIPS.de.blind_self').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&!!E.$('#blindstage .actzone')&&!!E.$('#chippill2'),'P23b Dewi-Zone mit Spruch und „?“, Aktionszone, Chip-Pille');
+  E.click(E.$('#dzq'));ok(/Multiplikator/.test(E.$('#dzbody').textContent)&&E.$('#dzq').getAttribute('aria-expanded')==='true','P23c „?“ zeigt Dewis Erklärung');
+  E.click(E.$('#dzq'));ok(ev(E,'QUIPS.de.blind_self').includes(E.$('#dzbody .bubble').getAttribute('aria-label')),'P23d Nochmal „?“: zurück zum Spruch');
   E.click(E.$('#blind-small'));
-  ok(!E.$('.blindbox')&&/Small Blind 100 · \+10 %/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===150,'P24 Small gewählt: Hand startet, 100 abgebucht, Bonus +10 %');
+  ok(!E.$('#blindstage')&&/Small Blind 100/.test(E.$('#pkrow').textContent)&&/\+10 %/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===150,'P24 Small gewählt: Hand startet, 100 abgebucht, Bonus +10 %');
+  ok(!!E.$('.sin.hand .ctrack')&&!E.$('.sin.hand .sbar')&&E.$$('.ctrack .dchip,.ctrack .cslot').length===ev(E,"S.items.filter(x=>x.kind!=='intro').length"),'P25 Kopf: Dewi-Chips statt Fortschrittsbalken');
+  ok(/×0/.test(E.$('#pkmult').textContent)&&!!E.$('#dzone .dzhead .dw')&&!!E.$('#dzq'),'P26 Dewi-Zone mit Multiplikator ×0');
+  E.click(E.$('#dzq'));ok(/Small Blind kostet ein Fehler nichts/.test(E.$('#dzbody').textContent),'P27 „?“ in der Hand erklärt die Regeln zum gewählten Blind');
   ev(E,"closeSheet();window.__autoBlind='small'");
+}
+// --- P2) Poker-Screens während der Hand (Version 134)
+{
+  const E=fresh();known(E,6);
+  const right=()=>{const w=T(E.$('.bigword')),idGl=!!E.$('.bigword[lang="id"]'),D=DICT.de;E.type(idGl?D.get(w.toLowerCase()).gl.split(' / ')[0].replace(/\(.*?\)/g,'').trim():[...D.values()].find(x=>x.gl===w).id);};
+  ev(E,"state.chips=1000;state.chipShown=1000;save();render();window.__autoBlind='big';window.__force='typing'");
+  E.click(E.$('#start'));skipIntro(E);
+  ok(!!E.$('.ctrack .dchip.now')&&!E.$('.ctrack .sh'),'Q1 Aktuelles Modul: gestrichelter Chip');
+  right();
+  ok(E.$('#pkmult').classList.contains('up')&&/×1/.test(E.$('#pkmult').textContent),'Q2 Geschafft: Multiplikator springt auf ×1');
+  ok(E.$$('.ctrack .sh').length===1&&!!E.$('.ctrack use[href="#chip-holo"]'),'Q3 Geschafft und Royal Flush noch drin: Holo-Chip');
+  ok(!E.$('.smain .mascot')&&!!E.$('#dzone .dw.m-superior'),'Q4 Kein kleiner Dewi im Ergebnis, Dewi oben überlegen');
+  E.click(E.$('#next'));
+  ok(!E.$('#pkmult').classList.contains('up'),'Q5 Animation nur einmal pro Modul');
+  E.type('qqq');E.type('qqq');E.type('qqq');
+  ok(E.$('#pkmult').classList.contains('down')&&!!E.$('#pkmult .o')&&/×0/.test(E.$('#pkmult .n').textContent),'Q6 Big Blind verloren: Zahl rutscht von ×1 auf ×0');
+  ok(!E.$('.ctrack .sh')&&!!E.$('.ctrack use[href="#chip-gold"]')&&!!E.$('.ctrack use[href="#chip-grey"]'),'Q7 Royal Flush weg: geschaffter Chip gold, verlorener grau');
+  ok(!!E.$('#dzone .dw.m-annoyed'),'Q8 Dewi genervt nach Fehler');
+  E.click(E.$('#next'));ev(E,'closeSheet()');
+  E.click(E.$('#start'));
+  ok(E.$$('.ctrack use[href="#chip-grey"]').length===1&&E.$$('.ctrack use[href="#chip-gold"]').length===1,'Q9 Nach dem Fortsetzen stimmen die Chips noch');
+  ev(E,"closeSheet();window.__autoBlind='small'");nextDay(E);
+  E.click(E.$('#start'));skipIntro(E);
+  E.type('qqq');E.type('qqq');E.type('qqq');
+  ok(E.$('#pkmult').classList.contains('hold')&&/×0/.test(E.$('#pkmult').textContent),'Q10 Small Blind verloren: Zahl bleibt und blinkt grau');
+  ev(E,"closeSheet();window.__force=null");
 }
 // --- E) Versuche je Modul
 {

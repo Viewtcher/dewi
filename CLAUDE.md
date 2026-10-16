@@ -13,7 +13,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 
 ## Ablauf nach jeder Änderung
 
-1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
+1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js`, `pokerui.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
 2. Bauen: `python build.py` (im Hauptordner). Erzeugt `index.html`.
 3. Testen: `npm test --prefix tests`. Alle vier Tests müssen grün sein (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“). Ändert sich gewolltes Verhalten, Tests anpassen und das offen sagen.
 4. **Keine Vorschau-Screenshots von selbst aus.** Bei optischen Änderungen kurz beschreiben, was sich zeigen sollte. Ein Screenshot (Playwright/Chromium) nur, wenn Vito ausdrücklich danach fragt. Spart Token, die ein Bild beim Ansehen kostet.
@@ -49,9 +49,9 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 133)
+## Offene Punkte (Stand Version 134)
 
-- **In Arbeit: Poker Phase 1** nach `konzept-poker-shop.md` (Etappen 131 Lernlogik ✓, 132 Chips ✓, 133 Poker-Regeln ✓, 134 Poker-Screens). Konzeptbilder: Design-Canvas „dewi. Poker-Screens“, Reihe „Version 2“. Veröffentlichen erst nach Etappe 4.
+- **In Arbeit: Poker Phase 1** nach `konzept-poker-shop.md` (Etappen 131 Lernlogik ✓, 132 Chips ✓, 133 Poker-Regeln ✓, 134 Blind-Wahl + Hand ✓, 135 Auszahlung + Royal Flush + Startscreen). Konzeptbilder: Design-Canvas „dewi. Poker-Screens“, Reihe „Version 2“. Veröffentlichen erst nach Etappe 4.
 - Shop (Phase 2) nach den Erfahrungen aus Phase 1. Vorher Fragen stellen.
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.

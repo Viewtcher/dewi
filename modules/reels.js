@@ -90,7 +90,7 @@ function showReels(w){
     </div>`}
     <div id="exfb"></div></div>`);
   const cab=$('#cab'),sign=$('#sign');
-  const say=k=>{const m=$('#rlm');if(m)m.innerHTML=mascot(k,null,'sm');};
+  const say=k=>{const m=$('#rlm');if(m)m.innerHTML=mascot(k,null,'sm');if(S&&S.hand&&m){const d=m.querySelector('.dw');const mm=d&&d.className.match(/m-(\w+)/);if(mm)dzFace(mm[1]);}};   // in der Pokerhand spricht Dewi nicht, ihr Gesicht oben reagiert
   const alive=()=>!!$('#rlm');
   const el=i=>$$('.reel',sheet)[i];
 

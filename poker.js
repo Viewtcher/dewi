@@ -1,6 +1,6 @@
 /* ===== Poker: die Daily Round als Pokerhand (Version 133) =====
    Grundlage: konzept-poker-shop.md (Nova), Abschnitte 2 und 3. Alles Rechnen steht hier, die Anzeige in rounds.js
-   (ab Version 134 die gestalteten Poker-Screens).
+   und in pokerui.js (die gestalteten Poker-Screens, ab Version 134).
 
    BLINDS     Vor jeder Hand wählt man Small (100) oder Big (300).
               Erste Daily Round des Tages: den Small Blind zahlt Dewi, der Big Blind ist freiwillig und kostet den vollen Betrag.
@@ -37,7 +37,7 @@ function handNew(blind){
     if(h.paid==='rescue')daily().rescue=true;
   }
   state.chipShown=Math.min(state.chipShown|0,state.chips|0);   // Pille zeigt den Abzug sofort, ohne Einflug
-  h.st=o.st;h.pct=o.pct;h.bonus=Math.round(h.stake*h.pct/100);h.mult=0;h.done=0;h.lost=0;h.date=today();
+  h.st=o.st;h.pct=o.pct;h.bonus=Math.round(h.stake*h.pct/100);h.mult=0;h.done=0;h.lost=0;h.date=today();h.face=h.blind==='big'?'cash':'sly';
   save();
   return h;
 }
@@ -45,10 +45,12 @@ function handNew(blind){
 function handSettle(h,ok){
   if(!h)return 0;
   h.done++;
-  if(ok){h.mult++;return 1;}
-  h.lost++;
-  if(h.blind==='big'&&h.mult>0){h.mult--;return -1;}
-  return 0;
+  let d=0;
+  if(ok){h.mult++;d=1;}
+  else{h.lost++;if(h.blind==='big'&&h.mult>0){h.mult--;d=-1;}}
+  /* Dewis Gesicht in der Dewi-Zone: Royal Flush noch drin = überlegen (ab ×4 Dollar-Augen), sonst überheblich; verloren = genervt */
+  h.face=!ok?'annoyed':h.lost===0?(h.mult>=4?'cash':'superior'):'haughty';
+  return d;
 }
 /* Abrechnung am Ende der Hand. Schreibt die Chips gut und gibt die Rechnung zurück. */
 function handPayout(h){
@@ -59,36 +61,4 @@ function handPayout(h){
   return {stake:h.stake,bonus:h.bonus,pct:h.pct,mult:h.mult,rf,payout,paid:h.paid,blind:h.blind,net:payout-(h.paid==='self'?h.stake:0)};
 }
 
-/* ----- Behelfs-Anzeige bis Version 134 (dann ersetzt durch die Poker-Screens) ----- */
-/* Blind-Wahl als kleines Fenster. cb('small' | 'big'). Tests können mit window.__autoBlind eine Wahl vorgeben. */
-function chooseBlind(cb){
-  if(window.__test&&window.__autoBlind)return cb(window.__autoBlind);
-  const o=blindOffer();
-  const who={dewi:t('Dewi zahlt'),self:'',rescue:t('Dewi rettet dich (einmal am Tag)'),none:t('ohne Einsatz')}[o.small.paid];
-  const box=document.createElement('div');box.className='askbox blindbox';box.setAttribute('role','dialog');box.setAttribute('aria-modal','true');
-  box.innerHTML=`<div class="ask-back"></div><div class="ask-in"><b>${t('Dein Einsatz')}</b>
-    <p>${o.pct?t('Serien-Bonus +{0} %',o.pct):t('Noch kein Serien-Bonus')}</p>
-    <button class="btn primary block" id="blind-small">Small Blind ${o.small.stake?fmtChip(o.small.stake):''}${who?' · '+who:''}</button>
-    <button class="btn block" id="blind-big"${o.big.ok?'':' disabled'}>Big Blind ${fmtChip(BLINDS.big)}</button>
-    <button class="btn block ghost" id="blind-no">${t('Abbrechen')}</button></div>`;
-  document.body.appendChild(box);
-  const close=()=>box.remove();
-  $('.ask-back',box).onclick=close;$('#blind-no',box).onclick=close;
-  $('#blind-small',box).onclick=()=>{close();cb('small');};
-  $('#blind-big',box).onclick=()=>{if(!o.big.ok)return;close();cb('big');};
-  try{$('#blind-small',box).focus();}catch(e){}
-}
-/* Zeile im Kopf der Round: Einsatz, Bonus, Multiplikator */
-function pokerRow(){
-  const h=S&&S.kind==='daily'&&S.hand;if(!h||S.i>=S.items.length)return '';
-  const name=h.blind==='big'?'Big Blind':'Small Blind';
-  return `<div class="pkrow" id="pkrow"><span>${name} ${h.stake?fmtChip(h.stake):t('ohne Einsatz')}${h.pct?' · +'+h.pct+' %':''}</span><b id="pkmult">×${h.mult}</b></div>`;
-}
-/* Endscreen: die Rechnung in einer Zeile, z. B. „100 + 30 · ×4 · ×2 Royal Flush“ */
-function payoutLine(P){
-  if(!P)return '';
-  const parts=[fmtChip(P.stake)+(P.bonus?' + '+fmtChip(P.bonus):''),'×'+P.mult];
-  if(P.rf)parts.push('×2 Royal Flush');
-  return `<p class="hint rv" id="epay">${parts.join(' · ')}${!P.payout&&P.paid==='self'?' · '+t('Einsatz weg'):''}</p>`;
-}
 window.__poker={bonusPct,blindOffer,handNew,handSettle,handPayout};

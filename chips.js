@@ -86,9 +86,9 @@ function fmtChipShort(n){
   const [v,u]=n<1e6?[Math.floor(n/100)/10,'K']:[Math.floor(n/1e5)/10,'M'];
   return v.toFixed(1).replace('.',dec)+u;
 }
-function chipPill(){
+function chipPill(id){
   const v=Math.min(state.chipShown|0,state.chips|0);
-  return `<div class="chippill" id="chippill" role="img" aria-label="${t('{0} Chips',fmtChip(state.chips|0))}"><span class="chipwrap">${chipSvg('pink')}</span><b>${fmtChipShort(v)}</b></div>`;
+  return `<div class="chippill" id="${id||'chippill'}" role="img" aria-label="${t('{0} Chips',fmtChip(state.chips|0))}"><span class="chipwrap">${chipSvg('pink')}</span><b>${fmtChipShort(v)}</b></div>`;
 }
 /* Zeile auf den Endscreens: Chip und „+300“ */
 function chipLine(total){

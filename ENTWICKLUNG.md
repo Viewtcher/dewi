@@ -30,6 +30,7 @@ dewi/
 ├── playmodes.js          PLAYMODES: Playmode-Wahl für den Survival Mode (Random oder Solo)
 ├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
 ├── poker.js              Poker (seit Version 133): Blinds, Multiplikator, Royal Flush, Serien-Bonus, Auszahlung
+├── pokerui.js            Poker-Screens (seit Version 134): Blind-Wahl, Dewi-Zone, Dewi-Chips im Kopf, Multiplikator-Animation
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -1492,3 +1493,29 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test2 neuer Block P (P1–P24): alle Rechenbeispiele aus dem Konzept (Small +900/+300/+200/+100, Big +2.700/+600/±0/−300, 30 Tage Big Royal Flush 3.900), Multiplikator-Grenzen, Bonus-Stufen, Meilensteine, wer zahlt (Dewi, selbst, Rettung, ohne Einsatz), Abbuchung, echte Hand mit ×0, Pausieren, kein Verwerfen, Verfallen um Mitternacht, Meilenstein an Tag 7, Bonus erst ab der nächsten Hand, Blind-Wahl-Fenster. B5b: erste Hand bringt 200 Chips. In allen Testdateien wählt `window.__autoBlind="small"` den Blind automatisch (nur mit `window.__test`). Tests 2–5 grün.
 
 **Nicht auf einem echten iPhone getestet.** Kein eigener iPhone-Check nötig, die Screens kommen in Version 134.
+
+
+## Version 134 – Poker-Screens: Blind-Wahl und Hand (Poker Phase 1, Etappe 4a)
+
+> **Die Hand sieht jetzt aus wie im Konzept.** „Play now“ öffnet die Blind-Wahl als eigenen Screen: Dewi oben mit Spruch und „?“, in der Mitte „DEIN EINSATZ“ mit Bonus-Pille und zwei großen Dewi-Chips. Ein Tipp auf einen Chip, er gleitet weg, die Hand beginnt. Während der Hand zeigen Dewi-Chips im Kopf den Fortschritt, darunter Dewis Kopf und die Poker-Leiste mit dem goldenen Multiplikator. Grundlage: `konzept-poker-shop.md` Abschnitte 0 und 5, Design-Canvas „dewi. Poker-Screens“, Reihe „Version 2“ (Blind2, Hand2).
+
+**Entscheidungen (Vito):** Etappe 4 in zwei Versionen (134 Blind-Wahl und Hand, 135 Auszahlung, Royal Flush, Startscreen). Blind-Wahl als ganzer Screen. Dewis Gesicht reagiert während der Hand auf jedes Modul (ohne Text). Auf den Ergebnis-Screens der Module entfällt während der Hand der kleine Dewi samt Spruch, weil oben schon ihr Kopf sitzt.
+
+**Technik (neue Datei `pokerui.js`)**
+- `showBlindStage(kind, o)`: Screen im Round-Blatt mit X (schließen ohne Einsatz), Chip-Pille (`chipPill('chippill2')`), Dewi-Zone (Kopf 76 px + Sprechblase mit Schreibmaschine), „DEIN EINSATZ“ + Bonus-Pille (kleine Flamme im neuen Stil, `FLAME_SM`), zwei Chip-Knöpfe (pink Small, gold Big; Schild GRATIS / RETTUNG / OHNE EINSATZ; Big ausgegraut ohne 300 Chips), leere Aktionszone (56 px). Tipp: Chip gleitet weg (0,42 s), Sound `chips`, dann `startRound`. Ersetzt das Behelfsfenster aus Version 133.
+- `chipTrack()` im Kopf statt Fortschrittsbalken und Zähler: geschafft = Holo-Chip mit Schimmer, solange der Royal Flush möglich ist, sonst pink (Small) bzw. gold (Big); verloren = grau; aktuell = gestrichelt; offen = leerer Kreis. Das Ergebnis je Karte steht in `items[i].ok` und wird mit dem offenen Run gespeichert.
+- `handZone()` = Dewi-Kopf (`h.face`, gesetzt in `handSettle`: überlegen, ab ×4 Dollar-Augen, solange Royal Flush drin; sonst überheblich; nach Fehler genervt) + `pkBar()` (Einsatz-Chip, Bonus, Multiplikator in Archivo 52 px kursiv, breit, gold). Das „?“ (`.dzq`, eigene Klasse, nicht `.qh`, weil daran die Modul-Hilfe hängt) tauscht die Leiste gegen Dewis Erklärung, passend zum Blind.
+- Multiplikator-Animation einmal pro Karte (`c.pkAnim`): +1 springt hoch mit Chip-Klick (`chipclick`, Haptik), −1 rutscht runter (alte Zahl fällt weg, neue kommt von oben), verloren beim Small Blind blinkt die Zahl grau.
+- Modul Reels: Dewi unter dem Automaten ist in der Hand ausgeblendet, ihr Gesicht oben übernimmt die Stimmung der Reels-Sprüche.
+- Neue Sprüche `blind_dewi`, `blind_self`, `blind_rescue`, `blind_none` (DE/EN, siehe unten), Hilfetexte für Blind-Wahl und Hand.
+- Survival unverändert (Balken, Score, Leben).
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen)**
+- Gratis: „Small Blind geht heute aufs Haus. Gewöhn dich nicht dran.“ · „Der Small Blind ist geschenkt. Der Big Blind ist Charakter.“
+- Selbst zahlen: „Dein Geld, deine Entscheidung. Ich würde Big nehmen. Aber ich mach ja auch keine Fehler.“ · „Einsatz bitte. Das Haus wartet nicht gern.“
+- Rettung: „Pleite? Süß. Den Small Blind übernehme ich. Einmal.“ · „Ich leih dir was. Zinsen zahlst du in Respekt.“
+- Ohne Einsatz: „Keine Chips, keine Rettung mehr. Spiel trotzdem, für die Ehre.“ · „Heute spielst du um nichts. Lernen tust du trotzdem.“
+
+**Tests:** test2 P23–P27 (Blind-Wahl-Screen, Dewi-Zone, „?“ hin und zurück, Start mit Abbuchung, Chips im Kopf, Erklärung je Blind) und neuer Block Q1–Q10 (gestrichelter aktueller Chip, Multiplikator springt, Holo-Chips, kein kleiner Dewi im Ergebnis, Animation nur einmal, Big rutscht runter, Chips werden gold/grau, Dewi genervt, Chips nach dem Fortsetzen, Small blinkt grau). Dabei gefunden und behoben: Das „?“ mit Klasse `.qh` löste die Modul-Hilfe aus. Tests 2–5 grün. Zusätzlich im echten Chromium gemessen (ohne Screenshot): Blind-Wahl und Hand passen auf 390 × 844 und 375 × 667 ohne Scrollen, Kopf und Poker-Leiste ohne Überlauf, Chips im Kopf je 40 px.
+
+**Nicht auf einem echten iPhone getestet:** Wirkung von Archivo (offline im Test nicht geladen), Gleit- und Zahlen-Animationen, Chip-Klick und Haptik, Schimmer der Holo-Chips.

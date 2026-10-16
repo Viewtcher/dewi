@@ -90,7 +90,7 @@ const soloWords=pm=>{const m=MOD[pm];return survivalWords().filter(w=>!m||!m.can
 function saveRun(){
   if(!S||!S.items||S.i>=S.items.length)return;
   state.run={v:1,lang:state.lang,kind:S.kind,playmode:S.playmode,i:S.i,
-    items:S.items.map(x=>({k:x.w.k,kind:x.kind,type:x.type})),
+    items:S.items.map(x=>({k:x.w.k,kind:x.kind,type:x.type,ok:x.ok})),
     right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),
     streak0:S.streak0,last:S.last,lives:S.lives,score:S.score,shown:S.score,run:S.run,words:S.words,lost:S.lost,best:S.best,hand:S.hand||null,date:S.date||today()};
   save();
@@ -111,7 +111,7 @@ function openRun(kind){
 function resumeRun(){
   const r=openRun();if(!r)return false;
   const L=curLang(),by={};L.words.forEach(w=>{by[w.k]=w;});
-  S={items:r.items.map(x=>({w:by[x.k],kind:x.kind,type:x.type})),i:r.i,right:r.right,wrong:r.wrong,
+  S={items:r.items.map(x=>({w:by[x.k],kind:x.kind,type:x.type,ok:x.ok})),i:r.i,right:r.right,wrong:r.wrong,
      missed:(r.missed||[]).map(k=>by[k]).filter(Boolean),
      cur:null,streak0:r.streak0,kind:r.kind,playmode:r.playmode,last:r.last,lives:r.lives,score:r.score,
      shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best,hand:r.hand||null,date:r.date||today()};
@@ -142,7 +142,7 @@ function startRound(kind,opt){
     if(open.kind==='daily'&&kind!=='survival')return resumeRun();   // offene Daily-Hand: nur weiterspielen
     return askDiscard(()=>startRound(kind,Object.assign({force:1},o)));
   }
-  if(kind!=='survival'&&!o.blind)return chooseBlind(b=>startRound(kind,Object.assign({},o,{blind:b,force:1})));   // Version 133: erst der Einsatz
+  if(kind!=='survival'&&!o.blind)return showBlindStage(kind,o);   // erst der Einsatz (Version 133), als eigener Screen (Version 134)
   clearRun();
   const pool=kind==='survival'&&o.playmode&&o.playmode!=='random'?soloWords(o.playmode):survivalWords();
   if(kind==='survival'&&o.playmode&&o.playmode!=='random'&&pool.length<SOLO_MIN)return;
@@ -159,8 +159,11 @@ function closeSheet(){sheet.hidden=true;sheet.innerHTML='';document.body.style.o
 
 function sheetBody(inner){
   const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
-  sheet.innerHTML=`<div class="sin"><div class="shead"><button class="iconbtn" id="quit" aria-label="${t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button><div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div>${musIcon()}</div>${scoreRow()}${pokerRow()}${inner}</div>`;
+  const hand=S.kind==='daily'&&S.hand&&S.i<S.items.length;   // Version 134: Pokerhand mit Dewi-Chips und Dewi-Zone
+  const prog=hand?chipTrack():`<div class="sbar" role="progressbar" aria-valuemin="0" aria-valuemax="${S.items.length}" aria-valuenow="${S.i}"><i style="width:${pct}%;--p:${Math.max(pct/100,0.05)}"></i></div><div class="scount">${Math.min(S.i+1,S.items.length)} / ${S.items.length}</div>`;
+  sheet.innerHTML=`<div class="sin${hand?' hand':''}"><div class="shead"><button class="iconbtn" id="quit" aria-label="${hand?t('Round pausieren'):t('Round beenden')}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>${prog}${musIcon()}</div>${scoreRow()}${hand?handZone():''}${inner}</div>`;
   $('#quit').onclick=closeSheet;
+  if(hand)handAfterRender();
   sheet.scrollTop=0;
   if(S.kind==='survival'&&S.score>(S.shown||0))setTimeout(scoreTick,350);
 }
@@ -217,6 +220,7 @@ function settleCard(typedOk){
     r=record(w,ok,c.type);
     if(ok)S.right++;else{S.wrong++;S.lost++;S.missed.push(w);}
     c.dm=handSettle(S.hand,ok);   // Multiplikator der Pokerhand: +1, −1 (Big Blind) oder 0
+    card.ok=ok;                   // für die Dewi-Chips im Kopf (auch nach dem Fortsetzen)
     S.run=ok?(S.run||0)+1:0;
   }
   c.res=r;
@@ -263,7 +267,7 @@ function finish(typedOk){
   const typoNote=c.typo?`<p class="hint" style="margin-top:6px">${t('Kleiner Tippfehler. Richtig geschrieben: {0}','<b lang="'+(c.dir==='gl2id'?L.code.toLowerCase():state.ui)+'">'+esc(c.dir==='gl2id'?w.id:glFirst(w))+'</b>')}</p>`:'';
   sheetBody(`<div class="smain">${S.kind==='survival'?roundLives():''}<div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?t('Richtig'):t('Leider falsch')}</div>
     <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="${state.ui}">${esc(gl(w))}</span></div>${typoNote}${alts}</div>
-    ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
+    ${resultNote(ok)}${S.hand?'':mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
   try{n.focus({preventScroll:true});}catch(e){}
   if(ok&&S.kind!=='survival')levelUp(c,r);
