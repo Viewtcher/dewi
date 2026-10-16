@@ -645,7 +645,7 @@ function toReels(E,force=true){
   ok(ev(E,`(()=>{state.chips=0;state.chipSurv=null;const a=chipSurvival(10),b=chipSurvival(100),c=chipSurvival(10);return [a,b,c,state.chips].join()})()`)==='50,250,0,300','C4 Survival: 5 Chips pro Wort, höchstens 300 am Tag, kein Rekord-Bonus');
   ev(E,"state.chips=4820;state.chipShown=4820;save();render()");
   const pill=E.$('#chippill');
-  ok(!!pill&&pill.tagName!=='BUTTON'&&/4\.820/.test(pill.textContent)&&!!pill.querySelector('use[href="#chip-pink"]')&&!E.$('canvas.gem'),'C5 Pille: Dewi-Chip, volle Zahl unter 10.000, kein Knopf');
+  ok(!!pill&&pill.tagName==='BUTTON'&&/4\.820/.test(pill.textContent)&&!!pill.querySelector('use[href="#chip-pink"]')&&!E.$('canvas.gem'),'C5 Pille: Dewi-Chip, volle Zahl unter 10.000, öffnet den Shop (Version 138)');
   ev(E,"state.chips=12549;state.chipShown=12549;save();render()");
   ok(/12,5K/.test(E.$('#chippill').textContent)&&/12\.549/.test(E.$('#chippill').getAttribute('aria-label')),'C5b Pille kürzt ab, Vorlesetext nennt die volle Zahl');
   ok(['pink','gold','holo','grey','empty'].every(t=>!!E.d.getElementById('chip-'+t))&&!!E.d.getElementById('chipFaceClip')&&E.d.querySelectorAll('#chipsprite').length===1,'C6 Alle fünf Chip-Varianten einmal im Dokument');
@@ -683,6 +683,38 @@ function toReels(E,force=true){
   ok(B.chips===4321&&B.shields===1&&B.owned[0]==='x'&&B.equip.fur==='x'&&B.mtrack==='arcade'&&!('run' in B)&&!('dayOffset' in B),'SH10 Sicherung: Chips, Schutze, Artikel, Auswahl, Musik; ohne offene Hand');
   const R=JSON.parse(ev(E,`(()=>{const d=JSON.stringify({app:'kata',v:2,data:backupData()});state=Object.assign(defaults(),JSON.parse(d).data,{dayOffset:0});migrate();return JSON.stringify({c:state.chips,s:state.shields,v:state.chipV});})()`));
   ok(R.c===4321&&R.s===1&&R.v===1,'SH11 Einspielen: Chips nicht noch einmal × 10');
+}
+// --- Shop (Version 138)
+{
+  const E=fresh();
+  ev(E,"state.chips=10000;state.chipShown=10000;state.shields=0;state.owned=[];state.equip={};save();render()");
+  const cards=E.$$('#app .gmcard');
+  ok(cards.length===2&&!cards[0].classList.contains('shopcard')&&!!cards[0].querySelector('#gm')&&cards[1].classList.contains('shopcard')&&!!E.$('#shopbtn'),'SP1 Hauptmenü: Gamemodes unverändert, Shop-Kachel darunter');
+  E.click(E.$('#chippill'));ok(!!E.$('#shop.sin.shop'),'SP2 Chip-Pille öffnet den Shop');
+  ok(E.$$('.shit').length===4&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell und Kopf, Aktion erst nach Antippen');
+  E.click(E.$('[data-shop="fur:mitternacht"]'));
+  ok(/Kaufen · 6\.000/.test(E.$('#shact').textContent)&&E.$('.shdewi').innerHTML.includes('#5b4bb0')&&/Anprobe/.test(E.$('.shinfo').textContent),'SP4 Anprobe: Dewi trägt Mitternacht, Kaufen 6.000');
+  E.click(E.$('#shact'));
+  ok(ev(E,'state.chips')===4000&&ev(E,"state.owned.indexOf('fur:mitternacht')>=0")&&ev(E,'state.equip.fur')==='mitternacht'&&/Ausgerüstet/.test(E.$('#shact').textContent),'SP5 Gekauft und ausgerüstet, 6.000 abgezogen');
+  E.click(E.$('[data-shop="head:schleife"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.chips')===1500&&ev(E,'state.equip.head')==='schleife'&&E.$('.shdewi').innerHTML.includes('translate(132 40) rotate(18)'),'SP6 Schleife gekauft (2.500) und auf dem Kopf');
+  E.click(E.$('[data-shop="fur:classic"]'));
+  ok(/Ausrüsten/.test(E.$('#shact').textContent),'SP7 Gratis-Fell: Ausrüsten');
+  E.click(E.$('#shact'));ok(ev(E,'state.equip.fur')==='classic','SP7b Zurück auf Classic');
+  E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));
+  ok(E.d.documentElement.dataset.theme==='neon'&&/Noch 4\.500 Chips/.test(E.$('#shact').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP8 Theme als Vorschau, zu wenig Chips');
+  E.click(E.$('#shmine'));ok(!E.$('[data-shop="theme:neon"]')&&!!E.$('[data-shop="theme:classic"]'),'SP9 „Nur meine“ zeigt nur Gekauftes');
+  E.click(E.$('#shmine'));
+  E.click(E.$('.shtab[data-tab="con"]'));E.click(E.$('[data-shop="shield"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.shields')===1&&ev(E,'state.chips')===500&&/Vorrat 1\/2/.test(E.$('.shlist').textContent),'SP10 Streak-Schutz gekauft (1.000), Vorrat 1/2');
+  E.click(E.$('#quit'));
+  ok(!E.d.documentElement.dataset.theme&&!E.$('#shop')&&E.$('#app .mascot .dw').outerHTML.includes('translate(132 40)'),'SP11 Schließen: Theme-Vorschau weg, Dewi trägt die Schleife auch auf dem Startscreen');
+  ok(ev(E,"Object.keys(DWM).every(m=>dwSvg(m).includes('translate(132 40) rotate(18)'))")&&ev(E,"Object.keys(DWM).every(m=>{const s=dwSvg(m),r=s.indexOf('rotate('),i=s.indexOf('translate(132 40)');return r>=0&&i>r;})"),'SP12 Schleife in allen Stimmungen in der gedrehten Kopf-Gruppe');
+  ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('translate(132 40)')&&!ev(E,"stampSvg0('sly',0)").includes('#ff4f6d'),'SP13 Stempel zeigen Dewi im Original');
+  ev(E,"state.chips=7000;state.equip.theme='classic';save()");E.click(E.$('.shopcard'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
+  ok(E.d.documentElement.dataset.theme==='neon'&&ev(E,'state.equip.theme')==='neon','SP14 Gekauftes Theme bleibt nach dem Schließen');
+  const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
+  ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

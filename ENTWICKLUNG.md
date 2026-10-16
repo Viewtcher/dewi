@@ -31,7 +31,7 @@ dewi/
 ├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
 ├── poker.js              Poker (seit Version 133): Blinds, Multiplikator, Royal Flush, Serien-Bonus, Auszahlung
 ├── pokerui.js            Poker-Screens (seit Version 134/135): Blind-Wahl, Dewi-Zone, Dewi-Chips im Kopf, Multiplikator-Animation, Auszahlung, Royal Flush
-├── shop.js               Shop und Inventar (Phase 2, seit Version 137): Preise, Streak-Schutz, Sicherung
+├── shop.js               Shop und Inventar (Phase 2, seit Version 137/138): Preise, Streak-Schutz, Sicherung, Shop-Screen, Kauf, Ausrüsten, Themes
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -1594,3 +1594,23 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 neuer Block SH1–SH11 (Einsatz bei einem verpassten Tag, Moment und Einmaligkeit, eisblauer Stempel, zu viele Tage = Schutze bleiben, zwei Tage mit zwei Schutzen, keine Bonus-Stufe durch geschützte Tage, Serie wächst danach weiter, kein Einsatz ohne Serie, Sicherung vollständig ohne offene Hand, Einspielen ohne erneute Umrechnung × 10). Tests 2–5 grün.
 
 **Nicht auf einem echten iPhone getestet:** Farbe des eisblauen Stempels, der Moment. Ausprobieren erst mit dem Shop möglich.
+
+
+## Version 138 – Der Shop: Umkleide, Fell, Kopf, Theme, Streak-Schutz (Shop Phase 2, Etappe 2)
+
+> **Der Shop ist da.** Neue Kachel „Shop“ im Hauptmenü unter Gamemodes, und ein Tipp auf die Chip-Pille öffnet ihn ebenfalls. Oben die Umkleide mit Dewi und ihrem Kommentar, darunter Cosmetics, Extras und Consumables. Antippen probiert an, Themes färben den Screen als Vorschau. Startangebot: Fell „Mitternacht“ (Selten, 6.000), Kopf „Schleife“ (Gewöhnlich, 2.500), Theme „Neon-Nacht“ (Selten, 6.000), Streak-Schutz (1.000, höchstens 2 im Vorrat). Gestaltung: Design-Canvas „dewi. Poker-Screens“, Reihe „Phase 2: Shop“.
+
+**Entscheidungen (Vito):** Entwürfe im Canvas passen. Im Hauptmenü kommt nur die Shop-Kachel dazu, bestehende Kacheln bleiben unverändert. Startartikel wie auf der Auswahltafel markiert. Chip-Pille öffnet den Shop. Kein Sparziel auf der Kachel. Alles in einer Version (Shop, Schutz, Fell, Kopf, Theme).
+
+**Technik**
+- `shop.js`: `SHOP_ITEMS` (inkl. Gratis-Artikel Classic-Fell, kein Kopf, Dewi Classic), `openShop`/`renderShop`/`shopAct`/`closeShop`, Kaufen zieht Chips ab und rüstet Cosmetics gleich aus, Streak-Schutz erhöht den Vorrat. `applyTheme()` setzt `data-theme` auf `<html>`; Vorschau während der Anprobe, beim Schließen zurück auf das ausgerüstete Theme; beim Start wird das gekaufte Theme gesetzt.
+- Dewi (`dwSvg(mood, look)`): Fell über `DW_FUR` (Kapuze und Ohren; Mitternacht mit Sternen), Kopf-Teil über `dwHeadItem()` in der gedrehten Kopf-Gruppe, dadurch sitzt die Schleife in allen Stimmungen gleich (Test). Ohne `look` = aktuelle Ausstattung, also überall in der App. Stempel nutzen `DW_PLAIN` (Original), damit alte Tage nicht umgefärbt werden.
+- Theme „Neon-Nacht“ als `:root[data-theme=neon]` (Hintergrund, Flächen, Linien, Akzent). Fest bleiben Lernsprachen-Pink, Grün/Rot und Holo. Einige Poker- und Shop-Stellen haben noch feste Farben und färben nicht mit (später beim Designsystem-Durchgang).
+- Hauptmenü: Kachel `.shopcard` im Stil von Gamemodes (Violett-Pink statt Blau); Chip-Pille auf dem Startscreen ist jetzt ein Knopf.
+- Kleine iPhones: nur die Artikel-Liste scrollt, Umkleide kompakter, Kaufen-Knopf bleibt sichtbar.
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen):** „Probier ruhig an. Anfassen kostet nichts. Noch.“ · „Mitternacht mit Sternen. Endlich versteht mich jemand.“ · „Die Schleife. Süß, aber gefährlich.“ · „Neon-Nacht. Fühlt sich teuer an.“ · „Ein Tag frei, ohne dass ich es merke. Fast.“
+
+**Tests:** test4 neuer Block SP1–SP15 (Kachel unter unverändertem Gamemodes, Pille öffnet Shop, Reiter, Anprobe, Kauf und Ausrüsten mit Abzug, Gratis-Fell, Theme-Vorschau, zu wenig Chips, „Nur meine“, Streak-Schutz kaufen, Schließen setzt Vorschau zurück, Schleife in allen Stimmungen, Stempel im Original, gekauftes Theme bleibt, Sicherung mit Käufen); C5 angepasst. Dabei gefunden und behoben: Kachel und Shop-Screen hatten dieselbe ID. Tests 2–5 grün. Im echten Chromium gemessen: Shop passt auf 390 × 844 und 375 × 667 ohne Überlauf.
+
+**Nicht auf einem echten iPhone getestet:** Farben von Mitternacht und Neon-Nacht, Sitz der Schleife, Sound beim Kaufen. In der Vorschau zum Ausprobieren im Testbereich Chips sammeln oder per Survival.

@@ -88,7 +88,9 @@ function fmtChipShort(n){
 }
 function chipPill(id){
   const v=Math.min(state.chipShown|0,state.chips|0);
-  return `<div class="chippill" id="${id||'chippill'}" role="img" aria-label="${t('{0} Chips',fmtChip(state.chips|0))}"><span class="chipwrap">${chipSvg('pink')}</span><b>${fmtChipShort(v)}</b></div>`;
+  const inner=`<span class="chipwrap">${chipSvg('pink')}</span><b>${fmtChipShort(v)}</b>`;
+  if(!id)return `<button class="chippill" id="chippill" type="button" aria-label="${t('{0} Chips',fmtChip(state.chips|0))} · ${t('Shop öffnen')}">${inner}</button>`;   // Startscreen: öffnet den Shop (Version 138)
+  return `<div class="chippill" id="${id}" role="img" aria-label="${t('{0} Chips',fmtChip(state.chips|0))}">${inner}</div>`;
 }
 /* Zeile auf den Endscreens: Chip und „+300“ */
 function chipLine(total){

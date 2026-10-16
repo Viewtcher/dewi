@@ -49,4 +49,96 @@ function shieldMoment(){
 /* Sicherung (Version 137): alles außer der offenen Hand und den Test-Merkern */
 const BACKUP_SKIP=['run','dayOffset','dev','devTest','shieldNote'];
 function backupData(){const d={};Object.keys(state).forEach(k=>{if(BACKUP_SKIP.indexOf(k)<0)d[k]=state[k];});return d;}
-window.__shop={applyShields,missedSinceLast,backupData};
+
+/* ===== Shop-Screen (Version 138) =====
+   Gestaltung: Design-Canvas „dewi. Poker-Screens“, Reihe „Phase 2: Shop“ (Shop2, Startartikel).
+   Oben die Umkleide (Dewi groß mit aktueller Ausstattung bzw. Anprobe, daneben ihr Kommentar), darunter drei Reiter,
+   der Schalter „Nur meine“ (= Inventar) und die Aktionszone. Antippen probiert an, auch vor dem Kauf; ein Theme färbt
+   den Screen als Vorschau. Kaufen rüstet Cosmetics gleich aus. Gratis und immer im Besitz: Classic-Fell, kein Kopf, Dewi Classic. */
+const SHOP_ITEMS=[
+  {id:'fur:classic',slot:'fur',val:'classic',name:'Classic',rar:'free'},
+  {id:'fur:mitternacht',slot:'fur',val:'mitternacht',name:'Mitternacht',rar:'rare'},
+  {id:'head:none',slot:'head',val:'none',name:'Nichts',rar:'free'},
+  {id:'head:schleife',slot:'head',val:'schleife',name:'Schleife',rar:'common'},
+  {id:'theme:classic',slot:'theme',val:'classic',name:'Dewi Classic',rar:'free'},
+  {id:'theme:neon',slot:'theme',val:'neon',name:'Neon-Nacht',rar:'rare'},
+  {id:'shield',slot:'shield',val:'shield',name:'Streak-Schutz',rar:'shield'}
+];
+const SHOP_TABS=[['cos','Cosmetics',['fur','head']],['ext','Extras',['theme']],['con','Consumables',['shield']]];
+const SHOP_SECT={fur:'FELL',head:'KOPF',theme:'THEMES',shield:'STREAK-SCHUTZ'};
+const SHOP_RAR={free:'Gratis',common:'Gewöhnlich',rare:'Selten',legendary:'Legendär',shield:'Verbrauch'};
+const SHOP_Q={'fur:classic':'Das Original. Zeitlos, wie ich.','fur:mitternacht':'Mitternacht mit Sternen. Endlich versteht mich jemand.',
+  'head:none':'Ohne alles. Mutig.','head:schleife':'Die Schleife. Süß, aber gefährlich.',
+  'theme:classic':'Mein Wohnzimmer. Gemütlich dunkel.','theme:neon':'Neon-Nacht. Fühlt sich teuer an.',
+  shield:'Ein Tag frei, ohne dass ich es merke. Fast.'};
+const priceOf=it=>it.rar==='free'?0:it.rar==='shield'?SHOP_PRICE.shield:SHOP_PRICE[it.rar];
+const ownsItem=it=>it.rar==='free'||(state.owned||[]).indexOf(it.id)>=0;
+const equipOf=slot=>(state.equip&&state.equip[slot])||(slot==='head'?'none':'classic');
+const isEquipped=it=>it.slot!=='shield'&&equipOf(it.slot)===it.val;
+function applyTheme(id){try{const r=document.documentElement;if(id&&id!=='classic')r.dataset.theme=id;else delete r.dataset.theme;}catch(e){}}
+let SHOP=null;   // {tab, sel, mine} solange der Shop offen ist
+function openShop(){
+  SHOP={tab:'cos',sel:null,mine:false};
+  sheet.hidden=false;document.body.style.overflow='hidden';
+  renderShop();
+}
+function closeShop(){SHOP=null;applyTheme(equipOf('theme'));closeSheet();}
+function shopItemArt(it,size){
+  if(it.slot==='fur'||it.slot==='head')return dwSvg('haughty',{fur:it.slot==='fur'?it.val:'classic',head:it.slot==='head'?it.val:'none'});
+  if(it.slot==='theme'){const c=it.val==='neon'?['#0b1026','#141c3d','#35dcd2']:['#1a0f24','#251634','#f566b9'];
+    return `<span class="shsw" aria-hidden="true"><span style="background:${c[0]}"></span><span style="background:${c[1]}"></span><span style="background:${c[2]}"></span></span>`;}
+  return `<span class="shshield">${SHIELD_SVG}</span>`;
+}
+function renderShop(){
+  if(!SHOP)return;
+  const sel=SHOP.sel,tab=SHOP_TABS.find(x=>x[0]===SHOP.tab);
+  applyTheme(sel&&sel.slot==='theme'?sel.val:equipOf('theme'));   // Theme als Vorschau
+  const look={fur:sel&&sel.slot==='fur'?sel.val:equipOf('fur'),head:sel&&sel.slot==='head'?sel.val:equipOf('head')};
+  const quip=sel?t(SHOP_Q[sel.id]):t('Probier ruhig an. Anfassen kostet nichts. Noch.');
+  const info=sel?(ownsItem(sel)||sel.slot==='shield'?t(SHOP_RAR[sel.rar]):t('Anprobe')+' · '+t(SHOP_RAR[sel.rar])):'';
+  const sections=tab[2].map(slot=>{
+    const items=SHOP_ITEMS.filter(it=>it.slot===slot&&(!SHOP.mine||slot==='shield'||ownsItem(it)));
+    if(!items.length)return '';
+    return `<div class="shsec"><span class="shsect">${t(SHOP_SECT[slot])}</span><div class="shgrid">${items.map(it=>{
+      const tag=it.slot==='shield'?t('Vorrat {0}/{1}',state.shields|0,SHIELD_MAX):isEquipped(it)?t('Ausgerüstet'):ownsItem(it)?t('Gekauft'):fmtChip(priceOf(it));
+      const cls=['shit','r-'+it.rar,sel&&sel.id===it.id?'on':'',isEquipped(it)?'eq':ownsItem(it)?'own':''].join(' ');
+      return `<button class="${cls}" type="button" data-shop="${it.id}" aria-pressed="${!!(sel&&sel.id===it.id)}" aria-label="${esc(t(it.name))}, ${esc(t(SHOP_RAR[it.rar]))}, ${esc(tag)}"><span class="shart">${shopItemArt(it)}</span><span class="shn">${esc(t(it.name))}</span><span class="sht">${!ownsItem(it)&&it.slot!=='shield'?chipSvg('pink','shc'):''}${esc(tag)}</span></button>`;
+    }).join('')}</div></div>`;
+  }).join('');
+  /* Aktionszone */
+  let label=t('Antippen zum Anprobieren'),off=true,act='';
+  if(sel){
+    const p=priceOf(sel),acc=state.chips|0;
+    if(sel.slot==='shield'){
+      if((state.shields|0)>=SHIELD_MAX)label=t('Vorrat voll ({0}/{1})',SHIELD_MAX,SHIELD_MAX);
+      else if(acc<p)label=t('Noch {0} Chips',fmtChip(p-acc));
+      else{label=t('Kaufen')+' · '+fmtChip(p);off=false;act='buy';}
+    }else if(isEquipped(sel))label=t('Ausgerüstet');
+    else if(ownsItem(sel)){label=t('Ausrüsten');off=false;act='equip';}
+    else if(acc<p)label=t('Noch {0} Chips',fmtChip(p-acc));
+    else{label=t('Kaufen')+' · '+fmtChip(p);off=false;act='buy';}
+  }
+  sheet.innerHTML=`<div class="sin shop" id="shop"><div class="shead"><button class="iconbtn" id="quit" aria-label="${t('Shop schließen')}">${XIC}</button><span class="shtitle">SHOP</span>${chipPill('chippill2')}</div>
+    <div class="shroom"><div class="shdewi">${dwSvg(sel&&sel.slot==='shield'?'shades':'haughty',look)}</div><div class="shsay"><div class="bubble shb" role="status">${esc(quip)}</div>${info?`<span class="shinfo">${esc(info)}</span>`:''}</div></div>
+    <div class="shtabs" role="tablist">${SHOP_TABS.map(x=>`<button role="tab" type="button" class="shtab${x[0]===SHOP.tab?' on':''}" aria-selected="${x[0]===SHOP.tab}" data-tab="${x[0]}">${t(x[1])}</button>`).join('')}</div>
+    <div class="shmine"><span id="shminel">${t('Nur meine')}</span><button type="button" role="switch" class="shsw2${SHOP.mine?' on':''}" id="shmine" aria-checked="${SHOP.mine}" aria-labelledby="shminel"><i></i></button></div>
+    <div class="shlist">${sections}</div>
+    <button class="btn primary block actbtn" id="shact" type="button"${off?' aria-disabled="true"':''} data-act="${act}">${esc(label)}</button></div>`;
+  $('#quit').onclick=closeShop;
+  $$('.shtab',sheet).forEach(b=>b.onclick=()=>{SHOP.tab=b.dataset.tab;SHOP.sel=null;renderShop();});
+  $('#shmine').onclick=()=>{SHOP.mine=!SHOP.mine;renderShop();};
+  $$('[data-shop]',sheet).forEach(b=>b.onclick=()=>{SHOP.sel=SHOP_ITEMS.find(x=>x.id===b.dataset.shop);sfx('pop');renderShop();});
+  $('#shact').onclick=()=>shopAct(act);
+}
+function shopAct(act){
+  const it=SHOP&&SHOP.sel;if(!it||!act)return;
+  if(act==='buy'){
+    const p=priceOf(it);if((state.chips|0)<p)return;
+    state.chips=(state.chips|0)-p;state.chipShown=state.chips;
+    if(it.slot==='shield')state.shields=Math.min(SHIELD_MAX,(state.shields|0)+1);
+    else{state.owned=(state.owned||[]).concat([it.id]);state.equip=Object.assign({},state.equip,{[it.slot]:it.val});}
+    sfx('chips');haptic([20,40,20]);
+  }else if(act==='equip'){state.equip=Object.assign({},state.equip,{[it.slot]:it.val});sfx('lockin');haptic(15);}
+  save();renderShop();
+}
+window.__shop={applyShields,missedSinceLast,backupData,openShop,shopAct};
