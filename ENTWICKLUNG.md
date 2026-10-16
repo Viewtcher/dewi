@@ -1555,3 +1555,18 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test2 B5b, P14/P14b, P21/P21b/P21c (Auszahlung, ×0, Royal Flush mit +1.000, Holo-Chips, Dewi mit Dollar-Augen), P28–P31 (Hinweis auf dem Startscreen, Sticheln ab 21 Uhr, nicht vorher, Folge-Hand schließt mit „Fertig“); test4 E4/E6 um `chipclick` und `royal`; test3 kennt die Stimmung `cash`. Tests 2–5 grün. Zusätzlich im echten Chromium mit echten Zeitabläufen (nicht im Testmodus) durchgespielt: Royal Flush, ×0 und normale Hand auf 390 × 844 und 375 × 667 ohne Fehler, ohne Scrollen, Endzustand vollständig (Heldenzahl, Pille, Spruch, Knopf).
 
 **Nicht auf einem echten iPhone getestet:** Fanfare und Chip-Klick, Haptik, Chipregen, Schrift Archivo, Gesamtlänge der Bühne. Prüfliste für Phase 1 siehe Bericht an Vito.
+
+
+## Version 136 – Poker-Zeile klein wie im Survival, Dewi nur in den Modulen
+
+> **Weniger ist mehr während der Hand.** Die Dewi-Zone mit Kachel (Version 134) ist weg. Unter den Dewi-Chips steht jetzt nur eine kleine Zeile wie Herzen und Score im Survival: rechts der Einsatz-Chip mit Betrag, ein kleines ×, der Multiplikator weiß leuchtend in der Score-Schrift und ein kleines „?“. Dewi erscheint in der Hand wieder in jedem Modul (Ergebnis-Screens mit Spruch, unter dem Reels-Automaten).
+
+**Entscheidungen (Vito, nach dem ersten Test auf dem iPhone):** Dewi soll in der Daily Round wie vorher in jedem Modul zu sehen sein; dafür oben weder Dewi noch Kachel. Links in der Zeile bleibt frei (der Serien-Bonus steht auf der Blind-Wahl und in der Auszahlung). Die Regeln erklärt ein kleines „?“ an der Zeile, der Text erscheint darunter.
+
+**Technik:** `pkBar()` in `pokerui.js` ist jetzt die Zeile `#pkrow` (Höhe 40 px wie `.scrow`); Multiplikator `.pkm` in `var(--num)` 21 px mit dem Leuchten von `.scnum`. Animationen bleiben (hoch mit Chip-Klick, runter beim Big Blind, grau blinken beim Small Blind). `#pkq` blendet `#pkhelp` ein und aus. Rückbau aus Version 134: kein Ausblenden von Dewi auf Ergebnis-Screens und unter Reels, keine Gesichts-Weiterleitung. Blind-Wahl und Auszahlung behalten ihre Dewi-Zone.
+
+**Vorschau-Ablauf (neu):** Jeder Stand von `entwicklung` kann vorab als Artefakt „dewi. Vorschau“ in Claude geöffnet werden, ohne Pull Request und ohne dass etwas live geht. Die Vorschau hat ihren eigenen Spielstand (eigene Adresse), der echte Spielstand auf GitHub Pages bleibt unberührt.
+
+**Tests:** test2 P24, P26/P26b, P27, Q2, Q4, Q6, Q8, Q10 an die Zeile angepasst (Zahl ohne ×, Dewi im Modul). Tests 2–5 grün. Im echten Chromium gemessen: Zeile 40 px, kein Überlauf bei 390 und 375 px.
+
+**Nicht auf einem echten iPhone getestet:** Leuchten und Animation der Zahl, Größe des „?“.

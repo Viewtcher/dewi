@@ -20,6 +20,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 5. In `ENTWICKLUNG.md` den nächsten Eintrag `## Version NN – Titel` anhängen: was, warum, Technik, Teststand und was nur auf einem echten iPhone prüfbar ist.
 6. Commit mit der Nachricht `Version NN – Titel` (darfst du selbst).
 7. **Push nach `entwicklung` darfst du selbst, ohne Nachfrage.** Das sichert die Version auf GitHub, verändert aber `main` nicht und veröffentlicht nichts.
+   Danach die gebaute `index.html` als Artefakt **„dewi. Vorschau“** neu veröffentlichen (immer dasselbe Artefakt, Titel im `<title>` auf „dewi. Vorschau“ ändern, `icon.png` mitgeben), damit Vito den Stand in Claude testen kann, ohne dass etwas live geht. Die Vorschau hat einen eigenen Spielstand.
 8. **Push nach `main` nur nach Vitos ausdrücklichem OK.** Das veröffentlicht die App. Vorher kurz sagen, was live geht.
 9. Kurzer Bericht auf Deutsch: was sich geändert hat, was Vito auf dem iPhone prüfen soll. Immer erwähnen, dass es **nicht auf einem echten iPhone getestet** ist (Ton, Haptik, Timing, Sprachausgabe).
 
@@ -49,9 +50,9 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 135)
+## Offene Punkte (Stand Version 136)
 
-- **Poker Phase 1 fertig** (Versionen 131–135 nach `konzept-poker-shop.md`). Veröffentlichung auf `main` wartet auf Vitos OK. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
+- **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
 - Shop (Phase 2) nach den Erfahrungen aus Phase 1. Vorher Fragen stellen.
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.

@@ -277,22 +277,24 @@ ul.rows{list-style:none;margin:0 0 10px 3px;padding:0;border-left:3px solid var(
 .ctrack .cslot{border-radius:50%;background:var(--surface);border:2px solid var(--line);box-sizing:border-box}
 .ctrack .sh{animation:ctshim 2.6s ease-in-out infinite}
 @keyframes ctshim{50%{filter:brightness(1.25) saturate(1.3)}}
-.pkbar{display:flex;align-items:center;justify-content:space-between;gap:10px;height:76px;padding:0 16px 0 12px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
-.pkleft{display:flex;flex-direction:column;gap:5px;min-width:0}
-.pkstake{display:flex;align-items:center;gap:6px;font:700 15px/1 var(--display);color:var(--ink)}
-.pks{width:22px;height:22px;flex:none;display:block}
-.pkbonus{display:flex;align-items:center;gap:5px;font:700 13px/1 var(--display);color:var(--muted)}
-.pkm{position:relative;display:block;height:56px;overflow:hidden;font:italic 800 52px/56px 'Archivo',var(--display);font-stretch:125%;color:#ffc23d;text-align:right;white-space:nowrap}
+.pkrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:-6px;min-height:40px}
+.pkright{display:flex;align-items:center;gap:8px}
+.pkstake{display:flex;align-items:center;gap:5px;font:600 15px/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums}
+.pks{width:20px;height:20px;flex:none;display:block}
+.pkx{font:600 13px/1 var(--display);color:var(--faint)}
+.pkm{position:relative;display:inline-block;min-width:1ch;height:24px;overflow:hidden;font:400 21px/24px var(--num);letter-spacing:.01em;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 10px rgba(255,255,255,.45),0 0 2px rgba(255,255,255,.6);text-align:right}
 .pkm span{display:block}
-.pkm.up .n{animation:pkup .5s cubic-bezier(.2,1.6,.4,1)}
-@keyframes pkup{0%{transform:translateY(30%) scale(.7);opacity:.4}55%{transform:scale(1.22)}100%{transform:none;opacity:1}}
+.pkm.up .n{animation:pkup .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pkup{0%{transform:translateY(40%) scale(.7);opacity:.4}55%{transform:scale(1.4)}100%{transform:none;opacity:1}}
 .pkm.down .o{position:absolute;right:0;top:0;animation:pkdo .55s ease-in forwards}
 .pkm.down .n{animation:pkdn .55s ease-out}
-@keyframes pkdo{to{transform:translateY(70%);opacity:0}}
-@keyframes pkdn{from{transform:translateY(-70%);opacity:0}to{transform:none;opacity:1}}
+@keyframes pkdo{to{transform:translateY(80%);opacity:0}}
+@keyframes pkdn{from{transform:translateY(-80%);opacity:0}to{transform:none;opacity:1}}
 .pkm.hold .n{animation:pkhold 1s ease-in-out}
-@keyframes pkhold{15%,55%{color:#8a7a9a}35%,75%{color:#ffc23d}}
-.sin.hand #rlm{display:none}
+@keyframes pkhold{15%,55%{color:#8a7a9a;text-shadow:none}35%,75%{color:#fff}}
+.pkq{width:22px;height:22px;padding:0;border:0;border-radius:50%;background:#fff;color:#111;font:800 13px/1 var(--display);display:grid;place-items:center;box-shadow:0 2px 0 rgba(0,0,0,.4);flex:none}
+.pkq.on{background:var(--c-pink);color:#fff}
+.pkhelp{margin:-4px 0 0;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:13px;line-height:1.4;color:var(--muted)}
 /* Auszahlung und Royal Flush (Version 135) */
 .paystage{position:relative;overflow:hidden}
 .paystage.rf::before{content:'';position:absolute;left:50%;top:56%;width:610px;height:610px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(168,136,255,.2),rgba(26,15,36,0) 62%);pointer-events:none}

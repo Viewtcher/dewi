@@ -6,9 +6,9 @@
 
    Blind-Wahl     showBlindStage(): eigener Screen im Round-Blatt. Tipp auf einen Chip: er gleitet weg, die Hand startet.
    Während der Hand  chipTrack() ersetzt den Fortschrittsbalken (geschafft = holo, solange der Royal Flush drin ist,
-                  sonst pink/gold; verloren = grau; aktuell = gestrichelt). handZone() = Dewi-Kopf + Poker-Leiste,
-                  das „?“ tauscht die Leiste gegen Dewis Erklärung. Multiplikator: springt hoch (+1), rutscht runter (−1, Big Blind),
-                  blinkt grau (verloren beim Small Blind). Die Module selbst bleiben unverändert; ihr kleiner Dewi entfällt in der Hand. */
+                  sonst pink/gold; verloren = grau; aktuell = gestrichelt). Seit Version 136 darunter nur eine kleine Zeile
+                  wie im Survival (pkBar): Einsatz, ×, Multiplikator weiß leuchtend, „?“. Dewi erscheint in der Hand nur in den Modulen.
+                  Multiplikator: springt hoch (+1), rutscht runter (−1, Big Blind), blinkt grau (verloren beim Small Blind). */
 const FLAME_SM='<svg class="flsm" viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 2 C14 7 20 10 20 18 C20 24 16.5 28 12 28 C7.5 28 4 24 4 18 C4 13.5 7 11 8.5 8 C9.5 11 10.5 12 11.5 12 C11 8 11 5 12 2Z" fill="#ff8a3d" stroke="#2a1630" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 15 C14 18 16 19.5 16 22 C16 24.5 14.2 26 12 26 C9.8 26 8 24.5 8 22 C8 19.8 10 18 12 15Z" fill="#ffc23d"/></svg>';
 const XIC='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 const bonusPill=(pct,id)=>pct?`<span class="bonuspill"${id?` id="${id}"`:''} role="img" aria-label="${t('Serien-Bonus +{0} %',pct)}">${FLAME_SM}<span aria-hidden="true">+${pct} %</span></span>`:'';
@@ -78,22 +78,25 @@ function chipTrack(){
   const cells=mods.map(({x,i})=>x.ok===true?chipSvg(won,'ct'+(won==='holo'?' sh':'')):x.ok===false?chipSvg('grey','ct'):i===S.i?chipSvg('empty','ct now'):'<i class="cslot"></i>').join('');
   return `<div class="ctrack" style="--n:${mods.length}" role="img" aria-label="${t('{0} von {1} Modulen geschafft',okN,mods.length)}">${cells}</div>`;
 }
-/* Poker-Leiste: Einsatz-Chip, Serien-Bonus, Multiplikator (Heldenzahl). anim: 'up' | 'down' | 'hold' | '' */
+/* Poker-Zeile (Version 136): klein wie Score und Herzen im Survival. Links bleibt frei, rechts Einsatz-Chip mit Betrag,
+   kleines ×, Multiplikator weiß leuchtend wie der Survival-Score, daneben ein kleines „?“ für die Regeln.
+   anim: 'up' (springt hoch, Chip-Klick) | 'down' (rutscht runter, Big Blind) | 'hold' (blinkt grau, Small Blind) | '' */
 function pkBar(anim){
   const h=S.hand,m=h.mult,name=h.blind==='big'?'Big Blind':'Small Blind';
-  const num=anim==='down'?`<span class="o" aria-hidden="true">×${m+1}</span><span class="n">×${m}</span>`:`<span class="n">×${m}</span>`;
-  return `<div class="pkbar" id="pkrow"><div class="pkleft"><span class="pkstake">${chipSvg(h.blind==='big'?'gold':'pink','pks')}<span class="vh">${name} </span>${h.stake?fmtChip(h.stake):t('ohne Einsatz')}</span>${h.pct?`<span class="pkbonus">${FLAME_SM}+${h.pct} %</span>`:''}</div>
-    <b class="pkm${anim?' '+anim:''}" id="pkmult" aria-label="${t('Multiplikator')} ×${m}">${num}</b></div>`;
+  const num=anim==='down'?`<span class="o" aria-hidden="true">${m+1}</span><span class="n">${m}</span>`:`<span class="n">${m}</span>`;
+  return `<div class="pkrow" id="pkrow"><span class="pkspace"></span><div class="pkright"><span class="pkstake">${chipSvg(h.blind==='big'?'gold':'pink','pks')}<span class="vh">${name} </span>${h.stake?fmtChip(h.stake):t('ohne Einsatz')}</span><span class="pkx" aria-hidden="true">×</span><b class="pkm${anim?' '+anim:''}" id="pkmult" aria-label="${t('Multiplikator')} ×${m}">${num}</b><button class="pkq" id="pkq" type="button" aria-label="${t('Erklärung')}" aria-expanded="false">?</button></div></div><p class="pkhelp" id="pkhelp" hidden>${dzHelp(h.blind==='big'?'big':'small')}</p>`;
 }
 function handZone(){
-  const c=S.cur,h=S.hand;
+  const c=S.cur;
   let anim='';
   if(c&&c.settled&&!c.pkAnim&&c.dm!==undefined){anim=c.dm>0?'up':c.dm<0?'down':!c.ok?'hold':'';}
-  return `<div class="dzone hand" id="dzone">${dzHead(h.face||'sly')}<div class="dzbody" id="dzbody">${pkBar(anim)}</div></div>`;
+  return pkBar(anim);
 }
-/* Nach dem Einsetzen ins Blatt: Animation einmal pro Karte, Ton und Haptik dazu */
+/* Nach dem Einsetzen ins Blatt: „?“ verbinden, Animation einmal pro Karte, Ton und Haptik dazu */
 function handAfterRender(){
-  const c=S&&S.cur;bindDz(S.hand.blind==='big'?'big':'small');
+  const q=$('#pkq'),hp=$('#pkhelp');
+  if(q&&hp)q.onclick=e=>{e.stopPropagation();const open=hp.hidden;hp.hidden=!open;q.setAttribute('aria-expanded',String(open));q.classList.toggle('on',open);};
+  const c=S&&S.cur;
   if(!c||!c.settled||c.pkAnim||c.dm===undefined)return;
   c.pkAnim=true;
   if(c.dm>0){sfx('chipclick',120);haptic(12);}

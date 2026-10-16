@@ -289,22 +289,24 @@ ul.rows{list-style:none;margin:0 0 10px 3px;padding:0;border-left:3px solid var(
 .ctrack .cslot{border-radius:50%;background:var(--surface);border:2px solid var(--line);box-sizing:border-box}
 .ctrack .sh{animation:ctshim 2.6s ease-in-out infinite}
 @keyframes ctshim{50%{filter:brightness(1.25) saturate(1.3)}}
-.pkbar{display:flex;align-items:center;justify-content:space-between;gap:10px;height:76px;padding:0 16px 0 12px;border-radius:18px;background:var(--surface);border:1px solid var(--line)}
-.pkleft{display:flex;flex-direction:column;gap:5px;min-width:0}
-.pkstake{display:flex;align-items:center;gap:6px;font:700 15px/1 var(--display);color:var(--ink)}
-.pks{width:22px;height:22px;flex:none;display:block}
-.pkbonus{display:flex;align-items:center;gap:5px;font:700 13px/1 var(--display);color:var(--muted)}
-.pkm{position:relative;display:block;height:56px;overflow:hidden;font:italic 800 52px/56px 'Archivo',var(--display);font-stretch:125%;color:#ffc23d;text-align:right;white-space:nowrap}
+.pkrow{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:-6px;min-height:40px}
+.pkright{display:flex;align-items:center;gap:8px}
+.pkstake{display:flex;align-items:center;gap:5px;font:600 15px/1 var(--display);color:var(--muted);font-variant-numeric:tabular-nums}
+.pks{width:20px;height:20px;flex:none;display:block}
+.pkx{font:600 13px/1 var(--display);color:var(--faint)}
+.pkm{position:relative;display:inline-block;min-width:1ch;height:24px;overflow:hidden;font:400 21px/24px var(--num);letter-spacing:.01em;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 0 10px rgba(255,255,255,.45),0 0 2px rgba(255,255,255,.6);text-align:right}
 .pkm span{display:block}
-.pkm.up .n{animation:pkup .5s cubic-bezier(.2,1.6,.4,1)}
-@keyframes pkup{0%{transform:translateY(30%) scale(.7);opacity:.4}55%{transform:scale(1.22)}100%{transform:none;opacity:1}}
+.pkm.up .n{animation:pkup .45s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pkup{0%{transform:translateY(40%) scale(.7);opacity:.4}55%{transform:scale(1.4)}100%{transform:none;opacity:1}}
 .pkm.down .o{position:absolute;right:0;top:0;animation:pkdo .55s ease-in forwards}
 .pkm.down .n{animation:pkdn .55s ease-out}
-@keyframes pkdo{to{transform:translateY(70%);opacity:0}}
-@keyframes pkdn{from{transform:translateY(-70%);opacity:0}to{transform:none;opacity:1}}
+@keyframes pkdo{to{transform:translateY(80%);opacity:0}}
+@keyframes pkdn{from{transform:translateY(-80%);opacity:0}to{transform:none;opacity:1}}
 .pkm.hold .n{animation:pkhold 1s ease-in-out}
-@keyframes pkhold{15%,55%{color:#8a7a9a}35%,75%{color:#ffc23d}}
-.sin.hand #rlm{display:none}
+@keyframes pkhold{15%,55%{color:#8a7a9a;text-shadow:none}35%,75%{color:#fff}}
+.pkq{width:22px;height:22px;padding:0;border:0;border-radius:50%;background:#fff;color:#111;font:800 13px/1 var(--display);display:grid;place-items:center;box-shadow:0 2px 0 rgba(0,0,0,.4);flex:none}
+.pkq.on{background:var(--c-pink);color:#fff}
+.pkhelp{margin:-4px 0 0;padding:10px 12px;border-radius:12px;background:var(--surface);border:1px solid var(--line);font-size:13px;line-height:1.4;color:var(--muted)}
 /* Auszahlung und Royal Flush (Version 135) */
 .paystage{position:relative;overflow:hidden}
 .paystage.rf::before{content:'';position:absolute;left:50%;top:56%;width:610px;height:610px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(168,136,255,.2),rgba(26,15,36,0) 62%);pointer-events:none}
@@ -8920,9 +8922,9 @@ window.__poker={bonusPct,blindOffer,handNew,handSettle,handPayout};
 
    Blind-Wahl     showBlindStage(): eigener Screen im Round-Blatt. Tipp auf einen Chip: er gleitet weg, die Hand startet.
    Während der Hand  chipTrack() ersetzt den Fortschrittsbalken (geschafft = holo, solange der Royal Flush drin ist,
-                  sonst pink/gold; verloren = grau; aktuell = gestrichelt). handZone() = Dewi-Kopf + Poker-Leiste,
-                  das „?“ tauscht die Leiste gegen Dewis Erklärung. Multiplikator: springt hoch (+1), rutscht runter (−1, Big Blind),
-                  blinkt grau (verloren beim Small Blind). Die Module selbst bleiben unverändert; ihr kleiner Dewi entfällt in der Hand. */
+                  sonst pink/gold; verloren = grau; aktuell = gestrichelt). Seit Version 136 darunter nur eine kleine Zeile
+                  wie im Survival (pkBar): Einsatz, ×, Multiplikator weiß leuchtend, „?“. Dewi erscheint in der Hand nur in den Modulen.
+                  Multiplikator: springt hoch (+1), rutscht runter (−1, Big Blind), blinkt grau (verloren beim Small Blind). */
 const FLAME_SM='<svg class="flsm" viewBox="0 0 24 30" aria-hidden="true" focusable="false"><path d="M12 2 C14 7 20 10 20 18 C20 24 16.5 28 12 28 C7.5 28 4 24 4 18 C4 13.5 7 11 8.5 8 C9.5 11 10.5 12 11.5 12 C11 8 11 5 12 2Z" fill="#ff8a3d" stroke="#2a1630" stroke-width="2.4" stroke-linejoin="round"/><path d="M12 15 C14 18 16 19.5 16 22 C16 24.5 14.2 26 12 26 C9.8 26 8 24.5 8 22 C8 19.8 10 18 12 15Z" fill="#ffc23d"/></svg>';
 const XIC='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
 const bonusPill=(pct,id)=>pct?`<span class="bonuspill"${id?` id="${id}"`:''} role="img" aria-label="${t('Serien-Bonus +{0} %',pct)}">${FLAME_SM}<span aria-hidden="true">+${pct} %</span></span>`:'';
@@ -8992,22 +8994,25 @@ function chipTrack(){
   const cells=mods.map(({x,i})=>x.ok===true?chipSvg(won,'ct'+(won==='holo'?' sh':'')):x.ok===false?chipSvg('grey','ct'):i===S.i?chipSvg('empty','ct now'):'<i class="cslot"></i>').join('');
   return `<div class="ctrack" style="--n:${mods.length}" role="img" aria-label="${t('{0} von {1} Modulen geschafft',okN,mods.length)}">${cells}</div>`;
 }
-/* Poker-Leiste: Einsatz-Chip, Serien-Bonus, Multiplikator (Heldenzahl). anim: 'up' | 'down' | 'hold' | '' */
+/* Poker-Zeile (Version 136): klein wie Score und Herzen im Survival. Links bleibt frei, rechts Einsatz-Chip mit Betrag,
+   kleines ×, Multiplikator weiß leuchtend wie der Survival-Score, daneben ein kleines „?“ für die Regeln.
+   anim: 'up' (springt hoch, Chip-Klick) | 'down' (rutscht runter, Big Blind) | 'hold' (blinkt grau, Small Blind) | '' */
 function pkBar(anim){
   const h=S.hand,m=h.mult,name=h.blind==='big'?'Big Blind':'Small Blind';
-  const num=anim==='down'?`<span class="o" aria-hidden="true">×${m+1}</span><span class="n">×${m}</span>`:`<span class="n">×${m}</span>`;
-  return `<div class="pkbar" id="pkrow"><div class="pkleft"><span class="pkstake">${chipSvg(h.blind==='big'?'gold':'pink','pks')}<span class="vh">${name} </span>${h.stake?fmtChip(h.stake):t('ohne Einsatz')}</span>${h.pct?`<span class="pkbonus">${FLAME_SM}+${h.pct} %</span>`:''}</div>
-    <b class="pkm${anim?' '+anim:''}" id="pkmult" aria-label="${t('Multiplikator')} ×${m}">${num}</b></div>`;
+  const num=anim==='down'?`<span class="o" aria-hidden="true">${m+1}</span><span class="n">${m}</span>`:`<span class="n">${m}</span>`;
+  return `<div class="pkrow" id="pkrow"><span class="pkspace"></span><div class="pkright"><span class="pkstake">${chipSvg(h.blind==='big'?'gold':'pink','pks')}<span class="vh">${name} </span>${h.stake?fmtChip(h.stake):t('ohne Einsatz')}</span><span class="pkx" aria-hidden="true">×</span><b class="pkm${anim?' '+anim:''}" id="pkmult" aria-label="${t('Multiplikator')} ×${m}">${num}</b><button class="pkq" id="pkq" type="button" aria-label="${t('Erklärung')}" aria-expanded="false">?</button></div></div><p class="pkhelp" id="pkhelp" hidden>${dzHelp(h.blind==='big'?'big':'small')}</p>`;
 }
 function handZone(){
-  const c=S.cur,h=S.hand;
+  const c=S.cur;
   let anim='';
   if(c&&c.settled&&!c.pkAnim&&c.dm!==undefined){anim=c.dm>0?'up':c.dm<0?'down':!c.ok?'hold':'';}
-  return `<div class="dzone hand" id="dzone">${dzHead(h.face||'sly')}<div class="dzbody" id="dzbody">${pkBar(anim)}</div></div>`;
+  return pkBar(anim);
 }
-/* Nach dem Einsetzen ins Blatt: Animation einmal pro Karte, Ton und Haptik dazu */
+/* Nach dem Einsetzen ins Blatt: „?“ verbinden, Animation einmal pro Karte, Ton und Haptik dazu */
 function handAfterRender(){
-  const c=S&&S.cur;bindDz(S.hand.blind==='big'?'big':'small');
+  const q=$('#pkq'),hp=$('#pkhelp');
+  if(q&&hp)q.onclick=e=>{e.stopPropagation();const open=hp.hidden;hp.hidden=!open;q.setAttribute('aria-expanded',String(open));q.classList.toggle('on',open);};
+  const c=S&&S.cur;
   if(!c||!c.settled||c.pkAnim||c.dm===undefined)return;
   c.pkAnim=true;
   if(c.dm>0){sfx('chipclick',120);haptic(12);}
@@ -9351,7 +9356,7 @@ function finish(typedOk){
   const typoNote=c.typo?`<p class="hint" style="margin-top:6px">${t('Kleiner Tippfehler. Richtig geschrieben: {0}','<b lang="'+(c.dir==='gl2id'?L.code.toLowerCase():state.ui)+'">'+esc(c.dir==='gl2id'?w.id:glFirst(w))+'</b>')}</p>`:'';
   sheetBody(`<div class="smain">${S.kind==='survival'?roundLives():''}<div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?t('Richtig'):t('Leider falsch')}</div>
     <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="${state.ui}">${esc(gl(w))}</span></div>${typoNote}${alts}</div>
-    ${resultNote(ok)}${S.hand?'':mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
+    ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
   try{n.focus({preventScroll:true});}catch(e){}
   if(ok&&S.kind!=='survival')levelUp(c,r);
@@ -10400,7 +10405,7 @@ function showReels(w){
     </div>`}
     <div id="exfb"></div></div>`);
   const cab=$('#cab'),sign=$('#sign');
-  const say=k=>{const m=$('#rlm');if(m)m.innerHTML=mascot(k,null,'sm');if(S&&S.hand&&m){const d=m.querySelector('.dw');const mm=d&&d.className.match(/m-(\w+)/);if(mm)dzFace(mm[1]);}};   // in der Pokerhand spricht Dewi nicht, ihr Gesicht oben reagiert
+  const say=k=>{const m=$('#rlm');if(m)m.innerHTML=mascot(k,null,'sm');};
   const alive=()=>!!$('#rlm');
   const el=i=>$$('.reel',sheet)[i];
 
