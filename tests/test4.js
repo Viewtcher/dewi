@@ -652,6 +652,38 @@ function toReels(E,force=true){
   ok(!/Diamant/.test(E.$('#app').textContent)&&!ev(E,"typeof GEMV!=='undefined'||typeof GEM_MILES!=='undefined'||typeof gemAdd!=='undefined'"),'C7 Keine Diamanten mehr in Anzeige und Code');
   ok(ev(E,"(()=>{chipRain(5);const b=document.querySelector('.drain');const r=!!b&&b.querySelectorAll('use[href^=\"#chip-\"]').length===5;b&&b.remove();return r;})()")||ev(E,'reduceMotion()'),'C8 Reels-Regen besteht aus Chips');
 }
+// --- Streak-Schutz und Sicherung (Version 137)
+{
+  const E=fresh();
+  const setDays=(js)=>ev(E,`(()=>{const t=today();state.done={};state.shielded={};state.shieldNote=null;${js};save();render();})()`);
+  // Serie 10 Tage bis vorgestern, gestern verpasst, 1 Schutz
+  setDays("for(let i=2;i<=11;i++)state.done[addDays(t,-i)]=true;state.shields=1");
+  ok(ev(E,'streak()')===10&&ev(E,'state.shields')===0&&ev(E,'state.shielded[addDays(today(),-1)]')===true,'SH1 Gestern verpasst, 1 Schutz: Serie bleibt bei 10, Schutz verbraucht');
+  ok(!!E.$('.moment.shield')&&/Streak-Schutz eingesetzt/.test(E.$('.moment.shield').textContent)&&/bleibt bei 10 Tagen/.test(E.$('.moment.shield').textContent),'SH2 Eisblauer Moment mit Serienstand');
+  E.click(E.$('.moment.shield'));
+  ok(!E.$('.moment.shield')&&ev(E,'state.shieldNote')===null,'SH3 Moment nur einmal');
+  const yd=ev(E,'addDays(today(),-1)');const st=E.$(`[data-stamp="${yd}"]`);
+  ok(!!st&&st.dataset.kind==='ice'&&/geschützt/.test(st.getAttribute('aria-label')),'SH4 Gestern: eisblauer Stempel „geschützt“');
+  // Zu viele verpasste Tage: Schutze bleiben
+  setDays("for(let i=4;i<=8;i++)state.done[addDays(t,-i)]=true;state.shields=2");
+  ok(ev(E,'streak()')===0&&ev(E,'state.shields')===2&&!E.$('.moment.shield'),'SH5 Drei Tage verpasst, zwei Schutze: Serie weg, Schutze bleiben');
+  // Zwei Tage verpasst, zwei Schutze
+  setDays("for(let i=3;i<=9;i++)state.done[addDays(t,-i)]=true;state.shields=2");
+  ok(ev(E,'streak()')===7&&ev(E,'state.shields')===0,'SH6 Zwei verpasste Tage, zwei Schutze: Serie 7 bleibt');
+  ok(ev(E,'bonusPct(streak())')===10,'SH7 Geschützte Tage zählen nicht für Bonus-Stufen (7 Tage = +10 %)');
+  E.click(E.$('.moment.shield'));
+  // Heute gespielt nach geschütztem Tag: Serie wächst weiter
+  ev(E,'state.done[today()]=true;save()');
+  ok(ev(E,'streak()')===8,'SH8 Heute gespielt: Serie zählt weiter (8)');
+  // Kein Einsatz ohne vorherige Serie
+  setDays("state.shields=2");
+  ok(ev(E,'state.shields')===2,'SH9 Ohne gespielte Tage wird nichts eingesetzt');
+  // Sicherung
+  const B=JSON.parse(ev(E,`(()=>{state.chips=4321;state.shields=1;state.owned=['x'];state.equip={fur:'x'};state.mtrack='arcade';state.run={v:1,kind:'daily'};state.dayOffset=3;return JSON.stringify(backupData());})()`));
+  ok(B.chips===4321&&B.shields===1&&B.owned[0]==='x'&&B.equip.fur==='x'&&B.mtrack==='arcade'&&!('run' in B)&&!('dayOffset' in B),'SH10 Sicherung: Chips, Schutze, Artikel, Auswahl, Musik; ohne offene Hand');
+  const R=JSON.parse(ev(E,`(()=>{const d=JSON.stringify({app:'kata',v:2,data:backupData()});state=Object.assign(defaults(),JSON.parse(d).data,{dayOffset:0});migrate();return JSON.stringify({c:state.chips,s:state.shields,v:state.chipV});})()`));
+  ok(R.c===4321&&R.s===1&&R.v===1,'SH11 Einspielen: Chips nicht noch einmal × 10');
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();

@@ -31,6 +31,7 @@ dewi/
 ├── chips.js              Chips (Währung, seit Version 132): Dewi-Chip als SVG-Symbole, Pille, Survival-Chips, Chipregen
 ├── poker.js              Poker (seit Version 133): Blinds, Multiplikator, Royal Flush, Serien-Bonus, Auszahlung
 ├── pokerui.js            Poker-Screens (seit Version 134/135): Blind-Wahl, Dewi-Zone, Dewi-Chips im Kopf, Multiplikator-Animation, Auszahlung, Royal Flush
+├── shop.js               Shop und Inventar (Phase 2, seit Version 137): Preise, Streak-Schutz, Sicherung
 ├── modules/
 │   ├── _registry.js      Modul-Register (registerModule, MOD, resolveModule) mit Erklärung der Begriffe
 │   ├── _shared.js        Gemeinsame Helfer: Hervorhebung, Wortkacheln, Distraktoren, editDist, Leben-Anzeige
@@ -1570,3 +1571,26 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test2 P24, P26/P26b, P27, Q2, Q4, Q6, Q8, Q10 an die Zeile angepasst (Zahl ohne ×, Dewi im Modul). Tests 2–5 grün. Im echten Chromium gemessen: Zeile 40 px, kein Überlauf bei 390 und 375 px.
 
 **Nicht auf einem echten iPhone getestet:** Leuchten und Animation der Zahl, Größe des „?“.
+
+
+## Version 137 – Streak-Schutz, Inventar und Sicherung (Shop Phase 2, Etappe 1)
+
+> **Der Streak-Schutz funktioniert.** Er rettet genau einen verpassten Tag, wird beim nächsten Öffnen automatisch eingesetzt und hinterlässt einen eisblauen Stempel. Kaufen kann man ihn ab der Shop-Etappe; die Technik dahinter steht jetzt. Die Sicherung nimmt ab jetzt alles mit außer der offenen Hand. Grundlage: `konzept-poker-shop.md` Abschnitte 7 und 9.
+
+**Plan Phase 2 (Vito):** 1) Streak-Schutz, Inventar, Sicherung (diese Version) · 2) Gestaltungsrunde mit Nova im Design-Canvas · 3) Shop-Screen mit Kauf · 4) Dewi-Fell und -Kopf · 5) Themes. Preise wie im Konzept, später nachjustieren (`SHOP_PRICE` in `shop.js`). Startangebot: 1 Fell, 1 Kopf-Teil, 1 Theme, Streak-Schutz.
+
+**Entscheidungen (Vito):** Fehlen mehr Tage, als Schutze da sind, bleiben alle im Vorrat (sie werden nur eingesetzt, wenn sie die Serie wirklich retten). Eigener kleiner Moment beim Einsatz. Getestet wird mit dem Shop (kein Knopf im Testbereich). Sicherung mit allem außer der offenen Hand, auch Musik und Sound.
+
+**Technik (`shop.js`, `app.src.html`)**
+- Zustand: `shields` (0–2), `shielded` {Tag: true}, `owned` [], `equip` {} (die letzten beiden für die Cosmetics ab Version 139).
+- `applyShields()` läuft beim Aufbau des Startscreens: Lücke zwischen dem letzten gespielten Tag und gestern; passt sie in den Vorrat, werden alle Tage der Lücke geschützt und `shieldNote` gesetzt, sonst passiert nichts.
+- `streak()` überbrückt geschützte Tage, zählt sie aber nicht mit (Serienzahl bleibt stehen, auch für die Bonus-Stufen des Pokers).
+- Stempel: neue Stufe `ice` (`stampKind`), eisblau eingefärbt, ohne Haken, Miene „Cool“, Beschriftung „geschützt“ bzw. „Streak-Schutz“.
+- Moment `shieldMoment()`: eisblauer Schild, „Streak-Schutz eingesetzt“, „Deine Serie bleibt bei {n} Tagen.“, Dewi-Spruch, Rest im Vorrat. Einmalig.
+- Sicherung `backupData()`: der ganze Zustand außer `run`, `dayOffset`, `dev`, `devTest`, `shieldNote`; Format `v:2`. Alte Sicherungen lassen sich weiter einspielen. Ändert die Entscheidung aus Version 130 (Diamanten waren nicht drin).
+
+**Neue Sprüche (Entwurf Marlin, bitte prüfen):** „Du warst weg. Ich hab's vertuscht. Gern geschehen.“ · „Eis drauf, Serie gerettet. Diesmal.“
+
+**Tests:** test4 neuer Block SH1–SH11 (Einsatz bei einem verpassten Tag, Moment und Einmaligkeit, eisblauer Stempel, zu viele Tage = Schutze bleiben, zwei Tage mit zwei Schutzen, keine Bonus-Stufe durch geschützte Tage, Serie wächst danach weiter, kein Einsatz ohne Serie, Sicherung vollständig ohne offene Hand, Einspielen ohne erneute Umrechnung × 10). Tests 2–5 grün.
+
+**Nicht auf einem echten iPhone getestet:** Farbe des eisblauen Stempels, der Moment. Ausprobieren erst mit dem Shop möglich.
