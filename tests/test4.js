@@ -890,6 +890,19 @@ function toReels(E,force=true){
   ev(E,"window.__padSeq=null");
   ok(ev(E,"(()=>{state.ui='en';return t('Pads')+'|'+t('Farbe lesen, leuchtendes Pad drücken')})()")==='Pads|Read the color, hit the glowing pad','PD14 Englische Texte');
 }
+// ===== Version 168: Farbwörter bekommen meistens Pads
+{
+  const E=fresh();
+  const r=ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='merah');S={kind:'daily',last:null};let n=0,f=0;
+    for(let i=0;i<600;i++){S.last=null;if(chooseModule({w,kind:'review'})==='pads')n++;if(chooseModule({w,kind:'final'})==='pads')f++;}
+    S.last='pads';const twice=Array.from({length:50},()=>chooseModule({w,kind:'review'})).filter(x=>x==='pads').length;
+    const h=LANGS.id.words.find(x=>x.id==='halo');S.last=null;const other=Array.from({length:50},()=>chooseModule({w:h,kind:'review'})).filter(x=>x==='pads').length;
+    S=null;return {n,f,twice,other};})()`);
+  ok(r.n>350&&r.n<490,'PP1 Farbwort bekommt etwa 2 von 3 Mal Pads ('+r.n+'/600)');
+  ok(r.f===0,'PP2 Abschlusswort bleibt schwer (kein Pads-Vorrang)');
+  ok(r.twice===0,'PP3 Nie zweimal Pads hintereinander');
+  ok(r.other===0,'PP4 Wörter ohne Farbe bekommen nie Pads');
+}
 // ===== Version 160: Symbolwörter bekommen meistens Slots
 {
   const E=fresh();

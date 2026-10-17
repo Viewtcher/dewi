@@ -2021,3 +2021,13 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** alle vier Suiten grün (das Verhalten selbst ist nur auf dem iPhone prüfbar).
 
 **Nur auf einem echten iPhone prüfbar:** Doppeltippen auf Knöpfe und leere Flächen, schnelles Tippen bei Pads/Slots/Tippen-Modul, Zwei-Finger-Zoom im Safari-Tab und in der Home-Bildschirm-Verknüpfung, Tippen in Textfelder (Name, Tippen-Modul). Neuere iOS-Versionen können das Sperren im normalen Safari-Tab teilweise ignorieren; die Gesten-Sperre fängt das ab.
+
+## Version 168 – Farbwörter bekommen meistens Pads
+
+**Was:** Wie bei Slots für Zahlen und Früchte bekommen Farbwörter (rot, blau, grün …) jetzt etwa 2 von 3 Mal das Modul Pads, vor allem in der Daily Round und im Rush/Survival mit Random. Das Abschlusswort der Daily Round bleibt schwer (Tippen oder Bausteine), und nie zweimal dasselbe Modul hintereinander.
+
+**Technik:** `PADS_PREF=2/3` in `rounds.js`, in `chooseModule` direkt hinter der Slots-Regel. Wörter ohne Farbe sind nicht betroffen (`can`-Prüfung des Moduls).
+
+**Tests:** test4 PP1–PP4 (Anteil 421/600, Abschlusswort, nie zweimal, Nicht-Farbwörter). Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** ob 2 von 3 sich beim Spielen richtig anfühlt oder zu oft vorkommt.
