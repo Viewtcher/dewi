@@ -2062,3 +2062,10 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Warum:** Der Weg Gerät → Liste → App funktioniert; die eigenen Einträge bleiben zusätzlich im Gerät, doppelte werden dort einfach ignoriert.
 **Technik:** Drei Zeilen in `SYN_RAW` (Schlüssel mit Kurspräfix `de:`). Test SY1 prüft jetzt alle Kurse, neu SY19.
 **Tests:** alle vier Suiten grün. **Nur auf dem iPhone prüfbar:** nichts Neues.
+
+## Version 172 – Hauptmenü fest
+
+**Was:** Im Hauptmenü (Home) lässt sich die Seite nicht mehr scrollen oder wippen. Ist der Bildschirm niedriger als der Inhalt (z. B. Safari mit Leisten, kleinere iPhones, geöffnete „?“-Erklärung), wird der Inhalt automatisch etwas kleiner, damit nichts abgeschnitten wird. Unter 60 % Verkleinerung bleibt die Seite stattdessen scrollbar. Vokabelheft, Einstellungen und Shop bleiben unverändert.
+**Warum:** Vito wollte das Hauptmenü fixiert haben; Kleinerwerden statt Abschneiden war seine Wahl.
+**Technik:** `homeFit()` in `app.src.html` setzt `html.homelock` (`body{position:fixed;overflow:hidden;overscroll-behavior:none}`) und `zoom` auf `.app`; läuft nach `render()` im Home, bei `resize`/`orientationchange` und per MutationObserver (nur Kinder, Text, `hidden`, kein Klassenwechsel, damit Animationen nichts auslösen). Messung (Chromium): 393×852 kein Zoom, 375×667 Zoom 0,88, 360×520 Zoom 0,67, 320×400 entsperrt. Tests HL0/HL1.
+**Nur auf dem iPhone prüfbar:** dass wirklich nichts mehr wippt (Safari-Verknüpfung), Verhalten beim Drehen und bei geöffneter „?“-Erklärung.

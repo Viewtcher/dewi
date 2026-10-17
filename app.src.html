@@ -137,6 +137,7 @@ button.day:active .st{transform:scale(.93)}
 button.day.now .st{outline:2px solid #f566b9;outline-offset:1px;border-radius:3px}
 /* Große Marke */
 html.sv-open,html.sv-open body{overflow:hidden}
+html.homelock,html.homelock body{overflow:hidden;overscroll-behavior:none}html.homelock body{position:fixed;inset:0;width:100%}   /* Version 172 */
 .stampview{position:fixed;inset:0;z-index:60;display:grid;place-items:center;animation:svin .22s ease-out}
 .sv-back{position:absolute;inset:0;background:radial-gradient(circle at 50% 44%,rgba(70,25,90,.88),rgba(18,8,26,.95))}
 .sv-x{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:16px;width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--text);font-size:26px;line-height:1;z-index:2}
@@ -4129,6 +4130,7 @@ function applyStatic(){
 }
 function render(){
   closeStamp();
+  homeFit(false);
   applyStatic();
   if(!state.ui){tabs.hidden=true;app.innerHTML=uiView();bindUi();return;}
   if(!state.nameAsked){tabs.hidden=true;app.innerHTML=nameView();bindName();return;}
@@ -4136,11 +4138,29 @@ function render(){
   if(!state.lang||!LANGS[state.lang]){tabs.hidden=true;app.innerHTML=langView();bindPick('[data-lang]','lang','#langgo',v=>{state.lang=v;save();view='home';render();});return;}
   tabs.hidden=false;
   $$('.tab',tabs).forEach(b=>{if(b.dataset.v===view)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current');});
-  if(view==='home'){app.innerHTML=homeView();bindHome();}
+  if(view==='home'){app.innerHTML=homeView();bindHome();homeFit(true);}
   else if(view==='book'){app.innerHTML=bookView();bindBook();}
   else{app.innerHTML=settingsView();bindSettings();}
   $$('[data-v]',app).forEach(b=>b.addEventListener('click',()=>go(b.dataset.v)));   // Version 139: Zahnrad, Vokabelheft-Kachel und Zurück-Pfeile statt Tab-Leiste
 }
+/* Version 172: Hauptmenü fest (kein Scrollen, kein Wippen). Ist der Bildschirm niedriger als der Inhalt, wird der Inhalt per zoom kleiner;
+   unter HOME_MIN bleibt die Seite stattdessen scrollbar, damit nie etwas abgeschnitten wird. */
+const HOME_MIN=0.6;let homeOn=false,homeRaf=0;
+function homeFit(on){
+  if(on!==undefined)homeOn=on;
+  const root=document.documentElement;
+  app.style.zoom='';
+  if(!homeOn){root.classList.remove('homelock');return;}
+  root.classList.add('homelock');
+  const need=app.offsetHeight,have=window.innerHeight;
+  const sc=need>have?have/need:1;
+  if(sc<HOME_MIN){root.classList.remove('homelock');return;}
+  if(sc<1)app.style.zoom=sc.toFixed(3);
+  try{window.scrollTo(0,0);}catch(e){}
+}
+const homeSoon=()=>{if(!homeOn||homeRaf)return;homeRaf=requestAnimationFrame(()=>{homeRaf=0;homeFit();});};
+window.addEventListener('resize',homeSoon);window.addEventListener('orientationchange',homeSoon);
+new MutationObserver(homeSoon).observe(app,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:['hidden']});
 function go(v){view=v;render();try{window.scrollTo(0,0);}catch(e){}}
 $$('.tab[data-v]',tabs).forEach(b=>b.onclick=()=>{if(SHOP)closeShop();go(b.dataset.v);});   // Version 146: Heute/Vokabelheft schließen den Shop mit, falls er offen ist
 $('#shoptab',tabs).onclick=()=>openShop();   // Version 144: Leiste wieder da, an der Stelle der Einstellungen jetzt der Shop
