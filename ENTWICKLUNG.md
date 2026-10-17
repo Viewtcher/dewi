@@ -1955,3 +1955,15 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 PD1–PD14 (Farbwörter, Orange-Frucht ausgeschlossen, 11 Farben, Raster und Folgenlänge je Stufe, kürzere Folge ohne bekannte Farben, Solo-Kachel, Ablauf richtig/falsch, Lösung wird gezeigt, englische Texte). Die automatischen Durchläufe in test2–5 lösen Pads selbst. Alle vier Suiten grün. Chromium 375/430 px: 2×2-Pads 145 px, 3×3-Pads 93 px, alles im Bild, kein seitliches Scrollen, drei Farbwörter passen in eine Zeile.
 
 **Nur auf einem echten iPhone prüfbar:** Klang der Pad-Töne, wie das Leuchten wirkt, ob schnelles Tippen bei Folgen sauber erkannt wird.
+
+## Version 162 – NEU-Marke bei den Solo-Modulen entfernt
+
+**Was:** Die gelbe „NEU“-Pille auf den Solo-Kacheln (Swipe, Reels, Reihenfolge, Slots, Pads) ist weg. Neue Module bekommen sie auch künftig nicht mehr.
+
+**Warum:** Vito wollte keine Marke mehr; sie klebte ohnehin dauerhaft an allen Modulen.
+
+**Technik:** `isNew` aus allen `registerModule`-Aufrufen und aus der Doku in `modules/_registry.js` entfernt, Marken-Ausgabe in `playmodes.js` und CSS `.mnew` gelöscht. Das Wort „NEU“ im Vokabelheft-Filter (`Neu`) und „Noch neu“ im Fortschritt sind etwas anderes und bleiben.
+
+**Tests:** alle vier Suiten grün, keine Anpassung nötig.
+
+**Nur auf einem echten iPhone prüfbar:** nichts Besonderes, nur Blick auf die Solo-Kacheln ohne Pille.

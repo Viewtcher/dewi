@@ -93,6 +93,6 @@ function showPads(w){
   c.padHit=k=>{const p=pads.find(x=>x.dataset.c===k);if(p)hit(p);};   // Testhaken
 }
 
-registerModule({id:'pads',name:()=>t('Pads'),desc:()=>t('Farbe lesen, leuchtendes Pad drücken'),tone:'t4',solo:true,isNew:true,fallback:'choice',
+registerModule({id:'pads',name:()=>t('Pads'),desc:()=>t('Farbe lesen, leuchtendes Pad drücken'),tone:'t4',solo:true,fallback:'choice',
   icon:'<svg width="44" height="40" viewBox="0 0 44 40" aria-hidden="true"><rect x="2" y="1" width="40" height="38" rx="5" fill="#141018" stroke="#c9c9d6" stroke-width="2"/><rect x="7" y="6" width="14" height="13" rx="3" fill="#a15cff"/><rect x="23" y="6" width="14" height="13" rx="3" fill="#ff7cc6"/><rect x="7" y="21" width="14" height="13" rx="3" fill="#2fd16a"/><rect x="23" y="21" width="14" height="13" rx="3" fill="#ffd52e"/><circle cx="14" cy="12" r="4" fill="#fff" opacity=".45"/></svg>',
   can:w=>!!padKey(w),show:w=>showPads(w)});

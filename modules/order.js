@@ -181,6 +181,6 @@ function showOrder(pair){
   };
 }
 
-registerModule({id:'order',name:()=>t('Reihenfolge'),desc:()=>t('Wörter in die richtige Reihenfolge schieben'),tone:'t5',solo:true,isNew:true,fallback:'swipe',
+registerModule({id:'order',name:()=>t('Reihenfolge'),desc:()=>t('Wörter in die richtige Reihenfolge schieben'),tone:'t5',solo:true,fallback:'swipe',
   icon:'<svg width="46" height="40" viewBox="0 0 46 40" fill="none" aria-hidden="true"><rect x="2" y="6" width="12" height="12" rx="3.5" fill="#6ee77a"/><rect x="17" y="6" width="12" height="12" rx="3.5" fill="#35dcd2"/><rect x="32" y="6" width="12" height="12" rx="3.5" fill="#a888ff"/><path d="M8 29h30M33 25l5 4-5 4" stroke="#b9a5cc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   can:w=>!!orderPair(w),show:w=>showOrder(orderPair(w))});
