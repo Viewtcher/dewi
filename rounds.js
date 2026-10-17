@@ -14,9 +14,10 @@
 
    RUSH (kind 'rush', Version 163), Gamemode neben Survival: Zehn Module aus bekannten Wörtern (Random oder Solo) so schnell wie möglich.
      Stoppuhr läuft von der ersten Karte bis das zehnte Modul gewertet ist. Pro Karte ein Versuch; ein verlorenes Modul gibt
-     +5 Sekunden Strafe und es geht weiter. Keine Leben, keine Punkte, kein Lernstand (Stufen und Fälligkeiten bleiben unberührt).
+     +5 Sekunden Strafe und es geht weiter. Keine Leben, keine Punkte. Lernstand wie im Survival: ein richtiges Modul steigert die Stufe
+     (einmal pro Tag und Wort), ein verlorenes stuft nie zurück.
      Bestzeit je Playmode ('rush:<playmode>', in Millisekunden, kleiner ist besser), Chips nach Endzeit (chipRush).
-     Ein Rush wird nicht gespeichert: Verlassen = abgebrochen.
+     Pausieren: Verlassen speichert den Run samt bisheriger Spielzeit (state.run, el = Millisekunden ohne Pausen), Weiterspielen setzt die Uhr fort.
 
    S = Zustand der laufenden Round: items (Karten), i (aktuelle Karte), cur (aktuelle Karte mit Wort und Modul), kind, playmode … */
 let S=null;
@@ -86,7 +87,7 @@ function rushPenalty(){
 try{
   document.addEventListener('visibilitychange',()=>{
     if(!S||S.kind!=='rush'||S.t1||!S.t0)return;
-    if(document.hidden)S.pa=Date.now();
+    if(document.hidden){S.pa=Date.now();saveRun();}
     else if(S.pa){S.t0+=Date.now()-S.pa;S.pa=0;}   // im Hintergrund läuft die Uhr nicht weiter
   });
 }catch(e){}
@@ -151,10 +152,10 @@ function soloCount(pm,limit){
    damit der Spielstand klein bleibt und sich beim Laden gegen die aktuelle Wortliste prüfen lässt.
    Die angefangene Karte beginnt beim Fortsetzen von vorn (halb gesetzte Kacheln lassen sich nicht retten). */
 function saveRun(){
-  if(!S||!S.items||S.i>=S.items.length||S.kind==='rush')return;   // ein Rush wird nicht gespeichert
+  if(!S||!S.items||S.i>=S.items.length||(S.kind==='rush'&&S.t1))return;   // fertiger Rush (zehntes Modul gewertet) wird nicht mehr gespeichert
   state.run={v:1,lang:state.lang,kind:S.kind,playmode:S.playmode,i:S.i,
     items:S.items.map(x=>({k:x.w.k,kind:x.kind,type:x.type,ok:x.ok})),
-    right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),
+    right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),el:S.kind==='rush'?rushPlay():0,pen:S.pen|0,
     streak0:S.streak0,last:S.last,lives:S.lives,score:S.score,shown:S.score,run:S.run,words:S.words,lost:S.lost,best:S.best,hand:S.hand||null,date:S.date||today()};
   save();
 }
@@ -177,7 +178,8 @@ function resumeRun(){
   S={items:r.items.map(x=>({w:by[x.k],kind:x.kind,type:x.type,ok:x.ok})),i:r.i,right:r.right,wrong:r.wrong,
      missed:(r.missed||[]).map(k=>by[k]).filter(Boolean),
      cur:null,streak0:r.streak0,kind:r.kind,playmode:r.playmode,last:r.last,lives:r.lives,score:r.score,
-     shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best,hand:r.hand||null,date:r.date||today()};
+     shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best,hand:r.hand||null,date:r.date||today(),
+     t0:r.kind==='rush'?Date.now()-(r.el|0):0,t1:0,pen:r.pen|0,pa:0};   // Rush: Uhr läuft ab der bisherigen Spielzeit weiter
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
   return true;
@@ -186,7 +188,7 @@ function resumeRun(){
 function askDiscard(cb){
   const r=openRun();if(!r)return cb();
   const o=document.createElement('div');o.className='askbox';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');
-  const what=r.kind==='survival'?t('Survival'):t('Daily Round'),hand=r.kind==='daily';   // Version 133: eine Daily-Hand lässt sich nicht verwerfen
+  const what=r.kind==='survival'?t('Survival'):r.kind==='rush'?'Rush':t('Daily Round'),hand=r.kind==='daily';   // Version 133: eine Daily-Hand lässt sich nicht verwerfen
   o.innerHTML=`<div class="ask-back"></div><div class="ask-in"><b>${hand?t('Offene Hand'):t('Offener Run: {0}',what)}</b>
     <p>${hand?t('Erst die offene Hand zu Ende spielen.'):t('Wenn du neu startest, ist der alte Run weg.')}</p>
     ${hand?'':`<button class="btn primary block" id="askgo">${t('Trotzdem neu starten')}</button>`}
@@ -220,7 +222,12 @@ function startRound(kind,opt){
   showItem();
 }
 
-function closeSheet(){sheet.hidden=true;sheet.innerHTML='';sheet.classList.remove('shop-open');document.body.style.overflow='';S=null;render();}
+function closeSheet(){
+  if(S&&S.kind==='rush'&&S.t0&&S.i<S.items.length){
+    if(S.t1){S.i=S.items.length;return showRushEnd();}   // zehntes Modul war schon gewertet: Ergebnis zeigen statt verlieren
+    saveRun();                                            // Pause: Stand samt Spielzeit sichern
+  }
+  sheet.hidden=true;sheet.innerHTML='';sheet.classList.remove('shop-open');document.body.style.overflow='';S=null;render();}
 
 function sheetBody(inner){
   const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
@@ -278,8 +285,10 @@ function settleCard(typedOk){
   const ok=c.ok,w=c.w,card=c.card;
   let r={};
   if(S.kind==='rush'){
-    if(ok){S.right++;S.words++;S.run=(S.run||0)+1;}
-    else{S.wrong++;S.pen++;S.run=0;rushLater();}
+    if(ok){
+      S.right++;S.words++;S.run=(S.run||0)+1;
+      if(daily().got.indexOf(w.k)<0)r=record(w,true,'review');   // Stufe +1, einmal pro Tag und Wort; ein Fehler stuft nie zurück
+    }else{S.wrong++;S.pen++;S.run=0;rushLater();}
     if(S.i>=S.items.length-1&&!S.t1){S.t1=Date.now();}   // zehntes Modul gewertet: Uhr steht
     if(S.t1)rushLater();
   }else if(S.kind==='survival'){
@@ -495,6 +504,7 @@ function streakMoment(E){
 
 /* ===== Endscreen des Rush (Version 163): Zeit zählt hoch, Bestzeit, Chips nach Endzeit ===== */
 function showRushEnd(){
+  clearRun();
   S.i=S.items.length;
   const play=rushPlay(),pen=S.pen*RUSH_PEN*1000,total=play+pen,best=S.best;
   const rec=!best||total<best;

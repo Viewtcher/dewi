@@ -985,7 +985,7 @@ function toReels(E,force=true){
   ev(E,"nextStep()");
   ok(!!E.$('#again')&&!!E.$('#snum')&&/Rush/.test(E.$('.kicker').textContent),'RU9 Endscreen');
   ok(Math.abs(ev(E,'bestFor("rush:random")')-t1)<80&&ev(E,'bestFor("rush:random")')>=34900,'RU10 Bestzeit gespeichert (Millisekunden inkl. Strafe)');
-  ok(JSON.stringify(ev(E,'state.progress.id'))===w0,'RU11 Lernstand unverändert');
+  ok(ev(E,`(()=>{const o=${w0},n=state.progress.id;let up=0,down=0;Object.keys(o).forEach(k=>{if(n[k].l>o[k].l)up++;if(n[k].l<o[k].l)down++;});return up>0&&down===0})()`),'RU11 Lernstand: richtige Module steigern, ein Fehler stuft nie zurück');
   ok(ev(E,'state.chips')>0&&ev(E,'state.chipRush.n')>0,'RU12 Chips nach Endzeit');
   ok(ev(E,"fmtTime(75300)")==='1:15.3'&&ev(E,"fmtTime(59990)")==='0:59.9'&&ev(E,"fmtTime(0)")==='0:00.0','RU13 Zeitformat');
   ok(ev(E,`(()=>{state.chips=0;state.chipRush=null;const a=chipRush(50000,false),b=chipRush(80000,false),c=chipRush(400000,false),d=chipRush(50000,true);return [a,b,c,d].join()})()`)==='60,45,5,40','RU14 Chip-Stufen und Tageslimit 150 (60+45+5, dann nur noch 40)');
@@ -1005,6 +1005,22 @@ function toReels(E,force=true){
   ok(ev(E,'bestFor("rush:random")')===b1&&!E.$('.es-rec'),'RU16 Langsamer: Bestzeit bleibt');
   ev(E,"closeSheet()");
   ev(E,"state.progress.id={};save();render()");ev(E,"known_=0");
+}
+{
+  // Pause und Weiterspielen
+  const E=fresh();known(E,8);ev(E,"state.done[today()]=true;save();render()");
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ev(E,"S.t0=Date.now()-20000");
+  ev(E,"S.cur.ok=false;settleCard()");ev(E,"nextStep()");ev(E,"settleCard(true)");ev(E,"nextStep()");
+  ev(E,"closeSheet()");
+  ok(ev(E,'state.run&&state.run.kind')==='rush'&&ev(E,'state.run.el')>=19900&&ev(E,'state.run.pen')===1&&ev(E,'state.run.i')===2,'RU21 Pause: Run samt Spielzeit gespeichert');
+  E.click(E.$('#gm'));
+  ok(!!E.$('#contrun')&&/Rush/.test(E.$('#contrun').textContent),'RU22 Weiterspielen-Kachel für den Rush');
+  E.click(E.$('#contrun'));
+  ok(ev(E,'S.kind')==='rush'&&ev(E,'S.i')===2&&ev(E,'S.pen')===1&&ev(E,'rushPlay()')>=19900&&ev(E,'rushPlay()')<23000,'RU23 Weiter: gleiche Karte, Strafe und Zeit bleiben');
+  for(let i=2;i<10;i++){ev(E,"settleCard(true)");if(i<9)ev(E,"nextStep()");}
+  ev(E,"closeSheet()");
+  ok(!!E.$('#again')&&ev(E,'state.run')===null&&ev(E,'bestFor("rush:random")')>=24900,'RU24 Verlassen nach dem zehnten Modul zeigt das Ergebnis, kein offener Run');
 }
 {
   const E=fresh();known(E,3);

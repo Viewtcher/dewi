@@ -1981,3 +1981,13 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 RU1–RU20 (Kachel, Auswahl, Start, Uhr, Strafe, Ende, Bestzeit, Lernstand unverändert, Chip-Stufen und Tageslimit, Sperre, wenige Wörter, Englisch). Alle vier Suiten grün. Chromium-Maße bei 375/430 px: Kachel gleich breit wie Survival, Uhr tickt, kein Überlauf.
 
 **Nur auf einem echten iPhone prüfbar:** Wie sich die Uhr und das Antippen im Tempo anfühlen, Haptik/Sound beim Endscreen, ob die Chip-Stufen zu großzügig oder zu knapp sind.
+
+## Version 164 – Rush: Stufen steigern, Pause, schnelleres Design
+
+**Was:** (1) Rush steigert den Lernstand wie Survival: ein richtiges Modul gibt Stufe +1 (einmal pro Tag und Wort), ein verlorenes stuft nie zurück. Das ersetzt „Lernstand unberührt“ aus Version 163. (2) Ein Rush lässt sich pausieren: Verlassen (X oder App in den Hintergrund) speichert den Run samt bisheriger Spielzeit und Strafen. Auf der Gamemodes-Seite erscheint oben die grüne „Weiterspielen“-Kachel („Rush · Random · 0:42.3 · noch 6 Module“). Die Uhr läuft erst beim Weiterspielen weiter, die angefangene Karte beginnt von vorn. (3) Die Rush-Kachel liegt nur noch 8 px unter Survival (vorher etwa 40 px). (4) Neues Aussehen: Verlauf von Lila zu Weiß, schräge Speed-Lines (statisch, keine Animation wegen der Wärme), Stoppuhr mit Fahrtlinien in Lila.
+
+**Technik:** `saveRun` speichert für Rush `el` (Spielzeit ohne Pausen) und `pen`; `resumeRun` setzt `t0=jetzt-el`. `closeSheet` sichert einen laufenden Rush; ist das zehnte Modul schon gewertet, zeigt es stattdessen das Ergebnis (nichts geht verloren). `visibilitychange` speichert beim Verstecken der App. `continueCard` zeigt Survival- und Rush-Runs. Der Abstand kommt aus einem überflüssigen Wrapper (`margin-top:12px`) plus `.card`-Rand plus Flex-Abstand; jetzt `margin-top:-6px` an der Kachel.
+
+**Tests:** test4 RU11 angepasst (nur steigen, nie fallen), neu RU21–RU24 (Pause, Weiterspielen-Kachel, Fortsetzen mit gleicher Zeit/Strafe, Ergebnis beim Verlassen nach dem zehnten Modul). Alle vier Suiten grün; Chromium 375/430 px: Abstand 8 px, kein Überlauf.
+
+**Nur auf einem echten iPhone prüfbar:** Wirkung des Lila-Weiß-Verlaufs mit Speed-Lines, Lesbarkeit der Schrift auf dem hellen Ende, Pause über den App-Wechsel.

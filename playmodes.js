@@ -29,13 +29,13 @@ function openPlaymodes(kind){
 /* Offener Survival-Run: Kachel ganz oben, im Stil der Random-Kachel, aber mit Weiter-Symbol */
 const CONTIC='<svg class="mdie" width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="23" fill="#fff" stroke="#1b0b26" stroke-width="3.4"/><path d="M23 18l16 10-16 10z" fill="#1b0b26"/></svg>';
 function continueCard(){
-  const r=openRun('survival');
+  const r=openRun('survival')||openRun('rush');
   if(!r)return '';
   const pm=r.playmode==='random'?t('Random'):playmodeLabel(r.playmode);
-  const left=r.items.length-r.i;
+  const left=r.items.length-r.i,rs=r.kind==='rush';
   return `<button class="mrand mcont" id="contrun" type="button">${CONTIC}
-    <span><b>${t('Weiterspielen')}</b><small>${esc(pm)} · ${t('{0} Punkte',fmtSc(r.score))} · ${t('noch {0} Wörter',left)}</small>
-    <span class="mrec">${t('{0} Leben übrig',r.lives)}</span></span></button>`;
+    <span><b>${t('Weiterspielen')}</b><small>${rs?'Rush · ':''}${esc(pm)} · ${rs?fmtTime((r.el|0)+(r.pen|0)*RUSH_PEN*1000):t('{0} Punkte',fmtSc(r.score))} · ${rs?t('noch {0} Module',left):t('noch {0} Wörter',left)}</small>
+    <span class="mrec">${rs?t('Fehler: {0}',r.pen|0):t('{0} Leben übrig',r.lives)}</span></span></button>`;
 }
 /* kleine Herzen für Kopfzeile der Survival-Auswahl */
 const SURV_HEARTS='<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="svh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#ffc0da"/></linearGradient></defs></svg><div class="hearts sm" aria-hidden="true">'+'<svg viewBox="0 0 24 24"><path d="M12 21.2s-8.1-4.9-10.3-9.9C.2 7.7 2.2 3.8 6.2 3.8c2.3 0 4 1.2 5.8 3.3 1.8-2.1 3.5-3.3 5.8-3.3 4 0 6 3.9 4.5 7.5C20.1 16.3 12 21.2 12 21.2z" fill="url(#svh)"/></svg>'.repeat(3)+'</div>';
@@ -54,7 +54,7 @@ function survivalCard(){
 function rushCard(){
   const nW=survivalWords().length,best=bestFor('rush:random');
   const lockWhy=nW<RUSH_MIN?t('Gesperrt: du brauchst mindestens {0} bekannte Wörter, jetzt {1}.',RUSH_MIN,nW):'';
-  const watch='<svg class="rwatch" width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="16" y="2" width="8" height="4" rx="1.5" fill="#fff"/><circle cx="20" cy="23" r="14" fill="#fff" fill-opacity=".22" stroke="#fff" stroke-width="3"/><path d="M20 23V14M20 23l6 4" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg>';
+  const watch='<svg class="rwatch" width="58" height="40" viewBox="0 0 58 40" fill="none" aria-hidden="true"><path d="M2 14h12M0 23h15M4 32h10" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><rect x="34" y="2" width="8" height="4" rx="1.5" fill="currentColor"/><circle cx="38" cy="23" r="14" fill="#fff" fill-opacity=".55" stroke="currentColor" stroke-width="3"/><path d="M38 23V14M38 23l6 4" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
   const go=lockWhy?LOCKIC:'<svg class="gmgo" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   return `<section class="card survcard rushcard${lockWhy?' locked':''}">
     <div class="srow"><span class="stxt"><span class="stline"><button class="svgo" type="button" id="rush" aria-label="${t('Rush starten')}"${lockWhy?' disabled':''}><b class="stitle">Rush</b></button><button class="qh sq" type="button" id="rushq" aria-expanded="false" aria-controls="rushd" aria-label="${t('Hilfe zu diesem Modul')}">?</button></span>
@@ -68,7 +68,7 @@ function openGamemodes(){
     <div><h1 class="mh">${t('Gamemodes')}</h1></div></div>
     ${continueCard()}
     ${survivalCard()}
-    <div style="margin-top:12px">${rushCard()}</div>
+    ${rushCard()}
     <div class="mtile soon" aria-hidden="true" style="margin-top:12px;min-height:0"><b>${t('Bald mehr')}</b><small>${t('Mehr Gamemodes kommen')}</small></div></div>`;
   sheet.scrollTop=0;
   $('#mback').onclick=closeSheet;
