@@ -344,6 +344,23 @@ function resultNote(good){
   return '';   // Version 149: Stufe und nächste Wiederholung nicht mehr geschrieben zeigen, Dewis Kommentar reicht als Rückmeldung
 }
 
+/* Version 170: „＋ Synonym“ nach dem Tippen. Vorbelegt mit der zuletzt getippten Antwort; wirkt ab der nächsten Karte. */
+function mySynUi(c){
+  const box=$('#myadd'),open=$('#myopen');if(!box||!open)return;
+  const dir=c.dir,w=c.w;
+  open.onclick=()=>{
+    const pre=(!c.ok&&c.lastVal)?c.lastVal.trim():'';
+    box.innerHTML=`<form class="nmrow" id="myf"><input class="field" id="myin" type="text" maxlength="${MYSYN_LEN}" autocapitalize="off" autocomplete="off" enterkeyhint="done" value="${esc(pre)}" placeholder="${dir==='gl2id'?t('Weitere Schreibweise'):t('Weitere Übersetzung')}" aria-label="${t('Synonym')}"><button class="btn" type="submit" id="myok">${t('OK')}</button></form><p class="hint" id="myfl" role="status"></p>`;
+    const inp=$('#myin');try{inp.focus({preventScroll:true});}catch(e){}
+    $('#myf').onsubmit=e=>{
+      e.preventDefault();
+      const r=mySynAdd(w,dir,inp.value),f=$('#myfl');
+      if(r.ok){box.innerHTML=`<p class="hint">${t('Gespeichert. Gilt ab der nächsten Karte.')}</p>`;return;}
+      f.textContent=r.why==='dup'?t('Das gilt schon.'):r.why==='max'?t('Für dieses Wort ist die Grenze erreicht.'):r.why==='long'?t('Zu lang.'):t('Bitte etwas eintippen.');
+    };
+  };
+}
+
 /* Ergebnis des Moduls Tippen (die anderen Module zeigen ihr Ergebnis selbst) */
 function finish(typedOk){
   const c=S.cur,w=c.w,L=curLang(),r=settleCard(typedOk),ok=c.ok,type=c.type;
@@ -356,8 +373,9 @@ function finish(typedOk){
   const typoNote=c.typo?`<p class="hint" style="margin-top:6px">${t('Kleiner Tippfehler. Richtig geschrieben: {0}','<b lang="'+(c.dir==='gl2id'?L.code.toLowerCase():state.ui)+'">'+esc(c.dir==='gl2id'?w.id:glFirst(w))+'</b>')}</p>`:'';
   sheetBody(`<div class="smain">${S.kind==='survival'?roundLives():''}<div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?t('Richtig'):t('Leider falsch')}</div>
     <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="${state.ui}">${esc(gl(w))}</span></div>${typoNote}${alts}</div>
-    ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
+    ${resultNote(ok)}<div class="myadd" id="myadd"><button class="btn ghost" id="myopen" type="button">${t('＋ Synonym')}</button></div>${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
+  mySynUi(c);
   try{n.focus({preventScroll:true});}catch(e){}
   if(ok&&S.kind==='daily')levelUp(c,r);
 }

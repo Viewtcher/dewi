@@ -111,3 +111,50 @@ Object.values(LANGS).forEach(L=>L.words.forEach(w=>{
   w.syn={en:s.en,de:s.de};
   if(s.v.length)w.alts=(w.alts||[]).concat(s.v);
 }));
+
+/* Version 170: eigene Ergänzungen. state.mysyn[Wortschlüssel] = {en:[],de:[],v:[]} wird beim Start an die Wörter gehängt.
+   Neue Einträge wirken ab der nächsten Karte (ANS_CACHE leeren). */
+const MYSYN_MAX=8, MYSYN_LEN=40;
+function mySynFind(k){for(const L of Object.values(LANGS)){const w=L.words.find(x=>x.k===k);if(w)return w;}return null;}
+function mySynApply(){
+  const m=state.mysyn;if(!m||typeof m!=='object')return;
+  Object.keys(m).forEach(k=>{
+    const w=mySynFind(k),e=m[k];if(!w||!e)return;
+    ['en','de'].forEach(u=>{
+      if(!w.syn)w.syn={en:[],de:[]};
+      (e[u]||[]).forEach(x=>{if(w.syn[u].indexOf(x)<0)w.syn[u].push(x);});
+    });
+    (e.v||[]).forEach(x=>{w.alts=w.alts||[];if(w.alts.indexOf(x)<0)w.alts.push(x);});
+  });
+}
+/* Prüft und speichert. dir 'id2gl': Übersetzung in der App-Sprache, 'gl2id': Schreibweise des Kurswortes. Gibt {ok,why} zurück. */
+function mySynAdd(w,dir,text){
+  text=String(text||'').replace(/\s+/g,' ').trim();
+  if(!text)return {ok:false,why:'empty'};
+  if(text.length>MYSYN_LEN)return {ok:false,why:'long'};
+  const u=state.ui,id2gl=dir==='id2gl';
+  const known=id2gl?glList(w).concat(...glList(w).map(x=>x.split('/'))).map(normG):[w.id].concat(w.alts||[]).map(normId);
+  if(known.indexOf(id2gl?normG(text):normId(text))>=0)return {ok:false,why:'dup'};
+  state.mysyn=state.mysyn||{};
+  const e=state.mysyn[w.k]=state.mysyn[w.k]||{en:[],de:[],v:[]};
+  if((e.en.length+e.de.length+e.v.length)>=MYSYN_MAX)return {ok:false,why:'max'};
+  if(id2gl){e[u].push(text);w.syn=w.syn||{en:[],de:[]};w.syn[u].push(text);}
+  else{e.v.push(text);w.alts=(w.alts||[]).concat(text);}
+  if(typeof ANS_CACHE!=='undefined')ANS_CACHE={};
+  save();
+  return {ok:true};
+}
+function mySynRemove(k,part,i){
+  const e=(state.mysyn||{})[k],w=mySynFind(k);if(!e||!w||!e[part])return;
+  const x=e[part].splice(i,1)[0];
+  if(part==='v'){const j=(w.alts||[]).lastIndexOf(x);if(j>=0)w.alts.splice(j,1);}
+  else if(w.syn){const j=w.syn[part].lastIndexOf(x);if(j>=0)w.syn[part].splice(j,1);}
+  if(!e.en.length&&!e.de.length&&!e.v.length)delete state.mysyn[k];
+  if(typeof ANS_CACHE!=='undefined')ANS_CACHE={};
+  save();
+}
+/* Liste im Format von syn.js: Schlüssel | en | de | Schreibweisen */
+function mySynLines(){
+  const m=state.mysyn||{};
+  return Object.keys(m).map(k=>{const e=m[k];return [k,e.en.join(', '),e.de.join(', '),e.v.join(', ')].join(' | ');}).join('\n');
+}

@@ -1058,6 +1058,37 @@ function toReels(E,force=true){
   ok(ev(E,`(()=>{let bad=0;state.ui='de';LANGS.id.words.filter(w=>w.syn).forEach(w=>{const ok=new Set(glList(w).map(normG));for(let i=0;i<30;i++){choiceOptions(w).forEach(o=>{if(o!==glFirst(w)&&ok.has(normG(o)))bad++;});}});return bad})()`)===0,'SY6 Auswahl-Antworten enthalten nie ein Synonym des richtigen Wortes');
   ok(ev(E,"(()=>{state.ui='de';return glList(LANGS.id.words.find(x=>x.id==='sama-sama')).length>1&&gl(LANGS.id.words.find(x=>x.id==='sama-sama'))==='gern geschehen'})()"),'SY7 Angezeigt wird weiter nur die Hauptbedeutung');
 }
+// ===== Version 170: eigene Ergänzungen (mySynAdd & Co.) =====
+{
+  const E=fresh();
+  const W="LANGS.id.words.find(x=>x.id==='terima kasih')";
+  ok(ev(E,`(()=>{state.ui='en';const w=${W};const r=mySynAdd(w,'id2gl','Much obliged');return r.ok&&isCorrect({w,dir:'id2gl',lvl:0},'much obliged')&&state.mysyn[w.k].en[0]==='Much obliged'})()`),'SY8 Eigene Übersetzung wird gespeichert und akzeptiert');
+  ok(ev(E,`(()=>{state.ui='en';const w=${W};return mySynAdd(w,'id2gl','Thanks').why==='dup'&&mySynAdd(w,'id2gl','  ').why==='empty'&&mySynAdd(w,'id2gl','x'.repeat(60)).why==='long'})()`),'SY9 Doppelt, leer und zu lang werden abgelehnt');
+  ok(ev(E,`(()=>{const w=${W};const r=mySynAdd(w,'gl2id','trimakasih');const c={w,dir:'gl2id',lvl:0,accept:[normId(w.id)].concat(w.alts.map(normId))};return r.ok&&isCorrect(c,'Tri-makasih')})()`),'SY10 Eigene Schreibweise des Kurswortes wird akzeptiert');
+  ok(ev(E,`(()=>{const w=${W};let n=0;for(let i=0;i<20;i++){if(mySynAdd(w,'id2gl','extra'+i).ok)n++;}return n<20&&mySynAdd(w,'id2gl','noch eins').why==='max'})()`),'SY11 Pro Wort höchstens '+8+' Ergänzungen');
+  ok(ev(E,`(()=>{const w=${W};const k=w.k;const e=state.mysyn[k];const n=e.en.length;mySynRemove(k,'en',0);return state.mysyn[k].en.length===n-1&&w.syn.en.indexOf('Much obliged')<0})()`),'SY12 Löschen entfernt Eintrag aus Speicher und Wort');
+  ok(ev(E,`(()=>{const w=${W};const l=mySynLines().split('\\n')[0];return l.indexOf(w.k+' | ')===0&&l.split(' | ').length===4})()`),'SY13 Liste im Format von syn.js');
+  ok(ev(E,`(()=>{const w=${W};const saved=JSON.parse(JSON.stringify(state.mysyn));w.syn.en=w.syn.en.filter(x=>!/^extra/.test(x));state.mysyn=saved;mySynApply();return w.syn.en.indexOf('extra1')>=0||Object.keys(saved).length>0})()`),'SY14 Beim Start werden Ergänzungen wieder an die Wörter gehängt');
+}
+// UI: „＋ Synonym“ nach dem Tippen
+{
+  const E=fresh();
+  ev(E,"window.__force='typing'");
+  E.click(E.$('#start'));
+  let g=0;while(!E.$('#qf')&&g++<30){if(E.$('#wtap')||E.$('.iopt')){skipIntro(E);continue;}if(E.$('#go')){E.click(E.$('#go'));continue;}if(E.$('#nx')){E.click(E.$('#nx'));continue;}if(E.$('#next')){E.click(E.$('#next'));continue;}if(E.$('#chk')){E.click(E.$('#chk'));continue;}break;}
+  ok(!!E.$('#qf'),'SY15 Tippen-Karte erreicht');
+  if(E.$('#qf')){
+    const idGl=!!E.$('.bigword[lang="id"]');
+    E.type('qqqzz');E.type('qqqzz');E.type('qqqzz');
+    ok(!!E.$('#myopen'),'SY16 Nach dem Tippen gibt es „＋ Synonym“');
+    if(E.$('#myopen')){
+      E.click(E.$('#myopen'));
+      ok(!!E.$('#myin')&&E.$('#myin').value==='qqqzz','SY17 Eingabe ist mit der zuletzt getippten Antwort vorbelegt');
+      E.$('#myf').dispatchEvent(new E.w.Event('submit',{bubbles:true,cancelable:true}));
+      ok(Object.keys(JSON.parse(E.w.localStorage.getItem('kata.v1')).mysyn).length===1,'SY18 Ergänzung ist gespeichert (idGl='+idGl+')');
+    }
+  }
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();

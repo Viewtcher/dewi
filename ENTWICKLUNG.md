@@ -2043,3 +2043,15 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 SY1–SY7 (Schlüssel gültig, Übersetzung/Kurswort/Abkürzung tippen, Auswahl enthält nie ein Synonym, Anzeige unverändert). Alle vier Suiten grün. Kollisionsprüfung: Synonyme, die zugleich die Hauptbedeutung eines anderen Wortes sind (z. B. „morning“ bei „selamat pagi“ und „pagi“), sind bewusst erlaubt, weil sie nur die akzeptierten Antworten erweitern.
 
 **Nur auf einem echten iPhone prüfbar:** wie sich „Auch richtig“ und die erweiterten Antworten beim Tippen anfühlen, ob die Auswahl gängig genug ist.
+
+## Version 170 – Eigene Synonyme direkt in der App
+
+**Was:** Nach dem Tippen-Modul gibt es einen Knopf „＋ Synonym“. Er öffnet ein Eingabefeld (bei falscher Antwort mit der zuletzt getippten Antwort vorbelegt). Beim Tippen der Übersetzung (`id2gl`) wird eine weitere Übersetzung gespeichert, beim Tippen des Kurswortes (`gl2id`) eine weitere Schreibweise. In den Einstellungen zeigt die Kachel „Meine Ergänzungen“ alle eigenen Einträge, jeder lässt sich löschen, „Liste kopieren“ gibt sie im Format von `syn.js` aus (`Schlüssel | en | de | Schreibweisen`), damit sie später fest in die App übernommen werden können.
+
+**Warum:** Vito bemerkt beim Spielen fehlende Synonyme/Umgangssprache und soll sie sofort selbst ergänzen können. Die App kann nicht selbst auf GitHub schreiben, daher Gerät + Liste zum Weitergeben.
+
+**Technik:** `state.mysyn[w.k]={en,de,v}` (Migration in `migrate()`, in der Sicherung enthalten). `syn.js`: `mySynApply` (beim Start an die Wörter hängen), `mySynAdd` (prüft leer / zu lang / schon vorhanden / höchstens 8 pro Wort), `mySynRemove`, `mySynLines`. `modules/typing.js` merkt `c.lastVal`. `rounds.js`: `mySynUi`. Nach dem Speichern wird `ANS_CACHE` geleert; bereits verlorene Karten bleiben verloren, die Ergänzung gilt ab der nächsten Karte.
+
+**Tests:** test4 SY8–SY18 (Logik und Bedienung), alle vier Suiten grün.
+
+**Nur auf dem iPhone prüfbar:** Tastatur geht beim Antippen von „＋ Synonym“ auf und das Feld bleibt sichtbar; „Liste kopieren“ (Zwischenablage in Safari); Layout der Kachel.

@@ -58,7 +58,7 @@ function showQuestion(){
     e.preventDefault();
     const val=inp.value;
     if(!val.trim()){inp.classList.remove('shake');void inp.offsetWidth;inp.classList.add('shake');return;}
-    c.tries++;
+    c.tries++;c.lastVal=val;
     if(isCorrect(c,val))return finish(true);
     if(c.tries>=triesFor('typing'))return finish(false);
     const fb=$('#fb');
