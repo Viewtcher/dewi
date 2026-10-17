@@ -63,12 +63,14 @@ function env(pre,mode='de',lang='de-DE'){
     let guard=0;const kicks=[];
     while(!E.$('#fin')&&guard++<500){
       const k=E.$('.kicker');if(k&&kicks[kicks.length-1]!==k.textContent)kicks.push(k.textContent);
+      if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#wtap')){E.stats.intro++;E.click(E.$('#wtap'));continue;}
       if(E.$('.iopt')){const en=E.$$('.iopt').filter(x=>!x.disabled);const pick=en.find(b=>b.dataset.r==='1');if(pick){E.click(pick);continue;}}
       if(E.$('#go')){E.stats.intro++;E.click(E.$('#go'));continue;}
       if(E.$('#endnext')){E.click(E.$('#endnext'));continue;}
       if(E.$('#next')){E.click(E.$('#next'));continue;}
       if(E.$('#nx')){E.gapSeen=false;E.click(E.$('#nx'));continue;}
+      if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#cab')){E.stats.reels=(E.stats.reels||0)+1;E.w.__run(`(()=>{const R=S.cur.rl;R.pull();const fail=${!!o.failSent};for(let g=0;g<6&&R.state!=='over';g++){R.reels.forEach((r,i)=>{if(R.state==='over'||r.st!=='spin')return;r.p=fail?(r.right+1)%r.words.length:r.right;r.v=0;R.stop(i);R.frame(1);});R.frame(.7);}})()`);continue;}
       const sw=E.$$('.swb');
       if(sw.length&&sw.some(x=>!x.disabled)){
@@ -847,6 +849,56 @@ function toReels(E,force=true){
   ok(!!Q.$('#perf')&&Q.$('#perftog').textContent==='An'&&Q.st().perf===true,'P2 Knopf schaltet die Anzeige an und merkt es');
   Q.click(Q.$('#perftog'));
   ok(!Q.$('#perf')&&Q.st().perf===false,'P3 Knopf schaltet sie wieder ab');
+}
+// ===== Version 155: Modul Slots
+{
+  const E=fresh();
+  const key=w=>ev(E,`slotKey(LANGS.id.words.find(x=>x.id==='${w}'))`);
+  ok(key('tujuh')==='seven'&&key('jeruk')==='orange'&&key('nol')==='zero'&&key('halo')===null,'SL1 Symbolwörter erkannt (Zahlen, Früchte), andere nicht');
+  ok(ev(E,"MOD.slots.can(LANGS.id.words.find(x=>x.id==='pisang'))&&!MOD.slots.can(LANGS.id.words.find(x=>x.id==='halo'))"),'SL2 Slots nur für Wörter mit Symbol');
+  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='slots')&&!!MOD.reels"),'SL3 Slots-Kachel neu, altes Reels bleibt');
+  ok(ev(E,"LANGS.id.words.filter(w=>slotKey(w)).length")>=18,'SL4 Indonesisch: mindestens 18 Symbolwörter');
+  // nur ein bekanntes Symbolwort: erzwungener Dreier, eine Frage, kein Bonus
+  ev(E,"(()=>{state.progress.id={'tujuh':{l:1,d:'2000-01-01'},'halo':{l:1,d:'2000-01-01'}};save();})()");
+  let D=ev(E,"(()=>{const D=slotsData(LANGS.id.words.find(x=>x.id==='tujuh'));return {r:D.reels.join(),f:D.forced,q:D.qs.length,o:D.qs[0].opts}})()");
+  ok(D.r==='seven,seven,seven'&&D.f===true&&D.q===1,'SL5 Ein bekanntes Symbolwort: alle drei Walzen gleich, nur eine Frage ('+D.r+')');
+  ok(D.o.indexOf('tujuh')>=0&&D.o.indexOf('halo')>=0,'SL6 Falsche Option ist ein bekanntes Wort ('+D.o.join('/')+')');
+  // zwei bekannte: beide kommen vor, kein Dreier
+  ev(E,"state.progress.id['jeruk']={l:1,d:'2000-01-01'};save()");
+  let two=true;for(let i=0;i<12;i++){const r=ev(E,"slotsData(LANGS.id.words.find(x=>x.id==='tujuh')).reels.join()");if(r.indexOf('seven')<0||r.indexOf('orange')<0)two=false;}
+  ok(two,'SL7 Zwei bekannte Symbolwörter: beide auf den Walzen');
+  // viele bekannte: aktuelles Wort immer dabei, falsche Option bevorzugt ein anderes Symbolwort
+  ev(E,"['satu','dua','tiga','apel','pisang'].forEach(k=>state.progress.id[k]={l:1,d:'2000-01-01'});save()");
+  let has=true,foilSym=true;for(let i=0;i<20;i++){const x=ev(E,"(()=>{const D=slotsData(LANGS.id.words.find(x=>x.id==='tujuh'));return {r:D.reels,f:D.qs.map(q=>q.opts.find(o=>o!==q.right))}})()");if(x.r.indexOf('seven')<0)has=false;x.f.forEach(o=>{if(!ev(E,`!!slotKey(LANGS.id.words.find(x=>x.id==='${o}'))`))foilSym=false;});}
+  ok(has&&foilSym,'SL8 Ab 3 Symbolwörtern: aktuelles Wort immer dabei, falsche Option ist ein anderes Symbolwort');
+}
+// Ablauf im Survival-Solo: Hebel, Fragen, doppelte Punkte
+{
+  const E=fresh();
+  ev(E,"(()=>{state.progress.id={};['satu','dua','tiga','tujuh','apel','pisang','jeruk'].forEach(k=>state.progress.id[k]={l:1,d:'2000-01-01'});state.done[today()]=true;save();render();})()");
+  E.click(E.$('#gm'));E.click(E.$('#surv'));
+  ok(!!E.$('[data-playmode="slots"]'),'SL9 Solo-Kachel Slots im Survival');
+  ev(E,"window.__slReels=['one','two','seven']");
+  E.click(E.$('[data-playmode="slots"]'));
+  ok(!!E.$('#slmach')&&E.$$('.slreel').length===3&&/Slots/.test(E.$('.kicker').textContent),'SL10 Goldener Automat mit 3 Walzen');
+  ok(E.$$('.slreel .slsym').length>=45&&!E.$('#slq .iopt'),'SL11 Walzen mit Symbolen, Fragen erst nach dem Hebel');
+  E.click(E.$('#slmach'));
+  ok(!!E.$('#slq .iopt')&&E.$$('#slq .iopt').length===2&&E.$$('.slreel.act').length===1,'SL12 Nach dem Hebel: Frage zu Walze 1 mit zwei Knöpfen');
+  for(let i=0;i<3;i++){const b=E.$$('#slq .iopt').find(x=>x.dataset.r==='1');if(b)E.click(b);}
+  ok(!!E.$('.res.good')&&E.$$('.slreel.ok').length===3&&!!E.$('#nx'),'SL13 Alle drei richtig: gewonnen, Wörter auf den Walzen');
+  const p=ev(E,"({p:S.cur.pts,m:S.cur.ptsMul,b:survPoints('slots',S.run,S.cur.perfect)})");
+  ok(p.m===2&&p.p===p.b*2,'SL14 Survival: doppelte Punkte ('+p.p+')');
+  ev(E,"window.__slReels=['apel','apel','apel'].map(()=>'apple')");
+  E.click(E.$('#nx'));
+  let g=0;while(!E.$('#slmach')&&g++<10){if(E.$('#nx'))E.click(E.$('#nx'));else break;}
+  if(E.$('#slmach')){
+    E.click(E.$('#slmach'));
+    ok(E.$$('#slq .iopt').length===2&&/Alle drei/.test(E.$('#slq').textContent),'SL15 Drei gleiche: nur eine Frage für alle');
+    const bad=E.$$('#slq .iopt').find(x=>x.dataset.r==='0');E.click(bad);
+    ok(!!E.$('.res.bad')&&E.$$('.slreel.rev').length===3,'SL16 Survival: ein Fehler verliert, Lösung steht auf den Walzen');
+  }else ok(false,'SL15 nächste Slots-Karte fehlt');
+  ev(E,"window.__slReels=null");
+  ok(ev(E,"(()=>{state.ui='en';return t('Slots')+'|'+t('Hebel ziehen, Symbole benennen')})()")==='Slots|Pull the lever, name the symbols','SL17 Englische Texte');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

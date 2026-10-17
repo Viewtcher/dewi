@@ -61,6 +61,7 @@ function env(pre,mode='de',lang='de-DE'){
     let guard=0;const kicks=[];
     while(!E.$('#fin')&&guard++<500){
       const k=E.$('.kicker');if(k&&kicks[kicks.length-1]!==k.textContent)kicks.push(k.textContent);
+      if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#wtap')){E.stats.intro++;E.click(E.$('#wtap'));continue;}
       if(E.$('.iopt')){const en=E.$$('.iopt').filter(x=>!x.disabled);const pick=en.find(b=>b.dataset.r==='1');if(pick){E.click(pick);continue;}}
       if(E.$('#go')){E.stats.intro++;E.click(E.$('#go'));continue;}

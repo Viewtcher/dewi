@@ -17,7 +17,7 @@ let S=null;
 
 /* Versuche pro Modul (Daily Round): ein Fehler erlaubt = 2 Versuche, Tippen 2 Fehler = 3 Versuche, Swipe nur 1 Versuch.
    Im Survival hat jede Karte nur einen Versuch. */
-const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,reels:2,order:1};
+const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,reels:2,slots:2,order:1};
 const triesFor=id=>(S&&S.kind==='survival')?1:(TRIES[id]||2);
 /* Version 123: Die Herzen stehen jetzt links in der Score-Zeile (siehe scoreRow), nicht mehr im Modul. */
 const roundLives=()=>'';
@@ -29,7 +29,7 @@ window.__introMs=(typeof window.__introMs==='number')?window.__introMs:3000;   /
 /* Punkte pro richtigem Wort im Survival (intern und angezeigt gleich, z. B. 137):
    Grundpunkte je Modul (leichte weniger, schwere mehr), Perfekt-Bonus +25 % (ohne „?“, ohne Tippfehler),
    danach Serien-Multiplikator: ab 3 in Folge x1,5, ab 5 x2, ab 10 x2,5, ab 15 x3, ab 20 x4. */
-const SURV_BASE={swipe:61,choice:73,gap:88,reels:97,order:112,blocks:124,typing:149};
+const SURV_BASE={swipe:61,choice:73,gap:88,reels:97,slots:97,order:112,blocks:124,typing:149};
 function survMult(run){return run>=20?4:run>=15?3:run>=10?2.5:run>=5?2:run>=3?1.5:1;}
 function survPoints(mod,run,perfect){return Math.round((SURV_BASE[mod]||80)*(perfect?1.25:1)*survMult(run));}
 const bestStore=()=>{const m=state.best||(state.best={});return m[state.lang]||(m[state.lang]={});};
@@ -212,7 +212,7 @@ function settleCard(typedOk){
     if(ok){
       S.words++;S.right++;
       if(S.run%HEART_STREAK===0&&S.lives<HEART_MAX){S.lives++;c.healed=true;setLives(S.lives,S.lives-1);haptic([20,40,20]);setTimeout(heartMoment,420);}
-      c.perfect=!c.helped&&!c.typo;c.pts=survPoints(c.module,S.run,c.perfect);S.score+=c.pts;setTimeout(scoreTick,350);
+      c.perfect=!c.helped&&!c.typo;c.pts=survPoints(c.module,S.run,c.perfect)*(c.ptsMul||1);S.score+=c.pts;setTimeout(scoreTick,350);
       const dq=daily();
       if(dq.got.indexOf(w.k)<0)r=record(w,true,'review');   // Stufe +1, aber nur einmal pro Tag und Wort
       else{const pr=(state.progress[state.lang]||{})[w.k]||{};r={level:pr.l||1,days:0,same:true};}
@@ -483,7 +483,7 @@ try{
 
 /* ---- Schneller weiter: nach der Antwort geht ein Tipp oder Wisch auf die freie Fläche wie der Weiter-Button ---- */
 (function(){
-  const ADV_SKIP='button,a,input,textarea,select,label,.tile,.otile,.reel,.cab,.swcard,.qh,.helpm,.bslot,[role=button]';
+  const ADV_SKIP='button,a,input,textarea,select,label,.tile,.otile,.reel,.cab,.slmach,.swcard,.qh,.helpm,.bslot,[role=button]';
   const wd=()=>t('Weiter');
   function advBtn(){
     const n=$('#nx')||$('#next');if(n&&!n.disabled)return n;
