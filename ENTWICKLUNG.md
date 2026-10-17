@@ -1991,3 +1991,13 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 RU11 angepasst (nur steigen, nie fallen), neu RU21–RU24 (Pause, Weiterspielen-Kachel, Fortsetzen mit gleicher Zeit/Strafe, Ergebnis beim Verlassen nach dem zehnten Modul). Alle vier Suiten grün; Chromium 375/430 px: Abstand 8 px, kein Überlauf.
 
 **Nur auf einem echten iPhone prüfbar:** Wirkung des Lila-Weiß-Verlaufs mit Speed-Lines, Lesbarkeit der Schrift auf dem hellen Ende, Pause über den App-Wechsel.
+
+## Version 165 – Rush-Kachel: bewegte Speed-Lines
+
+**Was:** Die schrägen Linien auf der Rush-Kachel ziehen jetzt endlos nach links vorbei: eine Lage mit langen, langsamen Strichen (1,7 s pro Durchlauf) und eine mit kurzen, schnellen (0,95 s).
+
+**Technik:** Die Linien sind Hintergründe von `::before`/`::after` der Kachel (doppelt so breit wie die Kachel, nahtlos kachelnd, `repeat-x`), animiert nur über `transform` (`@keyframes rushl`, GPU-Ebene, `will-change`). Gesperrte Kachel und „Bewegung reduzieren“: keine Animation. Die Animation läuft nur, solange die Gamemodes-Seite offen ist.
+
+**Tests:** alle vier Suiten grün. Chromium: beide Animationen laufen, Transform ändert sich über die Zeit, kein Überlauf, Abstand 8 px.
+
+**Nur auf einem echten iPhone prüfbar:** Tempo und Wirkung der Linien und ob das Gerät dabei warm wird (zwei kleine Transform-Animationen; die Leistungsanzeige im Testbereich zeigt „Anim“).

@@ -165,12 +165,17 @@ html.sv-open,html.sv-open body{overflow:hidden}
 .hearts.sm{gap:4px;margin-left:auto}.hearts.sm svg{width:26px;height:26px}
 .rushcard{margin-top:-6px;background:linear-gradient(100deg,#4a1fc4 0%,#7d4dff 36%,#c7b2ff 70%,#fff 100%);border-bottom-color:rgba(40,12,110,.55);color:#fff}
 .rushcard.locked{background:linear-gradient(100deg,#4a1fc4,#7d4dff 60%,#a98aff)}
-.rushcard::before{content:"";position:absolute;inset:0;pointer-events:none;transform:skewX(-20deg) scaleX(1.2);
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.8) 70%,transparent) 6% 16%/50% 2px no-repeat,
-    linear-gradient(90deg,transparent,rgba(255,255,255,.6) 70%,transparent) 28% 32%/62% 3px no-repeat,
-    linear-gradient(90deg,transparent,rgba(255,255,255,.75) 70%,transparent) 0% 52%/42% 2px no-repeat,
-    linear-gradient(90deg,transparent,rgba(255,255,255,.55) 70%,transparent) 34% 70%/58% 3px no-repeat,
-    linear-gradient(90deg,transparent,rgba(255,255,255,.7) 70%,transparent) 10% 86%/40% 2px no-repeat}
+.rushcard::before,.rushcard::after{content:"";position:absolute;top:0;bottom:0;left:0;right:-100%;pointer-events:none;will-change:transform;transform:skewX(-20deg)}
+.rushcard::before{animation:rushl 1.7s linear infinite;
+  background:linear-gradient(90deg,transparent 0,rgba(255,255,255,.8) 38%,transparent 48%,transparent) 0 16%/50% 2px repeat-x,
+    linear-gradient(90deg,transparent 0,transparent 30%,rgba(255,255,255,.6) 68%,transparent 80%,transparent) 0 52%/50% 3px repeat-x,
+    linear-gradient(90deg,transparent 0,transparent 12%,rgba(255,255,255,.7) 40%,transparent 52%,transparent) 0 86%/50% 2px repeat-x}
+.rushcard::after{animation:rushl .95s linear infinite;
+  background:linear-gradient(90deg,transparent 0,transparent 20%,rgba(255,255,255,.75) 34%,transparent 42%,transparent) 0 32%/50% 2px repeat-x,
+    linear-gradient(90deg,transparent 0,transparent 55%,rgba(255,255,255,.65) 66%,transparent 76%,transparent) 0 70%/50% 2px repeat-x}
+@keyframes rushl{from{transform:skewX(-20deg) translate3d(0,0,0)}to{transform:skewX(-20deg) translate3d(-50%,0,0)}}
+.rushcard.locked::before,.rushcard.locked::after{animation:none}
+@media (prefers-reduced-motion:reduce){.rushcard::before,.rushcard::after{animation:none}}
 .rushcard .srow{position:relative}
 .rushcard .stitle{font-style:italic;text-shadow:0 2px 0 rgba(40,12,110,.6)}
 .rushcard .hint{text-shadow:0 1px 0 rgba(40,12,110,.55)}
