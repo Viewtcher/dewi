@@ -13,8 +13,7 @@ const SL_NUM=['zero','one','two','three','four','five','six','seven','eight','ni
 const SL_FRUIT=['apple','banana','orange','lemon','mango','pineapple','watermelon','coconut'];
 const SL_SYMS=SL_NUM.concat(SL_FRUIT);
 const SL_CELL=80,SL_WIN=120;   // Höhe einer Symbolzelle und des Walzenfensters in px
-const SL_STRIP=26;         // Zellen pro Walzenstreifen (Version 156: länger, damit der Wirbel richtig schnell ist)
-const SL_STOP=[.75,1,1.25];   // Version 156: ein schneller Wirbel, Stopp links, Mitte, rechts (Sekunden)
+const SL_STRIP=16;         // Zellen pro Walzenstreifen
 const SL_OUT='#2a0c20';
 
 /* Englische Bedeutung des Wortes: im Englischkurs steht sie im Wort selbst, sonst in w.en */
@@ -141,7 +140,7 @@ function showSlots(w){
     <div class="slstage">${helpBtn('slots')}
       <div class="slmach" id="slmach" data-st="idle">
         <div class="slcap l"></div>
-        <div class="slbody"><div class="slwin">${D.reels.map((k,i)=>`<div class="slreel" data-i="${i}" aria-label="${t('Walze {0}',i+1)}"><div class="slstrip">${strip(k,i)}</div><i class="slstreak" aria-hidden="true"></i><span class="slword" lang="${lc}"></span></div>`).join('')}
+        <div class="slbody"><div class="slwin">${D.reels.map((k,i)=>`<div class="slreel" data-i="${i}" aria-label="${t('Walze {0}',i+1)}"><div class="slstrip">${strip(k,i)}</div><span class="slword" lang="${lc}"></span></div>`).join('')}
           <i class="slarr l" aria-hidden="true"></i><i class="slarr r" aria-hidden="true"></i></div></div>
         <div class="slcap r"></div>
         <div class="sllev" id="sllev" role="button" tabindex="0" aria-label="${t('Hebel ziehen')}"><i class="slrod"></i><i class="slball"></i></div>
@@ -158,19 +157,16 @@ function showSlots(w){
   function pull(){
     if(Z.state!=='idle')return;Z.state='spin';
     mach.dataset.st='spin';lev.classList.add('pulled');setTimeout(()=>lev.classList.remove('pulled'),420);
-    /* Version 156: elektrisches Aufladen, Knistern während des Wirbels, harter Einschlag pro Walze */
-    sfx('slcharge');sfx('slcrack',140);haptic([30,20,45]);
+    sfx('lever');sfx('whirr',200);haptic([14]);
     $('#slq').innerHTML='';
     const instant=window.__introMs===0||reduceMotion();
     reels.forEach((r,i)=>{
-      const s=r.firstChild,dur=SL_STOP[i];
-      r.classList.add('spin');
-      if(!instant){s.style.transition=`transform ${dur}s cubic-bezier(.22,.9,.3,1.03)`;}
+      const s=r.firstChild,dur=1.15+i*.45;
+      if(!instant){s.style.transition=`transform ${dur}s cubic-bezier(.12,.62,.22,1.04)`;}
       s.style.transform=pos(SL_STRIP-2);
-      slSoon(()=>{r.classList.remove('spin');r.classList.add('stop');sfx('slslam');haptic([45]);},dur*1000);
+      slSoon(()=>{r.classList.add('stop');sfx('thunk');haptic([8]);},dur*1000);
     });
-    slSoon(()=>{if(mach.dataset.st==='spin')mach.dataset.st='glow';},SL_STOP[2]*1000);
-    slSoon(landed,SL_STOP[2]*1000+200);
+    slSoon(landed,(1.15+2*.45)*1000+180);
   }
   function landed(){
     if(Z.state!=='spin'||!$('#slq'))return;

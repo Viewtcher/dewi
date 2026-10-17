@@ -1904,29 +1904,10 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 
 **Nur auf einem echten iPhone prüfbar:** wie die Symbole und der Goldglanz wirken, ob Hebel-Tipp und Herunterziehen gut gehen, Ton und Haptik beim Stoppen, ob das Drehen flüssig läuft und das Handy kühl bleibt (Leistungsanzeige).
 
-## Version 156 – Slots: leuchtende Achsen, schneller Wirbel, Strom-Sound
+## Version 158 – Slots zurück auf den Stand von Version 155
 
-**Was:** Der Hebelzug bei Slots soll der Dopamin-Moment sein.
-- **Leuchtende Achsen:** Vier lila Neon-Ringe an den Walzenrändern (außen und zwischen den Walzen). In Ruhe glimmen sie leicht, beim Hebelzug blitzen sie grell auf und klingen nach dem letzten Stopp langsam ab.
-- **Ein schneller Wirbel:** Alle drei Walzen schießen gleichzeitig los (längerer Streifen, 26 Zellen), mit hellen Leuchtstreifen über den gedimmten Symbolen. Sie stoppen links, Mitte, rechts nach 0,75 / 1 / 1,25 s mit kleinem Überschwingen. Fragen kommen nach rund 1,3 s statt 2,4 s.
-- **Eigener Strom-Sound** (live erzeugt, Richtung „elektrisierende Inspect-Animation“, kein fremder Sound): `slcharge` (steigendes, flatterndes Aufladen mit Zischen und hellem Zap am Gipfel), `slcrack` (Knistern und Brummen während des Wirbels), `slslam` (tiefer Einschlag mit Zap pro Walze).
-- **Haptik kräftiger:** Hebel `[30,20,45]`, jeder Stopp `[45]` (Safari auf dem iPhone sperrt Vibration für Webseiten weitgehend).
-- **Neon-Nacht aus dem Shop:** Wer das Theme ausgerüstet hat, sieht eine dunkelblaue Trommel, dunkle Walzen mit hellem Schein hinter den Symbolen, blaue Glanzkugel am Hebel, pinke Pfeile und Leuchtstreifen und stärker leuchtende Ringe. Standard bleibt Gold.
+**Was:** Vito gefällt die Design-Anpassung aus den Versionen 156 (leuchtende Ringe, Wirbel mit Leuchtstreifen, Strom-Sounds `slcharge`/`slcrack`/`slslam`, kräftigere Haptik, Neon-Nacht-Look für Slots) und 157 (leuchtende Außenseiten) nicht. Beide wurden per `git revert` rückgängig gemacht (Historie bleibt erhalten). Code von `app.src.html`, `modules/slots.js` und den Tests ist wieder identisch mit Version 155: goldener Automat, Walzen stoppen nach 1,15 / 1,6 / 2,05 s, bisherige Hebel- und Stopp-Sounds.
 
-**Warum:** Vitos Wunsch nach mehr Kick beim Ziehen (Vorbild: lila leuchtende Automaten-Achsen).
+**Hinweis für später:** Die Einträge zu 156 und 157 wurden beim Zurücksetzen aus dieser Datei mit entfernt; die Details stehen in den Commits `c9e5760` und `77c41c2`, falls Teile davon (z. B. nur der Sound) später doch gewünscht sind.
 
-**Technik:** `modules/slots.js`: `SL_STRIP=26`, `SL_STOP`, Klasse `spin` pro Walze, `data-st` `spin`→`glow`→`ask`. CSS in `app.src.html`: `.slring` (+ `::after` mit festem Glanz, animiert wird nur die Deckkraft), `.slstreak`, Neon-Varianten über `:root[data-theme=neon]`. Sounds in `SFX` (Filter-Teil von `slcharge` in try/catch für Test-Audio). Keine Endlos-Animation.
-
-**Tests:** test4 SL11b (Ringe, Leuchtstreifen, Sounds), SL11 an den längeren Streifen angepasst. Alle vier Suiten grün. Chromium 375 px (Gold) und 390 px (Neon): Ringe sitzen genau auf den Walzengrenzen, Ringe leuchten beim Drehen voll, Symbole stoppen exakt auf der Linie, kein seitliches Scrollen.
-
-**Nur auf einem echten iPhone prüfbar:** Wie der Strom-Sound klingt und ob er „kickt“, ob das Leuchten auf dem OLED-Display wirkt, ob der Wirbel flüssig läuft, Haptik.
-
-## Version 157 – Slots: Außenseiten leuchten statt Achsen
-
-**Was:** Korrektur zu Version 156. Vito meinte die Außenseiten der Trommel, nicht die Ringe zwischen den Walzen. Die vier Neon-Ringe sind weg. Stattdessen sind die beiden Enden der Trommel (links und rechts) jetzt hohe lila Neon-Kappen (fast so hoch wie die Trommel). In Ruhe glimmen sie leicht, beim Hebelzug blitzen sie während des Wirbels mehrmals hart auf (rund 1,25 s, einmalig) und glühen bis zur ersten Frage nach. Im Neon-Nacht-Theme glimmen sie in Ruhe stärker.
-
-**Technik:** `.slring` entfernt (Markup in `slots.js`, CSS). `.slcap` neu gestaltet (17 × 146 px, lila Verlauf), Glanz in `.slcap::after`, Blitzen per `@keyframes slflash` mit `steps(1)` und nur Deckkraft, einmalig. Zustände wie bisher über `data-st` (`spin` → `glow` → `ask`).
-
-**Tests:** SL11b prüft jetzt: keine Ringe, zwei Außenkappen, Leuchtstreifen, Sounds. Alle vier Suiten grün. Chromium 375/390 px: Kappen mittig an der Trommel, Blitz-Animation läuft beim Drehen, kein seitliches Scrollen.
-
-**Nur auf einem echten iPhone prüfbar:** Wie hell das Blitzen wirkt und ob es zu grell oder zu schwach ist.
+**Tests:** Alle vier Suiten grün.
