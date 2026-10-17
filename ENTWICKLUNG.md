@@ -1866,3 +1866,15 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** P1–P3 in test4 (aus, an + gemerkt, wieder aus). Alle vier Suiten grün.
 
 **Nur auf einem echten iPhone prüfbar:** Alles. Vito spielt mit eingeschalteter Anzeige und meldet, in welchem Modul die Werte schlecht sind (Bilder pro Sekunde unter 50, viele Animationen, auffällige Namen).
+
+## Version 154 – Swipe: Ergebnis an der Stelle der Karte, leichter für das Handy
+
+**Was:** Im Swipe-Modul erscheint das Ergebnis (Richtig/Nicht ganz, Wortpaar, Beispielsatz, Weiter-Knopf) genau dort, wo die Karte war. Vorher wurde der Kartenbereich erst nach 300 ms zusammengeklappt und das Ergebnis rutschte nach oben. Die beiden Antwort-Knöpfe bleiben stehen und färben sich grün/rot. Der Weiter-Knopf ist unverändert ein Knopf (keine zusätzliche Tipp-Fläche).
+
+**Warum:** Vito meldet, dass das iPhone beim Spielen heiß wird, vermutlich im Swipe-Modul, und dass die Bewegung nach oben samt Verzögerung vor „Weiter“ stört.
+
+**Technik:** `.swstage` enthält jetzt Karte und `#exfb` (Klasse `swres`). Nach der Antwort bekommt die Bühne `answered`: die Karte wird per `position:absolute` aus dem Fluss genommen und fliegt weg, das Ergebnis steht sofort an ihrer Stelle. Die Zusammenklapp-Animation (`max-height`, löst bei jedem Bild neue Layoutberechnung aus) und `.collapsed` sind weg. Gegen die Hitze: `will-change:transform` auf der Karte (der große Schatten wird nur einmal gezeichnet und dann als Ebene bewegt), `translate3d` statt `translateX`, und die Ziehbewegung schreibt die Position höchstens einmal pro Bild per `requestAnimationFrame`. Das Aufleuchten der Knöpfe (`lean`) bleibt sofort.
+
+**Tests:** test3 neue Prüfung „Ergebnis und Weiter stehen in der Karten-Stelle“. Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** ob das Wischen weniger Wärme erzeugt (Leistungsanzeige beobachten: fps und „Anim“ im Swipe-Modul), wie sich der Wechsel von Karte zu Ergebnis anfühlt, ob das Ergebnis bei langen Wörtern sauber an der Kartenstelle sitzt.

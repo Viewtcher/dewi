@@ -390,6 +390,7 @@ try{
     ok(rightBtn.classList.contains('lean')&&card.classList.contains('lean'),'Ziehen: rechte Option leuchtet auf');
     ev('pointermove',230);ev('pointerup',230);
     ok(rightBtn.disabled&&!!Y.$('.res'),'Weit genug gezogen = Antwort rechts gewählt');
+    ok(!!Y.$('.swstage.answered .res')&&!!Y.$('.swstage #nx')&&!Y.$('.swstage.collapsed'),'Version 154: Ergebnis und Weiter stehen in der Karten-Stelle, nichts klappt zusammen');
     const Z=mk('de');Z.click(Z.$('#start'));
     g=0;while(!Z.$('.swb')&&g++<40){const b=Z.$('#endnext')||Z.$('#wtap')||Z.$('.iopt[data-r="1"]:not(:disabled)')||Z.$('#go')||Z.$('#next')||Z.$('#nx');if(!b)break;Z.click(b);}
     const c2=Z.$('#swcard');
