@@ -42,7 +42,8 @@ dewi/
 │   ├── gap.js            Modul Lückensatz
 │   ├── choice.js         Modul Auswahl
 │   ├── reels.js          Modul Reels (Spielautomat)
-│   └── slots.js          Modul Slots (goldener Automat mit Symbolen, Version 155)
+│   ├── slots.js          Modul Slots (goldener Automat mit Symbolen, Version 155)
+│   └── pads.js           Modul Pads (Farben auf leuchtenden Musik-Pads, Version 161)
 ├── dewi-music.js         Holo-Aufstieg (Claudio): eigenständiges Web-Audio-Modul, stellt window.DewiMusic bereit
 ├── music.js              Musik: Lo-Fi, Arcade, Synthwave (Reels) und Verbindungsstück zu Holo-Aufstieg
 ├── build.py              Setzt die Includes ein und baut index.html und icon.png
@@ -107,6 +108,7 @@ Früher gebrauchte, jetzt nicht mehr verwendete Wörter: „Fehlerliste“ und �
 | Lückensatz | `gap.js` | Beispielsatz mit Lücke | Auswahl, dann Swipe | 1 Fehler erlaubt |
 | Auswahl | `choice.js` | Beispielsatz | Swipe | 1 Fehler erlaubt |
 | Reels | `reels.js` | Beispielsatz mit mind. 3 Wörtern | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0 |
+| Pads | `pads.js` | Farbwort | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0 |
 | Slots | `slots.js` | Wort mit Symbol (Zahl 0–10 oder Frucht) | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0; alles richtig = doppelte Survival-Punkte |
 
 ## 3. Aufbau des Skripts (`app.src.html`)
@@ -1935,3 +1937,21 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Technik:** `rounds.js` `chooseModule`: `SLOTS_PREF=2/3`; steht `slots` im Pool (also `can(w)` und nicht das letzte Modul) und ist die Karte kein Abschlusswort, wird mit dieser Wahrscheinlichkeit Slots genommen. Tatsächlicher Anteil etwas höher (rund 70–75 %), weil Slots im Rest auch zufällig dran kommen kann.
 
 **Tests:** test4 SLP1–SLP4 (Anteil bei 600 Ziehungen, Abschlusswort ohne Vorrang, nie zweimal hintereinander, Wörter ohne Symbol nie Slots). Alle vier Suiten grün.
+
+## Version 161 – Neues Modul „Pads“ (Farben lernen auf Musik-Pads)
+
+**Was:** Vitos Idee: Farben lernen auf einem Pad-Controller. Oben steht das gesuchte Farbwort (nur geschrieben, in der Lernsprache), darunter ein schwarzer Glanzrahmen mit farbigen, von innen leuchtenden Pads. Man tippt das Pad in der richtigen Farbe. Jedes Pad spielt einen weichen Synth-Ton aus der C-Dur-Pentatonik (jede Reihenfolge klingt harmonisch) und leuchtet beim Antippen auf. Falsches Pad: kurzes Wackeln mit rotem Rand.
+
+**Regeln (mit Vito abgestimmt):**
+- Kommt nur, wenn das aktuelle Wort eine Farbe ist; zählt für die Stufen. Solo-Kachel „Pads“ im Survival.
+- Schwierigkeit nach Stufe des Wortes: Stufe 0–1: 2×2 Pads, eine Farbe; 2–3: 3×3, eine Farbe; 4: 3×3, zwei Farben hintereinander; 5: drei. Weitere Farben der Folge sind andere bekannte Farbwörter (sonst kürzere Folge); das aktuelle Wort ist immer dabei, nicht immer vorne.
+- Übrige Pads: beliebige andere Farben des Kurses.
+- Fehler: Daily Round 1 frei, Survival keiner (`TRIES.pads=2`). Survival-Grundwert 73 Punkte (wie Auswahl).
+
+**Farbwörter:** Indonesisch 11 (merah, biru, hijau, kuning, hitam, putih, cokelat, abu-abu, oranye, ungu, merah muda). Englisch/Deutsch 10 (dort gibt es Orange nur als Frucht). Erkennung über die englische Bedeutung (`padKey`); „jeruk = orange“ (Frucht) zählt nicht, „oranye = orange (color)“ schon.
+
+**Technik:** `modules/pads.js` (`padKey`, `padsData`, `padTone`, `showPads`). Pads sind `div` mit `role=button` (kein allgemeiner Klick-Ton), Eingabe per `pointerdown` (sofort, auch bei schnellen Folgen). Leuchten über `.pad::after` mit fest gezeichnetem Glanz, nur Deckkraft, nur beim Antippen; keine Dauer-Animation. In `app.src.html`: Der Tipp-irgendwo-weiter-Handler (Version 122) ignoriert jetzt Pads, sonst blätterte der Klick nach dem letzten richtigen Pad sofort weiter. `rounds.js`: `TRIES.pads`, `SURV_BASE.pads`. Testhaken: `window.__padSeq`, `S.cur.padHit(farbe)`.
+
+**Tests:** test4 PD1–PD14 (Farbwörter, Orange-Frucht ausgeschlossen, 11 Farben, Raster und Folgenlänge je Stufe, kürzere Folge ohne bekannte Farben, Solo-Kachel, Ablauf richtig/falsch, Lösung wird gezeigt, englische Texte). Die automatischen Durchläufe in test2–5 lösen Pads selbst. Alle vier Suiten grün. Chromium 375/430 px: 2×2-Pads 145 px, 3×3-Pads 93 px, alles im Bild, kein seitliches Scrollen, drei Farbwörter passen in eine Zeile.
+
+**Nur auf einem echten iPhone prüfbar:** Klang der Pad-Töne, wie das Leuchten wirkt, ob schnelles Tippen bei Folgen sauber erkannt wird.
