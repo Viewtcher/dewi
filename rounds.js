@@ -81,6 +81,14 @@ function survivalWords(){
 /* Solo-Playmode: nur Wörter, die zum gewählten Modul passen (kein Ersatzmodul). Zu wenige passende Wörter = Solo gesperrt. */
 const SOLO_MIN=3;
 const soloWords=pm=>{const m=MOD[pm];return survivalWords().filter(w=>!m||!m.can||m.can(w));};
+/* Version 159: Für die Kacheln reicht „mindestens SOLO_MIN passende Wörter?“. Zählt nur bis zur Grenze und hört dann auf,
+   statt für jedes gelernte Wort den ganzen Beispielsatz durchzurechnen (das ließ den Survival-Screen stocken). */
+function soloCount(pm,limit){
+  const m=MOD[pm],ws=survivalWords();
+  if(!m||!m.can)return Math.min(ws.length,limit);
+  let n=0;for(const w of ws){if(m.can(w)&&++n>=limit)break;}
+  return n;
+}
 /* ===== Offener Run (Version 114) =====
    Beim Abbrechen oder Verlassen der App soll man dort weitermachen, wo man war.
    Gespeichert wird vor jeder Karte: welche Wörter in welcher Reihenfolge, die Stelle im Run,

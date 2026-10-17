@@ -850,6 +850,14 @@ function toReels(E,force=true){
   Q.click(Q.$('#perftog'));
   ok(!Q.$('#perf')&&Q.st().perf===false,'P3 Knopf schaltet sie wieder ab');
 }
+// ===== Version 159: Survival-Screen zählt nur bis 3
+{
+  const E=fresh();ev(E,'devSetWords(60)');
+  const r=ev(E,"MODULES.filter(m=>m.solo).every(m=>soloCount(m.id,SOLO_MIN)===Math.min(soloWords(m.id).length,SOLO_MIN))");
+  ok(r,'PF1 soloCount stimmt mit der vollen Zählung überein (bis zur Grenze)');
+  ev(E,'devSetWords(2)');
+  ok(ev(E,"MODULES.filter(m=>m.solo).every(m=>soloCount(m.id,SOLO_MIN)<SOLO_MIN)"),'PF2 Mit 2 Wörtern bleiben alle Solo-Kacheln gesperrt');
+}
 // ===== Version 155: Modul Slots
 {
   const E=fresh();

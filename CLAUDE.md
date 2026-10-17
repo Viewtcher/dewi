@@ -50,7 +50,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 158)
+## Offene Punkte (Stand Version 159)
 
 - **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
@@ -65,6 +65,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - 154: Swipe-Modul: Ergebnis an der Stelle der Karte (kein Hochrutschen mehr), Karte als eigene Ebene und höchstens ein Update pro Bild gegen das Heißwerden ✓ (Wirkung auf die Wärme noch nicht auf dem iPhone bestätigt)
 - 155: Neues Modul „Slots“ (goldener Automat, Zahlen und Früchte im Diva-Comic-Look, Auswahl pro Walze, doppelte Survival-Punkte) zusätzlich zu Reels ✓. Offen: Feinschliff nach Vitos Test, später evtl. Tippen auf hohen Stufen, dann entscheiden, ob Reels ersetzt wird.
 - 156/157 (Leuchten, Wirbel, Strom-Sound) hat Vito verworfen; 158 setzt Slots auf den Stand von 155 zurück ✓
+- 159: Survival-Screen öffnet ohne Stocken (Solo-Kacheln zählen nur bis 3, `soloCount`) ✓. Dauer-Animationen dort bewusst unverändert.
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.

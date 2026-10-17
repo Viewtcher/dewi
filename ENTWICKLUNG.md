@@ -1911,3 +1911,17 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Hinweis für später:** Die Einträge zu 156 und 157 wurden beim Zurücksetzen aus dieser Datei mit entfernt; die Details stehen in den Commits `c9e5760` und `77c41c2`, falls Teile davon (z. B. nur der Sound) später doch gewünscht sind.
 
 **Tests:** Alle vier Suiten grün.
+
+## Version 159 – Survival-Screen öffnet ohne Stocken
+
+**Was:** Beim Tippen auf Survival stockte die App. Ursache: Für jede Solo-Kachel wurde mit `soloWords()` für **jedes** gelernte Wort geprüft, ob das Modul es abfragen kann. Bei Bausteinen, Reels, Lückensatz und Auswahl heißt das jedes Mal den Beispielsatz durchrechnen. Gemessen in Chromium: 50 Wörter ca. 0,1 s, 300 Wörter ca. 0,55 s, alle 678 Wörter ca. 2,1 s (auf dem iPhone eher mehr).
+
+**Lösung:** Die Kachel braucht nur „mindestens 3 passende Wörter?“. Neues `soloCount(pm,limit)` in `rounds.js` zählt nur bis zur Grenze und hört dann auf. `playmodes.js` nutzt es für die Kacheln. `soloWords()` bleibt unverändert für den Start einer Solo-Round. Optisch ändert sich nichts (gesperrte Kacheln zeigen weiter „(1/3)“ usw.).
+
+**Ergebnis (Chromium):** Survival-Screen mit allen Wörtern in ca. 0,04 s statt 2,1 s.
+
+**Bewusst nicht geändert (Vitos Entscheidung):** Die Dauer-Animationen auf dem Screen (fließender Regenbogen der Random-Kachel, wackelnder Würfel mit Schatten).
+
+**Tests:** test4 PF1 (gleiches Ergebnis wie die volle Zählung, bis zur Grenze), PF2 (mit 2 Wörtern alles gesperrt). Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** ob das Öffnen jetzt flüssig wirkt.
