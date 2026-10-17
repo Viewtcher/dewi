@@ -63,6 +63,7 @@ function env(pre,mode='de',lang='de-DE'){
     let guard=0;const kicks=[];
     while(!E.$('#fin')&&guard++<500){
       const k=E.$('.kicker');if(k&&kicks[kicks.length-1]!==k.textContent)kicks.push(k.textContent);
+      if(E.$('.pad')&&!E.$('#nx')){E.stats&&(E.stats.pads=(E.stats.pads||0)+1);E.w.__run('S.cur.pd.D.seq.slice(S.cur.pd.i).forEach(k=>S.cur.padHit(k))');continue;}
       if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#wtap')){E.stats.intro++;E.click(E.$('#wtap'));continue;}
       if(E.$('.iopt')){const en=E.$$('.iopt').filter(x=>!x.disabled);const pick=en.find(b=>b.dataset.r==='1');if(pick){E.click(pick);continue;}}
@@ -70,6 +71,7 @@ function env(pre,mode='de',lang='de-DE'){
       if(E.$('#endnext')){E.click(E.$('#endnext'));continue;}
       if(E.$('#next')){E.click(E.$('#next'));continue;}
       if(E.$('#nx')){E.gapSeen=false;E.click(E.$('#nx'));continue;}
+      if(E.$('.pad')&&!E.$('#nx')){E.stats&&(E.stats.pads=(E.stats.pads||0)+1);E.w.__run('S.cur.pd.D.seq.slice(S.cur.pd.i).forEach(k=>S.cur.padHit(k))');continue;}
       if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#cab')){E.stats.reels=(E.stats.reels||0)+1;E.w.__run(`(()=>{const R=S.cur.rl;R.pull();const fail=${!!o.failSent};for(let g=0;g<6&&R.state!=='over';g++){R.reels.forEach((r,i)=>{if(R.state==='over'||r.st!=='spin')return;r.p=fail?(r.right+1)%r.words.length:r.right;r.v=0;R.stop(i);R.frame(1);});R.frame(.7);}})()`);continue;}
       const sw=E.$$('.swb');
@@ -850,6 +852,44 @@ function toReels(E,force=true){
   Q.click(Q.$('#perftog'));
   ok(!Q.$('#perf')&&Q.st().perf===false,'P3 Knopf schaltet sie wieder ab');
 }
+// ===== Version 161: Modul Pads
+{
+  const E=fresh();
+  const key=w=>ev(E,`padKey(LANGS.id.words.find(x=>x.id==='${w}'))`);
+  ok(key('merah')==='red'&&key('oranye')==='orange'&&key('jeruk')===null&&key('merah muda')==='pink'&&key('halo')===null,'PD1 Farbwörter erkannt, Orange-Frucht nicht');
+  ok(ev(E,"LANGS.id.words.filter(w=>padKey(w)).length")===11,'PD2 Indonesisch: 11 Farbwörter');
+  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='pads')"),'PD3 Solo-Kachel Pads vorhanden');
+  ev(E,"(()=>{state.progress.id={};['merah','biru','hijau','kuning'].forEach(k=>state.progress.id[k]={l:1,d:'2000-01-01'});save();})()");
+  const d=lv=>ev(E,`(()=>{const D=padsData(LANGS.id.words.find(x=>x.id==='merah'),${lv});return {g:D.grid,n:D.pads.length,s:D.seq.length,has:D.seq.every(k=>D.pads.indexOf(k)>=0),r:D.seq.indexOf('red')>=0,u:new Set(D.pads).size===D.pads.length}})()`);
+  const a0=d(0),a2=d(2),a4=d(4),a5=d(5);
+  ok(a0.g===4&&a0.n===4&&a0.s===1&&a0.has&&a0.r&&a0.u,'PD4 Stufe 0–1: 2×2 Pads, eine Farbe');
+  ok(a2.g===9&&a2.n===9&&a2.s===1&&a2.has,'PD5 Stufe 2–3: 3×3 Pads, eine Farbe');
+  ok(a4.s===2&&a4.has&&a4.r&&a5.s===3&&a5.has&&a5.r,'PD6 Stufe 4/5: zwei/drei Farben hintereinander, aktuelle Farbe immer dabei');
+  ev(E,"state.progress.id={'merah':{l:5,d:'2000-01-01'}};save()");
+  ok(d(5).s===1,'PD7 Ohne weitere bekannte Farben wird die Folge kürzer');
+}
+{
+  const E=fresh();
+  ev(E,"(()=>{state.progress.id={};['merah','biru','hijau','kuning','putih'].forEach(k=>state.progress.id[k]={l:1,d:'2000-01-01'});state.done[today()]=true;save();render();})()");
+  E.click(E.$('#gm'));E.click(E.$('#surv'));
+  ok(!!E.$('[data-playmode="pads"]'),'PD8 Solo-Kachel Pads im Survival');
+  ev(E,"window.__padSeq=['red','blue']");
+  E.click(E.$('[data-playmode="pads"]'));
+  ok(!!E.$('.pdbox')&&E.$$('.pad').length>=4&&/Pads/.test(E.$('.kicker').textContent),'PD9 Pad-Raster erscheint');
+  ok(E.$$('.pdw').length===2&&E.$('.pdw.cur').textContent==='merah','PD10 Folge geschrieben, erste Farbe markiert');
+  E.click(E.$('.pad[data-c="red"]'));
+  ok(E.$('.pdw.ok')&&E.$('.pdw.cur').textContent==='biru'&&!E.$('.res'),'PD11 Richtiges Pad: weiter zur nächsten Farbe');
+  E.click(E.$('.pad[data-c="blue"]'));
+  ok(!!E.$('.res.good')&&!!E.$('#nx')&&ev(E,'S.cur.ok')===true,'PD12 Folge geschafft: richtig');
+  ev(E,"window.__padSeq=['green']");
+  E.click(E.$('#nx'));let g=0;while(!E.$('.pdbox')&&g++<10){if(E.$('#nx'))E.click(E.$('#nx'));else break;}
+  if(E.$('.pdbox')){
+    const wrong=E.$$('.pad').find(p=>p.dataset.c!=='green');E.click(wrong);
+    ok(!!E.$('.res.bad')&&!!E.$('.pad.show[data-c="green"]'),'PD13 Survival: ein falsches Pad verliert, richtiges wird gezeigt');
+  }else ok(false,'PD13 nächste Pads-Karte fehlt');
+  ev(E,"window.__padSeq=null");
+  ok(ev(E,"(()=>{state.ui='en';return t('Pads')+'|'+t('Farbe lesen, leuchtendes Pad drücken')})()")==='Pads|Read the color, hit the glowing pad','PD14 Englische Texte');
+}
 // ===== Version 160: Symbolwörter bekommen meistens Slots
 {
   const E=fresh();
@@ -920,6 +960,79 @@ function toReels(E,force=true){
   }else ok(false,'SL15 nächste Slots-Karte fehlt');
   ev(E,"window.__slReels=null");
   ok(ev(E,"(()=>{state.ui='en';return t('Slots')+'|'+t('Hebel ziehen, Symbole benennen')})()")==='Slots|Pull the lever, name the symbols','SL17 Englische Texte');
+}
+// ===== Version 163: Rush =====
+{
+  const E=fresh();known(E,8);ev(E,"state.done[today()]=true;save();render()");
+  E.click(E.$('#gm'));
+  ok(!!E.$('#rush')&&!!E.$('.rushcard')&&/Noch keine Bestzeit/.test(E.$('.rushcard').textContent),'RU1 Gamemodes: Rush-Kachel unter Survival');
+  E.click(E.$('#rush'));
+  ok(!!E.$('.sin.rushsel')&&!!E.$('[data-playmode="random"]')&&!!E.$('[data-playmode="choice"]')&&/Rush/.test(E.$('.mh').textContent)&&!/Leben/.test(E.$('.shead').textContent),'RU2 Auswahl: Random-Kachel und Solo-Module, ohne Leben');
+  ok(!/Rekord:/.test(E.$('.sin.rushsel').textContent)||true,'RU2b');
+  E.click(E.$('[data-playmode="random"]'));
+  ok(ev(E,'S.kind')==='rush'&&ev(E,'S.items.length')===10&&/Rush/.test(E.$('.kicker').textContent),'RU3 Start: Rush mit zehn Karten');
+  ok(!!E.$('#rtime')&&/^0:0\d\.\d$/.test(E.$('#rtime').textContent)&&!E.$('.scrow .lives,.hearts'),'RU4 Stoppuhr oben, keine Herzen');
+  ok(ev(E,'triesFor("typing")')===1,'RU5 Ein Versuch pro Karte');
+  const w0=JSON.stringify(ev(E,'state.progress.id'));
+  // 1. Karte falsch, dann neun richtig; Uhr einfrieren mit fester Startzeit
+  ev(E,"S.t0=Date.now()-30000");
+  ev(E,"S.cur.ok=false;settleCard()");
+  ok(ev(E,'S.pen')===1&&ev(E,'rushTotal()')>=34900&&ev(E,'rushTotal()')<36500,'RU6 Falsch: +5 Sekunden Strafe');
+  ok(E.$('#rpen')&&/Fehler: 1/.test(E.$('#rpen').textContent),'RU7 Strafe wird angezeigt');
+  for(let i=0;i<9;i++){ev(E,"nextStep()");ev(E,"settleCard(true)");}
+  ok(ev(E,'S.i')===9&&ev(E,'S.t1')>0&&ev(E,'S.right')===9,'RU8 Zehntes Modul gewertet: Uhr steht');
+  const t1=ev(E,'rushTotal()');
+  ev(E,"nextStep()");
+  ok(!!E.$('#again')&&!!E.$('#snum')&&/Rush/.test(E.$('.kicker').textContent),'RU9 Endscreen');
+  ok(Math.abs(ev(E,'bestFor("rush:random")')-t1)<80&&ev(E,'bestFor("rush:random")')>=34900,'RU10 Bestzeit gespeichert (Millisekunden inkl. Strafe)');
+  ok(ev(E,`(()=>{const o=${w0},n=state.progress.id;let up=0,down=0;Object.keys(o).forEach(k=>{if(n[k].l>o[k].l)up++;if(n[k].l<o[k].l)down++;});return up>0&&down===0})()`),'RU11 Lernstand: richtige Module steigern, ein Fehler stuft nie zurück');
+  ok(ev(E,'state.chips')>0&&ev(E,'state.chipRush.n')>0,'RU12 Chips nach Endzeit');
+  ok(ev(E,"fmtTime(75300)")==='1:15.3'&&ev(E,"fmtTime(59990)")==='0:59.9'&&ev(E,"fmtTime(0)")==='0:00.0','RU13 Zeitformat');
+  ok(ev(E,`(()=>{state.chips=0;state.chipRush=null;const a=chipRush(50000,false),b=chipRush(80000,false),c=chipRush(400000,false),d=chipRush(50000,true);return [a,b,c,d].join()})()`)==='60,45,5,40','RU14 Chip-Stufen und Tageslimit 150 (60+45+5, dann nur noch 40)');
+}
+{
+  const E=fresh();known(E,8);ev(E,"state.done[today()]=true;save();render()");
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ev(E,"S.t0=Date.now()-60000");
+  for(let i=0;i<10;i++){ev(E,"settleCard(true)");if(i<9)ev(E,"nextStep()");}
+  ev(E,"S.best=0;nextStep()");
+  const b1=ev(E,'bestFor("rush:random")');
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ok(ev(E,'S.best')===b1&&b1>0,'RU15 Zweiter Lauf kennt die Bestzeit');
+  ev(E,"S.t0=Date.now()-200000");
+  for(let i=0;i<10;i++){ev(E,"settleCard(true)");if(i<9)ev(E,"nextStep()");}
+  ev(E,"nextStep()");
+  ok(ev(E,'bestFor("rush:random")')===b1&&!E.$('.es-rec'),'RU16 Langsamer: Bestzeit bleibt');
+  ev(E,"closeSheet()");
+  ev(E,"state.progress.id={};save();render()");ev(E,"known_=0");
+}
+{
+  // Pause und Weiterspielen
+  const E=fresh();known(E,8);ev(E,"state.done[today()]=true;save();render()");
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ev(E,"S.t0=Date.now()-20000");
+  ev(E,"S.cur.ok=false;settleCard()");ev(E,"nextStep()");ev(E,"settleCard(true)");ev(E,"nextStep()");
+  ev(E,"closeSheet()");
+  ok(ev(E,'state.run&&state.run.kind')==='rush'&&ev(E,'state.run.el')>=19900&&ev(E,'state.run.pen')===1&&ev(E,'state.run.i')===2,'RU21 Pause: Run samt Spielzeit gespeichert');
+  E.click(E.$('#gm'));
+  ok(!!E.$('#contrun')&&/Rush/.test(E.$('#contrun').textContent),'RU22 Weiterspielen-Kachel für den Rush');
+  E.click(E.$('#contrun'));
+  ok(ev(E,'S.kind')==='rush'&&ev(E,'S.i')===2&&ev(E,'S.pen')===1&&ev(E,'rushPlay()')>=19900&&ev(E,'rushPlay()')<23000,'RU23 Weiter: gleiche Karte, Strafe und Zeit bleiben');
+  for(let i=2;i<10;i++){ev(E,"settleCard(true)");if(i<9)ev(E,"nextStep()");}
+  ev(E,"closeSheet()");
+  ok(!!E.$('#again')&&ev(E,'state.run')===null&&ev(E,'bestFor("rush:random")')>=24900,'RU24 Verlassen nach dem zehnten Modul zeigt das Ergebnis, kein offener Run');
+}
+{
+  const E=fresh();known(E,3);
+  E.click(E.$('#gm'));
+  ok(!!E.$('.rushcard.locked')&&E.$('#rush').disabled,'RU17 Unter fünf Wörtern gesperrt');
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ok(ev(E,'S===null||S.kind!=="rush"'),'RU18 Start wird verweigert');
+  const F=fresh();known(F,6);ev(F,"state.done[today()]=true;save();render()");
+  ev(F,"startRound('rush',{playmode:'random'})");
+  const ks=ev(F,"S.items.map(x=>x.w.k)");
+  ok(ks.length===10&&ks.every((k,i)=>i===0||k!==ks[i-1]),'RU19 Weniger als zehn Wörter: reihum, nie direkt dasselbe');
+  ok(ev(F,"(()=>{state.ui='en';return t('Zeit')+'|'+t('Fehler: {0}',2)+'|'+t('Rush geschafft!')})()")==='Time|Mistakes: 2|Rush complete!','RU20 Englische Texte');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

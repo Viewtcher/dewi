@@ -12,13 +12,21 @@
      Alle begonnenen Wörter (auch Stufe 0), jedes einmal, gemischt. 3 Leben insgesamt, pro Karte ein Versuch. Score mit Serienbonus,
      eigener Rekord je Playmode. Ein richtiges Wort steigt wie in der Daily Round eine Stufe (einmal pro Tag und Wort).
 
+   RUSH (kind 'rush', Version 163), Gamemode neben Survival: Zehn Module aus bekannten Wörtern (Random oder Solo) so schnell wie möglich.
+     Stoppuhr läuft von der ersten Karte bis das zehnte Modul gewertet ist. Pro Karte ein Versuch; ein verlorenes Modul gibt
+     +5 Sekunden Strafe und es geht weiter. Keine Leben, keine Punkte. Lernstand wie im Survival: ein richtiges Modul steigert die Stufe
+     (einmal pro Tag und Wort), ein verlorenes stuft nie zurück.
+     Bestzeit je Playmode ('rush:<playmode>', in Millisekunden, kleiner ist besser), Chips nach Endzeit (chipRush).
+     Pausieren: Verlassen speichert den Run samt bisheriger Spielzeit (state.run, el = Millisekunden ohne Pausen), Weiterspielen setzt die Uhr fort.
+
    S = Zustand der laufenden Round: items (Karten), i (aktuelle Karte), cur (aktuelle Karte mit Wort und Modul), kind, playmode … */
 let S=null;
 
 /* Versuche pro Modul (Daily Round): ein Fehler erlaubt = 2 Versuche, Tippen 2 Fehler = 3 Versuche, Swipe nur 1 Versuch.
    Im Survival hat jede Karte nur einen Versuch. */
-const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,reels:2,slots:2,order:1};
-const triesFor=id=>(S&&S.kind==='survival')?1:(TRIES[id]||2);
+const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,reels:2,slots:2,pads:2,order:1};
+const arcade=()=>!!S&&(S.kind==='survival'||S.kind==='rush');   // Survival und Rush: ein Versuch pro Karte
+const triesFor=id=>arcade()?1:(TRIES[id]||2);
 /* Version 123: Die Herzen stehen jetzt links in der Score-Zeile (siehe scoreRow), nicht mehr im Modul. */
 const roundLives=()=>'';
 /* Fortschritt zum nächsten Herz, 0 bis knapp 1 (nur solange ein Herz fehlt) */
@@ -29,13 +37,60 @@ window.__introMs=(typeof window.__introMs==='number')?window.__introMs:3000;   /
 /* Punkte pro richtigem Wort im Survival (intern und angezeigt gleich, z. B. 137):
    Grundpunkte je Modul (leichte weniger, schwere mehr), Perfekt-Bonus +25 % (ohne „?“, ohne Tippfehler),
    danach Serien-Multiplikator: ab 3 in Folge x1,5, ab 5 x2, ab 10 x2,5, ab 15 x3, ab 20 x4. */
-const SURV_BASE={swipe:61,choice:73,gap:88,reels:97,slots:97,order:112,blocks:124,typing:149};
+const SURV_BASE={swipe:61,choice:73,gap:88,reels:97,slots:97,pads:73,order:112,blocks:124,typing:149};
 function survMult(run){return run>=20?4:run>=15?3:run>=10?2.5:run>=5?2:run>=3?1.5:1;}
 function survPoints(mod,run,perfect){return Math.round((SURV_BASE[mod]||80)*(perfect?1.25:1)*survMult(run));}
 const bestStore=()=>{const m=state.best||(state.best={});return m[state.lang]||(m[state.lang]={});};
 const bestFor=pm=>bestStore()[pm]||0;
 /* Score-Anzeige: Punkte mit Tausenderpunkt. */
 function fmtSc(n){return fmtRaw(n);}
+/* ===== Rush (Version 163) ===== */
+const RUSH_N=10,RUSH_PEN=5,RUSH_MIN=5;   // Module, Strafsekunden je verlorenem Modul, Mindestzahl bekannter Wörter
+/* Zeit als m:ss.t (Zehntel abgeschnitten, nie aufgerundet) */
+function fmtTime(ms){
+  const tn=Math.floor(Math.max(0,ms)/100),m=Math.floor(tn/600),sec=Math.floor(tn%600/10);
+  return m+':'+(sec<10?'0':'')+sec+'.'+(tn%10);
+}
+/* Laufzeit inklusive Strafe; steht, sobald das zehnte Modul gewertet ist */
+const rushPlay=()=>S&&S.t0?Math.max(0,(S.t1||Date.now())-S.t0):0;
+const rushTotal=()=>rushPlay()+S.pen*RUSH_PEN*1000;
+/* Zehn Karten aus dem Wortpool; sind es weniger als zehn Wörter, kommen sie reihum nochmal (nie dasselbe Wort direkt nacheinander) */
+function rushItems(pool){
+  const out=[];
+  while(out.length<RUSH_N){
+    const b=shuffle(pool.slice());
+    if(out.length&&b.length>1&&b[0]===out[out.length-1].w)b.push(b.shift());
+    for(const w of b){if(out.length<RUSH_N)out.push({w,kind:'surv',type:'review'});}
+  }
+  return out;
+}
+let rushIv=0;
+function rushTick(){
+  clearInterval(rushIv);rushIv=0;
+  if(!S||S.kind!=='rush')return;
+  const upd=()=>{
+    const el=$('#rtime');
+    if(!S||S.kind!=='rush'||!el){clearInterval(rushIv);rushIv=0;return;}
+    el.textContent=fmtTime(rushTotal());
+    if(S.t1)clearInterval(rushIv);
+  };
+  upd();
+  if(!S.t1&&!window.__test)rushIv=setInterval(upd,100);
+}
+const rushLater=()=>{if(window.__test)rushPenalty();else setTimeout(rushPenalty,0);};   // nach dem Neuzeichnen des Moduls
+/* Strafe zeigen: Zähler ändert sich, Zeit federt kurz */
+function rushPenalty(){
+  const p=$('#rpen'),el=$('#rtime');
+  if(p)p.textContent=t('Fehler: {0}',S.pen)+' · +'+(S.pen*RUSH_PEN)+' s';
+  if(el){el.textContent=fmtTime(rushTotal());el.classList.add('bump');setTimeout(()=>el.classList.remove('bump'),420);}
+}
+try{
+  document.addEventListener('visibilitychange',()=>{
+    if(!S||S.kind!=='rush'||S.t1||!S.t0)return;
+    if(document.hidden){S.pa=Date.now();saveRun();}
+    else if(S.pa){S.t0+=Date.now()-S.pa;S.pa=0;}   // im Hintergrund läuft die Uhr nicht weiter
+  });
+}catch(e){}
 function fmtRaw(v){return String(Math.round(v)).replace(/\B(?=(\d{3})+(?!\d))/g,state.ui==='de'?'.':',');}
 function scRecLine(){
   if(!S||S.kind!=='survival')return '';
@@ -44,6 +99,7 @@ function scRecLine(){
   return b?t('Rekord: {0}',fmtSc(b)):'';
 }
 function scoreRow(){
+  if(S&&S.kind==='rush'&&S.i<S.items.length)return `<div class="scrow"><small class="rpen" id="rpen">${S.pen?t('Fehler: {0}',S.pen)+' · +'+(S.pen*RUSH_PEN)+' s':t('Fehler: {0}',0)}</small><div class="scbox"><div class="scline"><span class="scl">${t('Zeit')}</span><b class="scnum" id="rtime">${fmtTime(rushTotal())}</b></div></div></div>`;
   if(!S||S.kind!=='survival'||S.i>=S.items.length)return '';
   return `<div class="scrow">${livesHtml(S.lives,-1,healProg())}<div class="scbox"><div class="scline"><span class="scl">Score</span><b class="scnum" id="scnum">${fmtSc(S.shown||0)}</b></div><small id="screc">${scRecLine()}</small></div></div>`;
 }
@@ -96,10 +152,10 @@ function soloCount(pm,limit){
    damit der Spielstand klein bleibt und sich beim Laden gegen die aktuelle Wortliste prüfen lässt.
    Die angefangene Karte beginnt beim Fortsetzen von vorn (halb gesetzte Kacheln lassen sich nicht retten). */
 function saveRun(){
-  if(!S||!S.items||S.i>=S.items.length)return;
+  if(!S||!S.items||S.i>=S.items.length||(S.kind==='rush'&&S.t1))return;   // fertiger Rush (zehntes Modul gewertet) wird nicht mehr gespeichert
   state.run={v:1,lang:state.lang,kind:S.kind,playmode:S.playmode,i:S.i,
     items:S.items.map(x=>({k:x.w.k,kind:x.kind,type:x.type,ok:x.ok})),
-    right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),
+    right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),el:S.kind==='rush'?rushPlay():0,pen:S.pen|0,
     streak0:S.streak0,last:S.last,lives:S.lives,score:S.score,shown:S.score,run:S.run,words:S.words,lost:S.lost,best:S.best,hand:S.hand||null,date:S.date||today()};
   save();
 }
@@ -122,7 +178,8 @@ function resumeRun(){
   S={items:r.items.map(x=>({w:by[x.k],kind:x.kind,type:x.type,ok:x.ok})),i:r.i,right:r.right,wrong:r.wrong,
      missed:(r.missed||[]).map(k=>by[k]).filter(Boolean),
      cur:null,streak0:r.streak0,kind:r.kind,playmode:r.playmode,last:r.last,lives:r.lives,score:r.score,
-     shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best,hand:r.hand||null,date:r.date||today()};
+     shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best,hand:r.hand||null,date:r.date||today(),
+     t0:r.kind==='rush'?Date.now()-(r.el|0):0,t1:0,pen:r.pen|0,pa:0};   // Rush: Uhr läuft ab der bisherigen Spielzeit weiter
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
   return true;
@@ -131,7 +188,7 @@ function resumeRun(){
 function askDiscard(cb){
   const r=openRun();if(!r)return cb();
   const o=document.createElement('div');o.className='askbox';o.setAttribute('role','dialog');o.setAttribute('aria-modal','true');
-  const what=r.kind==='survival'?t('Survival'):t('Daily Round'),hand=r.kind==='daily';   // Version 133: eine Daily-Hand lässt sich nicht verwerfen
+  const what=r.kind==='survival'?t('Survival'):r.kind==='rush'?'Rush':t('Daily Round'),hand=r.kind==='daily';   // Version 133: eine Daily-Hand lässt sich nicht verwerfen
   o.innerHTML=`<div class="ask-back"></div><div class="ask-in"><b>${hand?t('Offene Hand'):t('Offener Run: {0}',what)}</b>
     <p>${hand?t('Erst die offene Hand zu Ende spielen.'):t('Wenn du neu startest, ist der alte Run weg.')}</p>
     ${hand?'':`<button class="btn primary block" id="askgo">${t('Trotzdem neu starten')}</button>`}
@@ -147,23 +204,30 @@ function askDiscard(cb){
 function startRound(kind,opt){
   const o=opt||{},open=openRun();
   if(!o.force&&open){
-    if(open.kind==='daily'&&kind!=='survival')return resumeRun();   // offene Daily-Hand: nur weiterspielen
+    if(open.kind==='daily'&&kind!=='survival'&&kind!=='rush')return resumeRun();   // offene Daily-Hand: nur weiterspielen
     return askDiscard(()=>startRound(kind,Object.assign({force:1},o)));
   }
-  if(kind!=='survival'&&!o.blind)return showBlindStage(kind,o);   // erst der Einsatz (Version 133), als eigener Screen (Version 134)
+  if(kind!=='survival'&&kind!=='rush'&&!o.blind)return showBlindStage(kind,o);   // erst der Einsatz (Version 133), als eigener Screen (Version 134)
   clearRun();
-  const pool=kind==='survival'&&o.playmode&&o.playmode!=='random'?soloWords(o.playmode):survivalWords();
-  if(kind==='survival'&&o.playmode&&o.playmode!=='random'&&pool.length<SOLO_MIN)return;
-  const items=kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards();
+  const arc=kind==='survival'||kind==='rush',solo=arc&&o.playmode&&o.playmode!=='random';
+  const pool=solo?soloWords(o.playmode):survivalWords();
+  if(solo&&pool.length<SOLO_MIN)return;
+  if(kind==='rush'&&survivalWords().length<RUSH_MIN)return;
+  const items=kind==='rush'?rushItems(pool):kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards();
   if(!items.length)return;
   S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak(),kind:kind||'daily',playmode:o.playmode||'random',
-     last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:kind==='survival'?bestFor(o.playmode||'random'):0,
-     hand:kind==='survival'?null:handNew(o.blind),date:today()};
+     last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:kind==='survival'?bestFor(o.playmode||'random'):kind==='rush'?bestFor('rush:'+(o.playmode||'random')):0,
+     hand:arc?null:handNew(o.blind),date:today(),t0:0,t1:0,pen:0,pa:0};
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
 }
 
-function closeSheet(){sheet.hidden=true;sheet.innerHTML='';sheet.classList.remove('shop-open');document.body.style.overflow='';S=null;render();}
+function closeSheet(){
+  if(S&&S.kind==='rush'&&S.t0&&S.i<S.items.length){
+    if(S.t1){S.i=S.items.length;return showRushEnd();}   // zehntes Modul war schon gewertet: Ergebnis zeigen statt verlieren
+    saveRun();                                            // Pause: Stand samt Spielzeit sichern
+  }
+  sheet.hidden=true;sheet.innerHTML='';sheet.classList.remove('shop-open');document.body.style.overflow='';S=null;render();}
 
 function sheetBody(inner){
   const pct=S.items.length?Math.round(S.i/S.items.length*100):0;
@@ -175,6 +239,7 @@ function sheetBody(inner){
   if(hand)handAfterRender();
   sheet.scrollTop=0;
   if(S.kind==='survival'&&S.score>(S.shown||0))setTimeout(scoreTick,350);
+  if(S.kind==='rush')rushTick();
 }
 
 /* Welches Modul bekommt diese Karte? Immer ein Modul pro Wort, nie dasselbe wie die Karte davor.
@@ -183,7 +248,7 @@ const SLOTS_PREF=2/3;
 function chooseModule(card){
   const w=card.w;
   if(window.__force&&MOD[window.__force]&&MOD[window.__force].can(w))return window.__force;   // nur für Tests
-  if(S.kind==='survival'&&S.playmode!=='random')return resolveModule(S.playmode,w);
+  if(arcade()&&S.playmode!=='random')return resolveModule(S.playmode,w);
   const all=MODULES.filter(m=>m.solo&&m.can(w)).map(m=>m.id);
   let pool=all.filter(id=>id!==S.last);
   if(card.kind==='final'){const heavy=pool.filter(id=>id==='typing'||id==='blocks');if(heavy.length)pool=heavy;}
@@ -197,13 +262,14 @@ function showItem(){
   const it=S.items[S.i];
   if(!it)return showEnd();
   saveRun();
+  if(S.kind==='rush'&&!S.t0)S.t0=Date.now();   // die Uhr startet mit der ersten Karte
   const L=curLang(),w=it.w,key=normG(gl(w));
   const same=L.words.filter(x=>normG(gl(x))===key);
   const pr=(state.progress[L.id]||{})[w.k];
   const lvl=pr?pr.l:0;
   S.cur={w,card:it,type:it.type,lvl,tries:0,ok:true,settled:false,module:null,dir:Math.random()<.5?'id2gl':'gl2id',accept:same.reduce((a,x)=>a.concat([normId(x.id)],(x.alts||[]).map(normId)),[]),alts:same.filter(x=>x.k!==w.k).map(x=>x.id)};
   if(it.kind==='intro'){S.cur.module='intro';return MOD.intro.show(w);}
-  if(S.kind==='survival'&&S.playmode!=='random'&&MOD[S.playmode]&&!MOD[S.playmode].can(w)){S.i++;return showItem();}   // Solo: nie ein fremdes Modul, Karte überspringen
+  if(arcade()&&S.playmode!=='random'&&MOD[S.playmode]&&!MOD[S.playmode].can(w)){S.i++;return showItem();}   // Solo: nie ein fremdes Modul, Karte überspringen
   const m=chooseModule(it);
   it.module=m;S.cur.module=m;S.last=m;
   MOD[m].show(w);
@@ -218,7 +284,14 @@ function settleCard(typedOk){
   if(typedOk!==undefined)c.ok=c.ok&&typedOk;
   const ok=c.ok,w=c.w,card=c.card;
   let r={};
-  if(S.kind==='survival'){
+  if(S.kind==='rush'){
+    if(ok){
+      S.right++;S.words++;S.run=(S.run||0)+1;
+      if(daily().got.indexOf(w.k)<0)r=record(w,true,'review');   // Stufe +1, einmal pro Tag und Wort; ein Fehler stuft nie zurück
+    }else{S.wrong++;S.pen++;S.run=0;rushLater();}
+    if(S.i>=S.items.length-1&&!S.t1){S.t1=Date.now();}   // zehntes Modul gewertet: Uhr steht
+    if(S.t1)rushLater();
+  }else if(S.kind==='survival'){
     S.run=ok?(S.run||0)+1:0;
     if(ok){
       S.words++;S.right++;
@@ -252,17 +325,19 @@ function nextStep(){
 function kicker(c,id,dir){
   const k=c.card;let base,col;
   if(S.kind==='survival'){base='Survival';col='var(--c-pink)';}
+  else if(S.kind==='rush'){base='Rush';col='var(--c-cyan)';}
   else if(k.kind==='intro'){base=t('Daily Round · Einführung');col='var(--c-violet)';}
   else if(k.kind==='final'){base=t('Daily Round · Review · neues Wort');col='var(--c-violet)';}
   else{const rv=S.items.filter(x=>x.kind==='review'),n=rv.indexOf(k)+1;base=t('Daily Round · Review {0} von {1}',n,rv.length);col=LVCOL[c.lvl]||'var(--c-cyan)';}
   const label=id==='intro'?'':' · '+t('Modul {0}',MOD[id].name());
-  const solo=(S.kind==='survival'&&S.playmode!=='random')?` · <span class="only">${t('Solo')}</span>`:'';
+  const solo=(arcade()&&S.playmode!=='random')?` · <span class="only">${t('Solo')}</span>`:'';
   return `<div class="kicker" style="--k:${col}">${base}${label}${dir?' · '+dir:''}${solo}</div>`;
 }
 
 /* Hinweis unter dem Ergebnis eines Moduls */
 function resultNote(good){
   const c=S.cur;
+  if(S.kind==='rush')return good?'':`<p class="hint" style="margin-top:8px">+${RUSH_PEN} ${t('Sekunden')}</p>`;
   if(S.kind==='survival')return good?`<p class="hint" style="margin-top:8px">+${fmtSc(c.pts)} ${t('Punkte')}${S.run>=3?' · '+t('{0} in Folge',S.run):''}${c.healed?' · '+t('Serie von {0}: ein Herz kommt zurück!',HEART_STREAK):''}</p>`:`<p class="hint" style="margin-top:8px">${t('Ein Leben weniger.')}</p>`;
   return '';   // Version 149: Stufe und nächste Wiederholung nicht mehr geschrieben zeigen, Dewis Kommentar reicht als Rückmeldung
 }
@@ -280,7 +355,7 @@ function finish(typedOk){
     ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
   try{n.focus({preventScroll:true});}catch(e){}
-  if(ok&&S.kind!=='survival')levelUp(c,r);
+  if(ok&&S.kind==='daily')levelUp(c,r);
 }
 
 function levelUp(c,r){
@@ -306,6 +381,7 @@ function levelUp(c,r){
    dann die Serie allein groß. Danach schließt sich die Round von selbst. */
 function showEnd(){
   if(S.kind==='survival')return showSurvivalEnd();
+  if(S.kind==='rush')return showRushEnd();
   clearRun();
   const t0=today();
   S.i=S.items.length;
@@ -424,6 +500,41 @@ function streakMoment(E){
     sfx(ms?'milestone':'streakup');
     setTimeout(()=>{if(document.body.contains(el)){haptic(ms?[30,60,30,60,50]:[30,70,30]);burst($('.mm-roll',el)||$('.mm-art',el),ms?90:46);}},window.__test?0:900);
   }else sfx('pop');
+}
+
+/* ===== Endscreen des Rush (Version 163): Zeit zählt hoch, Bestzeit, Chips nach Endzeit ===== */
+function showRushEnd(){
+  clearRun();
+  S.i=S.items.length;
+  const play=rushPlay(),pen=S.pen*RUSH_PEN*1000,total=play+pen,best=S.best;
+  const rec=!best||total<best;
+  if(rec)bestStore()['rush:'+S.playmode]=total;
+  const gem=chipRush(total,rec);
+  save();
+  const pmName=S.playmode==='random'?t('Random'):playmodeLabel(S.playmode);
+  const mood=rec||S.pen===0?'end_perfect':S.right>=6?'end_good':'end_bad';
+  sheetBody(`<div class="smain endstage" id="est"><div class="kicker" style="--k:var(--c-cyan)">${t('Rush geschafft!')} · ${pmName}</div>
+    <div class="bigword es-big${rec?' recd':''}" id="ebig"><span id="snum">${fmtTime(0)}</span></div>
+    <p class="hint">${S.pen?t('Spielzeit {0} + Strafe {1}',fmtTime(play),'+'+(S.pen*RUSH_PEN)+' s')+' · '+t('Fehler: {0}',S.pen):t('Fehlerfrei')}</p>
+    <p class="${rec?'es-rec':'hint'} rv" id="srec">${rec?(best?t('Neue Bestzeit! Vorher: {0}',fmtTime(best)):t('Neue Bestzeit!')):t('Bestzeit: {0}',fmtTime(best))}</p>
+    <div class="rv" id="sgem">${chipLine(gem)}</div>
+    <div class="rv" id="smas">${mascot(mood,null,'sm')}</div>
+    <div class="es-btns rv" id="sbtn"><button class="btn primary block" id="again">${t('Nochmal spielen')}</button>
+    <button class="btn block" id="fin">${t('Fertig')}</button></div></div>`);
+  $('#fin').onclick=closeSheet;
+  $('#again').onclick=()=>startRound('rush',{playmode:S.playmode});
+  const q=stageSeq(),stage=$('#est');
+  stageTap(q,stage);
+  const cd=Math.min(2000,Math.max(900,total/60));
+  q.at(300,()=>countTo($('#snum'),0,total,cd,fmtTime,q,true));
+  let T=300+cd+100;
+  q.at(T,()=>{const b=$('#ebig');if(b)b.classList.add('lock');sfx(rec?'milestone':'lockin');haptic(rec?[30,60,30,60,50]:25);on('srec');if(rec)burst($('#ebig'),80);});
+  T+=rec?900:500;
+  q.at(T,()=>{on('sgem');if(gem)sfx('chips');});T+=450;
+  q.at(T,()=>{on('smas');sfx(mood);});T+=400;
+  q.at(T,()=>{on('sbtn');});
+  if(window.__test){$$('.rv',stage).forEach(e=>e.classList.add('on'));}
+  else q.at(T,()=>{$$('.rv',stage).forEach(e=>e.classList.add('on'));});
 }
 
 function showSurvivalEnd(){

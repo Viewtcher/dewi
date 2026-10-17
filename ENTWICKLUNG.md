@@ -42,7 +42,8 @@ dewi/
 │   ├── gap.js            Modul Lückensatz
 │   ├── choice.js         Modul Auswahl
 │   ├── reels.js          Modul Reels (Spielautomat)
-│   └── slots.js          Modul Slots (goldener Automat mit Symbolen, Version 155)
+│   ├── slots.js          Modul Slots (goldener Automat mit Symbolen, Version 155)
+│   └── pads.js           Modul Pads (Farben auf leuchtenden Musik-Pads, Version 161)
 ├── dewi-music.js         Holo-Aufstieg (Claudio): eigenständiges Web-Audio-Modul, stellt window.DewiMusic bereit
 ├── music.js              Musik: Lo-Fi, Arcade, Synthwave (Reels) und Verbindungsstück zu Holo-Aufstieg
 ├── build.py              Setzt die Includes ein und baut index.html und icon.png
@@ -107,6 +108,7 @@ Früher gebrauchte, jetzt nicht mehr verwendete Wörter: „Fehlerliste“ und �
 | Lückensatz | `gap.js` | Beispielsatz mit Lücke | Auswahl, dann Swipe | 1 Fehler erlaubt |
 | Auswahl | `choice.js` | Beispielsatz | Swipe | 1 Fehler erlaubt |
 | Reels | `reels.js` | Beispielsatz mit mind. 3 Wörtern | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0 |
+| Pads | `pads.js` | Farbwort | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0 |
 | Slots | `slots.js` | Wort mit Symbol (Zahl 0–10 oder Frucht) | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0; alles richtig = doppelte Survival-Punkte |
 
 ## 3. Aufbau des Skripts (`app.src.html`)
@@ -1935,3 +1937,77 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Technik:** `rounds.js` `chooseModule`: `SLOTS_PREF=2/3`; steht `slots` im Pool (also `can(w)` und nicht das letzte Modul) und ist die Karte kein Abschlusswort, wird mit dieser Wahrscheinlichkeit Slots genommen. Tatsächlicher Anteil etwas höher (rund 70–75 %), weil Slots im Rest auch zufällig dran kommen kann.
 
 **Tests:** test4 SLP1–SLP4 (Anteil bei 600 Ziehungen, Abschlusswort ohne Vorrang, nie zweimal hintereinander, Wörter ohne Symbol nie Slots). Alle vier Suiten grün.
+
+## Version 161 – Neues Modul „Pads“ (Farben lernen auf Musik-Pads)
+
+**Was:** Vitos Idee: Farben lernen auf einem Pad-Controller. Oben steht das gesuchte Farbwort (nur geschrieben, in der Lernsprache), darunter ein schwarzer Glanzrahmen mit farbigen, von innen leuchtenden Pads. Man tippt das Pad in der richtigen Farbe. Jedes Pad spielt einen weichen Synth-Ton aus der C-Dur-Pentatonik (jede Reihenfolge klingt harmonisch) und leuchtet beim Antippen auf. Falsches Pad: kurzes Wackeln mit rotem Rand.
+
+**Regeln (mit Vito abgestimmt):**
+- Kommt nur, wenn das aktuelle Wort eine Farbe ist; zählt für die Stufen. Solo-Kachel „Pads“ im Survival.
+- Schwierigkeit nach Stufe des Wortes: Stufe 0–1: 2×2 Pads, eine Farbe; 2–3: 3×3, eine Farbe; 4: 3×3, zwei Farben hintereinander; 5: drei. Weitere Farben der Folge sind andere bekannte Farbwörter (sonst kürzere Folge); das aktuelle Wort ist immer dabei, nicht immer vorne.
+- Übrige Pads: beliebige andere Farben des Kurses.
+- Fehler: Daily Round 1 frei, Survival keiner (`TRIES.pads=2`). Survival-Grundwert 73 Punkte (wie Auswahl).
+
+**Farbwörter:** Indonesisch 11 (merah, biru, hijau, kuning, hitam, putih, cokelat, abu-abu, oranye, ungu, merah muda). Englisch/Deutsch 10 (dort gibt es Orange nur als Frucht). Erkennung über die englische Bedeutung (`padKey`); „jeruk = orange“ (Frucht) zählt nicht, „oranye = orange (color)“ schon.
+
+**Technik:** `modules/pads.js` (`padKey`, `padsData`, `padTone`, `showPads`). Pads sind `div` mit `role=button` (kein allgemeiner Klick-Ton), Eingabe per `pointerdown` (sofort, auch bei schnellen Folgen). Leuchten über `.pad::after` mit fest gezeichnetem Glanz, nur Deckkraft, nur beim Antippen; keine Dauer-Animation. In `app.src.html`: Der Tipp-irgendwo-weiter-Handler (Version 122) ignoriert jetzt Pads, sonst blätterte der Klick nach dem letzten richtigen Pad sofort weiter. `rounds.js`: `TRIES.pads`, `SURV_BASE.pads`. Testhaken: `window.__padSeq`, `S.cur.padHit(farbe)`.
+
+**Tests:** test4 PD1–PD14 (Farbwörter, Orange-Frucht ausgeschlossen, 11 Farben, Raster und Folgenlänge je Stufe, kürzere Folge ohne bekannte Farben, Solo-Kachel, Ablauf richtig/falsch, Lösung wird gezeigt, englische Texte). Die automatischen Durchläufe in test2–5 lösen Pads selbst. Alle vier Suiten grün. Chromium 375/430 px: 2×2-Pads 145 px, 3×3-Pads 93 px, alles im Bild, kein seitliches Scrollen, drei Farbwörter passen in eine Zeile.
+
+**Nur auf einem echten iPhone prüfbar:** Klang der Pad-Töne, wie das Leuchten wirkt, ob schnelles Tippen bei Folgen sauber erkannt wird.
+
+## Version 162 – NEU-Marke bei den Solo-Modulen entfernt
+
+**Was:** Die gelbe „NEU“-Pille auf den Solo-Kacheln (Swipe, Reels, Reihenfolge, Slots, Pads) ist weg. Neue Module bekommen sie auch künftig nicht mehr.
+
+**Warum:** Vito wollte keine Marke mehr; sie klebte ohnehin dauerhaft an allen Modulen.
+
+**Technik:** `isNew` aus allen `registerModule`-Aufrufen und aus der Doku in `modules/_registry.js` entfernt, Marken-Ausgabe in `playmodes.js` und CSS `.mnew` gelöscht. Das Wort „NEU“ im Vokabelheft-Filter (`Neu`) und „Noch neu“ im Fortschritt sind etwas anderes und bleiben.
+
+**Tests:** alle vier Suiten grün, keine Anpassung nötig.
+
+**Nur auf einem echten iPhone prüfbar:** nichts Besonderes, nur Blick auf die Solo-Kacheln ohne Pille.
+
+## Version 163 – Neuer Gamemode „Rush“
+
+**Was:** Neben Survival gibt es auf der Gamemodes-Seite eine blau-türkise Kachel „Rush“. Ziel: zehn Module aus bekannten Wörtern so schnell wie möglich. Die Auswahl ist wie im Survival (Random-Kachel oben, darunter die Solo-Module). Eine Stoppuhr läuft von der ersten Karte bis das zehnte Modul gewertet ist (auch über die Ergebnis-Screens). Pro Karte gibt es einen Versuch; ein verlorenes Modul kostet +5 Sekunden und es geht weiter. Am Ende zählt die Zeit hoch, dazu Bestzeit und Chips.
+
+**Warum:** Vitos Idee eines Tempo-Modus mit eigener Bestzeit neben dem Punkte-Modus Survival.
+
+**Regeln (mit Vito abgestimmt):** Wörter zufällig aus allen bekannten; gesperrt unter 5 bekannten Wörtern (wie Survival); bei weniger als 10 Wörtern kommen sie reihum nochmal. Chips nach Endzeit inkl. Strafe: ≤60 s = 60, ≤90 s = 45, ≤120 s = 30, ≤180 s = 15, langsamer = 5; neue Bestzeit +10; höchstens 150 Chips am Tag (eigener Zähler `state.chipRush`). Die Grenzen (`CHIPV.rushTiers`) sind Startwerte und werden nach Vitos erstem Test angepasst. Der Lernstand bleibt unberührt (keine Stufen, keine Fälligkeiten). **Hinweis:** Survival steigert dagegen Stufen (einmal pro Tag und Wort); „wie Survival“ in der Frage war insofern missverständlich, umgesetzt ist „Lernstand unberührt“.
+
+**Technik:** `S.kind==='rush'`; `arcade()` fasst Survival und Rush zusammen (ein Versuch, Solo-Modulwahl). Zustand `S.t0/t1/pen/pa`; Anzeige `#rtime` per `setInterval` (100 ms, nur ein Textfeld), die Uhr pausiert im Hintergrund (`visibilitychange`). Bestzeit in `bestStore()['rush:<playmode>']` in Millisekunden (kleiner ist besser). Ein Rush wird nicht in `state.run` gespeichert (Verlassen = Abbruch). `openPlaymodes('rush')` nutzt dieselbe Auswahl wie Survival; `showRushEnd`, `chipRush`, `fmtTime`, `rushItems`.
+
+**Tests:** test4 RU1–RU20 (Kachel, Auswahl, Start, Uhr, Strafe, Ende, Bestzeit, Lernstand unverändert, Chip-Stufen und Tageslimit, Sperre, wenige Wörter, Englisch). Alle vier Suiten grün. Chromium-Maße bei 375/430 px: Kachel gleich breit wie Survival, Uhr tickt, kein Überlauf.
+
+**Nur auf einem echten iPhone prüfbar:** Wie sich die Uhr und das Antippen im Tempo anfühlen, Haptik/Sound beim Endscreen, ob die Chip-Stufen zu großzügig oder zu knapp sind.
+
+## Version 164 – Rush: Stufen steigern, Pause, schnelleres Design
+
+**Was:** (1) Rush steigert den Lernstand wie Survival: ein richtiges Modul gibt Stufe +1 (einmal pro Tag und Wort), ein verlorenes stuft nie zurück. Das ersetzt „Lernstand unberührt“ aus Version 163. (2) Ein Rush lässt sich pausieren: Verlassen (X oder App in den Hintergrund) speichert den Run samt bisheriger Spielzeit und Strafen. Auf der Gamemodes-Seite erscheint oben die grüne „Weiterspielen“-Kachel („Rush · Random · 0:42.3 · noch 6 Module“). Die Uhr läuft erst beim Weiterspielen weiter, die angefangene Karte beginnt von vorn. (3) Die Rush-Kachel liegt nur noch 8 px unter Survival (vorher etwa 40 px). (4) Neues Aussehen: Verlauf von Lila zu Weiß, schräge Speed-Lines (statisch, keine Animation wegen der Wärme), Stoppuhr mit Fahrtlinien in Lila.
+
+**Technik:** `saveRun` speichert für Rush `el` (Spielzeit ohne Pausen) und `pen`; `resumeRun` setzt `t0=jetzt-el`. `closeSheet` sichert einen laufenden Rush; ist das zehnte Modul schon gewertet, zeigt es stattdessen das Ergebnis (nichts geht verloren). `visibilitychange` speichert beim Verstecken der App. `continueCard` zeigt Survival- und Rush-Runs. Der Abstand kommt aus einem überflüssigen Wrapper (`margin-top:12px`) plus `.card`-Rand plus Flex-Abstand; jetzt `margin-top:-6px` an der Kachel.
+
+**Tests:** test4 RU11 angepasst (nur steigen, nie fallen), neu RU21–RU24 (Pause, Weiterspielen-Kachel, Fortsetzen mit gleicher Zeit/Strafe, Ergebnis beim Verlassen nach dem zehnten Modul). Alle vier Suiten grün; Chromium 375/430 px: Abstand 8 px, kein Überlauf.
+
+**Nur auf einem echten iPhone prüfbar:** Wirkung des Lila-Weiß-Verlaufs mit Speed-Lines, Lesbarkeit der Schrift auf dem hellen Ende, Pause über den App-Wechsel.
+
+## Version 165 – Rush-Kachel: bewegte Speed-Lines
+
+**Was:** Die schrägen Linien auf der Rush-Kachel ziehen jetzt endlos nach links vorbei: eine Lage mit langen, langsamen Strichen (1,7 s pro Durchlauf) und eine mit kurzen, schnellen (0,95 s).
+
+**Technik:** Die Linien sind Hintergründe von `::before`/`::after` der Kachel (doppelt so breit wie die Kachel, nahtlos kachelnd, `repeat-x`), animiert nur über `transform` (`@keyframes rushl`, GPU-Ebene, `will-change`). Gesperrte Kachel und „Bewegung reduzieren“: keine Animation. Die Animation läuft nur, solange die Gamemodes-Seite offen ist.
+
+**Tests:** alle vier Suiten grün. Chromium: beide Animationen laufen, Transform ändert sich über die Zeit, kein Überlauf, Abstand 8 px.
+
+**Nur auf einem echten iPhone prüfbar:** Tempo und Wirkung der Linien und ob das Gerät dabei warm wird (zwei kleine Transform-Animationen; die Leistungsanzeige im Testbereich zeigt „Anim“).
+
+## Version 166 – Hintergrundverlauf für alle Screens, Stoppuhr in der Rush-Auswahl
+
+**Was:** (1) Der Lila-Verlauf, den bisher nur die Survival- und Rush-Auswahl hatten (heller Schein oben, nach unten dunkler), liegt jetzt hinter allen Screens: Startseite, Vokabelheft, Einstellungen, Shop, Spiel-Screens und die Gamemodes. Im Neon-Theme gibt es dieselbe Idee in Türkis/Blau. (2) In der Kopfzeile der Rush-Auswahl steht oben rechts eine Stoppuhr, genau dort, wo im Survival die Herzen sind.
+
+**Technik:** Neue Variable `--wash` (Theme-abhängig). Sheets: `.sheet{background:var(--wash),var(--bg)}` (der Verlauf bleibt beim Scrollen stehen, weil der Hintergrund am scrollenden Element hängt). Startseite: `body::before` als feststehende Ebene (`position:fixed`, `z-index:-1`), `body` selbst ist transparent über `html{background:var(--bg)}`. Der eigene Verlauf von `.sin.surv` entfällt. Alles statisch, keine Animation. Stoppuhr: `RUSH_WATCH` in `playmodes.js`, CSS `.rushwatch`.
+
+**Tests:** alle vier Suiten grün. Chromium 390 px: Pixelproben zeigen auf Startseite und Rush-Screen oben einen hellen Violett-Schein (100,77,156), unten dunkel (31,17,51); Stoppuhr sitzt rechts am Rand (36 px), kein Überlauf.
+
+**Nur auf einem echten iPhone prüfbar:** wie der Verlauf hinter den einzelnen Screens wirkt (besonders Vokabelheft, Shop, Spiel-Screens und im Neon-Theme) und ob Texte überall gut lesbar bleiben.

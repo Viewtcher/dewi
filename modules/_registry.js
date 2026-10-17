@@ -14,7 +14,6 @@
      tone      Farbklasse der Kachel (t1 … t5)
      icon      SVG der Kachel
      solo      true = im Playmode Solo wählbar
-     isNew     true = bekommt die „NEU“-Marke
      can(w)    kann das Modul dieses Wort abfragen? (z. B. braucht Lückensatz einen Beispielsatz)
      fallback  Modul-Kennung, falls can(w) false ist
      show(w)   zeigt die Karte (liest die laufende Round aus S.cur) */

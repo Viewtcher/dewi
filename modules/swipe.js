@@ -69,6 +69,6 @@ function showSwipe(){
   document.addEventListener('keydown',swKey);
 }
 
-registerModule({id:'swipe',name:()=>t('Swipe'),desc:()=>t('Zwei Vorschläge, einer stimmt'),tone:'t3',solo:true,isNew:true,fallback:null,
+registerModule({id:'swipe',name:()=>t('Swipe'),desc:()=>t('Zwei Vorschläge, einer stimmt'),tone:'t3',solo:true,fallback:null,
   icon:'<svg width="52" height="40" viewBox="0 0 52 40" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="4" width="26" height="32" rx="7" fill="#f566b9" transform="rotate(8 27 20)"/><path d="M4 20h8M7 15l-5 5 5 5" stroke="#a888ff" stroke-width="3"/><path d="M48 20h-8M45 15l5 5-5 5" stroke="#35dcd2" stroke-width="3"/></svg>',
   can:()=>true,show:()=>showSwipe()});

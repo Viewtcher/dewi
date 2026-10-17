@@ -229,6 +229,6 @@ function showSlots(w){
   mach.addEventListener('click',e=>{if(!e.target.closest('#sllev'))pull();});
 }
 
-registerModule({id:'slots',name:()=>t('Slots'),desc:()=>t('Hebel ziehen, Symbole benennen'),tone:'t2',solo:true,isNew:true,fallback:'choice',
+registerModule({id:'slots',name:()=>t('Slots'),desc:()=>t('Hebel ziehen, Symbole benennen'),tone:'t2',solo:true,fallback:'choice',
   icon:'<svg width="52" height="40" viewBox="0 0 52 40" aria-hidden="true"><defs><linearGradient id="slig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#f5b81f"/><stop offset="1" stop-color="#b9780c"/></linearGradient></defs><rect x="2" y="9" width="38" height="24" rx="12" fill="url(#slig)" stroke="#2a0c20" stroke-width="2"/><rect x="8" y="13" width="26" height="16" rx="3" fill="#fff" stroke="#2a0c20" stroke-width="1.5"/><text x="21" y="26" text-anchor="middle" font-size="12" font-weight="900" fill="#ff1f45" font-family="sans-serif">777</text><rect x="43" y="12" width="3" height="16" rx="1.5" fill="#d8d8e0"/><circle cx="44.5" cy="9" r="5" fill="url(#slig)" stroke="#2a0c20" stroke-width="1.5"/></svg>',
   can:w=>!!slotKey(w),show:w=>showSlots(w)});
