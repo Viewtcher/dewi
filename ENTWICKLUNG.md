@@ -2055,3 +2055,10 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 SY8–SY18 (Logik und Bedienung), alle vier Suiten grün.
 
 **Nur auf dem iPhone prüfbar:** Tastatur geht beim Antippen von „＋ Synonym“ auf und das Feld bleibt sichtbar; „Liste kopieren“ (Zwischenablage in Safari); Layout der Kachel.
+
+## Version 171 – Erste eigene Ergänzungen fest übernommen
+
+**Was:** Vitos erste kopierte Liste aus „Meine Ergänzungen“ ist jetzt fest in `syn.js`: Deutschkurs `hallo` (auch „hey“), `viel glück` (auch „viel erfolg“), `bis morgen` (auch „until tomorrow“).
+**Warum:** Der Weg Gerät → Liste → App funktioniert; die eigenen Einträge bleiben zusätzlich im Gerät, doppelte werden dort einfach ignoriert.
+**Technik:** Drei Zeilen in `SYN_RAW` (Schlüssel mit Kurspräfix `de:`). Test SY1 prüft jetzt alle Kurse, neu SY19.
+**Tests:** alle vier Suiten grün. **Nur auf dem iPhone prüfbar:** nichts Neues.

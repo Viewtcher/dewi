@@ -1050,7 +1050,7 @@ function toReels(E,force=true){
 // ===== Version 169: Synonyme, Umgangssprache und Abkürzungen (syn.js) =====
 {
   const E=fresh();
-  ok(ev(E,"Object.keys(SYN).filter(k=>!LANGS.id.words.some(w=>w.k===k)).join()")==='','SY1 Jeder Schlüssel in syn.js ist ein echtes Wort');
+  ok(ev(E,"Object.keys(SYN).filter(k=>!Object.values(LANGS).some(L=>L.words.some(w=>w.k===k))).join()")==='','SY1 Jeder Schlüssel in syn.js ist ein echtes Wort');
   ok(ev(E,"(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');return w.syn.en.indexOf('thanks')>=0&&w.syn.de.indexOf('dankeschön')>=0&&w.alts.indexOf('makasih')>=0})()"),'SY2 terima kasih: thanks, dankeschön, makasih');
   ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');const r=[];state.ui='en';r.push(isCorrect({w,dir:'id2gl',lvl:0},'Thanks!'));state.ui='de';r.push(isCorrect({w,dir:'id2gl',lvl:0},'Dankeschön'));r.push(isCorrect({w,dir:'id2gl',lvl:0},'danke'));r.push(isCorrect({w,dir:'id2gl',lvl:0},'kuchen'));return r.join()})()`)==='true,true,true,false','SY3 Übersetzung tippen: Synonyme zählen, Falsches nicht');
   ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');const c={w,dir:'gl2id',lvl:0,accept:[normId(w.id)].concat(w.alts.map(normId))};return [isCorrect(c,'makasih'),isCorrect(c,'Terimakasih'),isCorrect(c,'terima kasih'),isCorrect(c,'maaf')].join()})()`)==='true,true,true,false','SY4 Kurswort tippen: Umgangssprache und Schreibweisen zählen');
@@ -1088,6 +1088,11 @@ function toReels(E,force=true){
       ok(Object.keys(JSON.parse(E.w.localStorage.getItem('kata.v1')).mysyn).length===1,'SY18 Ergänzung ist gespeichert (idGl='+idGl+')');
     }
   }
+}
+// ===== Version 171: erste eigene Ergänzungen fest übernommen (Deutschkurs) =====
+{
+  const E=fresh();
+  ok(ev(E,"(()=>{const f=k=>LANGS.de.words.find(w=>w.k===k);return f('de:hallo').alts.indexOf('hey')>=0&&f('de:viel glück').alts.indexOf('viel erfolg')>=0&&f('de:bis morgen').syn.en.indexOf('until tomorrow')>=0})()"),'SY19 Fest übernommene Ergänzungen: hey, viel erfolg, until tomorrow');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
