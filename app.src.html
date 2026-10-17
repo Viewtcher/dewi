@@ -404,6 +404,34 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .slmach[data-st=lose] .slbody{filter:saturate(.55)}
 .slq{min-height:118px;display:flex;flex-direction:column;gap:12px}
 .slhint{margin:0;text-align:center;font-weight:700;color:var(--faint)}
+/* Version 156: leuchtende Achsen (lila Neon-Ringe), schneller Wirbel mit Leuchtstreifen.
+   Nur Deckkraft wird animiert (der Glanz selbst ist fest gezeichnet), damit das Handy kühl bleibt. */
+.slring{position:absolute;top:-9px;bottom:-9px;width:5px;margin-left:-2.5px;z-index:2;border-radius:3px;pointer-events:none;
+  background:linear-gradient(#ffd6ff,#d36bff 30%,#9a3dff 60%,#ff6fe0);box-shadow:0 0 4px 1px rgba(200,110,255,.7)}
+.slring::after{content:'';position:absolute;inset:-4px -3px;border-radius:6px;opacity:.28;transition:opacity .9s ease-out;
+  box-shadow:0 0 12px 4px rgba(205,110,255,.95),0 0 28px 10px rgba(170,70,255,.55)}
+.slring.r0{left:2.5px}.slring.r1{left:calc(7.5px + (100% - 20px)/3)}.slring.r2{left:calc(12.5px + 2*(100% - 20px)/3)}.slring.r3{left:calc(100% - 2.5px)}
+.slmach[data-st=spin] .slring::after{opacity:1;transition:opacity .08s}
+.slmach[data-st=glow] .slring::after{opacity:.75}
+.slstreak{position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none;transition:opacity .12s;
+  background:repeating-linear-gradient(180deg,transparent 0 9px,rgba(255,255,255,.75) 9px 12px,transparent 12px 22px),linear-gradient(90deg,rgba(210,120,255,.25),rgba(255,255,255,0) 40%,rgba(255,255,255,0) 60%,rgba(210,120,255,.25))}
+.slreel.spin .slstreak{opacity:1}
+.slreel.spin .slstrip{opacity:.45}
+.slreel .slstrip{transition:opacity .12s}
+/* Neon-Nacht aus dem Shop: dunkle Trommel, blaue Kugel, stärkere Ringe */
+:root[data-theme=neon] .slbody{background:linear-gradient(180deg,#34449a 0%,#18215e 26%,#0b1032 66%,#202d78 100%);border-color:#04061a;box-shadow:inset 0 3px 0 rgba(150,175,255,.35),inset 0 -4px 0 rgba(0,0,0,.4),0 0 30px rgba(150,80,255,.4)}
+:root[data-theme=neon] .slcap{background:linear-gradient(#5a6fd8,#1c2766 50%,#0b1032);border-color:#04061a}
+:root[data-theme=neon] .slwin{background:#070b26;border-color:#04061a}
+:root[data-theme=neon] .slreel{background:linear-gradient(90deg,#0a0f38,#1c2970 30%,#1c2970 70%,#0a0f38)}
+:root[data-theme=neon] .slreel::after{background:linear-gradient(180deg,rgba(0,0,10,.6),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 70%,rgba(0,0,10,.6))}
+:root[data-theme=neon] .slc{background:radial-gradient(circle,rgba(130,150,255,.32),transparent 62%)}
+:root[data-theme=neon] .slring::after{opacity:.6}
+:root[data-theme=neon] .slmach[data-st=spin] .slring::after{opacity:1}
+:root[data-theme=neon] .slarr{background:#ff4fd8}
+:root[data-theme=neon] .slrod{background:linear-gradient(90deg,#28327a,#8fa4ff 45%,#33408f);border-color:#04061a}
+:root[data-theme=neon] .slball{background:radial-gradient(circle at 34% 30%,#e8f0ff,#7fa0ff 28%,#2f4fd8 62%,#0d1a6a);border-color:#04061a;box-shadow:0 0 14px rgba(110,140,255,.7)}
+:root[data-theme=neon] .slstreak{background:repeating-linear-gradient(180deg,transparent 0 9px,rgba(255,120,230,.8) 9px 12px,transparent 12px 22px),linear-gradient(90deg,rgba(120,140,255,.3),transparent 40%,transparent 60%,rgba(120,140,255,.3))}
+
 
 #perf{position:fixed;left:6px;top:calc(env(safe-area-inset-top) + 2px);z-index:99;pointer-events:none;white-space:pre;font:600 10px/1.3 ui-monospace,Menlo,monospace;color:#7dffb2;background:rgba(0,0,0,.72);padding:3px 6px;border-radius:6px}
 .langrow .flagbox{width:48px;height:48px;display:grid;place-items:center;font-size:36px;line-height:1;flex:none}
@@ -3678,6 +3706,27 @@ const SFX={
   tick(c){tone(c,1500,0,.02,{v:.05,to:950});},
   lever(c){for(let i=0;i<6;i++){tone(c,2200-i*160,i*.045,.02,{v:.09,type:'square'});noise(c,i*.045,.012,.05,4000);}tone(c,120,.3,.16,{v:.5,to:55});noise(c,.3,.08,.18,900);},
   whirr(c){noise(c,0,.55,.07,2400);tone(c,170,0,.55,{type:'sawtooth',v:.05,to:520});},
+  /* Version 156 (Slots): elektrisches Aufladen beim Hebelzug – steigender Sägezahn durch einen wandernden Bandpass, schnelles Flattern, Zischen und ein heller Zap am Gipfel */
+  slcharge(c){try{
+    const t0=c.currentTime,o=c.createOscillator(),f=c.createBiquadFilter(),g=c.createGain(),l=c.createOscillator(),lg=c.createGain();
+    o.type='sawtooth';o.frequency.setValueAtTime(85,t0);o.frequency.exponentialRampToValueAtTime(1500,t0+.42);
+    f.type='bandpass';f.Q.value=5;f.frequency.setValueAtTime(380,t0);f.frequency.exponentialRampToValueAtTime(4800,t0+.42);
+    g.gain.setValueAtTime(.0001,t0);g.gain.linearRampToValueAtTime(.2,t0+.36);g.gain.exponentialRampToValueAtTime(.0001,t0+.52);
+    l.frequency.value=34;lg.gain.value=.09;l.connect(lg);lg.connect(g.gain);
+    o.connect(f);f.connect(g);g.connect(SND.master);o.start(t0);l.start(t0);o.stop(t0+.56);l.stop(t0+.56);}catch(e){}   // ältere/Test-Audio ohne Filter-Regler
+    noise(c,0,.46,.05,5200,{type:'highpass'});
+    tone(c,2600,.36,.13,{type:'square',v:.07,to:6000});tone(c,1300,.37,.16,{type:'sawtooth',v:.05,to:240});
+  },
+  /* Knistern und Brummen, solange die Walzen wirbeln */
+  slcrack(c){
+    for(let i=0;i<11;i++)noise(c,i*.075+Math.random()*.03,.022,.13,2800+Math.random()*3600,{type:'highpass'});
+    tone(c,55,0,.95,{type:'sawtooth',v:.045,to:110});
+  },
+  /* harter Einschlag einer Walze mit kurzem Zap */
+  slslam(c){
+    tone(c,150,0,.2,{v:.5,to:42});noise(c,0,.06,.24,650);
+    tone(c,3400,0,.08,{type:'square',v:.06,to:700});noise(c,.008,.1,.07,6500,{type:'highpass'});
+  },
   thunk(c){tone(c,160,0,.1,{v:.45,to:70});noise(c,0,.05,.16,900);},
   rwin(c){tone(c,988,0,.07,{type:'triangle',v:.24});tone(c,1319,.07,.38,{type:'triangle',v:.24});tone(c,2637,.07,.22,{v:.07});tone(c,3136,.12,.18,{v:.05});noise(c,.07,.08,.04,7000);},
   rbad(c){tone(c,110,0,.3,{type:'sawtooth',v:.2,to:88});tone(c,116,0,.3,{type:'square',v:.07,to:92});},

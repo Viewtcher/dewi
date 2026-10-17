@@ -1903,3 +1903,20 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 SL1–SL17 (Symbolwörter, Verfügbarkeit, erzwungener Dreier, zwei/viele bekannte, falsche Option, Solo-Kachel, Hebel, Fragen, Gewinn mit doppelten Punkten, Dreier mit einer Frage, Fehler im Survival, englische Texte). Die automatischen Durchläufe in test2–5 ziehen bei Slots den Hebel. Alle vier Suiten grün. Layout in Chromium bei 375 und 430 px gemessen: Automat passt, kein seitliches Scrollen, Symbole stehen nach dem Stopp genau auf der Gewinnlinie, Fragen nach rund 2,4 s.
 
 **Nur auf einem echten iPhone prüfbar:** wie die Symbole und der Goldglanz wirken, ob Hebel-Tipp und Herunterziehen gut gehen, Ton und Haptik beim Stoppen, ob das Drehen flüssig läuft und das Handy kühl bleibt (Leistungsanzeige).
+
+## Version 156 – Slots: leuchtende Achsen, schneller Wirbel, Strom-Sound
+
+**Was:** Der Hebelzug bei Slots soll der Dopamin-Moment sein.
+- **Leuchtende Achsen:** Vier lila Neon-Ringe an den Walzenrändern (außen und zwischen den Walzen). In Ruhe glimmen sie leicht, beim Hebelzug blitzen sie grell auf und klingen nach dem letzten Stopp langsam ab.
+- **Ein schneller Wirbel:** Alle drei Walzen schießen gleichzeitig los (längerer Streifen, 26 Zellen), mit hellen Leuchtstreifen über den gedimmten Symbolen. Sie stoppen links, Mitte, rechts nach 0,75 / 1 / 1,25 s mit kleinem Überschwingen. Fragen kommen nach rund 1,3 s statt 2,4 s.
+- **Eigener Strom-Sound** (live erzeugt, Richtung „elektrisierende Inspect-Animation“, kein fremder Sound): `slcharge` (steigendes, flatterndes Aufladen mit Zischen und hellem Zap am Gipfel), `slcrack` (Knistern und Brummen während des Wirbels), `slslam` (tiefer Einschlag mit Zap pro Walze).
+- **Haptik kräftiger:** Hebel `[30,20,45]`, jeder Stopp `[45]` (Safari auf dem iPhone sperrt Vibration für Webseiten weitgehend).
+- **Neon-Nacht aus dem Shop:** Wer das Theme ausgerüstet hat, sieht eine dunkelblaue Trommel, dunkle Walzen mit hellem Schein hinter den Symbolen, blaue Glanzkugel am Hebel, pinke Pfeile und Leuchtstreifen und stärker leuchtende Ringe. Standard bleibt Gold.
+
+**Warum:** Vitos Wunsch nach mehr Kick beim Ziehen (Vorbild: lila leuchtende Automaten-Achsen).
+
+**Technik:** `modules/slots.js`: `SL_STRIP=26`, `SL_STOP`, Klasse `spin` pro Walze, `data-st` `spin`→`glow`→`ask`. CSS in `app.src.html`: `.slring` (+ `::after` mit festem Glanz, animiert wird nur die Deckkraft), `.slstreak`, Neon-Varianten über `:root[data-theme=neon]`. Sounds in `SFX` (Filter-Teil von `slcharge` in try/catch für Test-Audio). Keine Endlos-Animation.
+
+**Tests:** test4 SL11b (Ringe, Leuchtstreifen, Sounds), SL11 an den längeren Streifen angepasst. Alle vier Suiten grün. Chromium 375 px (Gold) und 390 px (Neon): Ringe sitzen genau auf den Walzengrenzen, Ringe leuchten beim Drehen voll, Symbole stoppen exakt auf der Linie, kein seitliches Scrollen.
+
+**Nur auf einem echten iPhone prüfbar:** Wie der Strom-Sound klingt und ob er „kickt“, ob das Leuchten auf dem OLED-Display wirkt, ob der Wirbel flüssig läuft, Haptik.
