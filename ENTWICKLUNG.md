@@ -1925,3 +1925,13 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 PF1 (gleiches Ergebnis wie die volle Zählung, bis zur Grenze), PF2 (mit 2 Wörtern alles gesperrt). Alle vier Suiten grün.
 
 **Nur auf einem echten iPhone prüfbar:** ob das Öffnen jetzt flüssig wirkt.
+
+## Version 160 – Symbolwörter bekommen meistens Slots
+
+**Was:** Slots kam in der Daily Round selten (nur bei Symbolwörtern, und dort zufällig unter 5–7 Modulen). Jetzt bekommen Wörter mit Symbol (Zahlen 0–10, Früchte) etwa 2 von 3 Mal Slots, sonst wie bisher ein zufälliges anderes Modul. Das gilt für die Daily Round und das Survival mit Random-Playmode. Ausnahmen: das Abschlusswort der Daily Round (bleibt bevorzugt Tippen/Bausteine), neue Wörter (Kennenlernen) und nie zweimal Slots hintereinander.
+
+**Warum:** Vito möchte Slots öfter sehen, ohne dass Symbolwörter nie mehr getippt werden.
+
+**Technik:** `rounds.js` `chooseModule`: `SLOTS_PREF=2/3`; steht `slots` im Pool (also `can(w)` und nicht das letzte Modul) und ist die Karte kein Abschlusswort, wird mit dieser Wahrscheinlichkeit Slots genommen. Tatsächlicher Anteil etwas höher (rund 70–75 %), weil Slots im Rest auch zufällig dran kommen kann.
+
+**Tests:** test4 SLP1–SLP4 (Anteil bei 600 Ziehungen, Abschlusswort ohne Vorrang, nie zweimal hintereinander, Wörter ohne Symbol nie Slots). Alle vier Suiten grün.

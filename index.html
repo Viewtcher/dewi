@@ -9656,6 +9656,7 @@ function sheetBody(inner){
 
 /* Welches Modul bekommt diese Karte? Immer ein Modul pro Wort, nie dasselbe wie die Karte davor.
    Das neue Wort am Ende der Review-Stage bekommt bevorzugt ein schweres Modul (Tippen oder Bausteine). */
+const SLOTS_PREF=2/3;
 function chooseModule(card){
   const w=card.w;
   if(window.__force&&MOD[window.__force]&&MOD[window.__force].can(w))return window.__force;   // nur für Tests
@@ -9663,6 +9664,8 @@ function chooseModule(card){
   const all=MODULES.filter(m=>m.solo&&m.can(w)).map(m=>m.id);
   let pool=all.filter(id=>id!==S.last);
   if(card.kind==='final'){const heavy=pool.filter(id=>id==='typing'||id==='blocks');if(heavy.length)pool=heavy;}
+  /* Version 160: Symbolwörter (Zahlen, Früchte) bekommen meistens Slots (etwa 2 von 3 Mal), nicht beim Abschlusswort */
+  else if(pool.indexOf('slots')>=0&&Math.random()<SLOTS_PREF)return 'slots';
   if(!pool.length)pool=all;
   return pool[Math.floor(Math.random()*pool.length)];
 }
