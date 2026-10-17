@@ -6,7 +6,7 @@ function gapParts(s,w){
 }
 
 function gapTiles(w){
-  const L=curLang(),bad=new Set(gl(w).split(' / ').map(normG)),n=w.id.split(' ').length,out=[w.id];
+  const L=curLang(),bad=new Set(glList(w).map(normG)),n=w.id.split(' ').length,out=[w.id];
   const pool=shuffle(L.words.filter(x=>x.k!==w.k&&x.id!==w.id&&!/^[A-Z]/.test(x.id)&&x.id.split(' ').length===n));
   const pri=pool.filter(x=>x.cat===w.cat).concat(pool.filter(x=>x.cat!==w.cat));
   for(const x of pri){

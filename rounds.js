@@ -244,7 +244,7 @@ function sheetBody(inner){
 
 /* Welches Modul bekommt diese Karte? Immer ein Modul pro Wort, nie dasselbe wie die Karte davor.
    Das neue Wort am Ende der Review-Stage bekommt bevorzugt ein schweres Modul (Tippen oder Bausteine). */
-const SLOTS_PREF=2/3;
+const SLOTS_PREF=2/3,PADS_PREF=2/3;
 function chooseModule(card){
   const w=card.w;
   if(window.__force&&MOD[window.__force]&&MOD[window.__force].can(w))return window.__force;   // nur für Tests
@@ -254,6 +254,8 @@ function chooseModule(card){
   if(card.kind==='final'){const heavy=pool.filter(id=>id==='typing'||id==='blocks');if(heavy.length)pool=heavy;}
   /* Version 160: Symbolwörter (Zahlen, Früchte) bekommen meistens Slots (etwa 2 von 3 Mal), nicht beim Abschlusswort */
   else if(pool.indexOf('slots')>=0&&Math.random()<SLOTS_PREF)return 'slots';
+  /* Version 168: Farbwörter bekommen ebenso meistens Pads (etwa 2 von 3 Mal), nicht beim Abschlusswort */
+  else if(pool.indexOf('pads')>=0&&Math.random()<PADS_PREF)return 'pads';
   if(!pool.length)pool=all;
   return pool[Math.floor(Math.random()*pool.length)];
 }
@@ -342,18 +344,38 @@ function resultNote(good){
   return '';   // Version 149: Stufe und nächste Wiederholung nicht mehr geschrieben zeigen, Dewis Kommentar reicht als Rückmeldung
 }
 
+/* Version 170: „＋ Synonym“ nach dem Tippen. Vorbelegt mit der zuletzt getippten Antwort; wirkt ab der nächsten Karte. */
+function mySynUi(c){
+  const box=$('#myadd'),open=$('#myopen');if(!box||!open)return;
+  const dir=c.dir,w=c.w;
+  open.onclick=()=>{
+    const pre=(!c.ok&&c.lastVal)?c.lastVal.trim():'';
+    box.innerHTML=`<form class="nmrow" id="myf"><input class="field" id="myin" type="text" maxlength="${MYSYN_LEN}" autocapitalize="off" autocomplete="off" enterkeyhint="done" value="${esc(pre)}" placeholder="${dir==='gl2id'?t('Weitere Schreibweise'):t('Weitere Übersetzung')}" aria-label="${t('Synonym')}"><button class="btn" type="submit" id="myok">${t('OK')}</button></form><p class="hint" id="myfl" role="status"></p>`;
+    const inp=$('#myin');try{inp.focus({preventScroll:true});}catch(e){}
+    $('#myf').onsubmit=e=>{
+      e.preventDefault();
+      const r=mySynAdd(w,dir,inp.value),f=$('#myfl');
+      if(r.ok){box.innerHTML=`<p class="hint">${t('Gespeichert. Gilt ab der nächsten Karte.')}</p>`;return;}
+      f.textContent=r.why==='dup'?t('Das gilt schon.'):r.why==='max'?t('Für dieses Wort ist die Grenze erreicht.'):r.why==='long'?t('Zu lang.'):t('Bitte etwas eintippen.');
+    };
+  };
+}
+
 /* Ergebnis des Moduls Tippen (die anderen Module zeigen ihr Ergebnis selbst) */
 function finish(typedOk){
   const c=S.cur,w=c.w,L=curLang(),r=settleCard(typedOk),ok=c.ok,type=c.type;
   let qk,qc={n:ok?S.run:(r.n||1),w:w.id,lv:c.lvl};
   if(ok)qk=c.tries>1&&typedOk?'ok_try2':S.run>=3&&S.run%3===0?'ok_run':'ok';
   else qk=(r.n||1)>=2?'bad_again':c.lvl>=3?'bad_rare':'bad';   // Fehlerzähler des Wortes (bleibt seit Version 131 im Wort)
-  const alts=c.dir==='gl2id'&&c.alts.length?`<p class="hint" style="margin-top:6px">${t('Auch richtig: {0}',c.alts.map(esc).join(', '))}</p>`:'';
+  /* Version 169: „Auch richtig“ zeigt beim Kurswort andere Wörter mit gleicher Bedeutung und Umgangssprache, bei der Übersetzung die Synonyme (syn.js) */
+  const more=(c.dir==='gl2id'?c.alts.concat((w.alts||[]).filter(x=>normId(x)!==normId(w.id))):((w.syn&&w.syn[state.ui])||[]).filter(x=>!/^[\d\/]+$/.test(x))).slice(0,4);
+  const alts=more.length?`<p class="hint" style="margin-top:6px">${t('Auch richtig: {0}',more.map(esc).join(', '))}</p>`:'';
   const typoNote=c.typo?`<p class="hint" style="margin-top:6px">${t('Kleiner Tippfehler. Richtig geschrieben: {0}','<b lang="'+(c.dir==='gl2id'?L.code.toLowerCase():state.ui)+'">'+esc(c.dir==='gl2id'?w.id:glFirst(w))+'</b>')}</p>`:'';
   sheetBody(`<div class="smain">${S.kind==='survival'?roundLives():''}<div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?t('Richtig'):t('Leider falsch')}</div>
     <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="${state.ui}">${esc(gl(w))}</span></div>${typoNote}${alts}</div>
-    ${resultNote(ok)}${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
+    ${resultNote(ok)}<div class="myadd" id="myadd"><button class="btn ghost" id="myopen" type="button">${t('＋ Synonym')}</button></div>${mascot(qk,qc,'sm')}<button class="btn primary block" id="next">${t('Weiter')}</button></div>`);
   const n=$('#next');n.onclick=nextStep;
+  mySynUi(c);
   try{n.focus({preventScroll:true});}catch(e){}
   if(ok&&S.kind==='daily')levelUp(c,r);
 }

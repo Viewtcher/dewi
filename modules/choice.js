@@ -1,5 +1,5 @@
 function choiceOptions(w){
-  const L=curLang(),right=glFirst(w),bad=new Set(gl(w).split(' / ').map(normG)),out=[right];
+  const L=curLang(),right=glFirst(w),bad=new Set(glList(w).map(normG)),out=[right];
   const pool=shuffle(L.words.filter(x=>x.k!==w.k));
   const pri=pool.filter(x=>x.cat===w.cat).concat(pool.filter(x=>x.cat!==w.cat));
   for(const x of pri){

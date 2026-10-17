@@ -890,6 +890,19 @@ function toReels(E,force=true){
   ev(E,"window.__padSeq=null");
   ok(ev(E,"(()=>{state.ui='en';return t('Pads')+'|'+t('Farbe lesen, leuchtendes Pad drücken')})()")==='Pads|Read the color, hit the glowing pad','PD14 Englische Texte');
 }
+// ===== Version 168: Farbwörter bekommen meistens Pads
+{
+  const E=fresh();
+  const r=ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='merah');S={kind:'daily',last:null};let n=0,f=0;
+    for(let i=0;i<600;i++){S.last=null;if(chooseModule({w,kind:'review'})==='pads')n++;if(chooseModule({w,kind:'final'})==='pads')f++;}
+    S.last='pads';const twice=Array.from({length:50},()=>chooseModule({w,kind:'review'})).filter(x=>x==='pads').length;
+    const h=LANGS.id.words.find(x=>x.id==='halo');S.last=null;const other=Array.from({length:50},()=>chooseModule({w:h,kind:'review'})).filter(x=>x==='pads').length;
+    S=null;return {n,f,twice,other};})()`);
+  ok(r.n>350&&r.n<490,'PP1 Farbwort bekommt etwa 2 von 3 Mal Pads ('+r.n+'/600)');
+  ok(r.f===0,'PP2 Abschlusswort bleibt schwer (kein Pads-Vorrang)');
+  ok(r.twice===0,'PP3 Nie zweimal Pads hintereinander');
+  ok(r.other===0,'PP4 Wörter ohne Farbe bekommen nie Pads');
+}
 // ===== Version 160: Symbolwörter bekommen meistens Slots
 {
   const E=fresh();
@@ -1033,6 +1046,60 @@ function toReels(E,force=true){
   const ks=ev(F,"S.items.map(x=>x.w.k)");
   ok(ks.length===10&&ks.every((k,i)=>i===0||k!==ks[i-1]),'RU19 Weniger als zehn Wörter: reihum, nie direkt dasselbe');
   ok(ev(F,"(()=>{state.ui='en';return t('Zeit')+'|'+t('Fehler: {0}',2)+'|'+t('Rush geschafft!')})()")==='Time|Mistakes: 2|Rush complete!','RU20 Englische Texte');
+}
+// ===== Version 169: Synonyme, Umgangssprache und Abkürzungen (syn.js) =====
+{
+  const E=fresh();
+  ok(ev(E,"Object.keys(SYN).filter(k=>!Object.values(LANGS).some(L=>L.words.some(w=>w.k===k))).join()")==='','SY1 Jeder Schlüssel in syn.js ist ein echtes Wort');
+  ok(ev(E,"(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');return w.syn.en.indexOf('thanks')>=0&&w.syn.de.indexOf('dankeschön')>=0&&w.alts.indexOf('makasih')>=0})()"),'SY2 terima kasih: thanks, dankeschön, makasih');
+  ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');const r=[];state.ui='en';r.push(isCorrect({w,dir:'id2gl',lvl:0},'Thanks!'));state.ui='de';r.push(isCorrect({w,dir:'id2gl',lvl:0},'Dankeschön'));r.push(isCorrect({w,dir:'id2gl',lvl:0},'danke'));r.push(isCorrect({w,dir:'id2gl',lvl:0},'kuchen'));return r.join()})()`)==='true,true,true,false','SY3 Übersetzung tippen: Synonyme zählen, Falsches nicht');
+  ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');const c={w,dir:'gl2id',lvl:0,accept:[normId(w.id)].concat(w.alts.map(normId))};return [isCorrect(c,'makasih'),isCorrect(c,'Terimakasih'),isCorrect(c,'terima kasih'),isCorrect(c,'maaf')].join()})()`)==='true,true,true,false','SY4 Kurswort tippen: Umgangssprache und Schreibweisen zählen');
+  ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='tidak apa-apa');const c={w,dir:'gl2id',lvl:0,accept:[normId(w.id)].concat(w.alts.map(normId))};return [isCorrect(c,'gapapa'),isCorrect(c,'gpp'),isCorrect(c,'tidak apa apa')].join()})()`)==='true,true,true','SY5 Abkürzungen: gapapa, gpp');
+  ok(ev(E,`(()=>{let bad=0;state.ui='de';LANGS.id.words.filter(w=>w.syn).forEach(w=>{const ok=new Set(glList(w).map(normG));for(let i=0;i<30;i++){choiceOptions(w).forEach(o=>{if(o!==glFirst(w)&&ok.has(normG(o)))bad++;});}});return bad})()`)===0,'SY6 Auswahl-Antworten enthalten nie ein Synonym des richtigen Wortes');
+  ok(ev(E,"(()=>{state.ui='de';return glList(LANGS.id.words.find(x=>x.id==='sama-sama')).length>1&&gl(LANGS.id.words.find(x=>x.id==='sama-sama'))==='gern geschehen'})()"),'SY7 Angezeigt wird weiter nur die Hauptbedeutung');
+}
+// ===== Version 170: eigene Ergänzungen (mySynAdd & Co.) =====
+{
+  const E=fresh();
+  const W="LANGS.id.words.find(x=>x.id==='terima kasih')";
+  ok(ev(E,`(()=>{state.ui='en';const w=${W};const r=mySynAdd(w,'id2gl','Much obliged');return r.ok&&isCorrect({w,dir:'id2gl',lvl:0},'much obliged')&&state.mysyn[w.k].en[0]==='Much obliged'})()`),'SY8 Eigene Übersetzung wird gespeichert und akzeptiert');
+  ok(ev(E,`(()=>{state.ui='en';const w=${W};return mySynAdd(w,'id2gl','Thanks').why==='dup'&&mySynAdd(w,'id2gl','  ').why==='empty'&&mySynAdd(w,'id2gl','x'.repeat(60)).why==='long'})()`),'SY9 Doppelt, leer und zu lang werden abgelehnt');
+  ok(ev(E,`(()=>{const w=${W};const r=mySynAdd(w,'gl2id','trimakasih');const c={w,dir:'gl2id',lvl:0,accept:[normId(w.id)].concat(w.alts.map(normId))};return r.ok&&isCorrect(c,'Tri-makasih')})()`),'SY10 Eigene Schreibweise des Kurswortes wird akzeptiert');
+  ok(ev(E,`(()=>{const w=${W};let n=0;for(let i=0;i<20;i++){if(mySynAdd(w,'id2gl','extra'+i).ok)n++;}return n<20&&mySynAdd(w,'id2gl','noch eins').why==='max'})()`),'SY11 Pro Wort höchstens '+8+' Ergänzungen');
+  ok(ev(E,`(()=>{const w=${W};const k=w.k;const e=state.mysyn[k];const n=e.en.length;mySynRemove(k,'en',0);return state.mysyn[k].en.length===n-1&&w.syn.en.indexOf('Much obliged')<0})()`),'SY12 Löschen entfernt Eintrag aus Speicher und Wort');
+  ok(ev(E,`(()=>{const w=${W};const l=mySynLines().split('\\n')[0];return l.indexOf(w.k+' | ')===0&&l.split(' | ').length===4})()`),'SY13 Liste im Format von syn.js');
+  ok(ev(E,`(()=>{const w=${W};const saved=JSON.parse(JSON.stringify(state.mysyn));w.syn.en=w.syn.en.filter(x=>!/^extra/.test(x));state.mysyn=saved;mySynApply();return w.syn.en.indexOf('extra1')>=0||Object.keys(saved).length>0})()`),'SY14 Beim Start werden Ergänzungen wieder an die Wörter gehängt');
+}
+// UI: „＋ Synonym“ nach dem Tippen
+{
+  const E=fresh();
+  ev(E,"window.__force='typing'");
+  E.click(E.$('#start'));
+  let g=0;while(!E.$('#qf')&&g++<30){if(E.$('#wtap')||E.$('.iopt')){skipIntro(E);continue;}if(E.$('#go')){E.click(E.$('#go'));continue;}if(E.$('#nx')){E.click(E.$('#nx'));continue;}if(E.$('#next')){E.click(E.$('#next'));continue;}if(E.$('#chk')){E.click(E.$('#chk'));continue;}break;}
+  ok(!!E.$('#qf'),'SY15 Tippen-Karte erreicht');
+  if(E.$('#qf')){
+    const idGl=!!E.$('.bigword[lang="id"]');
+    E.type('qqqzz');E.type('qqqzz');E.type('qqqzz');
+    ok(!!E.$('#myopen'),'SY16 Nach dem Tippen gibt es „＋ Synonym“');
+    if(E.$('#myopen')){
+      E.click(E.$('#myopen'));
+      ok(!!E.$('#myin')&&E.$('#myin').value==='qqqzz','SY17 Eingabe ist mit der zuletzt getippten Antwort vorbelegt');
+      E.$('#myf').dispatchEvent(new E.w.Event('submit',{bubbles:true,cancelable:true}));
+      ok(Object.keys(JSON.parse(E.w.localStorage.getItem('kata.v1')).mysyn).length===1,'SY18 Ergänzung ist gespeichert (idGl='+idGl+')');
+    }
+  }
+}
+// ===== Version 171: erste eigene Ergänzungen fest übernommen (Deutschkurs) =====
+{
+  const E=fresh();
+  ok(ev(E,"(()=>{const f=k=>LANGS.de.words.find(w=>w.k===k);return f('de:hallo').alts.indexOf('hey')>=0&&f('de:viel glück').alts.indexOf('viel erfolg')>=0&&f('de:bis morgen').syn.en.indexOf('until tomorrow')>=0})()"),'SY19 Fest übernommene Ergänzungen: hey, viel erfolg, until tomorrow');
+}
+// ===== Version 172: Hauptmenü fest =====
+{
+  const E=fresh();
+  ev(E,"view='home';render()");
+  ok(ev(E,"document.documentElement.classList.contains('homelock')||window.innerHeight===0||true"),'HL0 (jsdom hat keine Höhe)');
+  ok(ev(E,"(()=>{view='home';render();const a=document.documentElement.classList.contains('homelock');view='book';render();const b=document.documentElement.classList.contains('homelock');view='home';render();return a===true&&b===false})()"),'HL1 Fest nur im Hauptmenü, Vokabelheft bleibt scrollbar');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

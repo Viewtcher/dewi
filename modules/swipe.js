@@ -2,7 +2,7 @@
 /* ===== Swipe-Modus: Wort oben, zwei ähnliche Vorschläge, einer ist richtig ===== */
 function swipeWrong(w,id2gl){
   const L=curLang(),right=id2gl?glFirst(w):w.id,nr=id2gl?normG(right):normId(right);
-  const ok=new Set(id2gl?gl(w).split(' / ').map(normG):[normId(w.id)].concat(S.cur&&S.cur.accept||[]));
+  const ok=new Set(id2gl?glList(w).map(normG):[normId(w.id)].concat(S.cur&&S.cur.accept||[]));
   const cands=[];
   for(const x of L.words){
     if(x.k===w.k)continue;

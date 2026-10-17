@@ -2021,3 +2021,51 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** alle vier Suiten grün (das Verhalten selbst ist nur auf dem iPhone prüfbar).
 
 **Nur auf einem echten iPhone prüfbar:** Doppeltippen auf Knöpfe und leere Flächen, schnelles Tippen bei Pads/Slots/Tippen-Modul, Zwei-Finger-Zoom im Safari-Tab und in der Home-Bildschirm-Verknüpfung, Tippen in Textfelder (Name, Tippen-Modul). Neuere iOS-Versionen können das Sperren im normalen Safari-Tab teilweise ignorieren; die Gesten-Sperre fängt das ab.
+
+## Version 168 – Farbwörter bekommen meistens Pads
+
+**Was:** Wie bei Slots für Zahlen und Früchte bekommen Farbwörter (rot, blau, grün …) jetzt etwa 2 von 3 Mal das Modul Pads, vor allem in der Daily Round und im Rush/Survival mit Random. Das Abschlusswort der Daily Round bleibt schwer (Tippen oder Bausteine), und nie zweimal dasselbe Modul hintereinander.
+
+**Technik:** `PADS_PREF=2/3` in `rounds.js`, in `chooseModule` direkt hinter der Slots-Regel. Wörter ohne Farbe sind nicht betroffen (`can`-Prüfung des Moduls).
+
+**Tests:** test4 PP1–PP4 (Anteil 421/600, Abschlusswort, nie zweimal, Nicht-Farbwörter). Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** ob 2 von 3 sich beim Spielen richtig anfühlt oder zu oft vorkommt.
+
+## Version 169 – Synonyme, Umgangssprache und Abkürzungen (Pilot: Indonesisch, Wörter 1–105)
+
+**Was:** Wörter akzeptieren jetzt weitere richtige Antworten, ohne dass sich die Anzeige ändert. Beispiel „terima kasih“: Übersetzung tippen geht mit „thank you“, „thanks“, „thx“, „cheers“ (Englisch) bzw. „danke“, „dankeschön“, „vielen Dank“ (Deutsch); das Kurswort tippen geht mit „makasih“, „terimakasih“, „trims“. Auch Abkürzungen („gpp“ für „tidak apa-apa“, „yg“ für „yang“), Chat-Formen („gue“, „lu“, „gimana“, „udah“) und Ziffern („5“ für „lima“) zählen. Pilot: 90 Wörter aus den ersten 105 (Begrüßung, Pronomen, Zahlen, Zeit), bei 53 davon auch Umgangssprache/Abkürzungen. Wörter ohne gängiges Synonym bleiben leer.
+
+**Warum:** Vito möchte, dass Lernen mit Alltags- und Umgangssprache mehr Spaß macht; die App ist nicht auf perfekte Grammatik ausgelegt.
+
+**Technik:** Neue Datei `syn.js` (eine Zeile je Wort: `Schlüssel | Englisch | Deutsch | Schreibweisen des Kurswortes`, Kommalisten), im Build nach der deutschen Wortliste eingebunden. Daraus entstehen `w.syn[Sprache]` (weitere Übersetzungen) und `w.alts` (weitere Schreibweisen des Kurswortes, bestehender Mechanismus). Neuer Helfer `glList(w)` = angezeigte Bedeutungen plus Synonyme. Er wird beim Tippen der Übersetzung (`isCorrect`, `ownAnswers`) und bei den falschen Auswahl-Antworten (Auswahl, Lückensatz, Swipe) verwendet, damit nie ein richtiges Synonym als falsche Antwort auftaucht. Nach dem Tippen steht unter „Auch richtig“ eine Auswahl (bis zu vier). Vokabelheft-Suche findet auch Synonyme. Leerzeichen/Bindestriche sind beim Kurswort egal (`normId`), deshalb brauchen „dimana“, „samasama“ keinen Eintrag. Pads/Slots lesen weiter nur die erste Bedeutung (`w.en`), Synonyme stören dort nicht.
+
+**Tests:** test4 SY1–SY7 (Schlüssel gültig, Übersetzung/Kurswort/Abkürzung tippen, Auswahl enthält nie ein Synonym, Anzeige unverändert). Alle vier Suiten grün. Kollisionsprüfung: Synonyme, die zugleich die Hauptbedeutung eines anderen Wortes sind (z. B. „morning“ bei „selamat pagi“ und „pagi“), sind bewusst erlaubt, weil sie nur die akzeptierten Antworten erweitern.
+
+**Nur auf einem echten iPhone prüfbar:** wie sich „Auch richtig“ und die erweiterten Antworten beim Tippen anfühlen, ob die Auswahl gängig genug ist.
+
+## Version 170 – Eigene Synonyme direkt in der App
+
+**Was:** Nach dem Tippen-Modul gibt es einen Knopf „＋ Synonym“. Er öffnet ein Eingabefeld (bei falscher Antwort mit der zuletzt getippten Antwort vorbelegt). Beim Tippen der Übersetzung (`id2gl`) wird eine weitere Übersetzung gespeichert, beim Tippen des Kurswortes (`gl2id`) eine weitere Schreibweise. In den Einstellungen zeigt die Kachel „Meine Ergänzungen“ alle eigenen Einträge, jeder lässt sich löschen, „Liste kopieren“ gibt sie im Format von `syn.js` aus (`Schlüssel | en | de | Schreibweisen`), damit sie später fest in die App übernommen werden können.
+
+**Warum:** Vito bemerkt beim Spielen fehlende Synonyme/Umgangssprache und soll sie sofort selbst ergänzen können. Die App kann nicht selbst auf GitHub schreiben, daher Gerät + Liste zum Weitergeben.
+
+**Technik:** `state.mysyn[w.k]={en,de,v}` (Migration in `migrate()`, in der Sicherung enthalten). `syn.js`: `mySynApply` (beim Start an die Wörter hängen), `mySynAdd` (prüft leer / zu lang / schon vorhanden / höchstens 8 pro Wort), `mySynRemove`, `mySynLines`. `modules/typing.js` merkt `c.lastVal`. `rounds.js`: `mySynUi`. Nach dem Speichern wird `ANS_CACHE` geleert; bereits verlorene Karten bleiben verloren, die Ergänzung gilt ab der nächsten Karte.
+
+**Tests:** test4 SY8–SY18 (Logik und Bedienung), alle vier Suiten grün.
+
+**Nur auf dem iPhone prüfbar:** Tastatur geht beim Antippen von „＋ Synonym“ auf und das Feld bleibt sichtbar; „Liste kopieren“ (Zwischenablage in Safari); Layout der Kachel.
+
+## Version 171 – Erste eigene Ergänzungen fest übernommen
+
+**Was:** Vitos erste kopierte Liste aus „Meine Ergänzungen“ ist jetzt fest in `syn.js`: Deutschkurs `hallo` (auch „hey“), `viel glück` (auch „viel erfolg“), `bis morgen` (auch „until tomorrow“).
+**Warum:** Der Weg Gerät → Liste → App funktioniert; die eigenen Einträge bleiben zusätzlich im Gerät, doppelte werden dort einfach ignoriert.
+**Technik:** Drei Zeilen in `SYN_RAW` (Schlüssel mit Kurspräfix `de:`). Test SY1 prüft jetzt alle Kurse, neu SY19.
+**Tests:** alle vier Suiten grün. **Nur auf dem iPhone prüfbar:** nichts Neues.
+
+## Version 172 – Hauptmenü fest
+
+**Was:** Im Hauptmenü (Home) lässt sich die Seite nicht mehr scrollen oder wippen. Ist der Bildschirm niedriger als der Inhalt (z. B. Safari mit Leisten, kleinere iPhones, geöffnete „?“-Erklärung), wird der Inhalt automatisch etwas kleiner, damit nichts abgeschnitten wird. Unter 60 % Verkleinerung bleibt die Seite stattdessen scrollbar. Vokabelheft, Einstellungen und Shop bleiben unverändert.
+**Warum:** Vito wollte das Hauptmenü fixiert haben; Kleinerwerden statt Abschneiden war seine Wahl.
+**Technik:** `homeFit()` in `app.src.html` setzt `html.homelock` (`body{position:fixed;overflow:hidden;overscroll-behavior:none}`) und `zoom` auf `.app`; läuft nach `render()` im Home, bei `resize`/`orientationchange` und per MutationObserver (nur Kinder, Text, `hidden`, kein Klassenwechsel, damit Animationen nichts auslösen). Messung (Chromium): 393×852 kein Zoom, 375×667 Zoom 0,88, 360×520 Zoom 0,67, 320×400 entsperrt. Tests HL0/HL1.
+**Nur auf dem iPhone prüfbar:** dass wirklich nichts mehr wippt (Safari-Verknüpfung), Verhalten beim Drehen und bei geöffneter „?“-Erklärung.
