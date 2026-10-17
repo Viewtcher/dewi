@@ -8,7 +8,7 @@ html=f'''<!doctype html>
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 {title}
 <meta name="theme-color" content="#1a0f24">
 <meta name="apple-mobile-web-app-capable" content="yes">
