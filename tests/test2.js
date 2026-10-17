@@ -62,12 +62,14 @@ function env(pre,mode='de',lang='de-DE'){
     let guard=0;const kicks=[];
     while(!E.$('#fin')&&guard++<500){
       const k=E.$('.kicker');if(k&&kicks[kicks.length-1]!==k.textContent)kicks.push(k.textContent);
+      if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#wtap')){E.stats.intro++;E.click(E.$('#wtap'));continue;}
       if(E.$('.iopt')){const en=E.$$('.iopt').filter(x=>!x.disabled);const pick=en.find(b=>b.dataset.r==='1');if(pick){E.click(pick);continue;}}
       if(E.$('#go')){E.stats.intro++;E.click(E.$('#go'));continue;}
       if(E.$('#endnext')){E.click(E.$('#endnext'));continue;}
       if(E.$('#next')){E.click(E.$('#next'));continue;}
       if(E.$('#nx')){E.gapSeen=false;E.click(E.$('#nx'));continue;}
+      if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#cab')){E.stats.reels=(E.stats.reels||0)+1;E.w.__run(`(()=>{const R=S.cur.rl;R.pull();const fail=${!!o.failSent};for(let g=0;g<9&&R.state!=='over';g++){const r=R.reels.find(x=>x.st!=='ok'&&x.st!=='no');if(r){r.p=fail?(r.right+1)%r.words.length:r.right;r.v=0;R.stopNext();}R.frame(1);R.frame(.7);}R.toss(true);})()`);continue;}
       const sw=E.$$('.swb');
       if(sw.length&&sw.some(x=>!x.disabled)){
@@ -425,6 +427,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
     if(sw.length){E.click(sw.find(b=>b.dataset.r==='0'));continue;}
     if(E.$('#nx')){E.click(E.$('#nx'));continue;}
     if(E.$('#next')){E.click(E.$('#next'));continue;}
+    if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
     if(E.$('#cab')&&!E.$('#nx')){ev(E,"(()=>{const R=S.cur.rl;R.pull();const r=R.reels[0];r.p=(r.right+1)%r.words.length;r.v=0;R.stopNext();R.frame(1);R.toss(true);})()");continue;}
     const op=E.$$('.opt').filter(b=>!b.disabled);
     if(op.length){const slot=E.$('.slot').textContent.toLowerCase(),right=DICT.de.get(slot).gl.split(' / ')[0].trim();E.click(op.find(b=>b.textContent!==right));continue;}

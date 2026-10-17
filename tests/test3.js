@@ -61,6 +61,7 @@ function env(pre,mode='de',lang='de-DE'){
     let guard=0;const kicks=[];
     while(!E.$('#fin')&&guard++<500){
       const k=E.$('.kicker');if(k&&kicks[kicks.length-1]!==k.textContent)kicks.push(k.textContent);
+      if(E.$('#slmach')&&!E.$('#slq .iopt')&&!E.$('#nx')){E.stats&&(E.stats.slots=(E.stats.slots||0)+1);E.w.__run('S.cur.slPull()');continue;}
       if(E.$('#wtap')){E.stats.intro++;E.click(E.$('#wtap'));continue;}
       if(E.$('.iopt')){const en=E.$$('.iopt').filter(x=>!x.disabled);const pick=en.find(b=>b.dataset.r==='1');if(pick){E.click(pick);continue;}}
       if(E.$('#go')){E.stats.intro++;E.click(E.$('#go'));continue;}
@@ -390,6 +391,7 @@ try{
     ok(rightBtn.classList.contains('lean')&&card.classList.contains('lean'),'Ziehen: rechte Option leuchtet auf');
     ev('pointermove',230);ev('pointerup',230);
     ok(rightBtn.disabled&&!!Y.$('.res'),'Weit genug gezogen = Antwort rechts gewählt');
+    ok(!!Y.$('.swstage.answered .res')&&!!Y.$('.swstage #nx')&&!Y.$('.swstage.collapsed'),'Version 154: Ergebnis und Weiter stehen in der Karten-Stelle, nichts klappt zusammen');
     const Z=mk('de');Z.click(Z.$('#start'));
     g=0;while(!Z.$('.swb')&&g++<40){const b=Z.$('#endnext')||Z.$('#wtap')||Z.$('.iopt[data-r="1"]:not(:disabled)')||Z.$('#go')||Z.$('#next')||Z.$('#nx');if(!b)break;Z.click(b);}
     const c2=Z.$('#swcard');

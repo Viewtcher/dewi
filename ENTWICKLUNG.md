@@ -41,7 +41,8 @@ dewi/
 │   ├── swipe.js          Modul Swipe
 │   ├── gap.js            Modul Lückensatz
 │   ├── choice.js         Modul Auswahl
-│   └── reels.js          Modul Reels (Spielautomat)
+│   ├── reels.js          Modul Reels (Spielautomat)
+│   └── slots.js          Modul Slots (goldener Automat mit Symbolen, Version 155)
 ├── dewi-music.js         Holo-Aufstieg (Claudio): eigenständiges Web-Audio-Modul, stellt window.DewiMusic bereit
 ├── music.js              Musik: Lo-Fi, Arcade, Synthwave (Reels) und Verbindungsstück zu Holo-Aufstieg
 ├── build.py              Setzt die Includes ein und baut index.html und icon.png
@@ -106,6 +107,7 @@ Früher gebrauchte, jetzt nicht mehr verwendete Wörter: „Fehlerliste“ und �
 | Lückensatz | `gap.js` | Beispielsatz mit Lücke | Auswahl, dann Swipe | 1 Fehler erlaubt |
 | Auswahl | `choice.js` | Beispielsatz | Swipe | 1 Fehler erlaubt |
 | Reels | `reels.js` | Beispielsatz mit mind. 3 Wörtern | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0 |
+| Slots | `slots.js` | Wort mit Symbol (Zahl 0–10 oder Frucht) | Auswahl | Daily: 1 Fehler erlaubt, Survival: 0; alles richtig = doppelte Survival-Punkte |
 
 ## 3. Aufbau des Skripts (`app.src.html`)
 
@@ -1866,3 +1868,70 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** P1–P3 in test4 (aus, an + gemerkt, wieder aus). Alle vier Suiten grün.
 
 **Nur auf einem echten iPhone prüfbar:** Alles. Vito spielt mit eingeschalteter Anzeige und meldet, in welchem Modul die Werte schlecht sind (Bilder pro Sekunde unter 50, viele Animationen, auffällige Namen).
+
+## Version 154 – Swipe: Ergebnis an der Stelle der Karte, leichter für das Handy
+
+**Was:** Im Swipe-Modul erscheint das Ergebnis (Richtig/Nicht ganz, Wortpaar, Beispielsatz, Weiter-Knopf) genau dort, wo die Karte war. Vorher wurde der Kartenbereich erst nach 300 ms zusammengeklappt und das Ergebnis rutschte nach oben. Die beiden Antwort-Knöpfe bleiben stehen und färben sich grün/rot. Der Weiter-Knopf ist unverändert ein Knopf (keine zusätzliche Tipp-Fläche).
+
+**Warum:** Vito meldet, dass das iPhone beim Spielen heiß wird, vermutlich im Swipe-Modul, und dass die Bewegung nach oben samt Verzögerung vor „Weiter“ stört.
+
+**Technik:** `.swstage` enthält jetzt Karte und `#exfb` (Klasse `swres`). Nach der Antwort bekommt die Bühne `answered`: die Karte wird per `position:absolute` aus dem Fluss genommen und fliegt weg, das Ergebnis steht sofort an ihrer Stelle. Die Zusammenklapp-Animation (`max-height`, löst bei jedem Bild neue Layoutberechnung aus) und `.collapsed` sind weg. Gegen die Hitze: `will-change:transform` auf der Karte (der große Schatten wird nur einmal gezeichnet und dann als Ebene bewegt), `translate3d` statt `translateX`, und die Ziehbewegung schreibt die Position höchstens einmal pro Bild per `requestAnimationFrame`. Das Aufleuchten der Knöpfe (`lean`) bleibt sofort.
+
+**Tests:** test3 neue Prüfung „Ergebnis und Weiter stehen in der Karten-Stelle“. Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** ob das Wischen weniger Wärme erzeugt (Leistungsanzeige beobachten: fps und „Anim“ im Swipe-Modul), wie sich der Wechsel von Karte zu Ergebnis anfühlt, ob das Ergebnis bei langen Wörtern sauber an der Kartenstelle sitzt.
+
+## Version 155 – Neues Modul „Slots“ (goldener Automat mit Symbolen)
+
+**Was:** Ein zusätzliches Modul neben dem alten Reels, das unverändert bleibt. Ein goldener Spielautomat (Kapsel, drei weiße Walzen, Hebel mit Goldkugel, rote Pfeile an der Gewinnlinie) dreht Symbole: Zahlen 0–10 und Früchte. Hebel antippen oder herunterziehen (oder auf den Automaten tippen), die Walzen stoppen nacheinander. Danach wird pro Walze gefragt „Wie heißt Symbol N?“ mit zwei Knöpfen in der Lernsprache. Richtige Wörter erscheinen auf der Walze. Ergebnis und „Weiter“ darunter.
+
+**Warum:** Das alte Reels braucht einen Beispielsatz mit drei bekannten Wörtern und stößt oft auf Probleme. Mit Symbolen steht vorher fest, wo die Walzen landen („Zufall“ ist Show), und das Modul fragt nur bekannte Wörter ab. Bild-zu-Wort trainiert direktes Abrufen ohne Umweg über die Muttersprache.
+
+**Regeln (mit Vito abgestimmt):**
+- Kommt nur, wenn das aktuelle Wort ein Symbol hat; zählt für die Stufen wie jedes Modul. Solo-Kachel „Slots“ im Survival.
+- 1 bekanntes Symbolwort: alle drei Walzen gleich (erzwungen). 2 bekannte: beide kommen vor. Ab 3: Zufall, das aktuelle Wort ist immer dabei.
+- Drei gleiche Symbole: nur eine Frage („Alle drei: Wie heißt das?“). Echter Dreier ab 3 bekannten Symbolwörtern: Jackpot-Show (Glühen, Funken, Ton). Erzwungener Dreier: keine Show, kein Bonus.
+- Falsche Option: ein bekanntes Wort, bevorzugt ein anderes Symbolwort.
+- Fehler: Daily Round 1 frei, Survival keiner (`TRIES.slots=2`).
+- Alles richtig: im Survival doppelte Punkte (`S.cur.ptsMul=2`, nicht beim erzwungenen Dreier). Grundwert wie Reels (`SURV_BASE.slots=97`).
+- Nur Auswahl; Tippen auf hohen Stufen kann später dazukommen.
+
+**Symbole:** selbst gezeichnete SVGs im Casino-Comic-Look mit dunkler Kontur und Glanzlichtern. Zahlen rot mit Goldrand und Glanz, Früchte (Apfel, Banane, Orange, Zitrone, Mango, Ananas, Wassermelone, Kokosnuss) mit Diva-Gesicht: halb geschlossene Augen mit Wimpern, Rouge, kleines Lächeln, Glitzerstern. Indonesisch: 18 Symbolwörter (0–10, sieben Früchte), Englisch/Deutsch: 15 (0–10, Apfel, Banane, Orange, Zitrone). Eine Kirsche gibt es in keinem Kurs.
+
+**Technik:** `modules/slots.js` (`slotKey`, `slotsData`, `slFoil`, `showSlots`, Symbole `SL_ART`/`slNumArt`). Die englische Bedeutung entscheidet über das Symbol (im Englischkurs steht sie im Wort selbst). Das Drehen ist eine reine CSS-Übergangsanimation pro Walzenstreifen (`translate3d`, eigene Ebene, keine Bild-für-Bild-Schleife wie bei Reels), damit das Handy nicht heiß wird. Endlos-Animationen gibt es keine; das Jackpot-Glühen läuft zweimal. Testhaken: `window.__slReels` (feste Walzen), `S.cur.slPull()`; mit `__introMs=0` läuft alles ohne Wartezeit. Der Hilfe-Knopf sitzt links, weil rechts der Hebel steht. `rounds.js`: `TRIES`, `SURV_BASE`, Punkte mal `ptsMul`, Automat zählt nicht als freie Weiter-Fläche.
+
+**Tests:** test4 SL1–SL17 (Symbolwörter, Verfügbarkeit, erzwungener Dreier, zwei/viele bekannte, falsche Option, Solo-Kachel, Hebel, Fragen, Gewinn mit doppelten Punkten, Dreier mit einer Frage, Fehler im Survival, englische Texte). Die automatischen Durchläufe in test2–5 ziehen bei Slots den Hebel. Alle vier Suiten grün. Layout in Chromium bei 375 und 430 px gemessen: Automat passt, kein seitliches Scrollen, Symbole stehen nach dem Stopp genau auf der Gewinnlinie, Fragen nach rund 2,4 s.
+
+**Nur auf einem echten iPhone prüfbar:** wie die Symbole und der Goldglanz wirken, ob Hebel-Tipp und Herunterziehen gut gehen, Ton und Haptik beim Stoppen, ob das Drehen flüssig läuft und das Handy kühl bleibt (Leistungsanzeige).
+
+## Version 158 – Slots zurück auf den Stand von Version 155
+
+**Was:** Vito gefällt die Design-Anpassung aus den Versionen 156 (leuchtende Ringe, Wirbel mit Leuchtstreifen, Strom-Sounds `slcharge`/`slcrack`/`slslam`, kräftigere Haptik, Neon-Nacht-Look für Slots) und 157 (leuchtende Außenseiten) nicht. Beide wurden per `git revert` rückgängig gemacht (Historie bleibt erhalten). Code von `app.src.html`, `modules/slots.js` und den Tests ist wieder identisch mit Version 155: goldener Automat, Walzen stoppen nach 1,15 / 1,6 / 2,05 s, bisherige Hebel- und Stopp-Sounds.
+
+**Hinweis für später:** Die Einträge zu 156 und 157 wurden beim Zurücksetzen aus dieser Datei mit entfernt; die Details stehen in den Commits `c9e5760` und `77c41c2`, falls Teile davon (z. B. nur der Sound) später doch gewünscht sind.
+
+**Tests:** Alle vier Suiten grün.
+
+## Version 159 – Survival-Screen öffnet ohne Stocken
+
+**Was:** Beim Tippen auf Survival stockte die App. Ursache: Für jede Solo-Kachel wurde mit `soloWords()` für **jedes** gelernte Wort geprüft, ob das Modul es abfragen kann. Bei Bausteinen, Reels, Lückensatz und Auswahl heißt das jedes Mal den Beispielsatz durchrechnen. Gemessen in Chromium: 50 Wörter ca. 0,1 s, 300 Wörter ca. 0,55 s, alle 678 Wörter ca. 2,1 s (auf dem iPhone eher mehr).
+
+**Lösung:** Die Kachel braucht nur „mindestens 3 passende Wörter?“. Neues `soloCount(pm,limit)` in `rounds.js` zählt nur bis zur Grenze und hört dann auf. `playmodes.js` nutzt es für die Kacheln. `soloWords()` bleibt unverändert für den Start einer Solo-Round. Optisch ändert sich nichts (gesperrte Kacheln zeigen weiter „(1/3)“ usw.).
+
+**Ergebnis (Chromium):** Survival-Screen mit allen Wörtern in ca. 0,04 s statt 2,1 s.
+
+**Bewusst nicht geändert (Vitos Entscheidung):** Die Dauer-Animationen auf dem Screen (fließender Regenbogen der Random-Kachel, wackelnder Würfel mit Schatten).
+
+**Tests:** test4 PF1 (gleiches Ergebnis wie die volle Zählung, bis zur Grenze), PF2 (mit 2 Wörtern alles gesperrt). Alle vier Suiten grün.
+
+**Nur auf einem echten iPhone prüfbar:** ob das Öffnen jetzt flüssig wirkt.
+
+## Version 160 – Symbolwörter bekommen meistens Slots
+
+**Was:** Slots kam in der Daily Round selten (nur bei Symbolwörtern, und dort zufällig unter 5–7 Modulen). Jetzt bekommen Wörter mit Symbol (Zahlen 0–10, Früchte) etwa 2 von 3 Mal Slots, sonst wie bisher ein zufälliges anderes Modul. Das gilt für die Daily Round und das Survival mit Random-Playmode. Ausnahmen: das Abschlusswort der Daily Round (bleibt bevorzugt Tippen/Bausteine), neue Wörter (Kennenlernen) und nie zweimal Slots hintereinander.
+
+**Warum:** Vito möchte Slots öfter sehen, ohne dass Symbolwörter nie mehr getippt werden.
+
+**Technik:** `rounds.js` `chooseModule`: `SLOTS_PREF=2/3`; steht `slots` im Pool (also `can(w)` und nicht das letzte Modul) und ist die Karte kein Abschlusswort, wird mit dieser Wahrscheinlichkeit Slots genommen. Tatsächlicher Anteil etwas höher (rund 70–75 %), weil Slots im Rest auch zufällig dran kommen kann.
+
+**Tests:** test4 SLP1–SLP4 (Anteil bei 600 Ziehungen, Abschlusswort ohne Vorrang, nie zweimal hintereinander, Wörter ohne Symbol nie Slots). Alle vier Suiten grün.

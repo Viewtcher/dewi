@@ -386,6 +386,37 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .langrow[aria-pressed="true"]{border-color:var(--c-pink);background:rgba(255,92,157,.12);box-shadow:0 0 0 3px rgba(255,92,157,.18)}
 .langrow[aria-pressed="true"]::after{content:"";position:absolute;right:18px;width:22px;height:22px;border-radius:50%;background:var(--c-pink) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 13l4 4 10-10'/%3E%3C/svg%3E") center/14px no-repeat}
 .langgo{margin-top:22px}
+/* Version 155: Modul Slots – goldener Automat mit glänzenden Symbolen */
+.slstage{position:relative;display:flex;justify-content:center;padding:34px 0 4px}
+.slstage .qh{top:0;left:6px;right:auto}   /* rechts sitzt der Hebel */
+.slmach{position:relative;display:flex;align-items:center;width:min(100%,340px);padding-right:34px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.slcap{width:13px;height:66px;flex:none;background:linear-gradient(#fff4b8,#f7c22e 45%,#b8740a);border:2.5px solid #2a0c20}
+.slcap.l{border-radius:12px 0 0 12px;border-right:none}.slcap.r{border-radius:0 12px 12px 0;border-left:none}
+.slbody{flex:1;min-width:0;padding:11px 12px;border-radius:40px;background:linear-gradient(180deg,#fff8cc 0%,#ffdc52 20%,#f4ac12 52%,#b8740a 80%,#ffd45c 100%);border:3px solid #2a0c20;box-shadow:inset 0 4px 0 rgba(255,255,255,.75),inset 0 -5px 0 rgba(120,60,0,.35),0 14px 30px rgba(255,170,30,.3)}
+.slwin{position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:5px;padding:5px;border-radius:14px;background:linear-gradient(#9a5e08,#ffd45c);border:2.5px solid #2a0c20}
+.slreel{position:relative;height:120px;overflow:hidden;border-radius:8px;background:linear-gradient(90deg,#d6d6e2,#fff 28%,#fff 72%,#d6d6e2)}
+.slreel::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:8px;background:linear-gradient(180deg,rgba(42,12,32,.38),rgba(255,255,255,0) 30%,rgba(255,255,255,0) 70%,rgba(42,12,32,.38))}
+.slstrip{will-change:transform}
+.slc{height:80px;display:grid;place-items:center}
+.slsym{width:68px;height:68px;overflow:visible}
+.slarr{position:absolute;top:50%;width:11px;height:18px;margin-top:-9px;background:#ff2d4f;z-index:2}
+.slarr.l{left:-7px;clip-path:polygon(0 0,100% 50%,0 100%)}.slarr.r{right:-7px;clip-path:polygon(100% 0,0 50%,100% 100%)}
+.slword{position:absolute;left:3px;right:3px;bottom:4px;z-index:2;padding:2px 4px;border-radius:999px;background:rgba(255,255,255,.92);color:#2a0c20;font:700 12px/1.25 var(--display);text-align:center;overflow-wrap:anywhere}
+.slword:empty{display:none}
+.slreel.act{box-shadow:inset 0 0 0 3px #ff4fa3}
+.slreel.ok{box-shadow:inset 0 0 0 3px var(--good)}
+.slreel.rev{box-shadow:inset 0 0 0 3px var(--bad)}
+.slreel.ok .slword{background:var(--good);color:#fff}.slreel.rev .slword{background:var(--bad);color:#fff}
+.sllev{position:absolute;right:0;bottom:50%;z-index:3;width:36px;height:104px;touch-action:none;cursor:grab}
+.slrod{position:absolute;left:13px;bottom:0;width:9px;height:76px;border-radius:5px;background:linear-gradient(90deg,#8e8e9c,#fff 45%,#b4b4c2);border:2px solid #2a0c20;transform-origin:50% 100%;transition:transform .18s ease-in}
+.slball{position:absolute;left:1px;top:0;width:33px;height:33px;border-radius:50%;background:radial-gradient(circle at 34% 30%,#fffbe0,#ffd23d 32%,#e8900c 72%,#9a5a06);border:2.5px solid #2a0c20;transition:transform .18s ease-in}
+.sllev.pulled .slrod{transform:scaleY(.2)}.sllev.pulled .slball{transform:translateY(64px)}
+.slmach[data-st=jack] .slbody{animation:sljack .9s ease-out 2}
+@keyframes sljack{50%{box-shadow:inset 0 4px 0 rgba(255,255,255,.75),inset 0 -5px 0 rgba(120,60,0,.35),0 0 40px 8px rgba(255,210,61,.85)}}
+.slmach[data-st=lose] .slbody{filter:saturate(.55)}
+.slq{min-height:118px;display:flex;flex-direction:column;gap:12px}
+.slhint{margin:0;text-align:center;font-weight:700;color:var(--faint)}
+
 #perf{position:fixed;left:6px;top:calc(env(safe-area-inset-top) + 2px);z-index:99;pointer-events:none;white-space:pre;font:600 10px/1.3 ui-monospace,Menlo,monospace;color:#7dffb2;background:rgba(0,0,0,.72);padding:3px 6px;border-radius:6px}
 .langrow .flagbox{width:48px;height:48px;display:grid;place-items:center;font-size:36px;line-height:1;flex:none}
 .langrow .code{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,var(--c-yellow),var(--c-pink));color:var(--accent-ink);font:700 18px var(--display);flex:none}
@@ -641,10 +672,11 @@ button.chippill{font:inherit;cursor:pointer}
 .ex .xe b{color:var(--text);font-weight:700}
 .sentbox{font:600 24px/1.35 var(--display);text-wrap:balance}
 .sentbox .slot{color:var(--c-pink);border-bottom:3px solid var(--c-pink);padding:0 2px}
-.swstage{display:flex;justify-content:center;padding:8px 0 4px;max-height:260px;transition:max-height .32s ease,padding .32s ease,margin .32s ease}
+.swstage{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8px 0 4px;min-height:184px}
+.swstage .swres{width:100%}
+.swstage.answered .swcard{position:absolute;top:8px;pointer-events:none}
 .smain #nx,.smain #next{scroll-margin-bottom:20px}
-.swstage.collapsed{max-height:0;padding:0;margin:-6px 0 0;overflow:hidden}
-.swcard{position:relative;width:min(100%,300px);min-height:176px;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;border-radius:24px;background:linear-gradient(160deg,var(--raised),var(--surface));border:1.5px solid var(--line);border-bottom-width:4px;font:700 36px/1.15 var(--display);text-wrap:balance;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 14px 34px rgba(0,0,0,.3);transition:transform .3s cubic-bezier(.2,1.25,.4,1),opacity .3s,border-color .15s}
+.swcard{position:relative;width:min(100%,300px);min-height:176px;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;border-radius:24px;background:linear-gradient(160deg,var(--raised),var(--surface));border:1.5px solid var(--line);border-bottom-width:4px;font:700 36px/1.15 var(--display);text-wrap:balance;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none;box-shadow:0 14px 34px rgba(0,0,0,.3);will-change:transform;transition:transform .3s cubic-bezier(.2,1.25,.4,1),opacity .3s,border-color .15s}
 .swcard.long{font-size:25px}
 .swcard.drag{transition:border-color .15s;cursor:grabbing}
 .swcard.lean{border-color:#f566b9}
@@ -7485,7 +7517,7 @@ DE_SENT_RAW.split('\n').forEach(l=>{
 });
 
 /* ---------- Sprache der App (de / en) ---------- */
-const EN={"Leistungsanzeige": "Performance meter", "Sprache": "Language", "Wähle die Sprache der App.": "Choose the app language.", "Oberfläche und Bedeutungen auf Deutsch": "Interface and meanings in German", "Oberfläche und Bedeutungen auf Englisch": "Interface and meanings in English", "Du kannst das später in den Einstellungen ändern.": "You can change this later in Settings.", "Fast! Achte auf die Schreibweise. Noch 1 Versuch.": "Almost! Watch the spelling. 1 try left.", "Fast! Achte auf die Schreibweise. Noch {0} Versuche.": "Almost! Watch the spelling. {0} tries left.", "Kleiner Tippfehler. Richtig geschrieben: {0}": "Small typo. Correct spelling: {0}", "Wiederholungsliste": "Review list", "zum Nachholen.": "to catch up on.", "Heute ist nur eine Wiederholung Pflicht.": "Only one review is mandatory today.", "Freeplay: nachholen": "Freeplay: catch up", "Dazu kommen täglich eine Wiederholung und ein Wort aus der Fehlerliste.": "On top of that there is one review and one word from the error list each day.", "Leben": "Lives", "Lückensatz": "Fill the gap", "Setze das fehlende Wort ein.": "Fill in the missing word.", "Nicht ganz. Versuch es nochmal.": "Not quite. Try again.", "Setze den Satz aus den Bausteinen zusammen. Du hast 3 Leben.": "Put the sentence together from the blocks. You have 3 lives.", "Heute": "Today", "Home": "Home", "Vokabelheft": "Wordbook", "Einstellungen": "Settings", "Hauptmenü": "Main menu", "Round": "Round", "Indonesisch": "Indonesian","Deutsch": "German","ins Deutsche": "into German", "Begrüßung & Höflichkeit": "Greetings & politeness", "Pronomen & Fragewörter": "Pronouns & question words", "Zahlen": "Numbers", "Zeit & Wochentage": "Time & weekdays", "Monate": "Months", "Familie & Menschen": "Family & people", "Essen & Trinken": "Food & drink", "Verben": "Verbs", "Adjektive & Mengenwörter": "Adjectives & quantities", "Orte & Gebäude": "Places & buildings", "Richtungen": "Directions", "Reisen & Verkehr": "Travel & transport", "Körper & Gesundheit": "Body & health", "Kleidung & Farben": "Clothes & colors", "Natur, Wetter & Tiere": "Nature, weather & animals", "Haus & Alltag": "Home & daily life", "Geld & Einkaufen": "Money & shopping", "Arbeit & Schule": "Work & school", "Kleine Wörter": "Small words", "Sätze für den Alltag": "Everyday sentences", "Welche Sprache lernst du?": "Which language are you learning?", "Dewi hilft dir beim Wörterlernen. Dein Fortschritt bleibt auf diesem Gerät.": "Dewi helps you learn words. Your progress stays on this device.", "{0} Wörter": "{0} words", "Weitere Sprachen lassen sich später ergänzen.": "More languages can be added later.", "erledigt": "done", "offen": "open", "Heute dran": "Due today", "Wiederholung": "review", "Wiederholungen": "reviews", "neue Vokabel": "new word", "neue Vokabeln": "new words", "aus der Fehlerliste": "from the error list", "Daily Round starten": "Start Daily Round", "Heute geschafft": "Done for today", "Heute ist nichts fällig.": "Nothing is due today.", "Morgen kommt 1 Wiederholung dran.": "1 review is due tomorrow.", "Morgen kommen {0} Wiederholungen dran.": "{0} reviews are due tomorrow.", "Morgen steht noch keine Wiederholung an.": "No reviews are due tomorrow yet.", "Noch eine neue Vokabel": "One more new word", "Fehlerliste": "Error list", "Wort": "word", "Wörter": "words", "zum Wiederholen.": "to review.", "Eins davon ist heute Pflicht.": "One of them is mandatory today.", "Die Pflicht für heute ist erledigt.": "Today’s mandatory word is done.", "Ab morgen ist täglich ein Wort daraus Pflicht.": "From tomorrow, one word from it is mandatory every day.", "Freeplay: weiter üben": "Freeplay: keep practicing", "Stufe {0}": "Level {0}", "Noch neu": "Not started", "Sprache wechseln": "Change language", "Tag": "day", "Tage": "days", "in Folge": "in a row", "Fortschritt": "Progress", "{0} von {1} Wörtern begonnen": "{0} of {1} words started", "Flamme: {0} {1} in Folge": "Flame: {0} {1} in a row", "Suchen auf Indonesisch oder Deutsch": "Search in Indonesian or German", "Suchen auf Indonesisch oder Englisch": "Search in Indonesian or English", "Suchen auf Englisch oder Deutsch": "Search in English or German", "Suchen": "Search", "Filter": "Filter", "Alle": "All", "Fällig": "Due", "Gelernt": "Learned", "Neu": "New", "Treffer": "matches", "Nichts gefunden.": "Nothing found.", "fällig": "due", "Fehlerliste ×{0}": "Error list ×{0}", "Wackelig": "Shaky", "wackelig": "shaky", "Das Wort fällt auf Stufe 0 und kommt morgen wieder.": "The word drops to level 0 and comes back tomorrow.", "Stufe {0} von 5": "Level {0} of 5", "App-Sprache": "App language", "Gilt für die Oberfläche und für die Bedeutungen der Wörter.": "Applies to the interface and to the meanings of the words.", "Neue Vokabeln pro Tag": "New words per day", "Dazu kommen immer alle fälligen Wiederholungen und ein Wort aus der Fehlerliste.": "All due reviews and one word from the error list are always added.", "Tägliche Erinnerung": "Daily reminder", "Eine Web-App kann sich nicht selbst melden. Das übernimmt dein iPhone, die Uhrzeit stellst du dort ein.": "A web app cannot notify you by itself. Your iPhone does that; you set the time there.", "So richtest du sie ein": "How to set it up", "Kurzbefehle-App öffnen, Tab „Automation“, „+“, „Tageszeit“.": "Open the Shortcuts app, go to the “Automation” tab, tap “+”, then “Time of Day”.", "Uhrzeit wählen, „Täglich“, „Sofort ausführen“.": "Choose a time, “Daily”, “Run Immediately”.", "Aktion „URL öffnen“ mit der Adresse dieser App hinzufügen.": "Add the action “Open URL” with this app’s address.", "Je nach iOS-Version musst du die Mitteilung antippen oder das iPhone entsperren, damit sich die Seite öffnet.": "Depending on your iOS version you may need to tap the notification or unlock the iPhone for the page to open.", "Alternative: In der Erinnerungen-App eine tägliche Erinnerung mit der Adresse als Link anlegen.": "Alternative: create a daily reminder in the Reminders app with the address as a link.", "Sicherung": "Backup", "Kopiere den Text in eine Notiz. Zum Wiederherstellen fügst du ihn unten ein.": "Copy the text into a note. To restore, paste it below.", "Sicherung erstellen": "Create backup", "Kopieren": "Copy", "Sicherung hier einfügen": "Paste backup here", "Sicherung einspielen": "Restore backup", "Wirklich ersetzen? Nochmal tippen": "Really replace? Tap again", "Das ist keine gültige Sicherung.": "This is not a valid backup.", "Kopiert.": "Copied.", "Text ist markiert. Jetzt manuell kopieren.": "Text is selected. Copy it manually now.", "Lernsprache": "Learning language", "{0} ändern": "Change {0}", "Testen": "Testing", "Simuliert einen späteren Tag, damit du die Wiederholungen siehst. Aktuelles Datum in der App:": "Simulates a later day so you can see the reviews. Current date in the app:", "Einen Tag vorspulen": "Skip one day ahead", "Zurück auf heute": "Back to today", "Alles zurücksetzen": "Reset everything", "Wirklich alles löschen? Nochmal tippen": "Really delete everything? Tap again", "Round beenden": "End round", "Kennenlernen": "Getting to know", "Satz-Übung": "Sentence exercise", "Tippen": "Typing", "Neue Vokabel · Phase {0} von {1}": "New word · phase {0} of {1}", "Wiederholung · Stufe {0}": "Review · level {0}", "ins Deutsche": "into German", "ins Englische": "into English", "ins Indonesische": "into Indonesian", "Präg dir das Wort und den Satz ein. Gleich wendest du es an.": "Memorize the word and the sentence. You will use it in a moment.", "Weiter": "Next", "Was bedeutet das markierte Wort?": "What does the highlighted word mean?", "Richtig": "Correct", "Nicht ganz": "Not quite", "Bausteine": "Building blocks", "Setze den Satz aus den Bausteinen zusammen. Du hast einen Versuch.": "Build the sentence from the blocks. You have one try.", "Dein Satz": "Your sentence", "Prüfen": "Check", "Deine Antwort": "Your answer", "Antwort tippen": "Type your answer", "Versuche übrig": "tries left", "Nicht ganz. Noch 1 Versuch.": "Not quite. 1 try left.", "Nicht ganz. Noch {0} Versuche.": "Not quite. {0} tries left.", " Tipp: beginnt mit „{0}“.": " Hint: starts with “{0}”.", "Leider falsch": "Wrong", "Auch richtig: {0}": "Also correct: {0}", "Geschafft. Das Wort verlässt die Fehlerliste und kommt morgen wieder (Stufe 1).": "Done. The word leaves the error list and comes back tomorrow (level 1).", "Stufe {0} von 5. Nächste Wiederholung morgen.": "Level {0} of 5. Next review tomorrow.", "Stufe {0} von 5. Nächste Wiederholung in {1} Tagen.": "Level {0} of 5. Next review in {1} days.", "Das Wort bleibt auf der Fehlerliste (Fehler: {0}).": "The word stays on the error list (errors: {0}).", "Eine Übung davor war falsch.": "An earlier exercise was wrong.", "Das Wort kommt auf die Fehlerliste.": "The word goes on the error list.", "Gerettet!": "Rescued!", "Neues Wort!": "New word!", "Level up!": "Level up!", "Stufe gehalten": "Level kept", "Stufe {0} von 5 · nächste Wiederholung morgen": "Level {0} of 5 · next review tomorrow", "Stufe {0} von 5 · nächste Wiederholung in {1} Tagen": "Level {0} of 5 · next review in {1} days", "Round beendet": "Round finished", "{0} von {1}": "{0} of {1}", "komplett richtig beantwortet": "answered fully correct", "Serie verlängert!": "Streak extended!", "Die Serie läuft weiter.": "Your streak continues.", "Von der Fehlerliste gestrichen:": "Removed from the error list:", "Neu auf der Fehlerliste:": "New on the error list:", "Fertig": "Done","Reels": "Reels","Hebel ziehen, Walzen beim richtigen Wort stoppen": "Pull the lever, stop each reel on the right word","Ziehe den Hebel. Tippe dann jede Walze an, sobald das richtige Wort auf der Linie steht.": "Pull the lever. Then tap each reel when the right word is on the line.","Wähle für jede Stelle das richtige Wort.": "Pick the right word for each position.","Hebel ziehen": "Pull the lever","Walze {0} stoppen": "Stop reel {0}","Walze {0}": "Reel {0}","Jackpot!": "Jackpot!", "Testbereich": "Test area", "Wörter freischalten": "Unlock words", "Chips": "Chips", "Zurücksetzen": "Reset", "Springt in eine Lernphase. Dein echter Fortschritt wird vorher gesichert.": "Jumps to a learning phase. Your real progress is backed up first.", "Testphase aktiv": "Test phase active", "Erster Start": "First start", "2 Wörter": "2 words", "10 Wörter": "10 words", "10 %": "10 %", "50 %": "50 %", "Alle Wörter": "All words", "Echten Fortschritt wiederherstellen": "Restore real progress", "Testbereich verstecken": "Hide test area", "Wirklich springen? Nochmal tippen": "Really jump? Tap again", "Wirklich wiederherstellen? Nochmal tippen": "Really restore? Tap again",
+const EN={"Slots": "Slots", "Hebel ziehen, Symbole benennen": "Pull the lever, name the symbols", "Zieh den Hebel.": "Pull the lever.", "Alle drei: Wie heißt das?": "All three: what is it called?", "Wie heißt Symbol {0}?": "What is symbol {0} called?", "Alle richtig: doppelte Punkte!": "All correct: double points!", "Leistungsanzeige": "Performance meter", "Sprache": "Language", "Wähle die Sprache der App.": "Choose the app language.", "Oberfläche und Bedeutungen auf Deutsch": "Interface and meanings in German", "Oberfläche und Bedeutungen auf Englisch": "Interface and meanings in English", "Du kannst das später in den Einstellungen ändern.": "You can change this later in Settings.", "Fast! Achte auf die Schreibweise. Noch 1 Versuch.": "Almost! Watch the spelling. 1 try left.", "Fast! Achte auf die Schreibweise. Noch {0} Versuche.": "Almost! Watch the spelling. {0} tries left.", "Kleiner Tippfehler. Richtig geschrieben: {0}": "Small typo. Correct spelling: {0}", "Wiederholungsliste": "Review list", "zum Nachholen.": "to catch up on.", "Heute ist nur eine Wiederholung Pflicht.": "Only one review is mandatory today.", "Freeplay: nachholen": "Freeplay: catch up", "Dazu kommen täglich eine Wiederholung und ein Wort aus der Fehlerliste.": "On top of that there is one review and one word from the error list each day.", "Leben": "Lives", "Lückensatz": "Fill the gap", "Setze das fehlende Wort ein.": "Fill in the missing word.", "Nicht ganz. Versuch es nochmal.": "Not quite. Try again.", "Setze den Satz aus den Bausteinen zusammen. Du hast 3 Leben.": "Put the sentence together from the blocks. You have 3 lives.", "Heute": "Today", "Home": "Home", "Vokabelheft": "Wordbook", "Einstellungen": "Settings", "Hauptmenü": "Main menu", "Round": "Round", "Indonesisch": "Indonesian","Deutsch": "German","ins Deutsche": "into German", "Begrüßung & Höflichkeit": "Greetings & politeness", "Pronomen & Fragewörter": "Pronouns & question words", "Zahlen": "Numbers", "Zeit & Wochentage": "Time & weekdays", "Monate": "Months", "Familie & Menschen": "Family & people", "Essen & Trinken": "Food & drink", "Verben": "Verbs", "Adjektive & Mengenwörter": "Adjectives & quantities", "Orte & Gebäude": "Places & buildings", "Richtungen": "Directions", "Reisen & Verkehr": "Travel & transport", "Körper & Gesundheit": "Body & health", "Kleidung & Farben": "Clothes & colors", "Natur, Wetter & Tiere": "Nature, weather & animals", "Haus & Alltag": "Home & daily life", "Geld & Einkaufen": "Money & shopping", "Arbeit & Schule": "Work & school", "Kleine Wörter": "Small words", "Sätze für den Alltag": "Everyday sentences", "Welche Sprache lernst du?": "Which language are you learning?", "Dewi hilft dir beim Wörterlernen. Dein Fortschritt bleibt auf diesem Gerät.": "Dewi helps you learn words. Your progress stays on this device.", "{0} Wörter": "{0} words", "Weitere Sprachen lassen sich später ergänzen.": "More languages can be added later.", "erledigt": "done", "offen": "open", "Heute dran": "Due today", "Wiederholung": "review", "Wiederholungen": "reviews", "neue Vokabel": "new word", "neue Vokabeln": "new words", "aus der Fehlerliste": "from the error list", "Daily Round starten": "Start Daily Round", "Heute geschafft": "Done for today", "Heute ist nichts fällig.": "Nothing is due today.", "Morgen kommt 1 Wiederholung dran.": "1 review is due tomorrow.", "Morgen kommen {0} Wiederholungen dran.": "{0} reviews are due tomorrow.", "Morgen steht noch keine Wiederholung an.": "No reviews are due tomorrow yet.", "Noch eine neue Vokabel": "One more new word", "Fehlerliste": "Error list", "Wort": "word", "Wörter": "words", "zum Wiederholen.": "to review.", "Eins davon ist heute Pflicht.": "One of them is mandatory today.", "Die Pflicht für heute ist erledigt.": "Today’s mandatory word is done.", "Ab morgen ist täglich ein Wort daraus Pflicht.": "From tomorrow, one word from it is mandatory every day.", "Freeplay: weiter üben": "Freeplay: keep practicing", "Stufe {0}": "Level {0}", "Noch neu": "Not started", "Sprache wechseln": "Change language", "Tag": "day", "Tage": "days", "in Folge": "in a row", "Fortschritt": "Progress", "{0} von {1} Wörtern begonnen": "{0} of {1} words started", "Flamme: {0} {1} in Folge": "Flame: {0} {1} in a row", "Suchen auf Indonesisch oder Deutsch": "Search in Indonesian or German", "Suchen auf Indonesisch oder Englisch": "Search in Indonesian or English", "Suchen auf Englisch oder Deutsch": "Search in English or German", "Suchen": "Search", "Filter": "Filter", "Alle": "All", "Fällig": "Due", "Gelernt": "Learned", "Neu": "New", "Treffer": "matches", "Nichts gefunden.": "Nothing found.", "fällig": "due", "Fehlerliste ×{0}": "Error list ×{0}", "Wackelig": "Shaky", "wackelig": "shaky", "Das Wort fällt auf Stufe 0 und kommt morgen wieder.": "The word drops to level 0 and comes back tomorrow.", "Stufe {0} von 5": "Level {0} of 5", "App-Sprache": "App language", "Gilt für die Oberfläche und für die Bedeutungen der Wörter.": "Applies to the interface and to the meanings of the words.", "Neue Vokabeln pro Tag": "New words per day", "Dazu kommen immer alle fälligen Wiederholungen und ein Wort aus der Fehlerliste.": "All due reviews and one word from the error list are always added.", "Tägliche Erinnerung": "Daily reminder", "Eine Web-App kann sich nicht selbst melden. Das übernimmt dein iPhone, die Uhrzeit stellst du dort ein.": "A web app cannot notify you by itself. Your iPhone does that; you set the time there.", "So richtest du sie ein": "How to set it up", "Kurzbefehle-App öffnen, Tab „Automation“, „+“, „Tageszeit“.": "Open the Shortcuts app, go to the “Automation” tab, tap “+”, then “Time of Day”.", "Uhrzeit wählen, „Täglich“, „Sofort ausführen“.": "Choose a time, “Daily”, “Run Immediately”.", "Aktion „URL öffnen“ mit der Adresse dieser App hinzufügen.": "Add the action “Open URL” with this app’s address.", "Je nach iOS-Version musst du die Mitteilung antippen oder das iPhone entsperren, damit sich die Seite öffnet.": "Depending on your iOS version you may need to tap the notification or unlock the iPhone for the page to open.", "Alternative: In der Erinnerungen-App eine tägliche Erinnerung mit der Adresse als Link anlegen.": "Alternative: create a daily reminder in the Reminders app with the address as a link.", "Sicherung": "Backup", "Kopiere den Text in eine Notiz. Zum Wiederherstellen fügst du ihn unten ein.": "Copy the text into a note. To restore, paste it below.", "Sicherung erstellen": "Create backup", "Kopieren": "Copy", "Sicherung hier einfügen": "Paste backup here", "Sicherung einspielen": "Restore backup", "Wirklich ersetzen? Nochmal tippen": "Really replace? Tap again", "Das ist keine gültige Sicherung.": "This is not a valid backup.", "Kopiert.": "Copied.", "Text ist markiert. Jetzt manuell kopieren.": "Text is selected. Copy it manually now.", "Lernsprache": "Learning language", "{0} ändern": "Change {0}", "Testen": "Testing", "Simuliert einen späteren Tag, damit du die Wiederholungen siehst. Aktuelles Datum in der App:": "Simulates a later day so you can see the reviews. Current date in the app:", "Einen Tag vorspulen": "Skip one day ahead", "Zurück auf heute": "Back to today", "Alles zurücksetzen": "Reset everything", "Wirklich alles löschen? Nochmal tippen": "Really delete everything? Tap again", "Round beenden": "End round", "Kennenlernen": "Getting to know", "Satz-Übung": "Sentence exercise", "Tippen": "Typing", "Neue Vokabel · Phase {0} von {1}": "New word · phase {0} of {1}", "Wiederholung · Stufe {0}": "Review · level {0}", "ins Deutsche": "into German", "ins Englische": "into English", "ins Indonesische": "into Indonesian", "Präg dir das Wort und den Satz ein. Gleich wendest du es an.": "Memorize the word and the sentence. You will use it in a moment.", "Weiter": "Next", "Was bedeutet das markierte Wort?": "What does the highlighted word mean?", "Richtig": "Correct", "Nicht ganz": "Not quite", "Bausteine": "Building blocks", "Setze den Satz aus den Bausteinen zusammen. Du hast einen Versuch.": "Build the sentence from the blocks. You have one try.", "Dein Satz": "Your sentence", "Prüfen": "Check", "Deine Antwort": "Your answer", "Antwort tippen": "Type your answer", "Versuche übrig": "tries left", "Nicht ganz. Noch 1 Versuch.": "Not quite. 1 try left.", "Nicht ganz. Noch {0} Versuche.": "Not quite. {0} tries left.", " Tipp: beginnt mit „{0}“.": " Hint: starts with “{0}”.", "Leider falsch": "Wrong", "Auch richtig: {0}": "Also correct: {0}", "Geschafft. Das Wort verlässt die Fehlerliste und kommt morgen wieder (Stufe 1).": "Done. The word leaves the error list and comes back tomorrow (level 1).", "Stufe {0} von 5. Nächste Wiederholung morgen.": "Level {0} of 5. Next review tomorrow.", "Stufe {0} von 5. Nächste Wiederholung in {1} Tagen.": "Level {0} of 5. Next review in {1} days.", "Das Wort bleibt auf der Fehlerliste (Fehler: {0}).": "The word stays on the error list (errors: {0}).", "Eine Übung davor war falsch.": "An earlier exercise was wrong.", "Das Wort kommt auf die Fehlerliste.": "The word goes on the error list.", "Gerettet!": "Rescued!", "Neues Wort!": "New word!", "Level up!": "Level up!", "Stufe gehalten": "Level kept", "Stufe {0} von 5 · nächste Wiederholung morgen": "Level {0} of 5 · next review tomorrow", "Stufe {0} von 5 · nächste Wiederholung in {1} Tagen": "Level {0} of 5 · next review in {1} days", "Round beendet": "Round finished", "{0} von {1}": "{0} of {1}", "komplett richtig beantwortet": "answered fully correct", "Serie verlängert!": "Streak extended!", "Die Serie läuft weiter.": "Your streak continues.", "Von der Fehlerliste gestrichen:": "Removed from the error list:", "Neu auf der Fehlerliste:": "New on the error list:", "Fertig": "Done","Reels": "Reels","Hebel ziehen, Walzen beim richtigen Wort stoppen": "Pull the lever, stop each reel on the right word","Ziehe den Hebel. Tippe dann jede Walze an, sobald das richtige Wort auf der Linie steht.": "Pull the lever. Then tap each reel when the right word is on the line.","Wähle für jede Stelle das richtige Wort.": "Pick the right word for each position.","Hebel ziehen": "Pull the lever","Walze {0} stoppen": "Stop reel {0}","Walze {0}": "Reel {0}","Jackpot!": "Jackpot!", "Testbereich": "Test area", "Wörter freischalten": "Unlock words", "Chips": "Chips", "Zurücksetzen": "Reset", "Springt in eine Lernphase. Dein echter Fortschritt wird vorher gesichert.": "Jumps to a learning phase. Your real progress is backed up first.", "Testphase aktiv": "Test phase active", "Erster Start": "First start", "2 Wörter": "2 words", "10 Wörter": "10 words", "10 %": "10 %", "50 %": "50 %", "Alle Wörter": "All words", "Echten Fortschritt wiederherstellen": "Restore real progress", "Testbereich verstecken": "Hide test area", "Wirklich springen? Nochmal tippen": "Really jump? Tap again", "Wirklich wiederherstellen? Nochmal tippen": "Really restore? Tap again",
 "Gamemodes": "Game modes","Gamemodes öffnen": "Open game modes","Reihenfolge": "Word order","Wörter in die richtige Reihenfolge schieben": "Drag the words into the right order","Zieh die Kacheln in die richtige Reihenfolge.": "Drag the tiles into the right order.","Enttäuscht": "Disappointed","verpasst": "missed","Noch Lust auf mehr? Spiele weiter, mit Leben, Score und Rekorden.": "Want more? Keep playing, with lives, score and records.","Spiele über die Daily Round hinaus, mit Leben, Score und Rekorden.": "Games beyond the Daily Round, with lives, score and records.","Mehr Gamemodes kommen": "More game modes to come",
 "Noch zu wenige passende Wörter ({0}/{1})": "Not enough matching words yet ({0}/{1})",
 "Serie von {0}: ein Herz kommt zurück!": "Streak of {0}: a heart comes back!","Hilfe zu diesem Modul": "Help for this module","Herz zurück": "Heart restored","{0} richtige in Folge": "{0} correct in a row","Tippen zum Fortfahren": "Tap to continue","Sound & Musik": "Sound & music","Soundeffekte": "Sound effects","Dewis Stimme": "Dewi's voice","Vorlesen": "Read aloud","Drei Soundtracks zur Wahl: ruhiger Lo-Fi, bunter Arcade oder Indie. Im Modul Reels kommt bei Indie ein Arpeggio dazu, bei Lo-Fi und Arcade ein eigener Synthwave.": "Three soundtracks to choose from: calm Lo-Fi, colorful Arcade or Indie. In the Reels module, Indie adds an arpeggio; Lo-Fi and Arcade get their own synthwave.","Noch eine Runde": "One more round","Das Wort kommt gleich nochmal dran.": "The word comes up again shortly.","Das Wort kommt bald wieder.": "The word comes back soon.","Geschafft. Das Wort kommt morgen wieder (Stufe 1).": "Done. The word comes back tomorrow (level 1).","Meilenstein!": "Milestone!","Daily Round": "Daily Round","{0} Punkte": "{0} points","Offener Run": "Open run","Weiterspielen": "Continue","noch {0} Wörter": "{0} words left","{0} Leben übrig": "{0} lives left","Offener Run: {0}": "Open run: {0}","Wenn du neu startest, ist der alte Run weg.": "Starting over discards it.","Trotzdem neu starten": "Start over anyway","Abbrechen": "Cancel","Deine Serie": "Your streak","Neues Wort": "New word","Tippe das Wort an.": "Tap the word.","Antippen zum Fortfahren": "Tap to continue","Aussprache anhören": "Hear it","Erkennst du es wieder?": "Do you recognise it?","Jetzt im Satz": "Now in a sentence","Fast! Schau nochmal hin.": "Close! Take another look.","Wische den Automaten nach links.": "Swipe the machine off to the left.","Automaten wegwerfen": "Throw the machine away","Musik": "Music","Musik-Lautstärke": "Music volume","Ein ruhiger Lo-Fi-Loop in der App (oder alternativ ein bunter Arcade-Loop) und ein eigener Synthwave-Soundtrack im Modul Reels. Standardmäßig aus.": "A calm lo-fi loop in the app (or, alternatively, a colorful arcade loop) and its own synthwave soundtrack in the Reels module. Off by default.","Die Walzen rasen. Ziehe den Hebel: Die linke Walze wird langsam. Tippe auf den Automaten, wenn das richtige Wort in der Mitte steht. Dann wird die nächste Walze langsam.": "The reels race. Pull the lever: the left reel slows down. Tap the machine when the right word is in the middle. Then the next reel slows down.","Walzen stoppen": "Stop the reels","Ziehe den Hebel. Tippe dann irgendwo auf den Automaten, wenn das richtige Wort auf der Linie steht. Die Walzen rasten von links nach rechts ein.": "Pull the lever. Then tap anywhere on the machine when the right word is on the line. The reels lock in from left to right.","Alles beim ersten Stopp getroffen.": "Every reel hit on the first stop.","Die richtige Lösung": "The correct answer", "Gesperrt: erst die Daily Round für heute schaffen.": "Locked: finish today's Daily Round first.", "Gesperrt: du brauchst mindestens {0} bekannte Wörter, jetzt {1}.": "Locked: you need at least {0} known words, you have {1}.", "3 Leben": "3 lives", "Alle Module gemischt, nie zweimal dasselbe hintereinander": "All modules mixed, never the same one twice in a row", "Daily Round · Einführung": "Daily Round · Introduction", "Daily Round · Reparatur · noch {0}": "Daily Round · Repair · {0} to go", "Daily Round · Review {0} von {1}": "Daily Round · Review {0} of {1}", "Daily Round · Review · neues Wort": "Daily Round · Review · new word", "Das Wort bleibt auf der Fehlerliste und kommt gleich nochmal dran.": "The word stays on the error list and comes up again shortly.", "Die Daily Round ist gesperrt, bis die Liste leer ist.": "The Daily Round is locked until the list is empty.", "Die Fehlerliste muss zuerst leer werden. Danach geht es mit dem neuen Wort weiter.": "The error list has to be cleared first. Then the new word follows.", "Die nächste Daily Round startet mit der Reparatur der Fehlerliste.": "The next Daily Round starts by repairing the error list.", "Ein Leben weniger.": "One life less.", "Fast! Achte auf die Schreibweise.": "Almost! Watch the spelling.", "Fehlerliste reparieren": "Repair error list", "Heute gibt es einen grauen Stempel. Ohne verlorenes Modul bekommst du den vollen mit Holo.": "Today's stamp is grey. Without a lost module you get the full holo stamp.", "Jede Frage hat nur einen Versuch. Drei falsche Antworten und die Round ist vorbei. Je mehr Wörter du schaffst, desto höher dein Score.": "Every question has just one try. Three wrong answers and the round is over. The more words you get, the higher your score.", "Module geschafft": "Modules passed", "Neuer Rekord! Vorher: {0}": "New record! Before: {0}","Neuer Rekord!": "New record!","Erklärung": "Explanation","Starte einen kurzen zufälligen Run und lerne eine neue Vokabel!": "Start a short random run and learn a new word!","Keine Lust auf neue Vokabeln? Vertiefe was du bereits kennst und sammle Chips, indem du deinen Highscore steigerst!": "Not in the mood for new words? Deepen what you already know and collect chips by beating your high score!","{0} Chips": "{0} chips", "ohne Einsatz": "no stake", "Serien-Bonus +{0} %": "Streak bonus +{0} %", "Einsatz weg": "Stake lost", "Serien-Bonus jetzt +{0} %": "Streak bonus now +{0} %", "Offene Hand": "Open hand", "Shop": "Shop", "Shop öffnen": "Open shop", "Vokabelheft öffnen": "Open wordbook", "Einstellungen öffnen": "Open settings", "Shop schließen": "Close shop", "Cosmetics": "Cosmetics", "Extras": "Extras", "Consumables": "Consumables", "Nur meine": "Mine only", "FELL": "FUR", "KOPF": "HEAD", "THEMES": "THEMES", "STREAK-SCHUTZ": "STREAK SHIELD", "Gratis": "Free", "Gewöhnlich": "Common", "Selten": "Rare", "Legendär": "Legendary", "Verbrauch": "Consumable", "Anprobe": "Trying on", "Vorrat {0}/{1}": "Stock {0}/{1}", "Ausgerüstet": "Equipped", "Gekauft": "Owned", "Antippen zum Anprobieren": "Tap to try on", "Vorrat voll ({0}/{1})": "Stock full ({0}/{1})", "Noch {0} Chips": "{0} more chips", "Kaufen": "Buy", "Ausrüsten": "Equip", "Classic": "Classic", "Mitternacht": "Midnight", "Nichts": "Nothing", "Schleife": "Bow", "Dewi Classic": "Dewi Classic", "Neon-Nacht": "Neon Night", "Probier ruhig an. Anfassen kostet nichts. Noch.": "Go on, try things on. Touching is free. For now.", "Das Original. Zeitlos, wie ich.": "The original. Timeless, like me.", "Mitternacht mit Sternen. Endlich versteht mich jemand.": "Midnight with stars. Finally someone gets me.", "Ohne alles. Mutig.": "Nothing at all. Bold.", "Die Schleife. Süß, aber gefährlich.": "The bow. Cute, but dangerous.", "Mein Wohnzimmer. Gemütlich dunkel.": "My living room. Cosy and dark.", "Neon-Nacht. Fühlt sich teuer an.": "Neon Night. Feels expensive.", "Ein Tag frei, ohne dass ich es merke. Fast.": "A day off without me noticing. Almost.", "Streak-Schutz eingesetzt": "Streak shield used", "{0} Streak-Schutze eingesetzt": "{0} streak shields used", "Deine Serie bleibt bei {0} Tagen.": "Your streak stays at {0} days.", "Noch 1 Schutz im Vorrat.": "1 shield left.", "Noch {0} Schutze im Vorrat.": "{0} shields left.", "Streak-Schutz": "Streak shield", "geschützt": "protected", "verfällt um Mitternacht": "expires at midnight", "Einsatz plus Serien-Bonus, mal Multiplikator. Alles richtig gibt doppelt. Mathe, Darling. Keine Magie.": "Stake plus streak bonus, times multiplier. All correct pays double. Maths, darling. No magic.", "GRATIS": "FREE", "RETTUNG": "RESCUE", "OHNE EINSATZ": "NO STAKE", "DEIN EINSATZ": "YOUR STAKE", "Multiplikator": "Multiplier", "Round pausieren": "Pause round", "{0} von {1} Modulen geschafft": "{0} of {1} modules passed", "Jedes geschaffte Modul gibt +1 auf den Multiplikator. Am Ende zahle ich Einsatz mal Multiplikator, alles richtig gibt doppelt. Beim Big Blind kostet dich jeder Fehler ×1.": "Every module you pass adds +1 to the multiplier. At the end I pay stake times multiplier, all correct pays double. With the Big Blind every mistake costs you ×1.", "Die goldene Zahl ist dein Multiplikator. Richtig: +1. Beim Small Blind kostet ein Fehler nichts. Schimmern alle Chips, ist der Royal Flush noch drin.": "The golden number is your multiplier. Correct: +1. With the Small Blind a mistake costs nothing. If all chips shimmer, the Royal Flush is still on.", "Die goldene Zahl ist dein Multiplikator. Richtig: +1. Beim Big Blind kostet ein Fehler ×1. Schimmern alle Chips, ist der Royal Flush noch drin.": "The golden number is your multiplier. Correct: +1. With the Big Blind a mistake costs ×1. If all chips shimmer, the Royal Flush is still on.", "Erst die offene Hand zu Ende spielen.": "Finish the open hand first.","Perfekt": "Perfect","{0} Tage Serie": "{0}-day streak","Starte deine Serie": "Start your streak","Soundtrack": "Soundtrack","Spiele jederzeit, mit Leben, Score und Rekorden.": "Play any time, with lives, score and records.", "Noch kein Rekord.": "No record yet.", "Nochmal spielen": "Play again", "Punkte": "points", "Rekord: {0}": "Record: {0}", "Rekord: {0}. Noch {1} bis zum Rekord.": "Record: {0}. {1} more to beat it.", "Reparatur": "Repair", "Reparatur starten": "Start repair", "Review": "Review", "Setze den Satz aus den Bausteinen zusammen.": "Put the sentence together from the blocks.", "Survival": "Survival", "Survival beendet": "Survival over", "Survival komplett geschafft!": "Survival cleared!", "Survival starten": "Start Survival", "Survival · {0} Punkte": "Survival · {0} points", "Weiter in {0}": "Next in {0}", "mit Fehlern": "with mistakes", "mit Fehlern erledigt": "done with mistakes", "zum Reparieren.": "to repair.", "{0} Wörter geschafft": "{0} words passed", "{0} Wörter, 3 Leben, ein Versuch pro Frage. Wie weit kommst du?": "{0} words, 3 lives, one try per question. How far can you get?", "{0} in Folge": "{0} in a row",  "Modul {0}": "Module {0}", "Solo": "Solo", "Playmode": "Playmode", "Freeplay": "Freeplay", "Random": "Random", "Alle Module gemischt, passend zur Stufe, wie in der Daily Round": "All modules mixed by level, as in the Daily Round", "Solo · nur ein Modul": "Solo · one module only", "Wörter pro Round": "Words per round", "Wie willst du üben?": "How do you want to practice?", "Zufällig": "Random", "Alle Übungen gemischt: Bausteine, Tippen, Swipe und mehr, wie bisher": "All exercises mixed: building blocks, typing, swipe and more, as before", "Standard": "Default", "Satz aus Wortkacheln zusammensetzen": "Build the sentence from word tiles", "Übersetzung selbst schreiben": "Write the translation yourself", "Zwei Vorschläge, einer stimmt": "Two options, one is right", "Fehlendes Wort im Satz einsetzen": "Fill in the missing word", "Richtige Bedeutung aus vier Optionen": "Pick the right meaning from four options", "Auswahl": "Choice", "Bald mehr": "More soon", "Hören, Paare, Puzzle …": "Listening, pairs, puzzle …", "Wörter pro Runde": "Words per round", "Alle {0}": "All {0}", "Zurück": "Back", "Nur {0}": "Only {0}", "NEU": "NEW", "Swipe": "Swipe", "Wische die Karte zur richtigen Übersetzung oder tippe sie an.": "Swipe the card toward the right translation or tap it.", "Sound": "Sound", "An": "On", "Aus": "Off", "Lautstärke": "Volume", "Dewi quatscht, klickt und stempelt. Hier schaltest du alle Töne ein oder aus.": "Dewi chats, clicks and stamps. Switch all sounds on or off here.", "Wie heißt du?": "What’s your name?", "Dewi spricht dich damit an. Der Name bleibt nur auf diesem Gerät.": "Dewi will call you this. The name stays on this device only.", "Dein Name": "Your name", "Name eingeben": "Enter your name", "Leer lassen: Dewi nennt dich dann „Choom“ und Co.": "Leave empty: Dewi will call you “Choom” and the like.", "Überspringen": "Skip", "Speichern": "Save", "Gespeichert.": "Saved.", "Schelmisch": "Sly", "Cool": "Cool", "Überlegen": "Superior", "Überheblich": "Haughty", "Überrascht": "Surprised", "Gemein": "Mean", "Gelangweilt": "Bored", "Zufrieden": "Content", "Genervt": "Annoyed", "Schlafend": "Sleeping", "Marke ansehen": "View stamp", "Schließen": "Close", "Ziehen, um die Marke zu neigen.": "Drag to lift and tilt the stamp."};
@@ -9462,7 +9494,7 @@ let S=null;
 
 /* Versuche pro Modul (Daily Round): ein Fehler erlaubt = 2 Versuche, Tippen 2 Fehler = 3 Versuche, Swipe nur 1 Versuch.
    Im Survival hat jede Karte nur einen Versuch. */
-const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,reels:2,order:1};
+const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,reels:2,slots:2,order:1};
 const triesFor=id=>(S&&S.kind==='survival')?1:(TRIES[id]||2);
 /* Version 123: Die Herzen stehen jetzt links in der Score-Zeile (siehe scoreRow), nicht mehr im Modul. */
 const roundLives=()=>'';
@@ -9474,7 +9506,7 @@ window.__introMs=(typeof window.__introMs==='number')?window.__introMs:3000;   /
 /* Punkte pro richtigem Wort im Survival (intern und angezeigt gleich, z. B. 137):
    Grundpunkte je Modul (leichte weniger, schwere mehr), Perfekt-Bonus +25 % (ohne „?“, ohne Tippfehler),
    danach Serien-Multiplikator: ab 3 in Folge x1,5, ab 5 x2, ab 10 x2,5, ab 15 x3, ab 20 x4. */
-const SURV_BASE={swipe:61,choice:73,gap:88,reels:97,order:112,blocks:124,typing:149};
+const SURV_BASE={swipe:61,choice:73,gap:88,reels:97,slots:97,order:112,blocks:124,typing:149};
 function survMult(run){return run>=20?4:run>=15?3:run>=10?2.5:run>=5?2:run>=3?1.5:1;}
 function survPoints(mod,run,perfect){return Math.round((SURV_BASE[mod]||80)*(perfect?1.25:1)*survMult(run));}
 const bestStore=()=>{const m=state.best||(state.best={});return m[state.lang]||(m[state.lang]={});};
@@ -9526,6 +9558,14 @@ function survivalWords(){
 /* Solo-Playmode: nur Wörter, die zum gewählten Modul passen (kein Ersatzmodul). Zu wenige passende Wörter = Solo gesperrt. */
 const SOLO_MIN=3;
 const soloWords=pm=>{const m=MOD[pm];return survivalWords().filter(w=>!m||!m.can||m.can(w));};
+/* Version 159: Für die Kacheln reicht „mindestens SOLO_MIN passende Wörter?“. Zählt nur bis zur Grenze und hört dann auf,
+   statt für jedes gelernte Wort den ganzen Beispielsatz durchzurechnen (das ließ den Survival-Screen stocken). */
+function soloCount(pm,limit){
+  const m=MOD[pm],ws=survivalWords();
+  if(!m||!m.can)return Math.min(ws.length,limit);
+  let n=0;for(const w of ws){if(m.can(w)&&++n>=limit)break;}
+  return n;
+}
 /* ===== Offener Run (Version 114) =====
    Beim Abbrechen oder Verlassen der App soll man dort weitermachen, wo man war.
    Gespeichert wird vor jeder Karte: welche Wörter in welcher Reihenfolge, die Stelle im Run,
@@ -9616,6 +9656,7 @@ function sheetBody(inner){
 
 /* Welches Modul bekommt diese Karte? Immer ein Modul pro Wort, nie dasselbe wie die Karte davor.
    Das neue Wort am Ende der Review-Stage bekommt bevorzugt ein schweres Modul (Tippen oder Bausteine). */
+const SLOTS_PREF=2/3;
 function chooseModule(card){
   const w=card.w;
   if(window.__force&&MOD[window.__force]&&MOD[window.__force].can(w))return window.__force;   // nur für Tests
@@ -9623,6 +9664,8 @@ function chooseModule(card){
   const all=MODULES.filter(m=>m.solo&&m.can(w)).map(m=>m.id);
   let pool=all.filter(id=>id!==S.last);
   if(card.kind==='final'){const heavy=pool.filter(id=>id==='typing'||id==='blocks');if(heavy.length)pool=heavy;}
+  /* Version 160: Symbolwörter (Zahlen, Früchte) bekommen meistens Slots (etwa 2 von 3 Mal), nicht beim Abschlusswort */
+  else if(pool.indexOf('slots')>=0&&Math.random()<SLOTS_PREF)return 'slots';
   if(!pool.length)pool=all;
   return pool[Math.floor(Math.random()*pool.length)];
 }
@@ -9657,7 +9700,7 @@ function settleCard(typedOk){
     if(ok){
       S.words++;S.right++;
       if(S.run%HEART_STREAK===0&&S.lives<HEART_MAX){S.lives++;c.healed=true;setLives(S.lives,S.lives-1);haptic([20,40,20]);setTimeout(heartMoment,420);}
-      c.perfect=!c.helped&&!c.typo;c.pts=survPoints(c.module,S.run,c.perfect);S.score+=c.pts;setTimeout(scoreTick,350);
+      c.perfect=!c.helped&&!c.typo;c.pts=survPoints(c.module,S.run,c.perfect)*(c.ptsMul||1);S.score+=c.pts;setTimeout(scoreTick,350);
       const dq=daily();
       if(dq.got.indexOf(w.k)<0)r=record(w,true,'review');   // Stufe +1, aber nur einmal pro Tag und Wort
       else{const pr=(state.progress[state.lang]||{})[w.k]||{};r={level:pr.l||1,days:0,same:true};}
@@ -9928,7 +9971,7 @@ try{
 
 /* ---- Schneller weiter: nach der Antwort geht ein Tipp oder Wisch auf die freie Fläche wie der Weiter-Button ---- */
 (function(){
-  const ADV_SKIP='button,a,input,textarea,select,label,.tile,.otile,.reel,.cab,.swcard,.qh,.helpm,.bslot,[role=button]';
+  const ADV_SKIP='button,a,input,textarea,select,label,.tile,.otile,.reel,.cab,.slmach,.swcard,.qh,.helpm,.bslot,[role=button]';
   const wd=()=>t('Weiter');
   function advBtn(){
     const n=$('#nx')||$('#next');if(n&&!n.disabled)return n;
@@ -9972,7 +10015,7 @@ function openPlaymodes(kind){
       <svg class="mdie" width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><rect x="5" y="5" width="46" height="46" rx="11" fill="#fff" stroke="#1b0b26" stroke-width="3.4"/><g fill="#1b0b26"><circle cx="18" cy="18" r="4"/><circle cx="38" cy="18" r="4"/><circle cx="28" cy="28" r="4"/><circle cx="18" cy="38" r="4"/><circle cx="38" cy="38" r="4"/></g></svg>
       <span><b>${t('Random')}</b><small>${t('Alle Module gemischt, nie zweimal dasselbe hintereinander')}</small>${rec('random')}</span></button>
     <div class="eyebrow msolo">${t('Solo · nur ein Modul')}</div>
-    <div class="mgrid">${solo.map(m=>{const n=soloWords(m.id).length,lock=n<SOLO_MIN;return `<button class="mtile ${m.tone}${lock?' locked':''}" data-playmode="${m.id}"${lock?' disabled':''}>${m.isNew?'<span class="mnew">'+t('NEU')+'</span>':''}${m.icon}<b>${m.name()}</b><small>${m.desc()}</small>${lock?`<small class="mlock">${t('Noch zu wenige passende Wörter ({0}/{1})',n,SOLO_MIN)}</small>`:rec(m.id)}</button>`;}).join('')}
+    <div class="mgrid">${solo.map(m=>{const n=soloCount(m.id,SOLO_MIN),lock=n<SOLO_MIN;return `<button class="mtile ${m.tone}${lock?' locked':''}" data-playmode="${m.id}"${lock?' disabled':''}>${m.isNew?'<span class="mnew">'+t('NEU')+'</span>':''}${m.icon}<b>${m.name()}</b><small>${m.desc()}</small>${lock?`<small class="mlock">${t('Noch zu wenige passende Wörter ({0}/{1})',n,SOLO_MIN)}</small>`:rec(m.id)}</button>`;}).join('')}
       <div class="mtile soon" aria-hidden="true"><svg width="46" height="40" viewBox="0 0 46 40" fill="none" stroke="#a888ff" stroke-width="3" stroke-linecap="round"><path d="M8 20v0M16 12v16M24 6v28M32 12v16M40 20v0"/></svg><b>${t('Bald mehr')}</b><small>${t('Hören, Paare, Puzzle …')}</small></div></div>
     <p class="hint">${t('Jede Frage hat nur einen Versuch. Drei falsche Antworten und die Round ist vorbei. Je mehr Wörter du schaffst, desto höher dein Score.')}</p></div>`;
   sheet.scrollTop=0;
@@ -10518,19 +10561,22 @@ function showSwipe(){
   const opts=Math.random()<.5?[[right,1],[wrong,0]]:[[wrong,0],[right,1]];
   const word=id2gl?w.id:gl(w),wl=id2gl?L.code.toLowerCase():state.ui,ol=id2gl?state.ui:L.code.toLowerCase();
   sheetBody(`<div class="smain">${kicker(c,'swipe',id2gl?toGl():toIdl())}${roundLives()}
-    <div class="swstage">${helpBtn('swipe')}<div class="swcard${word.length>16?' long':''}" id="swcard" lang="${wl}" aria-label="${esc(word)}">${esc(word)}</div></div>
+    <div class="swstage">${helpBtn('swipe')}<div class="swcard${word.length>16?' long':''}" id="swcard" lang="${wl}" aria-label="${esc(word)}">${esc(word)}</div><div class="swres" id="exfb"></div></div>
     <div class="swopts">${opts.map((o,i)=>`<button class="swb ${i?'r':'l'}" data-i="${i}" data-r="${o[1]}" lang="${ol}">${i?'':'<i aria-hidden="true">←</i>'}<span>${esc(o[0])}</span>${i?'<i aria-hidden="true">→</i>':''}</button>`).join('')}</div>
-    <div id="exfb"></div></div>`);
+    </div>`);
   const card=$('#swcard'),bs=$$('.swb',sheet);
-  let done=false,drag=false,x0=0,dx=0,tm=0;
+  let done=false,drag=false,x0=0,dx=0,tm=0,raf=0;
+  /* Karte pro Bild höchstens einmal bewegen (spart Rechenarbeit auf dem Handy) */
+  const move=()=>{raf=0;card.style.transform=`translate3d(${dx}px,0,0) rotate(${dx/14}deg)`;};
   const lean=d=>{bs[0].classList.toggle('lean',d<-24);bs[1].classList.toggle('lean',d>24);card.classList.toggle('lean',Math.abs(d)>24);};
   const choose=i=>{
     if(done)return;done=true;drag=false;
     const good=opts[i][1]===1,dir=i?1:-1;
     lean(0);card.classList.remove('drag');
-    card.style.transform=`translateX(${dir*Math.max(380,window.innerWidth)}px) rotate(${dir*24}deg)`;card.classList.add('gone');
+    cancelAnimationFrame(raf);raf=0;
+    card.style.transform=`translate3d(${dir*Math.max(380,window.innerWidth)}px,0,0) rotate(${dir*24}deg)`;card.classList.add('gone');
     sfx('swipe');
-    setTimeout(()=>{const st=$('.swstage');if(st)st.classList.add('collapsed');},300);   // Platz freigeben: Ergebnis und Weiter-Button rücken nach oben
+    $('.swstage').classList.add('answered');   // Version 154: Das Ergebnis erscheint an der Stelle der Karte, nichts rückt mehr nach oben
     bs.forEach((b,k)=>{b.disabled=true;if(opts[k][1]===1)b.classList.add('ok');else if(k===i)b.classList.add('no');});
     c.ok=c.ok&&good;settleCard();
     $('#exfb').innerHTML=`<div class="res ${good?'good':'bad'}" role="status"><div class="rl">${good?t('Richtig'):t('Nicht ganz')}</div>
@@ -10543,9 +10589,9 @@ function showSwipe(){
   };
   bs.forEach((b,i)=>b.onclick=()=>choose(i));
   card.addEventListener('pointerdown',e=>{if(done)return;drag=true;x0=e.clientX;dx=0;tm=Date.now();card.classList.add('drag');try{card.setPointerCapture(e.pointerId);}catch(x){}});
-  card.addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-x0;card.style.transform=`translateX(${dx}px) rotate(${dx/14}deg)`;lean(dx);});
+  card.addEventListener('pointermove',e=>{if(!drag)return;dx=e.clientX-x0;lean(dx);if(!raf)raf=requestAnimationFrame(move);});
   const end=()=>{
-    if(!drag)return;drag=false;card.classList.remove('drag');
+    if(!drag)return;drag=false;card.classList.remove('drag');cancelAnimationFrame(raf);raf=0;
     const v=Math.abs(dx)/Math.max(1,Date.now()-tm);
     if(Math.abs(dx)>70||(v>.6&&Math.abs(dx)>25))choose(dx<0?0:1);
     else{card.style.transform='';lean(0);}
@@ -10932,6 +10978,242 @@ function showReels(w){
 registerModule({id:'reels',name:()=>t('Reels'),desc:()=>t('Hebel ziehen, Walzen beim richtigen Wort stoppen'),tone:'t3',solo:true,isNew:true,fallback:'choice',
   icon:'<svg width="46" height="40" viewBox="0 0 46 40" aria-hidden="true"><rect x="2" y="6" width="36" height="28" rx="6" fill="#ff4fa3" stroke="#ffcf4a" stroke-width="2.5"/><rect x="7" y="12" width="8" height="16" rx="2" fill="#fff"/><rect x="17" y="12" width="8" height="16" rx="2" fill="#fff"/><rect x="27" y="12" width="8" height="16" rx="2" fill="#fff"/><path d="M5 20h30" stroke="#e0295a" stroke-width="1.5"/><rect x="40" y="10" width="3" height="16" rx="1.5" fill="#ffcf4a"/><circle cx="41.5" cy="8" r="4" fill="#e0295a" stroke="#fff" stroke-width="1"/></svg>',
   can:w=>!!reelsData(w),show:w=>showReels(w)});
+
+/* ===== modules/slots.js ===== */
+/* ===== Modul Slots (Version 155): goldener Spielautomat mit Symbolen =====
+   Statt Wörtern drehen die Walzen Bilder: Zahlen 0–10 und Früchte. Wo die Walzen stoppen, steht schon vorher fest
+   (der „Zufall“ ist Show). Danach nennt man für jedes Symbol das Wort in der Lernsprache (Auswahl aus zwei Knöpfen).
+   - Kommt nur, wenn das aktuelle Wort ein Symbol hat. Es zählt für die Stufen wie jedes Modul.
+   - 1 bekanntes Symbolwort: alle drei Walzen gleich (erzwungen, kein Bonus, keine Jackpot-Show).
+     2 bekannte: zwei gleiche und ein anderes. Ab 3: echter Zufall, das aktuelle Wort ist immer dabei.
+   - Drei gleiche Symbole: nur eine Frage. Echter Dreier (ab 3 bekannten) = Jackpot-Show.
+   - Alle richtig: im Survival doppelte Punkte (nicht beim erzwungenen Dreier).
+   - Falsche Antwort-Option: ein Wort, das man schon kennt (bevorzugt ein anderes Symbolwort).
+   Das alte Modul Reels bleibt unverändert daneben bestehen. */
+
+const SL_NUM=['zero','one','two','three','four','five','six','seven','eight','nine','ten'];
+const SL_FRUIT=['apple','banana','orange','lemon','mango','pineapple','watermelon','coconut'];
+const SL_SYMS=SL_NUM.concat(SL_FRUIT);
+const SL_CELL=80,SL_WIN=120;   // Höhe einer Symbolzelle und des Walzenfensters in px
+const SL_STRIP=16;         // Zellen pro Walzenstreifen
+const SL_OUT='#2a0c20';
+
+/* Englische Bedeutung des Wortes: im Englischkurs steht sie im Wort selbst, sonst in w.en */
+function slotKey(w){
+  if(!w)return null;
+  const e=String(state.lang==='en'?w.id:w.en).toLowerCase().trim();
+  return SL_SYMS.indexOf(e)>=0?e:null;
+}
+const slKnown=w=>!!(state.progress[state.lang]||{})[w.k];
+
+/* ---- Symbole: glänzend, Comic-Kontur, Früchte mit Diva-Gesicht ---- */
+function slFace(cx,cy,s){
+  s=s||1;const e=(x,m)=>`M${x-5*s} ${cy} q${5*s} ${4*s*m} ${10*s} 0`;
+  const lash=(x,d)=>`M${x} ${cy} l${d*3*s} ${-3*s} M${x+d*2*s} ${cy+1.2*s} l${d*3.4*s} ${-2*s}`;
+  return `<g class="face" fill="none" stroke="${SL_OUT}" stroke-width="${2.4*s}" stroke-linecap="round">
+    <ellipse cx="${cx-14*s}" cy="${cy+7*s}" rx="${4.5*s}" ry="${2.6*s}" fill="#ff6fa6" stroke="none" opacity=".75"/>
+    <ellipse cx="${cx+14*s}" cy="${cy+7*s}" rx="${4.5*s}" ry="${2.6*s}" fill="#ff6fa6" stroke="none" opacity=".75"/>
+    <path d="${e(cx-9*s,1)} ${e(cx+9*s,1)}"/>
+    <path d="${lash(cx-14*s,-1)} ${lash(cx+14*s,1)}" stroke-width="${1.8*s}"/>
+    <path d="M${cx-4*s} ${cy+9*s} q${4*s} ${3.5*s} ${8*s} ${-1*s}"/></g>`;
+}
+const slSpark=(x,y,r)=>`<path d="M${x} ${y-r}Q${x+r*.18} ${y-r*.18} ${x+r} ${y}Q${x+r*.18} ${y+r*.18} ${x} ${y+r}Q${x-r*.18} ${y+r*.18} ${x-r} ${y}Q${x-r*.18} ${y-r*.18} ${x} ${y-r}Z" fill="#fff"/>`;
+const slGloss=(x,y,rx,ry,rot)=>`<ellipse cx="${x}" cy="${y}" rx="${rx}" ry="${ry}" fill="#fff" opacity=".6" transform="rotate(${rot||-30} ${x} ${y})"/><circle cx="${x+rx*.9}" cy="${y+ry*1.6}" r="${Math.max(2,ry*.35)}" fill="#fff" opacity=".7"/>`;
+function slGrad(id,stops,radial){
+  const st=stops.map((c,i)=>`<stop offset="${Math.round(i/(stops.length-1)*100)}%" stop-color="${c}"/>`).join('');
+  return radial?`<radialGradient id="${id}" cx="38%" cy="32%" r="75%">${st}</radialGradient>`:`<linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">${st}</linearGradient>`;
+}
+const SL_ART={
+  apple:()=>`<defs>${slGrad('sl-ap',['#ff8a8a','#ff2d4f','#a50a2c'],1)}${slGrad('sl-lf',['#9dff8a','#28b54a'])}</defs>
+    <path d="M52 30Q56 16 62 11" stroke="#6b3a1c" stroke-width="5" stroke-linecap="round" fill="none"/>
+    <path d="M56 24Q70 8 84 16Q72 32 56 24Z" fill="url(#sl-lf)" stroke="${SL_OUT}" stroke-width="3" stroke-linejoin="round"/>
+    <path d="M50 31C34 18 10 28 12 53C14 80 36 94 50 87C64 94 86 80 88 53C90 28 66 18 50 31Z" fill="url(#sl-ap)" stroke="${SL_OUT}" stroke-width="3.5" stroke-linejoin="round"/>
+    ${slGloss(30,44,9,5)}${slFace(50,60,1)}${slSpark(84,28,7)}`,
+  banana:()=>`<defs>${slGrad('sl-ba',['#fff59a','#ffd530','#e59a0c'])}</defs>
+    <path d="M16 26Q18 82 76 82Q88 82 90 72Q52 74 36 28Q32 18 24 19Q14 20 16 26Z" fill="url(#sl-ba)" stroke="${SL_OUT}" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M16 26Q14 20 20 18L24 19Q20 21 21 26Z" fill="#6b3a1c" stroke="${SL_OUT}" stroke-width="2.5" stroke-linejoin="round"/>
+    ${slGloss(28,44,4,11,-25)}${slFace(52,64,.85)}${slSpark(80,24,7)}`,
+  orange:()=>`<defs>${slGrad('sl-or',['#ffd08a','#ff9a1f','#d9560a'],1)}${slGrad('sl-lf2',['#9dff8a','#28b54a'])}</defs>
+    <circle cx="50" cy="56" r="33" fill="url(#sl-or)" stroke="${SL_OUT}" stroke-width="3.5"/>
+    <path d="M50 24Q60 8 76 14Q64 30 50 24Z" fill="url(#sl-lf2)" stroke="${SL_OUT}" stroke-width="3" stroke-linejoin="round"/>
+    <g fill="#c4500a" opacity=".45"><circle cx="66" cy="44" r="1.6"/><circle cx="72" cy="56" r="1.6"/><circle cx="36" cy="74" r="1.6"/><circle cx="60" cy="80" r="1.6"/></g>
+    ${slGloss(34,42,9,5)}${slFace(50,58,1)}${slSpark(84,30,7)}`,
+  lemon:()=>`<defs>${slGrad('sl-le',['#fffbb0','#ffe93a','#e0b40c'],1)}</defs>
+    <path d="M10 56Q12 46 22 44Q38 24 62 28Q82 32 88 48Q93 54 88 60Q82 80 56 81Q32 82 20 68Q10 66 10 56Z" fill="url(#sl-le)" stroke="${SL_OUT}" stroke-width="3.5" stroke-linejoin="round"/>
+    ${slGloss(34,42,10,5,-15)}${slFace(52,56,1)}${slSpark(84,22,7)}`,
+  mango:()=>`<defs>${slGrad('sl-ma',['#ffe066','#ff9a2e','#ff3d5a'])}${slGrad('sl-lf3',['#9dff8a','#28b54a'])}</defs>
+    <path d="M28 32Q60 12 80 40Q94 66 70 84Q44 96 26 76Q12 56 28 32Z" fill="url(#sl-ma)" stroke="${SL_OUT}" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M44 24Q50 6 70 8Q62 26 44 24Z" fill="url(#sl-lf3)" stroke="${SL_OUT}" stroke-width="3" stroke-linejoin="round"/>
+    ${slGloss(34,42,9,5)}${slFace(52,58,1)}${slSpark(86,26,7)}`,
+  pineapple:()=>`<defs>${slGrad('sl-pi',['#fff08a','#ffc21f','#d98a0c'])}${slGrad('sl-lf4',['#9dff8a','#1f9a3e'])}<clipPath id="sl-pic"><ellipse cx="50" cy="64" rx="27" ry="30"/></clipPath></defs>
+    <path d="M50 38L36 10L48 24L50 4L54 24L66 8L60 38Z" fill="url(#sl-lf4)" stroke="${SL_OUT}" stroke-width="3" stroke-linejoin="round"/>
+    <ellipse cx="50" cy="64" rx="27" ry="30" fill="url(#sl-pi)" stroke="${SL_OUT}" stroke-width="3.5"/>
+    <g clip-path="url(#sl-pic)" stroke="#b86d0a" stroke-width="2" opacity=".55"><path d="M10 40L90 120M10 60L80 130M10 20L90 100M30 10L100 80M90 40L10 120M90 60L20 130M90 20L10 100M70 10L0 80"/></g>
+    ${slGloss(36,50,8,5)}${slFace(50,66,.95)}${slSpark(84,34,7)}`,
+  watermelon:()=>`<defs>${slGrad('sl-wm',['#ff8aa8','#ff2d55','#d0103e'])}</defs>
+    <path d="M8 34L92 34A42 42 0 0 1 8 34Z" fill="#3ccf5a" stroke="${SL_OUT}" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M15 34L85 34A35 35 0 0 1 15 34Z" fill="#eaffd8"/>
+    <path d="M19 34L81 34A31 31 0 0 1 19 34Z" fill="url(#sl-wm)"/>
+    <g fill="${SL_OUT}"><ellipse cx="30" cy="44" rx="2" ry="3.2"/><ellipse cx="70" cy="44" rx="2" ry="3.2"/><ellipse cx="40" cy="58" rx="2" ry="3.2"/><ellipse cx="62" cy="58" rx="2" ry="3.2"/></g>
+    <path d="M26 38Q38 40 46 38" stroke="#fff" stroke-width="3" opacity=".6" stroke-linecap="round" fill="none"/>
+    ${slFace(50,44,.85)}${slSpark(86,18,7)}`,
+  coconut:()=>`<defs>${slGrad('sl-co',['#c98a5a','#8a4f26','#4f2a12'],1)}</defs>
+    <circle cx="50" cy="56" r="34" fill="url(#sl-co)" stroke="${SL_OUT}" stroke-width="3.5"/>
+    <g stroke="#3a1c0a" stroke-width="1.6" opacity=".55" stroke-linecap="round"><path d="M28 34l4 5M68 30l-3 6M80 52l-5 2M22 60l5 1M34 84l3-4M70 82l-3-4"/></g>
+    ${slGloss(34,40,9,5)}${slFace(50,58,1)}${slSpark(86,26,7)}`
+};
+function slNumArt(k){
+  const n=String(SL_NUM.indexOf(k)),fs=n.length>1?62:84,y=n.length>1?74:82,id='sl-n'+n;
+  const txt=a=>`<text x="50" y="${y}" text-anchor="middle" font-size="${fs}" font-weight="900" style="font-family:var(--display)" ${a}>${n}</text>`;
+  return `<defs>${slGrad(id,['#ff7a7a','#ff1f45','#a8062a'])}<clipPath id="${id}c">${txt('')}</clipPath></defs>
+    ${txt(`fill="none" stroke="${SL_OUT}" stroke-width="15" stroke-linejoin="round"`)}
+    ${txt('fill="none" stroke="#ffd34d" stroke-width="8" stroke-linejoin="round"')}
+    ${txt(`fill="url(#${id})"`)}
+    <rect x="0" y="0" width="100" height="${y-fs*.42}" fill="#fff" opacity=".38" clip-path="url(#${id}c)"/>
+    ${slSpark(n.length>1?88:80,20,7)}`;
+}
+function slSvg(k){
+  const body=SL_ART[k]?SL_ART[k]():slNumArt(k);
+  return `<svg class="slsym" viewBox="0 0 100 100" aria-hidden="true">${body}</svg>`;
+}
+
+/* ---- Plan: welche Symbole landen wo, welche Fragen kommen ---- */
+function slotsData(w){
+  const L=curLang(),key=slotKey(w);if(!key)return null;
+  const bySym={};bySym[key]=w;
+  L.words.forEach(x=>{const k=slotKey(x);if(k&&!bySym[k]&&x.k!==w.k&&slKnown(x))bySym[k]=x;});
+  const pool=Object.keys(bySym),n=pool.length;
+  let reels;
+  if(n===1)reels=[key,key,key];
+  else if(n===2){const o=pool.find(k=>k!==key);reels=shuffle(Math.random()<.5?[key,key,o]:[key,o,o]);}
+  else{reels=[0,1,2].map(()=>pool[Math.floor(Math.random()*n)]);reels[Math.floor(Math.random()*3)]=key;}
+  if(window.__slReels)reels=window.__slReels.slice();   // nur für Tests
+  const triple=reels[0]===reels[1]&&reels[1]===reels[2];
+  const forced=triple&&n<3;
+  /* Fragen: bei drei gleichen nur eine, sonst eine pro Walze */
+  const qs=(triple?[0]:[0,1,2]).map(i=>{const sw=bySym[reels[i]];return {i,sym:reels[i],w:sw,right:sw.id,opts:shuffle([sw.id,slFoil(sw,bySym)])};});
+  return {key,reels,triple,forced,qs,pool:pool.length};
+}
+/* falsche Option: ein bekanntes Wort, bevorzugt ein anderes Symbolwort, ähnliche Länge */
+function slFoil(sw,bySym){
+  const L=curLang(),me=normId(sw.id);
+  const ok=x=>x.k!==sw.k&&normId(x.id)!==me&&slotKey(x)!==slotKey(sw);
+  const syms=shuffle(Object.values(bySym).filter(ok));
+  if(syms.length)return syms[0].id;
+  const known=L.words.filter(x=>ok(x)&&slKnown(x));
+  const near=known.sort((a,b)=>Math.abs(a.id.length-sw.id.length)-Math.abs(b.id.length-sw.id.length)+(Math.random()-.5)*4);
+  if(near.length)return near[0].id;
+  const any=shuffle(L.words.filter(ok));return any.length?any[0].id:'?';
+}
+function slSoon(f,ms){if(window.__introMs===0||reduceMotion())return f();setTimeout(f,ms);}
+
+function showSlots(w){
+  const c=S.cur,L=curLang(),D=slotsData(w),lc=L.code.toLowerCase();
+  const tries=triesFor('slots');
+  const Z={D,miss:0,q:0,state:'idle'};c.sl=Z;
+  const strip=(tgt,i)=>{
+    const cells=[];for(let k=0;k<SL_STRIP;k++)cells.push(SL_SYMS[Math.floor(Math.random()*SL_SYMS.length)]);
+    cells[SL_STRIP-2]=tgt;   // hier bleibt die Walze stehen (mit einem Nachbarn darunter)
+    cells[1]=SL_SYMS[(SL_SYMS.indexOf(tgt)+3+i)%SL_SYMS.length];
+    return cells.map(k=>`<div class="slc">${slSvg(k)}</div>`).join('');
+  };
+  sheetBody(`<div class="smain slm">${kicker(c,'slots',toIdl())}${roundLives()}
+    <div id="rlm" class="rl-m">${mascot('reels_ready',null,'sm')}</div>
+    <div class="slstage">${helpBtn('slots')}
+      <div class="slmach" id="slmach" data-st="idle">
+        <div class="slcap l"></div>
+        <div class="slbody"><div class="slwin">${D.reels.map((k,i)=>`<div class="slreel" data-i="${i}" aria-label="${t('Walze {0}',i+1)}"><div class="slstrip">${strip(k,i)}</div><span class="slword" lang="${lc}"></span></div>`).join('')}
+          <i class="slarr l" aria-hidden="true"></i><i class="slarr r" aria-hidden="true"></i></div></div>
+        <div class="slcap r"></div>
+        <div class="sllev" id="sllev" role="button" tabindex="0" aria-label="${t('Hebel ziehen')}"><i class="slrod"></i><i class="slball"></i></div>
+      </div>
+    </div>
+    <div id="slq" class="slq"><p class="slhint">${t('Zieh den Hebel.')}</p></div>
+    <div id="exfb"></div></div>`);
+  const mach=$('#slmach'),lev=$('#sllev'),reels=$$('.slreel',sheet);
+  const say=k=>{const m=$('#rlm');if(m)m.innerHTML=mascot(k,null,'sm');};
+  /* Startstellung: zweite Zelle sichtbar */
+  const pos=k=>`translate3d(0,${-(k*SL_CELL)+(SL_WIN-SL_CELL)/2}px,0)`;
+  reels.forEach(r=>{r.firstChild.style.transform=pos(1);});
+
+  function pull(){
+    if(Z.state!=='idle')return;Z.state='spin';
+    mach.dataset.st='spin';lev.classList.add('pulled');setTimeout(()=>lev.classList.remove('pulled'),420);
+    sfx('lever');sfx('whirr',200);haptic([14]);
+    $('#slq').innerHTML='';
+    const instant=window.__introMs===0||reduceMotion();
+    reels.forEach((r,i)=>{
+      const s=r.firstChild,dur=1.15+i*.45;
+      if(!instant){s.style.transition=`transform ${dur}s cubic-bezier(.12,.62,.22,1.04)`;}
+      s.style.transform=pos(SL_STRIP-2);
+      slSoon(()=>{r.classList.add('stop');sfx('thunk');haptic([8]);},dur*1000);
+    });
+    slSoon(landed,(1.15+2*.45)*1000+180);
+  }
+  function landed(){
+    if(Z.state!=='spin'||!$('#slq'))return;
+    Z.state='ask';mach.dataset.st=D.triple&&!D.forced?'jack':'ask';
+    if(D.triple&&!D.forced){sfx('jackpot');haptic([30,40,30,40,80]);burst(mach,30);say('reels_jackpot');}
+    ask();
+  }
+  function ask(){
+    const q=D.qs[Z.q];
+    reels.forEach((r,i)=>r.classList.toggle('act',D.triple?true:i===q.i));
+    $('#slq').innerHTML=`<p class="slhint">${D.triple?t('Alle drei: Wie heißt das?'):t('Wie heißt Symbol {0}?',q.i+1)}</p>
+      <div class="opts two">${q.opts.map(o=>`<button class="iopt tgt" data-r="${o===q.right?1:0}" lang="${lc}">${esc(o)}</button>`).join('')}</div>`;
+    $$('#slq .iopt',sheet).forEach(b=>b.onclick=()=>answer(b,b.dataset.r==='1'));
+  }
+  function answer(b,good){
+    if(Z.state!=='ask')return;
+    const q=D.qs[Z.q];
+    if(!good){
+      Z.miss++;b.classList.add('no');b.disabled=true;sfx('rbad');haptic([40,30,40]);
+      if(Z.miss>=tries)return finish(false);
+      say('reels_bad');return;
+    }
+    b.classList.add('ok');$$('#slq .iopt',sheet).forEach(x=>x.disabled=true);
+    sfx('rwin');haptic([22]);
+    (D.triple?reels:[reels[q.i]]).forEach(r=>{r.classList.add('ok');r.classList.remove('act');r.querySelector('.slword').textContent=q.right;});
+    Z.q++;
+    if(Z.q>=D.qs.length)return slSoon(()=>finish(true),260);
+    say('reels_ok');slSoon(ask,320);
+  }
+  function finish(win){
+    if(Z.state==='over')return;Z.state='over';
+    c.ok=c.ok&&win;
+    if(win&&S.kind==='survival'&&!D.forced)c.ptsMul=2;   // alle richtig: doppelte Punkte (nicht beim erzwungenen Dreier)
+    settleCard();
+    mach.dataset.st=win?(D.triple&&!D.forced?'jack':'win'):'lose';
+    /* nicht beantwortete Symbole aufdecken */
+    D.qs.forEach(q=>(D.triple?reels:[reels[q.i]]).forEach(r=>{const s=r.querySelector('.slword');if(!s.textContent){s.textContent=q.right;r.classList.add('rev');}}));
+    reels.forEach(r=>r.classList.remove('act'));
+    if(win){chipRain(D.triple&&!D.forced?40:24);sfx('chips');haptic([20,30,20]);say(D.triple&&!D.forced?'reels_jackpot':'reels_win');}
+    else{sfx('end_bad');say('reels_lose');}
+    const words=D.reels.map(k=>D.qs.find(q=>q.sym===k).right);
+    $('#slq').innerHTML='';
+    $('#exfb').innerHTML=`<div class="res ${win?'good':'bad'}" role="status"><div class="rl">${win?(D.triple&&!D.forced?t('Jackpot!'):t('Richtig')):t('Nicht ganz')}</div>
+      <div class="pair" lang="${lc}">${words.map(esc).join(' · ')}</div>
+      ${win&&c.ptsMul===2?`<p class="hint" style="margin-top:6px">${t('Alle richtig: doppelte Punkte!')}</p>`:''}</div>${resultNote(win)}
+      <button class="btn primary block" id="nx" style="margin-top:12px">${t('Weiter')}</button>`;
+    $('#nx').onclick=nextStep;
+    try{$('#nx').focus({preventScroll:true});}catch(e){}
+  }
+  c.slPull=pull;
+  /* Hebel: antippen oder nach unten ziehen */
+  let dy=null;
+  lev.addEventListener('pointerdown',e=>{e.preventDefault();if(Z.state!=='idle')return;dy=e.clientY;try{lev.setPointerCapture(e.pointerId);}catch(x){}});
+  lev.addEventListener('pointermove',e=>{if(dy===null)return;if(e.clientY-dy>40){dy=null;pull();}});
+  lev.addEventListener('pointerup',()=>{if(dy!==null){dy=null;pull();}});
+  lev.addEventListener('pointercancel',()=>{dy=null;});
+  lev.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();pull();}});
+  lev.addEventListener('click',e=>{if(e.detail===0)pull();});
+  /* Tippen auf den Automaten zieht auch den Hebel */
+  mach.addEventListener('click',e=>{if(!e.target.closest('#sllev'))pull();});
+}
+
+registerModule({id:'slots',name:()=>t('Slots'),desc:()=>t('Hebel ziehen, Symbole benennen'),tone:'t2',solo:true,isNew:true,fallback:'choice',
+  icon:'<svg width="52" height="40" viewBox="0 0 52 40" aria-hidden="true"><defs><linearGradient id="slig" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff2a8"/><stop offset=".5" stop-color="#f5b81f"/><stop offset="1" stop-color="#b9780c"/></linearGradient></defs><rect x="2" y="9" width="38" height="24" rx="12" fill="url(#slig)" stroke="#2a0c20" stroke-width="2"/><rect x="8" y="13" width="26" height="16" rx="3" fill="#fff" stroke="#2a0c20" stroke-width="1.5"/><text x="21" y="26" text-anchor="middle" font-size="12" font-weight="900" fill="#ff1f45" font-family="sans-serif">777</text><rect x="43" y="12" width="3" height="16" rx="1.5" fill="#d8d8e0"/><circle cx="44.5" cy="9" r="5" fill="url(#slig)" stroke="#2a0c20" stroke-width="1.5"/></svg>',
+  can:w=>!!slotKey(w),show:w=>showSlots(w)});
 
 /* ===== modules/order.js ===== */
 /* Modul Reihenfolge: Die Wörter eines Satzes liegen durcheinander und werden per Ziehen in die richtige Reihenfolge gebracht.
