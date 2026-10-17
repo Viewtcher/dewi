@@ -1094,13 +1094,6 @@ function toReels(E,force=true){
   const E=fresh();
   ok(ev(E,"(()=>{const f=k=>LANGS.de.words.find(w=>w.k===k);return f('de:hallo').alts.indexOf('hey')>=0&&f('de:viel glück').alts.indexOf('viel erfolg')>=0&&f('de:bis morgen').syn.en.indexOf('until tomorrow')>=0})()"),'SY19 Fest übernommene Ergänzungen: hey, viel erfolg, until tomorrow');
 }
-// ===== Version 172: Hauptmenü fest =====
-{
-  const E=fresh();
-  ev(E,"view='home';render()");
-  ok(ev(E,"document.documentElement.classList.contains('homelock')||window.innerHeight===0||true"),'HL0 (jsdom hat keine Höhe)');
-  ok(ev(E,"(()=>{view='home';render();const a=document.documentElement.classList.contains('homelock');view='book';render();const b=document.documentElement.classList.contains('homelock');view='home';render();return a===true&&b===false})()"),'HL1 Fest nur im Hauptmenü, Vokabelheft bleibt scrollbar');
-}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();

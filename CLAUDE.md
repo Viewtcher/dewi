@@ -50,7 +50,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 172)
+## Offene Punkte (Stand Version 171)
 
 - **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
@@ -78,7 +78,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - 169: Synonyme/Umgangssprache/Abkürzungen als unsichtbare Zusatz-Antworten (`syn.js`, `glList`). Pilot Indonesisch Wörter 1–105; weitere Blöcke und die Kurse Englisch/Deutsch nach Vitos Test ✓ (noch nicht live)
 - 170: „＋ Synonym“ nach dem Tippen, Kachel „Meine Ergänzungen“ in den Einstellungen (löschen, Liste kopieren im `syn.js`-Format) ✓ (noch nicht live)
 - 171: Erste Ergänzungen aus der App fest in `syn.js` (hallo, viel glück, bis morgen im Deutschkurs) ✓ (noch nicht live)
-- 172: Hauptmenü fest (kein Scrollen/Wippen), bei wenig Höhe automatisch kleiner (`homeFit`), unter 60 % wieder scrollbar ✓ (noch nicht live)
+- 172/173: Hauptmenü fixiert (172) – auf Vitos iPhone kaputt, in 173 zurückgenommen (Stand wie 171). Falls nochmal: erst Fehlerbild erfragen, ohne `position:fixed`/`zoom` ✓ (172 live, 173 noch nicht)
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.

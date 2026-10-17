@@ -2063,9 +2063,9 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Technik:** Drei Zeilen in `SYN_RAW` (Schlüssel mit Kurspräfix `de:`). Test SY1 prüft jetzt alle Kurse, neu SY19.
 **Tests:** alle vier Suiten grün. **Nur auf dem iPhone prüfbar:** nichts Neues.
 
-## Version 172 – Hauptmenü fest
+## Version 172 und 173 – Hauptmenü fixiert, dann zurückgenommen
 
-**Was:** Im Hauptmenü (Home) lässt sich die Seite nicht mehr scrollen oder wippen. Ist der Bildschirm niedriger als der Inhalt (z. B. Safari mit Leisten, kleinere iPhones, geöffnete „?“-Erklärung), wird der Inhalt automatisch etwas kleiner, damit nichts abgeschnitten wird. Unter 60 % Verkleinerung bleibt die Seite stattdessen scrollbar. Vokabelheft, Einstellungen und Shop bleiben unverändert.
-**Warum:** Vito wollte das Hauptmenü fixiert haben; Kleinerwerden statt Abschneiden war seine Wahl.
-**Technik:** `homeFit()` in `app.src.html` setzt `html.homelock` (`body{position:fixed;overflow:hidden;overscroll-behavior:none}`) und `zoom` auf `.app`; läuft nach `render()` im Home, bei `resize`/`orientationchange` und per MutationObserver (nur Kinder, Text, `hidden`, kein Klassenwechsel, damit Animationen nichts auslösen). Messung (Chromium): 393×852 kein Zoom, 375×667 Zoom 0,88, 360×520 Zoom 0,67, 320×400 entsperrt. Tests HL0/HL1.
-**Nur auf dem iPhone prüfbar:** dass wirklich nichts mehr wippt (Safari-Verknüpfung), Verhalten beim Drehen und bei geöffneter „?“-Erklärung.
+**Was:** Version 172 hatte das Hauptmenü fixiert (kein Scrollen, bei wenig Höhe per `zoom` verkleinert, `body{position:fixed}`). Auf Vitos iPhone war danach die Darstellung kaputt, deshalb nimmt Version 173 die Änderung komplett zurück (Git-Gegenbuchung `git revert`, Historie bleibt erhalten). Stand der App ist wieder wie in Version 171.
+**Warum es schiefging (Vermutung, nicht geprüft):** Die Prüfung lief nur in Chromium am Computer. `position:fixed` auf dem `body` und CSS-`zoom` verhalten sich auf iOS-Safari und in der Home-Bildschirm-Verknüpfung anders (Adressleiste, Safe-Areas, Tab-Leiste).
+**Lehre / nächster Versuch:** Wenn das Hauptmenü wieder fixiert werden soll, erst Vitos genaues Fehlerbild erfragen (was sieht er?) und vorsichtiger vorgehen, z. B. nur `overscroll-behavior:none` und `overflow:hidden` auf dem Hauptmenü ohne `position:fixed` und ohne `zoom`.
+**Tests:** alle vier Suiten wie vor Version 172.
