@@ -2011,3 +2011,13 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** alle vier Suiten grün. Chromium 390 px: Pixelproben zeigen auf Startseite und Rush-Screen oben einen hellen Violett-Schein (100,77,156), unten dunkel (31,17,51); Stoppuhr sitzt rechts am Rand (36 px), kein Überlauf.
 
 **Nur auf einem echten iPhone prüfbar:** wie der Verlauf hinter den einzelnen Screens wirkt (besonders Vokabelheft, Shop, Spiel-Screens und im Neon-Theme) und ob Texte überall gut lesbar bleiben.
+
+## Version 167 – Kein ungewolltes Zoomen in Safari
+
+**Was:** Doppeltippen und Zwei-Finger-Zoomen vergrößern die App nicht mehr (Vitos Wahl: jedes Zoomen aus).
+
+**Technik:** Drei Schichten, weil Safari nicht jede einzeln respektiert: (1) Viewport-Angabe in `build.py` mit `maximum-scale=1,user-scalable=no`; (2) CSS `html{touch-action:pan-x pan-y}` (erlaubt nur Scrollen, schaltet Doppeltipp-Zoom und Pinch aus; Kinder mit eigenem `touch-action` bleiben unberührt); (3) `gesturestart/gesturechange/gestureend` werden abgebrochen (Safari-Zwei-Finger-Geste). Ein Nebeneffekt: Safari zoomt beim Antippen eines Textfelds nicht mehr hinein.
+
+**Tests:** alle vier Suiten grün (das Verhalten selbst ist nur auf dem iPhone prüfbar).
+
+**Nur auf einem echten iPhone prüfbar:** Doppeltippen auf Knöpfe und leere Flächen, schnelles Tippen bei Pads/Slots/Tippen-Modul, Zwei-Finger-Zoom im Safari-Tab und in der Home-Bildschirm-Verknüpfung, Tippen in Textfelder (Name, Tippen-Modul). Neuere iOS-Versionen können das Sperren im normalen Safari-Tab teilweise ignorieren; die Gesten-Sperre fängt das ab.
