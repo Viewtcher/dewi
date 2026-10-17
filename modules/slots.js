@@ -142,7 +142,6 @@ function showSlots(w){
       <div class="slmach" id="slmach" data-st="idle">
         <div class="slcap l"></div>
         <div class="slbody"><div class="slwin">${D.reels.map((k,i)=>`<div class="slreel" data-i="${i}" aria-label="${t('Walze {0}',i+1)}"><div class="slstrip">${strip(k,i)}</div><i class="slstreak" aria-hidden="true"></i><span class="slword" lang="${lc}"></span></div>`).join('')}
-          ${[0,1,2,3].map(k=>`<i class="slring r${k}" aria-hidden="true"></i>`).join('')}
           <i class="slarr l" aria-hidden="true"></i><i class="slarr r" aria-hidden="true"></i></div></div>
         <div class="slcap r"></div>
         <div class="sllev" id="sllev" role="button" tabindex="0" aria-label="${t('Hebel ziehen')}"><i class="slrod"></i><i class="slball"></i></div>

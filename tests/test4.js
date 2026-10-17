@@ -882,7 +882,7 @@ function toReels(E,force=true){
   E.click(E.$('[data-playmode="slots"]'));
   ok(!!E.$('#slmach')&&E.$$('.slreel').length===3&&/Slots/.test(E.$('.kicker').textContent),'SL10 Goldener Automat mit 3 Walzen');
   ok(E.$$('.slreel .slsym').length>=75&&!E.$('#slq .iopt'),'SL11 Walzen mit Symbolen, Fragen erst nach dem Hebel');
-  ok(E.$$('.slring').length===4&&E.$$('.slstreak').length===3&&ev(E,"['slcharge','slcrack','slslam'].every(k=>typeof SFX[k]==='function')"),'SL11b Vier leuchtende Achsen, Leuchtstreifen und eigene Strom-Sounds (Version 156)');
+  ok(E.$$('.slring').length===0&&E.$$('.slcap').length===2&&E.$$('.slstreak').length===3&&ev(E,"['slcharge','slcrack','slslam'].every(k=>typeof SFX[k]==='function')"),'SL11b Leuchtende Außenseiten statt Achsen, Leuchtstreifen und eigene Strom-Sounds (Version 157)');
   E.click(E.$('#slmach'));
   ok(!!E.$('#slq .iopt')&&E.$$('#slq .iopt').length===2&&E.$$('.slreel.act').length===1,'SL12 Nach dem Hebel: Frage zu Walze 1 mit zwei Knöpfen');
   for(let i=0;i<3;i++){const b=E.$$('#slq .iopt').find(x=>x.dataset.r==='1');if(b)E.click(b);}

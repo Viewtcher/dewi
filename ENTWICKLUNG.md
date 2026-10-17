@@ -1920,3 +1920,13 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 SL11b (Ringe, Leuchtstreifen, Sounds), SL11 an den längeren Streifen angepasst. Alle vier Suiten grün. Chromium 375 px (Gold) und 390 px (Neon): Ringe sitzen genau auf den Walzengrenzen, Ringe leuchten beim Drehen voll, Symbole stoppen exakt auf der Linie, kein seitliches Scrollen.
 
 **Nur auf einem echten iPhone prüfbar:** Wie der Strom-Sound klingt und ob er „kickt“, ob das Leuchten auf dem OLED-Display wirkt, ob der Wirbel flüssig läuft, Haptik.
+
+## Version 157 – Slots: Außenseiten leuchten statt Achsen
+
+**Was:** Korrektur zu Version 156. Vito meinte die Außenseiten der Trommel, nicht die Ringe zwischen den Walzen. Die vier Neon-Ringe sind weg. Stattdessen sind die beiden Enden der Trommel (links und rechts) jetzt hohe lila Neon-Kappen (fast so hoch wie die Trommel). In Ruhe glimmen sie leicht, beim Hebelzug blitzen sie während des Wirbels mehrmals hart auf (rund 1,25 s, einmalig) und glühen bis zur ersten Frage nach. Im Neon-Nacht-Theme glimmen sie in Ruhe stärker.
+
+**Technik:** `.slring` entfernt (Markup in `slots.js`, CSS). `.slcap` neu gestaltet (17 × 146 px, lila Verlauf), Glanz in `.slcap::after`, Blitzen per `@keyframes slflash` mit `steps(1)` und nur Deckkraft, einmalig. Zustände wie bisher über `data-st` (`spin` → `glow` → `ask`).
+
+**Tests:** SL11b prüft jetzt: keine Ringe, zwei Außenkappen, Leuchtstreifen, Sounds. Alle vier Suiten grün. Chromium 375/390 px: Kappen mittig an der Trommel, Blitz-Animation läuft beim Drehen, kein seitliches Scrollen.
+
+**Nur auf einem echten iPhone prüfbar:** Wie hell das Blitzen wirkt und ob es zu grell oder zu schwach ist.
