@@ -7,7 +7,9 @@
 
    Der Dewi-Chip (Novas Bauteil „Dewi-Chip“, Design-Canvas „dewi. Poker-Screens“) liegt einmal als SVG-Symbol
    pro Variante im Dokument und wird über <use> eingesetzt. So kosten auch 40 Chips im Regen fast nichts. */
-const CHIPV={survWord:5,survCap:300};
+const CHIPV={survWord:5,survCap:300,
+  /* Rush (Version 163): Chips nach Endzeit (Spielzeit + Strafe) in Sekunden; schneller als die erste Grenze = erster Wert. Höchstens 150 am Tag. */
+  rushTiers:[[60,60],[90,45],[120,30],[180,15]],rushSlow:5,rushRec:10,rushCap:150};
 const CHIP_TONES=['pink','gold','holo','grey','empty'];
 
 /* Varianten: Grundfarbe, Innenring, Kanten, Dewi (Kapuze, Gesicht, Wangen, Neigung, Stimmung) */
@@ -82,6 +84,16 @@ function chipSurvival(words){
   const n=Math.max(0,Math.min(Math.max(0,words|0)*CHIPV.survWord,CHIPV.survCap-g.n));
   g.n+=n;return chipAdd(n);
 }
+/* Rush: Chips nach Endzeit plus Bonus für eine neue Bestzeit, höchstens 150 pro Tag (eigener Zähler neben Survival) */
+function chipRush(ms,rec){
+  const sec=Math.max(0,ms)/1000;
+  let n=CHIPV.rushSlow;
+  for(const x of CHIPV.rushTiers){if(sec<=x[0]){n=x[1];break;}}
+  if(rec)n+=CHIPV.rushRec;
+  const t0=today(),g=state.chipRush&&state.chipRush.d===t0?state.chipRush:(state.chipRush={d:t0,n:0});
+  n=Math.max(0,Math.min(n,CHIPV.rushCap-g.n));
+  g.n+=n;return chipAdd(n);
+}
 /* Zahlen: volle Zahl mit Tausenderpunkt (Deutsch) bzw. -komma (Englisch) */
 function fmtChip(n){return String(n|0).replace(/\B(?=(\d{3})+(?!\d))/g,state.ui==='de'?'.':',');}
 /* Nur für die Pille: ab 10.000 mit K/M und einer Nachkommastelle (12,5K · 1,2M), abgerundet, damit nie mehr angezeigt wird als da ist */
@@ -147,4 +159,4 @@ function chipRain(n,tones){
   }
   document.body.appendChild(box);setTimeout(()=>box.remove(),2900);
 }
-window.__chip={add:chipAdd,surv:chipSurvival,short:fmtChipShort};
+window.__chip={add:chipAdd,surv:chipSurvival,rush:chipRush,short:fmtChipShort};

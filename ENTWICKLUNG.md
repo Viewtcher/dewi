@@ -1967,3 +1967,17 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** alle vier Suiten grün, keine Anpassung nötig.
 
 **Nur auf einem echten iPhone prüfbar:** nichts Besonderes, nur Blick auf die Solo-Kacheln ohne Pille.
+
+## Version 163 – Neuer Gamemode „Rush“
+
+**Was:** Neben Survival gibt es auf der Gamemodes-Seite eine blau-türkise Kachel „Rush“. Ziel: zehn Module aus bekannten Wörtern so schnell wie möglich. Die Auswahl ist wie im Survival (Random-Kachel oben, darunter die Solo-Module). Eine Stoppuhr läuft von der ersten Karte bis das zehnte Modul gewertet ist (auch über die Ergebnis-Screens). Pro Karte gibt es einen Versuch; ein verlorenes Modul kostet +5 Sekunden und es geht weiter. Am Ende zählt die Zeit hoch, dazu Bestzeit und Chips.
+
+**Warum:** Vitos Idee eines Tempo-Modus mit eigener Bestzeit neben dem Punkte-Modus Survival.
+
+**Regeln (mit Vito abgestimmt):** Wörter zufällig aus allen bekannten; gesperrt unter 5 bekannten Wörtern (wie Survival); bei weniger als 10 Wörtern kommen sie reihum nochmal. Chips nach Endzeit inkl. Strafe: ≤60 s = 60, ≤90 s = 45, ≤120 s = 30, ≤180 s = 15, langsamer = 5; neue Bestzeit +10; höchstens 150 Chips am Tag (eigener Zähler `state.chipRush`). Die Grenzen (`CHIPV.rushTiers`) sind Startwerte und werden nach Vitos erstem Test angepasst. Der Lernstand bleibt unberührt (keine Stufen, keine Fälligkeiten). **Hinweis:** Survival steigert dagegen Stufen (einmal pro Tag und Wort); „wie Survival“ in der Frage war insofern missverständlich, umgesetzt ist „Lernstand unberührt“.
+
+**Technik:** `S.kind==='rush'`; `arcade()` fasst Survival und Rush zusammen (ein Versuch, Solo-Modulwahl). Zustand `S.t0/t1/pen/pa`; Anzeige `#rtime` per `setInterval` (100 ms, nur ein Textfeld), die Uhr pausiert im Hintergrund (`visibilitychange`). Bestzeit in `bestStore()['rush:<playmode>']` in Millisekunden (kleiner ist besser). Ein Rush wird nicht in `state.run` gespeichert (Verlassen = Abbruch). `openPlaymodes('rush')` nutzt dieselbe Auswahl wie Survival; `showRushEnd`, `chipRush`, `fmtTime`, `rushItems`.
+
+**Tests:** test4 RU1–RU20 (Kachel, Auswahl, Start, Uhr, Strafe, Ende, Bestzeit, Lernstand unverändert, Chip-Stufen und Tageslimit, Sperre, wenige Wörter, Englisch). Alle vier Suiten grün. Chromium-Maße bei 375/430 px: Kachel gleich breit wie Survival, Uhr tickt, kein Überlauf.
+
+**Nur auf einem echten iPhone prüfbar:** Wie sich die Uhr und das Antippen im Tempo anfühlen, Haptik/Sound beim Endscreen, ob die Chip-Stufen zu großzügig oder zu knapp sind.

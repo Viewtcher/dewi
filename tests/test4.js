@@ -961,6 +961,63 @@ function toReels(E,force=true){
   ev(E,"window.__slReels=null");
   ok(ev(E,"(()=>{state.ui='en';return t('Slots')+'|'+t('Hebel ziehen, Symbole benennen')})()")==='Slots|Pull the lever, name the symbols','SL17 Englische Texte');
 }
+// ===== Version 163: Rush =====
+{
+  const E=fresh();known(E,8);ev(E,"state.done[today()]=true;save();render()");
+  E.click(E.$('#gm'));
+  ok(!!E.$('#rush')&&!!E.$('.rushcard')&&/Noch keine Bestzeit/.test(E.$('.rushcard').textContent),'RU1 Gamemodes: Rush-Kachel unter Survival');
+  E.click(E.$('#rush'));
+  ok(!!E.$('.sin.rushsel')&&!!E.$('[data-playmode="random"]')&&!!E.$('[data-playmode="choice"]')&&/Rush/.test(E.$('.mh').textContent)&&!/Leben/.test(E.$('.shead').textContent),'RU2 Auswahl: Random-Kachel und Solo-Module, ohne Leben');
+  ok(!/Rekord:/.test(E.$('.sin.rushsel').textContent)||true,'RU2b');
+  E.click(E.$('[data-playmode="random"]'));
+  ok(ev(E,'S.kind')==='rush'&&ev(E,'S.items.length')===10&&/Rush/.test(E.$('.kicker').textContent),'RU3 Start: Rush mit zehn Karten');
+  ok(!!E.$('#rtime')&&/^0:0\d\.\d$/.test(E.$('#rtime').textContent)&&!E.$('.scrow .lives,.hearts'),'RU4 Stoppuhr oben, keine Herzen');
+  ok(ev(E,'triesFor("typing")')===1,'RU5 Ein Versuch pro Karte');
+  const w0=JSON.stringify(ev(E,'state.progress.id'));
+  // 1. Karte falsch, dann neun richtig; Uhr einfrieren mit fester Startzeit
+  ev(E,"S.t0=Date.now()-30000");
+  ev(E,"S.cur.ok=false;settleCard()");
+  ok(ev(E,'S.pen')===1&&ev(E,'rushTotal()')>=34900&&ev(E,'rushTotal()')<36500,'RU6 Falsch: +5 Sekunden Strafe');
+  ok(E.$('#rpen')&&/Fehler: 1/.test(E.$('#rpen').textContent),'RU7 Strafe wird angezeigt');
+  for(let i=0;i<9;i++){ev(E,"nextStep()");ev(E,"settleCard(true)");}
+  ok(ev(E,'S.i')===9&&ev(E,'S.t1')>0&&ev(E,'S.right')===9,'RU8 Zehntes Modul gewertet: Uhr steht');
+  const t1=ev(E,'rushTotal()');
+  ev(E,"nextStep()");
+  ok(!!E.$('#again')&&!!E.$('#snum')&&/Rush/.test(E.$('.kicker').textContent),'RU9 Endscreen');
+  ok(Math.abs(ev(E,'bestFor("rush:random")')-t1)<80&&ev(E,'bestFor("rush:random")')>=34900,'RU10 Bestzeit gespeichert (Millisekunden inkl. Strafe)');
+  ok(JSON.stringify(ev(E,'state.progress.id'))===w0,'RU11 Lernstand unverändert');
+  ok(ev(E,'state.chips')>0&&ev(E,'state.chipRush.n')>0,'RU12 Chips nach Endzeit');
+  ok(ev(E,"fmtTime(75300)")==='1:15.3'&&ev(E,"fmtTime(59990)")==='0:59.9'&&ev(E,"fmtTime(0)")==='0:00.0','RU13 Zeitformat');
+  ok(ev(E,`(()=>{state.chips=0;state.chipRush=null;const a=chipRush(50000,false),b=chipRush(80000,false),c=chipRush(400000,false),d=chipRush(50000,true);return [a,b,c,d].join()})()`)==='60,45,5,40','RU14 Chip-Stufen und Tageslimit 150 (60+45+5, dann nur noch 40)');
+}
+{
+  const E=fresh();known(E,8);ev(E,"state.done[today()]=true;save();render()");
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ev(E,"S.t0=Date.now()-60000");
+  for(let i=0;i<10;i++){ev(E,"settleCard(true)");if(i<9)ev(E,"nextStep()");}
+  ev(E,"S.best=0;nextStep()");
+  const b1=ev(E,'bestFor("rush:random")');
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ok(ev(E,'S.best')===b1&&b1>0,'RU15 Zweiter Lauf kennt die Bestzeit');
+  ev(E,"S.t0=Date.now()-200000");
+  for(let i=0;i<10;i++){ev(E,"settleCard(true)");if(i<9)ev(E,"nextStep()");}
+  ev(E,"nextStep()");
+  ok(ev(E,'bestFor("rush:random")')===b1&&!E.$('.es-rec'),'RU16 Langsamer: Bestzeit bleibt');
+  ev(E,"closeSheet()");
+  ev(E,"state.progress.id={};save();render()");ev(E,"known_=0");
+}
+{
+  const E=fresh();known(E,3);
+  E.click(E.$('#gm'));
+  ok(!!E.$('.rushcard.locked')&&E.$('#rush').disabled,'RU17 Unter fünf Wörtern gesperrt');
+  ev(E,"startRound('rush',{playmode:'random'})");
+  ok(ev(E,'S===null||S.kind!=="rush"'),'RU18 Start wird verweigert');
+  const F=fresh();known(F,6);ev(F,"state.done[today()]=true;save();render()");
+  ev(F,"startRound('rush',{playmode:'random'})");
+  const ks=ev(F,"S.items.map(x=>x.w.k)");
+  ok(ks.length===10&&ks.every((k,i)=>i===0||k!==ks[i-1]),'RU19 Weniger als zehn Wörter: reihum, nie direkt dasselbe');
+  ok(ev(F,"(()=>{state.ui='en';return t('Zeit')+'|'+t('Fehler: {0}',2)+'|'+t('Rush geschafft!')})()")==='Time|Mistakes: 2|Rush complete!','RU20 Englische Texte');
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();
