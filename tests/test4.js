@@ -1047,6 +1047,17 @@ function toReels(E,force=true){
   ok(ks.length===10&&ks.every((k,i)=>i===0||k!==ks[i-1]),'RU19 Weniger als zehn Wörter: reihum, nie direkt dasselbe');
   ok(ev(F,"(()=>{state.ui='en';return t('Zeit')+'|'+t('Fehler: {0}',2)+'|'+t('Rush geschafft!')})()")==='Time|Mistakes: 2|Rush complete!','RU20 Englische Texte');
 }
+// ===== Version 169: Synonyme, Umgangssprache und Abkürzungen (syn.js) =====
+{
+  const E=fresh();
+  ok(ev(E,"Object.keys(SYN).filter(k=>!LANGS.id.words.some(w=>w.k===k)).join()")==='','SY1 Jeder Schlüssel in syn.js ist ein echtes Wort');
+  ok(ev(E,"(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');return w.syn.en.indexOf('thanks')>=0&&w.syn.de.indexOf('dankeschön')>=0&&w.alts.indexOf('makasih')>=0})()"),'SY2 terima kasih: thanks, dankeschön, makasih');
+  ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');const r=[];state.ui='en';r.push(isCorrect({w,dir:'id2gl',lvl:0},'Thanks!'));state.ui='de';r.push(isCorrect({w,dir:'id2gl',lvl:0},'Dankeschön'));r.push(isCorrect({w,dir:'id2gl',lvl:0},'danke'));r.push(isCorrect({w,dir:'id2gl',lvl:0},'kuchen'));return r.join()})()`)==='true,true,true,false','SY3 Übersetzung tippen: Synonyme zählen, Falsches nicht');
+  ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='terima kasih');const c={w,dir:'gl2id',lvl:0,accept:[normId(w.id)].concat(w.alts.map(normId))};return [isCorrect(c,'makasih'),isCorrect(c,'Terimakasih'),isCorrect(c,'terima kasih'),isCorrect(c,'maaf')].join()})()`)==='true,true,true,false','SY4 Kurswort tippen: Umgangssprache und Schreibweisen zählen');
+  ok(ev(E,`(()=>{const w=LANGS.id.words.find(x=>x.id==='tidak apa-apa');const c={w,dir:'gl2id',lvl:0,accept:[normId(w.id)].concat(w.alts.map(normId))};return [isCorrect(c,'gapapa'),isCorrect(c,'gpp'),isCorrect(c,'tidak apa apa')].join()})()`)==='true,true,true','SY5 Abkürzungen: gapapa, gpp');
+  ok(ev(E,`(()=>{let bad=0;state.ui='de';LANGS.id.words.filter(w=>w.syn).forEach(w=>{const ok=new Set(glList(w).map(normG));for(let i=0;i<30;i++){choiceOptions(w).forEach(o=>{if(o!==glFirst(w)&&ok.has(normG(o)))bad++;});}});return bad})()`)===0,'SY6 Auswahl-Antworten enthalten nie ein Synonym des richtigen Wortes');
+  ok(ev(E,"(()=>{state.ui='de';return glList(LANGS.id.words.find(x=>x.id==='sama-sama')).length>1&&gl(LANGS.id.words.find(x=>x.id==='sama-sama'))==='gern geschehen'})()"),'SY7 Angezeigt wird weiter nur die Hauptbedeutung');
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();

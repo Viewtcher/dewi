@@ -350,7 +350,9 @@ function finish(typedOk){
   let qk,qc={n:ok?S.run:(r.n||1),w:w.id,lv:c.lvl};
   if(ok)qk=c.tries>1&&typedOk?'ok_try2':S.run>=3&&S.run%3===0?'ok_run':'ok';
   else qk=(r.n||1)>=2?'bad_again':c.lvl>=3?'bad_rare':'bad';   // Fehlerzähler des Wortes (bleibt seit Version 131 im Wort)
-  const alts=c.dir==='gl2id'&&c.alts.length?`<p class="hint" style="margin-top:6px">${t('Auch richtig: {0}',c.alts.map(esc).join(', '))}</p>`:'';
+  /* Version 169: „Auch richtig“ zeigt beim Kurswort andere Wörter mit gleicher Bedeutung und Umgangssprache, bei der Übersetzung die Synonyme (syn.js) */
+  const more=(c.dir==='gl2id'?c.alts.concat((w.alts||[]).filter(x=>normId(x)!==normId(w.id))):((w.syn&&w.syn[state.ui])||[]).filter(x=>!/^[\d\/]+$/.test(x))).slice(0,4);
+  const alts=more.length?`<p class="hint" style="margin-top:6px">${t('Auch richtig: {0}',more.map(esc).join(', '))}</p>`:'';
   const typoNote=c.typo?`<p class="hint" style="margin-top:6px">${t('Kleiner Tippfehler. Richtig geschrieben: {0}','<b lang="'+(c.dir==='gl2id'?L.code.toLowerCase():state.ui)+'">'+esc(c.dir==='gl2id'?w.id:glFirst(w))+'</b>')}</p>`:'';
   sheetBody(`<div class="smain">${S.kind==='survival'?roundLives():''}<div class="res ${ok?'good':'bad'}" role="status"><div class="rl">${ok?t('Richtig'):t('Leider falsch')}</div>
     <div class="pair"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span><em>=</em><span lang="${state.ui}">${esc(gl(w))}</span></div>${typoNote}${alts}</div>

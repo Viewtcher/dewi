@@ -3057,6 +3057,7 @@ DE_RAW.split('\n').forEach(l=>{
 });
 Object.values(LANGS).forEach(L=>L.words.forEach(w=>{const d=DE[w.k];w.de=d?d.g:w.en;}));
 Object.keys(SENT).forEach(k=>{const d=DE[k];if(d&&d.tpl){SENT[k].det=d.tpl;SENT[k].de=d.tpl.replace(/[\[\]]/g,'');}});
+/*@include syn.js*/
 /* Englisch-Kurs: Wort | englischer Satz | deutscher Satz, [Klammer] = deutsches Gegenstück des Wortes. Schlüssel mit Vorsatz „en:“ (siehe Sprach-Vorsatz kp). */
 EN_SENT_RAW.split('\n').forEach(l=>{
   const q=l.split(' | ');if(q.length<3)return;
@@ -3086,6 +3087,8 @@ function t(s){
 const detectUi=()=>{try{return /^de/i.test(navigator.language||'de')?'de':'en';}catch(e){return 'de';}};
 const gl=w=>state.ui==='de'?w.de:w.en;                 // Bedeutung in der gewählten Sprache
 const glFirst=w=>gl(w).split(' / ')[0].trim();
+/* Version 169: alle richtigen Übersetzungen eines Wortes (angezeigte Bedeutungen plus unsichtbare Synonyme aus syn.js) */
+const glList=w=>gl(w).split(' / ').concat((w.syn&&w.syn[state.ui])||[]);
 function sentOf(w){
   const s=SENT[w.k];if(!s)return null;
   if(state.ui==='de')return s.det?{id:s.id,tpl:s.det,plain:s.de}:null;
@@ -4333,7 +4336,7 @@ function renderList(){
     if(bookF==='learned'&&!(pr&&pr.l>=1))return;
     if(bookF==='new'&&pr)return;
     if(bookF==='shaky'&&!isShaky(pr))return;
-    if(bookQ&&!(fold(w.id).includes(bookQ)||fold(w.en).includes(bookQ)||fold(w.de).includes(bookQ)))return;
+    if(bookQ&&!(fold(w.id).includes(bookQ)||fold(w.en).includes(bookQ)||fold(w.de).includes(bookQ)||fold(((w.syn&&w.syn.en)||[]).concat((w.syn&&w.syn.de)||[],w.alts||[]).join(' ')).includes(bookQ)))return;
     groups[w.cat].push(w);
   });
   const force=!!bookQ||bookF!=='all';

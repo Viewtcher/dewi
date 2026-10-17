@@ -2031,3 +2031,15 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** test4 PP1–PP4 (Anteil 421/600, Abschlusswort, nie zweimal, Nicht-Farbwörter). Alle vier Suiten grün.
 
 **Nur auf einem echten iPhone prüfbar:** ob 2 von 3 sich beim Spielen richtig anfühlt oder zu oft vorkommt.
+
+## Version 169 – Synonyme, Umgangssprache und Abkürzungen (Pilot: Indonesisch, Wörter 1–105)
+
+**Was:** Wörter akzeptieren jetzt weitere richtige Antworten, ohne dass sich die Anzeige ändert. Beispiel „terima kasih“: Übersetzung tippen geht mit „thank you“, „thanks“, „thx“, „cheers“ (Englisch) bzw. „danke“, „dankeschön“, „vielen Dank“ (Deutsch); das Kurswort tippen geht mit „makasih“, „terimakasih“, „trims“. Auch Abkürzungen („gpp“ für „tidak apa-apa“, „yg“ für „yang“), Chat-Formen („gue“, „lu“, „gimana“, „udah“) und Ziffern („5“ für „lima“) zählen. Pilot: 90 Wörter aus den ersten 105 (Begrüßung, Pronomen, Zahlen, Zeit), bei 53 davon auch Umgangssprache/Abkürzungen. Wörter ohne gängiges Synonym bleiben leer.
+
+**Warum:** Vito möchte, dass Lernen mit Alltags- und Umgangssprache mehr Spaß macht; die App ist nicht auf perfekte Grammatik ausgelegt.
+
+**Technik:** Neue Datei `syn.js` (eine Zeile je Wort: `Schlüssel | Englisch | Deutsch | Schreibweisen des Kurswortes`, Kommalisten), im Build nach der deutschen Wortliste eingebunden. Daraus entstehen `w.syn[Sprache]` (weitere Übersetzungen) und `w.alts` (weitere Schreibweisen des Kurswortes, bestehender Mechanismus). Neuer Helfer `glList(w)` = angezeigte Bedeutungen plus Synonyme. Er wird beim Tippen der Übersetzung (`isCorrect`, `ownAnswers`) und bei den falschen Auswahl-Antworten (Auswahl, Lückensatz, Swipe) verwendet, damit nie ein richtiges Synonym als falsche Antwort auftaucht. Nach dem Tippen steht unter „Auch richtig“ eine Auswahl (bis zu vier). Vokabelheft-Suche findet auch Synonyme. Leerzeichen/Bindestriche sind beim Kurswort egal (`normId`), deshalb brauchen „dimana“, „samasama“ keinen Eintrag. Pads/Slots lesen weiter nur die erste Bedeutung (`w.en`), Synonyme stören dort nicht.
+
+**Tests:** test4 SY1–SY7 (Schlüssel gültig, Übersetzung/Kurswort/Abkürzung tippen, Auswahl enthält nie ein Synonym, Anzeige unverändert). Alle vier Suiten grün. Kollisionsprüfung: Synonyme, die zugleich die Hauptbedeutung eines anderen Wortes sind (z. B. „morning“ bei „selamat pagi“ und „pagi“), sind bewusst erlaubt, weil sie nur die akzeptierten Antworten erweitern.
+
+**Nur auf einem echten iPhone prüfbar:** wie sich „Auch richtig“ und die erweiterten Antworten beim Tippen anfühlen, ob die Auswahl gängig genug ist.

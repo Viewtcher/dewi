@@ -14,7 +14,7 @@ function ownAnswers(dir){   // alle Schreibweisen anderer Wörter: ein anderes e
   const key=state.lang+dir+state.ui;
   if(!ANS_CACHE[key]){
     const set=new Set();
-    curLang().words.forEach(w=>{if(dir==='id2gl')gl(w).split('/').forEach(x=>set.add(normG(x)));else set.add(normId(w.id));});
+    curLang().words.forEach(w=>{if(dir==='id2gl')glList(w).join('/').split('/').forEach(x=>set.add(normG(x)));else set.add(normId(w.id));});
     ANS_CACHE[key]=set;
   }
   return ANS_CACHE[key];
@@ -25,7 +25,7 @@ function isCorrect(c,val){
   const id2gl=c.dir==='id2gl';
   const a=id2gl?normG(val):normId(val);
   if(!a)return false;
-  const cands=(id2gl?gl(c.w).split('/').map(normG):c.accept).filter(Boolean);
+  const cands=(id2gl?glList(c.w).join('/').split('/').map(normG):c.accept).filter(Boolean);
   if(cands.indexOf(a)>-1)return true;
   if(a.length<3)return false;
   const own=ownAnswers(id2gl?'id2gl':'gl2id');
