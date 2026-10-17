@@ -2,8 +2,9 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,100..900;1,62..125,100..900&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&family=Lilita+One&display=swap">
 <style>
 /* Layout: eine schmale Heftseite, unten Tab-Leiste. Farben: dunkles Aubergine und Pink passend zu Dewi; Regenbogen-Akzente bleiben. */
-:root[data-theme=neon]{--bg:#0b1026;--surface:#141c3d;--raised:#1b2550;--line:#2b3a73;--line-soft:#212d5c;--muted:#b4c3e6;--faint:#8697c4;--accent:#35dcd2;--accent-ink:#06202a;--accent-soft:rgba(53,220,210,.18);--grad:linear-gradient(135deg,#7ff0e6,#35dcd2)}
+:root[data-theme=neon]{--wash:radial-gradient(120% 38% at 50% 0%,rgba(53,220,210,.26),transparent 75%),radial-gradient(70% 34% at 100% 12%,rgba(80,120,255,.24),transparent 70%),linear-gradient(180deg,rgba(40,100,210,.26) 0%,rgba(20,50,130,.2) 50%,rgba(10,24,80,.18) 100%);--bg:#0b1026;--surface:#141c3d;--raised:#1b2550;--line:#2b3a73;--line-soft:#212d5c;--muted:#b4c3e6;--faint:#8697c4;--accent:#35dcd2;--accent-ink:#06202a;--accent-soft:rgba(53,220,210,.18);--grad:linear-gradient(135deg,#7ff0e6,#35dcd2)}
 :root{
+  --wash:radial-gradient(120% 38% at 50% 0%,rgba(168,136,255,.42),transparent 75%),radial-gradient(70% 34% at 100% 12%,rgba(120,96,235,.28),transparent 70%),linear-gradient(180deg,rgba(120,84,215,.30) 0%,rgba(78,44,150,.24) 50%,rgba(40,20,88,.20) 100%);   /* Version 166: Hintergrundverlauf aller Screens (vorher nur Survival/Rush) */
   --bg:#1a0f24; --surface:#251634; --raised:#301d42; --line:#4a2f63; --line-soft:#3a2450;
   --text:#fbefe9; --muted:#cdb4da; --faint:#aa8fbd;
   --accent:#f566b9; --accent-ink:#2a1630; --accent-soft:rgba(245,102,185,.18); --grad:linear-gradient(135deg,#ff92d2,#f566b9);
@@ -21,7 +22,7 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;min-height:100%;background:var(--bg)}   /* Version 150: Seite füllt immer den ganzen Bildschirm, sonst blitzt bei kurzen Screens die Browser-Standardfarbe unter der Tab-Leiste durch */
-body{margin:0;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--text);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
+body{margin:0;min-height:100vh;min-height:100dvh;background:transparent;color:var(--text);font:400 15px/1.5 var(--body);-webkit-font-smoothing:antialiased}
 [hidden]{display:none!important}
 button,input,textarea{font:inherit;color:inherit}
 button{cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -30,6 +31,7 @@ p{margin:0}
 h1{font:700 26px/1.15 var(--display);letter-spacing:-.015em;margin:0;text-wrap:balance}
 h2{font:700 18px/1.2 var(--display);margin:0}
 
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:var(--wash)}   /* Version 166: Verlauf hinter der Startseite, feststehend (eine statische Ebene, keine Animation) */
 .app{max-width:480px;margin:0 auto;padding:18px 16px 104px}
 .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
 .brand{display:flex;align-items:center;gap:9px;font:700 22px/1 var(--display);letter-spacing:-.01em}
@@ -183,11 +185,12 @@ html.sv-open,html.sv-open body{overflow:hidden}
 .rushcard .qh.sq[aria-expanded="true"]{color:#4a1fc4}
 .rushcard .rwatch{flex:none;color:#4a1fc4}
 .rushcard .sdesc{position:relative;color:#2a1070;text-shadow:none;background:rgba(255,255,255,.88);border-radius:12px;padding:8px 12px;margin:8px 0 2px}
+.rushwatch{margin-left:auto;display:flex;flex:none}.rushwatch svg{width:36px;height:36px;filter:drop-shadow(0 2px 0 rgba(40,12,110,.5))}
 .rpen{font-size:11px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
 .survcard.locked{opacity:.82;filter:saturate(.75);animation:none}
 .survcard.locked .hearts{display:none}
 @keyframes shbeat{0%,40%,100%{transform:scale(1)}10%{transform:scale(1.16)}20%{transform:scale(1)}28%{transform:scale(1.1)}}
-.sin.surv{max-width:none;padding-inline:max(16px,calc((100% - 448px)/2));background:radial-gradient(120% 38% at 50% 0%,rgba(168,136,255,.42),transparent 75%),radial-gradient(70% 34% at 100% 12%,rgba(120,96,235,.28),transparent 70%),linear-gradient(180deg,rgba(120,84,215,.30) 0%,rgba(78,44,150,.24) 50%,rgba(40,20,88,.20) 100%)}
+.sin.surv{max-width:none;padding-inline:max(16px,calc((100% - 448px)/2))}
 .sin.surv .shead{align-items:center}
 .mrec{display:block;margin-top:5px;font-size:12px;font-weight:800;color:var(--c-yellow)}
 .day.flawed .st{opacity:.85}
@@ -469,7 +472,7 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 .tab[aria-current=page] svg :is(rect,circle,path:first-child){fill:currentColor;fill-opacity:.28}
 .tab[aria-current=page] .tl{font-weight:800}
 
-.sheet{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}
+.sheet{position:fixed;inset:0;z-index:30;background:var(--wash),var(--bg);overflow-y:auto;overscroll-behavior:contain}
 .sheet.shop-open{z-index:5}   /* Version 146: im Shop bleibt die Tab-Leiste sichtbar, sie liegt dafür über dem Sheet statt darunter */
 .sheet.shop-open .sin.shop{padding-bottom:104px}
 .setov{position:fixed;inset:0;z-index:35;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}   /* Version 148: Einstellungen als Ebene übers laufende Spiel */

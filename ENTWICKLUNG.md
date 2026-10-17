@@ -2001,3 +2001,13 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** alle vier Suiten grün. Chromium: beide Animationen laufen, Transform ändert sich über die Zeit, kein Überlauf, Abstand 8 px.
 
 **Nur auf einem echten iPhone prüfbar:** Tempo und Wirkung der Linien und ob das Gerät dabei warm wird (zwei kleine Transform-Animationen; die Leistungsanzeige im Testbereich zeigt „Anim“).
+
+## Version 166 – Hintergrundverlauf für alle Screens, Stoppuhr in der Rush-Auswahl
+
+**Was:** (1) Der Lila-Verlauf, den bisher nur die Survival- und Rush-Auswahl hatten (heller Schein oben, nach unten dunkler), liegt jetzt hinter allen Screens: Startseite, Vokabelheft, Einstellungen, Shop, Spiel-Screens und die Gamemodes. Im Neon-Theme gibt es dieselbe Idee in Türkis/Blau. (2) In der Kopfzeile der Rush-Auswahl steht oben rechts eine Stoppuhr, genau dort, wo im Survival die Herzen sind.
+
+**Technik:** Neue Variable `--wash` (Theme-abhängig). Sheets: `.sheet{background:var(--wash),var(--bg)}` (der Verlauf bleibt beim Scrollen stehen, weil der Hintergrund am scrollenden Element hängt). Startseite: `body::before` als feststehende Ebene (`position:fixed`, `z-index:-1`), `body` selbst ist transparent über `html{background:var(--bg)}`. Der eigene Verlauf von `.sin.surv` entfällt. Alles statisch, keine Animation. Stoppuhr: `RUSH_WATCH` in `playmodes.js`, CSS `.rushwatch`.
+
+**Tests:** alle vier Suiten grün. Chromium 390 px: Pixelproben zeigen auf Startseite und Rush-Screen oben einen hellen Violett-Schein (100,77,156), unten dunkel (31,17,51); Stoppuhr sitzt rechts am Rand (36 px), kein Überlauf.
+
+**Nur auf einem echten iPhone prüfbar:** wie der Verlauf hinter den einzelnen Screens wirkt (besonders Vokabelheft, Shop, Spiel-Screens und im Neon-Theme) und ob Texte überall gut lesbar bleiben.

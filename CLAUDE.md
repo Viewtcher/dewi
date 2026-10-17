@@ -50,7 +50,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 165)
+## Offene Punkte (Stand Version 166)
 
 - **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
@@ -72,6 +72,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - 163: Neuer Gamemode „Rush“ (zehn Module, Stoppuhr, +5 s pro Fehler, Bestzeit, Chips nach Zeit). Chip-Stufen sind Startwerte, nach Vitos Test anpassen ✓
 - 164: Rush steigert Stufen wie Survival (nie zurück), lässt sich pausieren und weiterspielen, Kachel lila-weiß mit Speed-Lines und 8 px Abstand zu Survival ✓
 - 165: Speed-Lines der Rush-Kachel bewegen sich (nur transform, aus bei gesperrter Kachel und „Bewegung reduzieren“) ✓
+- 166: Hintergrundverlauf von Survival/Rush jetzt hinter allen Screens (`--wash`, Neon-Variante), Stoppuhr oben rechts in der Rush-Auswahl ✓
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.
