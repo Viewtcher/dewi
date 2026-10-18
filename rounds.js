@@ -152,7 +152,7 @@ function soloCount(pm,limit){
    damit der Spielstand klein bleibt und sich beim Laden gegen die aktuelle Wortliste prüfen lässt.
    Die angefangene Karte beginnt beim Fortsetzen von vorn (halb gesetzte Kacheln lassen sich nicht retten). */
 function saveRun(){
-  if(!S||!S.items||S.i>=S.items.length||(S.kind==='rush'&&S.t1))return;   // fertiger Rush (zehntes Modul gewertet) wird nicht mehr gespeichert
+  if(!S||!S.items||S.i>=S.items.length||S.kind==='course'||(S.kind==='rush'&&S.t1))return;   // Version 175: der Einsteigerkurs wird nicht gespeichert (und lässt einen offenen Run unberührt)   // fertiger Rush (zehntes Modul gewertet) wird nicht mehr gespeichert
   state.run={v:1,lang:state.lang,kind:S.kind,playmode:S.playmode,i:S.i,
     items:S.items.map(x=>({k:x.w.k,kind:x.kind,type:x.type,ok:x.ok})),
     right:S.right,wrong:S.wrong,missed:S.missed.map(w=>w.k),el:S.kind==='rush'?rushPlay():0,pen:S.pen|0,
@@ -222,6 +222,46 @@ function startRound(kind,opt){
   showItem();
 }
 
+/* ===== Einsteigerkurs (Version 175) =====
+   Tippt man in der Solo-Auswahl auf ein gesperrtes Pads- oder Slots-Modul, lernt man dort kurz die fehlenden Wörter
+   (Kennenlernen, danach ein Mini-Test mit Tippen oder Bausteinen). Die Wörter gelten danach als begonnen (richtig = Stufe 1,
+   falsch = Stufe 0, morgen fällig). Kein Tag, keine Serie, keine Hand; ein offener Run bleibt unberührt. */
+const COURSE_KEY={pads:w=>padKey(w),slots:w=>slotKey(w)};
+const COURSE_MAX=4;
+function courseWords(pm){
+  const key=COURSE_KEY[pm];if(!key)return [];
+  const L=curLang(),prog=state.progress[L.id]||{};
+  const need=SOLO_MIN-soloCount(pm,SOLO_MIN);
+  if(need<=0)return [];
+  const cand=L.words.filter(w=>!prog[w.k]&&key(w));
+  return cand.length<need?[]:cand.slice(0,COURSE_MAX);
+}
+function startCourse(pm,kind){
+  const ws=courseWords(pm);if(!ws.length)return;
+  const items=ws.map(w=>({w,kind:'intro',type:'new'})).concat(shuffle(ws.slice()).map(w=>({w,kind:'review',type:'new'})));
+  S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak(),kind:'course',playmode:'random',last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:0,
+     hand:null,date:today(),t0:0,t1:0,pen:0,pa:0,course:{pm,kind:kind||'survival',words:ws}};
+  sheet.hidden=false;document.body.style.overflow='hidden';
+  showItem();
+}
+function showCourseEnd(){
+  S.i=S.items.length;
+  const C=S.course,name=playmodeLabel(C.pm);
+  const can=C.kind==='rush'?survivalWords().length>=RUSH_MIN:survivalWords().length>=3;
+  const list=C.words.map(w=>`<span lang="${curLang().code.toLowerCase()}">${esc(w.id)}</span> = <span lang="${state.ui}">${esc(gl(w))}</span>`).join('<br>');
+  const mood=S.wrong===0?'end_perfect':'end_good';
+  sheetBody(`<div class="smain endstage" id="est"><div class="kicker" style="--k:var(--c-green)">${t('Einsteigerkurs geschafft!')}</div>
+    <div class="bigword es-big" id="ebig"><span>${esc(name)}</span></div>
+    <p class="hint">${t('{0} ist freigeschaltet.',esc(name))}</p>
+    <p class="hint" style="line-height:1.7">${list}</p>
+    <div>${mascot(mood,null,'sm')}</div>
+    <div class="es-btns"><button class="btn primary block" id="cplay"${can?'':' hidden'}>${t('{0} spielen',esc(name))}</button>
+    <button class="btn block" id="cfin">${t('Fertig')}</button></div></div>`);
+  sfx('milestone');haptic([30,60,30]);
+  $('#cfin').onclick=closeSheet;
+  $('#cplay').onclick=()=>{const k=C.kind,pm=C.pm;closeSheet();startRound(k,{playmode:pm});};
+}
+
 function closeSheet(){
   if(S&&S.kind==='rush'&&S.t0&&S.i<S.items.length){
     if(S.t1){S.i=S.items.length;return showRushEnd();}   // zehntes Modul war schon gewertet: Ergebnis zeigen statt verlieren
@@ -248,6 +288,7 @@ const SLOTS_PREF=2/3,PADS_PREF=2/3;
 function chooseModule(card){
   const w=card.w;
   if(window.__force&&MOD[window.__force]&&MOD[window.__force].can(w))return window.__force;   // nur für Tests
+  if(S.kind==='course'){const ok=['typing','blocks'].filter(id=>MOD[id].can(w)&&id!==S.last);const p=ok.length?ok:['typing'];return p[Math.floor(Math.random()*p.length)];}   // Version 175: Mini-Test nur mit Tippen oder Bausteinen
   if(arcade()&&S.playmode!=='random')return resolveModule(S.playmode,w);
   const all=MODULES.filter(m=>m.solo&&m.can(w)).map(m=>m.id);
   let pool=all.filter(id=>id!==S.last);
@@ -303,6 +344,10 @@ function settleCard(typedOk){
       if(dq.got.indexOf(w.k)<0)r=record(w,true,'review');   // Stufe +1, aber nur einmal pro Tag und Wort
       else{const pr=(state.progress[state.lang]||{})[w.k]||{};r={level:pr.l||1,days:0,same:true};}
     }else{S.wrong++;S.lives--;setLives(S.lives);if(S.kind==='survival'&&S.lives<=0)window.__gover=Date.now();}
+  }else if(S.kind==='course'){
+    r=record(w,ok,'new');   // Version 175: richtig = Stufe 1, falsch = Stufe 0 (morgen fällig); das Wort gilt in jedem Fall als begonnen
+    if(ok)S.right++;else{S.wrong++;S.missed.push(w);}
+    S.run=ok?(S.run||0)+1:0;
   }else{
     r=record(w,ok,c.type);
     if(ok)S.right++;else{S.wrong++;S.lost++;S.missed.push(w);}
@@ -328,6 +373,7 @@ function kicker(c,id,dir){
   const k=c.card;let base,col;
   if(S.kind==='survival'){base='Survival';col='var(--c-pink)';}
   else if(S.kind==='rush'){base='Rush';col='var(--c-cyan)';}
+  else if(S.kind==='course'){base=t('Einsteigerkurs')+' · '+(k.kind==='intro'?t('Kennenlernen'):t('Mini-Test'));col='var(--c-green)';}   // Version 175
   else if(k.kind==='intro'){base=t('Daily Round · Einführung');col='var(--c-violet)';}
   else if(k.kind==='final'){base=t('Daily Round · Review · neues Wort');col='var(--c-violet)';}
   else{const rv=S.items.filter(x=>x.kind==='review'),n=rv.indexOf(k)+1;base=t('Daily Round · Review {0} von {1}',n,rv.length);col=LVCOL[c.lvl]||'var(--c-cyan)';}
@@ -402,6 +448,7 @@ function levelUp(c,r){
    Zwei Momente statt einer Wand: erst das Ergebnis (ab Version 133 mit der Auszahlung der Pokerhand) und Dewis Kommentar,
    dann die Serie allein groß. Danach schließt sich die Round von selbst. */
 function showEnd(){
+  if(S.kind==='course')return showCourseEnd();   // Version 175: weder Tag noch Serie noch offene Hand anfassen
   if(S.kind==='survival')return showSurvivalEnd();
   if(S.kind==='rush')return showRushEnd();
   clearRun();

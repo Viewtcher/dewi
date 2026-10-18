@@ -2080,3 +2080,11 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Tests:** CH1–CH11, alle vier Suiten grün.
 **Nur auf dem iPhone prüfbar:** Aussehen der Kapitelwahl (Overlay) und der Zeile „Hier weitermachen“ im Vokabelheft; dass die Auswahl nicht mitten in der Runde stört.
 **Nächste Version (vereinbart):** Einsteigerkurs beim Antippen gesperrter Pads/Slots.
+
+## Version 175 – Einsteigerkurs für gesperrte Pads und Slots
+
+**Was:** In der Solo-Auswahl (Survival und Rush) lässt sich eine gesperrte Pads- oder Slots-Kachel antippen. Sie zeigt „Antippen: Kurz-Einsteigerkurs“ und startet einen kurzen Kurs: bis zu 4 fehlende Wörter (Pads: die Farben, Slots: die Zahlen/Früchte, in Kursreihenfolge, also zuerst die Startkapitel-Wörter) werden zuerst kennengelernt (die normale Einführung), danach folgt je Wort ein Mini-Test mit Tippen oder Bausteinen. Alle Kurswörter gelten danach als begonnen: richtig = Stufe 1, falsch = Stufe 0 (wackelig, morgen fällig). Am Ende: „Einsteigerkurs geschafft!“, die gelernten Wörter, Knopf „Pads/Slots spielen“ (nur wenn der Modus selbst offen ist) und „Fertig“.
+**Warum:** Vito wollte gesperrte Module nicht nur als Sperre sehen, sondern direkt freispielen können.
+**Technik:** `rounds.js`: `courseWords(pm)`, `startCourse(pm,kind)`, `showCourseEnd()`, neue Rundenart `S.kind==='course'` (eigener Zweig in `settleCard`, `chooseModule`, `kicker`, `showEnd`; `saveRun` speichert sie nicht). Er geht nicht über `startRound`, darum bleiben `clearRun`, Tagesstand (`state.done`), Serie und Pokerhand unberührt, ein offener Run bleibt erhalten. `playmodes.js`: Kachel mit `data-course`. Der Kurs zählt nicht gegen das tägliche neue Wort (das kommt weiter aus dem aktiven Kapitel).
+**Tests:** CO1–CO10 in test4; alle vier Suiten grün.
+**Nur auf dem iPhone prüfbar:** Gefühl und Länge des Kurses (Einführung + Mini-Test), Ton, ob die antippbare, aber noch „gesperrte“ Kachel verständlich wirkt.

@@ -1116,6 +1116,44 @@ function toReels(E,force=true){
   ok(!!go&&!!E.$('.chapact'),'CH10 Vokabelheft: aktives Kapitel markiert, Knopf „Hier weitermachen“ bei anderen');
   if(go){const c=+go.dataset.pick;E.click(go);ok(ev(E,"state.chap.id")===c,'CH11 Knopf im Vokabelheft wechselt das Kapitel');}
 }
+// ===== Version 175: Einsteigerkurs für gesperrte Pads/Slots =====
+{
+  const E=fresh();
+  known(E,13);   // Begrüßung u. Ä., keine Farben, keine Zahlen
+  ev(E,"state.lang='id';state.ui='de';ANS_CACHE={};state.run={marker:1};save()");
+  ok(ev(E,"courseWords('pads').map(w=>w.id).join()")==='merah,biru,hijau,kuning','CO1 Pads: der Kurs lehrt die vier Hauptfarben');
+  ok(ev(E,"courseWords('slots').map(w=>w.id).join()")==='nol,satu,dua,tiga','CO2 Slots: der Kurs lehrt die Zahlen 0 bis 3');
+  ev(E,"openPlaymodes('survival')");
+  const tile=E.$('.mtile[data-playmode="pads"]');
+  ok(!!tile&&tile.dataset.course==='1'&&!tile.disabled,'CO3 Gesperrte Pads-Kachel ist antippbar und zeigt den Kurs');
+  if(tile){
+    E.click(tile);
+    ok(ev(E,"S&&S.kind")==='course'&&ev(E,"S.items.length")===8,'CO4 Kurs startet: 4 Kennenlernen + 4 Mini-Tests');
+    let g=0;
+    while(!E.$('#cfin')&&g++<60){
+      if(E.$('#wtap')||E.$('.iopt')){skipIntro(E);continue;}
+      if(E.$('#go')){E.click(E.$('#go'));continue;}
+      if(E.$('#nx')){E.click(E.$('#nx'));continue;}
+      if(E.$('#next')){E.click(E.$('#next'));continue;}
+      if(E.$('#chk')){E.click(E.$('#chk'));continue;}
+      if(E.$('#qf')){E.type('x');continue;}
+      break;
+    }
+    ok(!!E.$('#cfin'),'CO5 Kurs läuft bis zum Abschluss durch');
+    ok(ev(E,"soloCount('pads',3)")>=3,'CO6 Danach ist Pads frei (mindestens 3 passende Wörter)');
+    ok(ev(E,"['merah','biru','hijau','kuning'].every(x=>state.progress.id['id:'+x]||state.progress.id[x]||Object.keys(state.progress.id).indexOf(x)>=0)||LANGS.id.words.filter(w=>['merah','biru','hijau','kuning'].indexOf(w.id)>=0).every(w=>!!state.progress.id[w.k])"),'CO7 Alle vier Kurswörter gelten als begonnen');
+    ok(ev(E,"state.run&&state.run.marker")===1&&!ev(E,"state.done[today()]"),'CO8 Offener Run und Tagesstand bleiben unberührt');
+    ok(!E.$('#cplay').hidden,'CO9 „Pads spielen“ ist angeboten');
+  }
+  // richtige Antwort = Stufe 1
+  const F=fresh();
+  known(F,13);ev(F,"state.lang='id';state.ui='de';");
+  ev(F,"openPlaymodes('survival')");
+  F.click(F.$('.mtile[data-playmode="slots"]'));
+  let h=0;while(!F.$('#qf')&&!F.$('.iopt, #bank')&&h++<20){if(F.$('#wtap')||F.$('.iopt')){skipIntro(F);continue;}if(F.$('#nx')){F.click(F.$('#nx'));continue;}if(F.$('#next')){F.click(F.$('#next'));continue;}break;}
+  ev(F,"(()=>{if(S&&S.kind==='course'){const c=S.cur;if(c&&c.card.kind==='review')settleCard(true);}})()");
+  ok(ev(F,"Object.values(state.progress.id).filter(p=>p.l===1).length")>=14,'CO10 Richtige Antwort im Mini-Test: Wort auf Stufe 1');
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();
