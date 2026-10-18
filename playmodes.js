@@ -17,12 +17,12 @@ function openPlaymodes(kind){
       <svg class="mdie" width="56" height="56" viewBox="0 0 56 56" aria-hidden="true"><rect x="5" y="5" width="46" height="46" rx="11" fill="#fff" stroke="#1b0b26" stroke-width="3.4"/><g fill="#1b0b26"><circle cx="18" cy="18" r="4"/><circle cx="38" cy="18" r="4"/><circle cx="28" cy="28" r="4"/><circle cx="18" cy="38" r="4"/><circle cx="38" cy="38" r="4"/></g></svg>
       <span><b>${t('Random')}</b><small>${t('Alle Module gemischt, nie zweimal dasselbe hintereinander')}</small>${rec('random')}</span></button>
     <div class="eyebrow msolo">${t('Solo · nur ein Modul')}</div>
-    <div class="mgrid">${solo.map(m=>{const n=soloCount(m.id,SOLO_MIN),lock=n<SOLO_MIN;return `<button class="mtile ${m.tone}${lock?' locked':''}" data-playmode="${m.id}"${lock?' disabled':''}>${m.icon}<b>${m.name()}</b><small>${m.desc()}</small>${lock?`<small class="mlock">${t('Noch zu wenige passende Wörter ({0}/{1})',n,SOLO_MIN)}</small>`:rec(m.id)}</button>`;}).join('')}
+    <div class="mgrid">${solo.map(m=>{const n=soloCount(m.id,SOLO_MIN),lock=n<SOLO_MIN,crs=lock&&courseWords(m.id).length>0;return `<button class="mtile ${m.tone}${lock?' locked':''}${crs?' course':''}" data-playmode="${m.id}"${crs?' data-course="1"':lock?' disabled':''}>${m.icon}<b>${m.name()}</b><small>${m.desc()}</small>${lock?`<small class="mlock">${t('Noch zu wenige passende Wörter ({0}/{1})',n,SOLO_MIN)}</small>${crs?`<small class="mcrs">${t('Antippen: Kurz-Einsteigerkurs')}</small>`:''}`:rec(m.id)}</button>`;}).join('')}
       <div class="mtile soon" aria-hidden="true"><svg width="46" height="40" viewBox="0 0 46 40" fill="none" stroke="#a888ff" stroke-width="3" stroke-linecap="round"><path d="M8 20v0M16 12v16M24 6v28M32 12v16M40 20v0"/></svg><b>${t('Bald mehr')}</b><small>${t('Hören, Paare, Puzzle …')}</small></div></div>
     <p class="hint">${rush?t('Zehn Module, so schnell du kannst. Jeder Fehler kostet {0} Sekunden.',RUSH_PEN):t('Jede Frage hat nur einen Versuch. Drei falsche Antworten und die Round ist vorbei. Je mehr Wörter du schaffst, desto höher dein Score.')}</p></div>`;
   sheet.scrollTop=0;
   $('#mback').onclick=openGamemodes;
-  $$('[data-playmode]',sheet).forEach(b=>b.onclick=()=>b.disabled||startRound(rush?'rush':'survival',{playmode:b.dataset.playmode}));
+  $$('[data-playmode]',sheet).forEach(b=>b.onclick=()=>b.dataset.course?startCourse(b.dataset.playmode,rush?'rush':'survival'):b.disabled||startRound(rush?'rush':'survival',{playmode:b.dataset.playmode}));   // Version 175: gesperrtes Pads/Slots startet den Einsteigerkurs
 }
 
 /* ===== Gamemodes: Übersicht über alle Spielarten außerhalb der Daily Round; bisher nur Survival ===== */
