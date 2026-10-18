@@ -50,7 +50,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 177)
+## Offene Punkte (Stand Version 178)
 
 - **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
@@ -83,6 +83,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - 175: Einsteigerkurs beim Antippen gesperrter Pads/Slots-Kacheln (Kennenlernen + Mini-Test, Wörter zählen als begonnen; Rundenart `course`) ✓ (noch nicht live)
 - 176: Startwörter stehen zusätzlich in ihren Themenkapiteln (Zahlen, Essen & Trinken …), „Farben“ eigenes Kapitel (Kleidung getrennt), neue Kapitelreihenfolge, Kapitel werden mit Namen gemerkt ✓ (noch nicht live)
 - 177: Ungelerntes Wort im Vokabelheft antippen → „Jetzt lernen“ (Kennenlernen + Mini-Test, danach immer Stufe 1) ✓ (noch nicht live)
+- 178: „Satz verbessern“ nach Bausteine/Reihenfolge: Wörter paarweise antippen, gespeichert in `state.myalign`, Liste kopieren im `align.js`-Format ✓ (noch nicht live; 174–177 sind live)
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.

@@ -102,7 +102,8 @@ function showBuild(pair){
     A.classList.add(good?'good':'bad');
     $$('.tile',sheet).forEach(x=>{if(x.tagName==='BUTTON')x.disabled=true;});
     $('#exfb').innerHTML=`<div class="res ${good?'good':'bad'}" role="status"><div class="rl">${good?t('Richtig'):t('Nicht ganz')}</div>
-      <div class="pair">${esc(to)}</div></div>${resultNote(good)}`;
+      <div class="pair">${esc(to)}</div></div>${resultNote(good)}${alignFixBtn(w,pair.id,pair.gl)}`;
+    alignFixBind(w,pair.id,pair.gl);
     chk.textContent=t('Weiter');chk.disabled=false;
     try{chk.focus({preventScroll:true});}catch(e){}
     if(good)burst($('.res'),18);

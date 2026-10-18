@@ -161,3 +161,9 @@ function mySynLines(){
   const m=state.mysyn||{};
   return Object.keys(m).map(k=>{const e=m[k];return [k,e.en.join(', '),e.de.join(', '),e.v.join(', ')].join(' | ');}).join('\n');
 }
+
+/* Version 178: eigene Satz-Zuordnungen im Format von align.js (zum festen Übernehmen) */
+function myAlignLines(){
+  const m=state.myalign||{};
+  return Object.keys(m).map(k=>k+'|'+m[k].a.join(' ')+'|'+m[k].b.join(' ')).join('\n');
+}
