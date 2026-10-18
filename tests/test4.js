@@ -1097,11 +1097,11 @@ function toReels(E,force=true){
 // ===== Version 174: Startkapitel und Kapitelwahl =====
 {
   const E=fresh();
-  ok(ev(E,"Object.values(LANGS).map(L=>L.cats[0][0]+':'+L.words.filter(w=>w.cat===0).length).join()")==='Start:46,Start:46,Start:45','CH1 Startkapitel vorn: 46 / 46 / 45 Wörter');
+  ok(ev(E,"Object.values(LANGS).map(L=>L.cats[0][0]+':'+L.words.filter(w=>w.st).length+'/'+L.catCount[0]).join()")==='Start:46/46,Start:46/46,Start:45/45','CH1 Startkapitel vorn: 46 / 46 / 45 Wörter');
   ok(ev(E,"Object.values(LANGS).every(L=>L.words.length===new Set(L.words.map(w=>w.k)).size)")===true,'CH2 Keine doppelten Schlüssel nach dem Verschieben');
-  ok(ev(E,"(()=>{state.lang='id';const w=LANGS.id.words.filter(x=>x.cat===0);const n=w.map(x=>x.id);return ['merah','biru','hijau','kuning','nol','lima'].every(x=>n.indexOf(x)>=0)})()"),'CH3 Vier Hauptfarben und Zahlen 0 bis 5 im Startkapitel');
+  ok(ev(E,"(()=>{state.lang='id';const w=LANGS.id.words.filter(x=>x.st);const n=w.map(x=>x.id);return ['merah','biru','hijau','kuning','nol','lima'].every(x=>n.indexOf(x)>=0)})()"),'CH3 Vier Hauptfarben und Zahlen 0 bis 5 im Startkapitel');
   ok(ev(E,"(()=>{state.lang='id';state.progress.id={};const f=plan().fresh;return f&&f.id==='halo'&&activeCat(LANGS.id)===0})()"),'CH4 Neues Wort kommt zuerst aus dem Startkapitel');
-  ok(ev(E,"(()=>{state.lang='id';const L=LANGS.id,pr={};L.words.filter(w=>w.cat===0).forEach(w=>pr[w.k]={l:1,d:'2000-01-01'});state.progress.id=pr;state.chap.id=0;return needsPick(L)===true&&plan().fresh&&plan().fresh.cat===1})()"),'CH5 Startkapitel durch: Auswahl nötig, bis dahin nächstes Kapitel');
+  ok(ev(E,"(()=>{state.lang='id';const L=LANGS.id,pr={};L.words.filter(w=>w.st).forEach(w=>pr[w.k]={l:1,d:'2000-01-01'});state.progress.id=pr;state.chap.id='Start';return needsPick(L)===true&&plan().fresh&&plan().fresh.cat===1})()"),'CH5 Startkapitel durch: Auswahl nötig, bis dahin nächstes Kapitel');
   ok(ev(E,"(()=>{chooseChapter(8);const f=plan().fresh;const r=f&&f.cat===8&&needsPick(LANGS.id)===false;return r})()"),'CH6 Gewähltes Kapitel liefert das nächste neue Wort');
   ok(ev(E,"(()=>{const L=LANGS.id,pr=state.progress.id;L.words.filter(w=>w.cat===8).forEach(w=>pr[w.k]={l:1,d:'2000-01-01'});return needsPick(L)===true&&activeCat(L)!==8})()"),'CH7 Gewähltes Kapitel durch: Auswahl wird wieder angeboten');
   ev(E,"window.__pickTest=true;view='home';render()");
@@ -1109,12 +1109,12 @@ function toReels(E,force=true){
   ok(!!E.$('#chapick')&&E.$$('#chapick [data-cp]:not([disabled])').length>0,'CH8 Auswahl öffnet sich auf dem Hauptmenü');
   if(E.$('#chapick')){
     E.click(E.$$('#chapick [data-cp]:not([disabled])')[1]);
-    ok(!E.$('#chapick')&&ev(E,"state.chap.id")>=1,'CH9 Antippen wählt das Kapitel und schließt die Auswahl');
+    ok(!E.$('#chapick')&&ev(E,"catIdx(LANGS.id,state.chap.id)")>=1,'CH9 Antippen wählt das Kapitel und schließt die Auswahl');
   }
   ev(E,"view='book';render()");
   const go=E.$('.chapgo');
   ok(!!go&&!!E.$('.chapact'),'CH10 Vokabelheft: aktives Kapitel markiert, Knopf „Hier weitermachen“ bei anderen');
-  if(go){const c=+go.dataset.pick;E.click(go);ok(ev(E,"state.chap.id")===c,'CH11 Knopf im Vokabelheft wechselt das Kapitel');}
+  if(go){const c=+go.dataset.pick;E.click(go);ok(ev(E,"catIdx(LANGS.id,state.chap.id)")===c,'CH11 Knopf im Vokabelheft wechselt das Kapitel');}
 }
 // ===== Version 175: Einsteigerkurs für gesperrte Pads/Slots =====
 {
@@ -1153,6 +1153,19 @@ function toReels(E,force=true){
   let h=0;while(!F.$('#qf')&&!F.$('.iopt, #bank')&&h++<20){if(F.$('#wtap')||F.$('.iopt')){skipIntro(F);continue;}if(F.$('#nx')){F.click(F.$('#nx'));continue;}if(F.$('#next')){F.click(F.$('#next'));continue;}break;}
   ev(F,"(()=>{if(S&&S.kind==='course'){const c=S.cur;if(c&&c.card.kind==='review')settleCard(true);}})()");
   ok(ev(F,"Object.values(state.progress.id).filter(p=>p.l===1).length")>=14,'CO10 Richtige Antwort im Mini-Test: Wort auf Stufe 1');
+}
+// ===== Version 176: Start zusätzlich zu den Themenkapiteln, Farben eigenes Kapitel =====
+{
+  const E=fresh();
+  const names="Object.values(LANGS).map(L=>L.cats.slice(0,6).map(c=>c[0]).join('>')).join('|')";
+  ok(ev(E,names)==='Start>Begrüßung & Höflichkeit>Pronomen & Fragewörter>Zahlen>Farben>Essen & Trinken|'.repeat(3).slice(0,-1),'CH12 Kapitelreihenfolge: Start, Begrüßung, Pronomen, Zahlen, Farben, Essen & Trinken');
+  ok(ev(E,"(()=>{const L=LANGS.id;const z=L.words.filter(w=>L.cats[w.cat][0]==='Zahlen').map(w=>w.id);return ['nol','satu','lima','sepuluh'].every(x=>z.indexOf(x)>=0)&&L.words.filter(w=>w.st&&L.cats[w.cat][0]==='Zahlen').length===6})()"),'CH13 Zahlen 0 bis 5 stehen im Kapitel Zahlen UND in Start');
+  ok(ev(E,"Object.values(LANGS).every(L=>{const f=L.words.filter(w=>L.cats[w.cat][0]==='Farben').length,k=L.words.filter(w=>L.cats[w.cat][0]==='Kleidung').length;return f>=12&&k>=15&&L.words.every(w=>L.cats[w.cat][0]!=='Kleidung & Farben')})"),'CH14 Farben und Kleidung sind getrennte Kapitel');
+  ok(ev(E,"(()=>{state.lang='id';const L=LANGS.id;const nol=L.words.find(w=>w.id==='nol');state.progress.id={};record(nol,true,'new');const pr=state.progress.id;const inStart=L.words.filter(w=>inCat(w,0)&&pr[w.k]).length,inZ=L.words.filter(w=>inCat(w,catIdx(L,'Zahlen'))&&pr[w.k]).length;return inStart===1&&inZ===1})()"),'CH15 Ein Wort zählt in beiden Kapiteln (gemeinsamer Fortschritt)');
+  ok(ev(E,"(()=>{state.lang='id';state.progress.id={};state.chap.id='Start';const a=plan().fresh.id;const L=LANGS.id;state.progress.id[L.words.find(w=>w.id===a).k]={l:1,d:'2000-01-01'};const b=plan().fresh.id;return a==='halo'&&b==='selamat pagi'})()"),'CH16 Start folgt der Reihenfolge der Startliste');
+  ok(ev(E,"(()=>{state.lang='id';state.progress.id={};state.chap={id:3,en:0,de:'Gibt es nicht'};migrate();return state.chap.id==='Zahlen'&&state.chap.en==='Start'&&(state.chap.de==='Start')})()"),'CH17 Alter Spielstand (Kapitelnummer) wird auf Namen umgestellt');
+  ev(E,"state.lang='id';state.progress.id={};state.chap.id='Farben';view='book';render()");
+  ok(!!E.$('.chapact')&&/Farben/.test(E.$('.chapact').closest('summary').textContent),'CH18 Vokabelheft markiert Farben als aktives Kapitel');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
