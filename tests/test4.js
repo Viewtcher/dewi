@@ -1177,6 +1177,7 @@ function toReels(E,force=true){
   const btn=E.$('#vlist [data-learnw]');
   ok(!!btn,'WL2 Antippen zeigt „Jetzt lernen“');
   const k=btn&&btn.dataset.learnw;
+  ev(E,"window.__force='typing'");
   E.click(btn);
   ok(ev(E,"S&&S.kind==='course'&&S.items.length")===2,'WL3 Lernphase: Kennenlernen + Mini-Test nur mit diesem Wort');
   let g=0;
@@ -1194,6 +1195,7 @@ function toReels(E,force=true){
   ev(E,"closeSheet()");
   ok(Object.keys(ev(E,"state.progress.id")).length===1&&!ev(E,"state.done[today()]"),'WL6 Nur dieses Wort, kein Tagesstand');
   ok(!E.$('#vlist [data-learn="'+k+'"]'),'WL7 Gelerntes Wort ist nicht mehr antippbar');
+  ev(E,"window.__force=null");
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
