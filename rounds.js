@@ -244,7 +244,29 @@ function startCourse(pm,kind){
   sheet.hidden=false;document.body.style.overflow='hidden';
   showItem();
 }
+/* Version 177: ein einzelnes Wort freiwillig lernen (Vokabelheft, „Jetzt lernen“): Kennenlernen + Mini-Test nur mit diesem Wort,
+   danach immer Stufe 1 (auch bei Fehler im Mini-Test). Gleiche Rundenart wie der Einsteigerkurs, daher gleiche Regeln (nicht gespeichert, keine Serie/Hand). */
+function startWordLearn(w){
+  if(!w||(state.progress[curLang().id]||{})[w.k])return;
+  const items=[{w,kind:'intro',type:'new'},{w,kind:'review',type:'new'}];
+  S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak(),kind:'course',playmode:'random',last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:0,
+     hand:null,date:today(),t0:0,t1:0,pen:0,pa:0,course:{pm:null,kind:'word',words:[w]}};
+  sheet.hidden=false;document.body.style.overflow='hidden';
+  showItem();
+}
+function showWordLearnEnd(){
+  S.i=S.items.length;
+  const w=S.course.words[0],L=curLang();
+  sheetBody(`<div class="smain endstage" id="est"><div class="kicker" style="--k:var(--c-green)">${t('Wort gelernt!')}</div>
+    <div class="bigword es-big" id="ebig"><span lang="${L.code.toLowerCase()}">${esc(w.id)}</span></div>
+    <p class="hint"><span lang="${state.ui}">${esc(gl(w))}</span></p>
+    <div>${mascot('end_good',null,'sm')}</div>
+    <div class="es-btns"><button class="btn primary block" id="cfin">${t('Fertig')}</button></div></div>`);
+  sfx('milestone');haptic([30,60,30]);
+  $('#cfin').onclick=closeSheet;
+}
 function showCourseEnd(){
+  if(S.course.kind==='word')return showWordLearnEnd();
   S.i=S.items.length;
   const C=S.course,name=playmodeLabel(C.pm);
   const can=C.kind==='rush'?survivalWords().length>=RUSH_MIN:survivalWords().length>=3;
@@ -345,7 +367,8 @@ function settleCard(typedOk){
       else{const pr=(state.progress[state.lang]||{})[w.k]||{};r={level:pr.l||1,days:0,same:true};}
     }else{S.wrong++;S.lives--;setLives(S.lives);if(S.kind==='survival'&&S.lives<=0)window.__gover=Date.now();}
   }else if(S.kind==='course'){
-    r=record(w,ok,'new');   // Version 175: richtig = Stufe 1, falsch = Stufe 0 (morgen fällig); das Wort gilt in jedem Fall als begonnen
+    r=record(w,ok||S.course.kind==='word','new');   // Version 177: einzelnes Wort lernen = immer Stufe 1
+    // Version 175: richtig = Stufe 1, falsch = Stufe 0 (morgen fällig); das Wort gilt in jedem Fall als begonnen
     if(ok)S.right++;else{S.wrong++;S.missed.push(w);}
     S.run=ok?(S.run||0)+1:0;
   }else{
@@ -373,7 +396,7 @@ function kicker(c,id,dir){
   const k=c.card;let base,col;
   if(S.kind==='survival'){base='Survival';col='var(--c-pink)';}
   else if(S.kind==='rush'){base='Rush';col='var(--c-cyan)';}
-  else if(S.kind==='course'){base=t('Einsteigerkurs')+' · '+(k.kind==='intro'?t('Kennenlernen'):t('Mini-Test'));col='var(--c-green)';}   // Version 175
+  else if(S.kind==='course'){base=(S.course.kind==='word'?t('Wort lernen'):t('Einsteigerkurs'))+' · '+(k.kind==='intro'?t('Kennenlernen'):t('Mini-Test'));col='var(--c-green)';}   // Version 175
   else if(k.kind==='intro'){base=t('Daily Round · Einführung');col='var(--c-violet)';}
   else if(k.kind==='final'){base=t('Daily Round · Review · neues Wort');col='var(--c-violet)';}
   else{const rv=S.items.filter(x=>x.kind==='review'),n=rv.indexOf(k)+1;base=t('Daily Round · Review {0} von {1}',n,rv.length);col=LVCOL[c.lvl]||'var(--c-cyan)';}
