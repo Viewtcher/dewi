@@ -13,7 +13,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 
 ## Ablauf nach jeder Änderung
 
-1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js`, `pokerui.js`, `shop.js`, `music.js`, `dewi-music.js`, `align.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
+1. Nur die Quellen bearbeiten: `app.src.html` und die eingebundenen Dateien (`rounds.js`, `playmodes.js`, `chips.js`, `poker.js`, `pokerui.js`, `shop.js`, `music.js`, `dewi-music.js`, `align.js`, `syn.js`, `start.js`, `lang_*.js`, `modules/*.js`). **`index.html` nie direkt bearbeiten.**
 2. Bauen: `python build.py` (im Hauptordner). Erzeugt `index.html`.
 3. Testen: `npm test --prefix tests`. Alle vier Tests müssen grün sein (test2/test4: „ALLES OK“, test3/test5: „Alle Tests bestanden“). Ändert sich gewolltes Verhalten, Tests anpassen und das offen sagen.
 4. **Keine Vorschau-Screenshots von selbst aus.** Bei optischen Änderungen kurz beschreiben, was sich zeigen sollte. Ein Screenshot (Playwright/Chromium) nur, wenn Vito ausdrücklich danach fragt. Spart Token, die ein Bild beim Ansehen kostet.
@@ -50,7 +50,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 171)
+## Offene Punkte (Stand Version 174)
 
 - **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
@@ -79,6 +79,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - 170: „＋ Synonym“ nach dem Tippen, Kachel „Meine Ergänzungen“ in den Einstellungen (löschen, Liste kopieren im `syn.js`-Format) ✓ (noch nicht live)
 - 171: Erste Ergänzungen aus der App fest in `syn.js` (hallo, viel glück, bis morgen im Deutschkurs) ✓ (noch nicht live)
 - 172/173: Hauptmenü fixiert (172) – auf Vitos iPhone kaputt, in 173 zurückgenommen (Stand wie 171). Falls nochmal: erst Fehlerbild erfragen, ohne `position:fixed`/`zoom` ✓ (172 live, 173 noch nicht)
+- 174: Startkapitel (46/46/45 Wörter: Farben, Zahlen 0–5, Grundwörter) und Kapitelwahl (Auswahl bei Kapitelende, „Hier weitermachen“ im Vokabelheft, `state.chap`, `start.js`) ✓ (noch nicht live). Als Nächstes vereinbart: Einsteigerkurs beim Antippen gesperrter Pads/Slots (Kennenlernen + Mini-Test, Wörter zählen als gelernt).
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.

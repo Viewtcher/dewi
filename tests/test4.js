@@ -1094,6 +1094,28 @@ function toReels(E,force=true){
   const E=fresh();
   ok(ev(E,"(()=>{const f=k=>LANGS.de.words.find(w=>w.k===k);return f('de:hallo').alts.indexOf('hey')>=0&&f('de:viel glück').alts.indexOf('viel erfolg')>=0&&f('de:bis morgen').syn.en.indexOf('until tomorrow')>=0})()"),'SY19 Fest übernommene Ergänzungen: hey, viel erfolg, until tomorrow');
 }
+// ===== Version 174: Startkapitel und Kapitelwahl =====
+{
+  const E=fresh();
+  ok(ev(E,"Object.values(LANGS).map(L=>L.cats[0][0]+':'+L.words.filter(w=>w.cat===0).length).join()")==='Start:46,Start:46,Start:45','CH1 Startkapitel vorn: 46 / 46 / 45 Wörter');
+  ok(ev(E,"Object.values(LANGS).every(L=>L.words.length===new Set(L.words.map(w=>w.k)).size)")===true,'CH2 Keine doppelten Schlüssel nach dem Verschieben');
+  ok(ev(E,"(()=>{state.lang='id';const w=LANGS.id.words.filter(x=>x.cat===0);const n=w.map(x=>x.id);return ['merah','biru','hijau','kuning','nol','lima'].every(x=>n.indexOf(x)>=0)})()"),'CH3 Vier Hauptfarben und Zahlen 0 bis 5 im Startkapitel');
+  ok(ev(E,"(()=>{state.lang='id';state.progress.id={};const f=plan().fresh;return f&&f.id==='halo'&&activeCat(LANGS.id)===0})()"),'CH4 Neues Wort kommt zuerst aus dem Startkapitel');
+  ok(ev(E,"(()=>{state.lang='id';const L=LANGS.id,pr={};L.words.filter(w=>w.cat===0).forEach(w=>pr[w.k]={l:1,d:'2000-01-01'});state.progress.id=pr;state.chap.id=0;return needsPick(L)===true&&plan().fresh&&plan().fresh.cat===1})()"),'CH5 Startkapitel durch: Auswahl nötig, bis dahin nächstes Kapitel');
+  ok(ev(E,"(()=>{chooseChapter(8);const f=plan().fresh;const r=f&&f.cat===8&&needsPick(LANGS.id)===false;return r})()"),'CH6 Gewähltes Kapitel liefert das nächste neue Wort');
+  ok(ev(E,"(()=>{const L=LANGS.id,pr=state.progress.id;L.words.filter(w=>w.cat===8).forEach(w=>pr[w.k]={l:1,d:'2000-01-01'});return needsPick(L)===true&&activeCat(L)!==8})()"),'CH7 Gewähltes Kapitel durch: Auswahl wird wieder angeboten');
+  ev(E,"window.__pickTest=true;view='home';render()");
+  await new Promise(r=>setTimeout(r,500));
+  ok(!!E.$('#chapick')&&E.$$('#chapick [data-cp]:not([disabled])').length>0,'CH8 Auswahl öffnet sich auf dem Hauptmenü');
+  if(E.$('#chapick')){
+    E.click(E.$$('#chapick [data-cp]:not([disabled])')[1]);
+    ok(!E.$('#chapick')&&ev(E,"state.chap.id")>=1,'CH9 Antippen wählt das Kapitel und schließt die Auswahl');
+  }
+  ev(E,"view='book';render()");
+  const go=E.$('.chapgo');
+  ok(!!go&&!!E.$('.chapact'),'CH10 Vokabelheft: aktives Kapitel markiert, Knopf „Hier weitermachen“ bei anderen');
+  if(go){const c=+go.dataset.pick;E.click(go);ok(ev(E,"state.chap.id")===c,'CH11 Knopf im Vokabelheft wechselt das Kapitel');}
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();
