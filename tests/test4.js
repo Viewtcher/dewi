@@ -1167,6 +1167,34 @@ function toReels(E,force=true){
   ev(E,"state.lang='id';state.progress.id={};state.chap.id='Farben';view='book';render()");
   ok(!!E.$('.chapact')&&/Farben/.test(E.$('.chapact').closest('summary').textContent),'CH18 Vokabelheft markiert Farben als aktives Kapitel');
 }
+// ===== Version 177: einzelnes Wort im Vokabelheft lernen =====
+{
+  const E=fresh();
+  ev(E,"state.lang='id';state.ui='de';state.progress.id={};openCats.add('0');view='book';render()");
+  const row=E.$('#vlist .row.lrn');
+  ok(!!row&&!E.$('#vlist [data-learnw]'),'WL1 Ungelernte Zeile ist antippbar, Knopf noch zu');
+  E.click(row);
+  const btn=E.$('#vlist [data-learnw]');
+  ok(!!btn,'WL2 Antippen zeigt „Jetzt lernen“');
+  const k=btn&&btn.dataset.learnw;
+  E.click(btn);
+  ok(ev(E,"S&&S.kind==='course'&&S.items.length")===2,'WL3 Lernphase: Kennenlernen + Mini-Test nur mit diesem Wort');
+  let g=0;
+  while(!E.$('#cfin')&&g++<40){
+    if(E.$('#wtap')||E.$('.iopt')){skipIntro(E);continue;}
+    if(E.$('#go')){E.click(E.$('#go'));continue;}
+    if(E.$('#nx')){E.click(E.$('#nx'));continue;}
+    if(E.$('#next')){E.click(E.$('#next'));continue;}
+    if(E.$('#chk')){E.click(E.$('#chk'));continue;}
+    if(E.$('#qf')){E.type('xyzfalsch');continue;}
+    break;
+  }
+  ok(!!E.$('#cfin'),'WL4 Lernphase läuft bis zum Abschluss');
+  ok(ev(E,"(state.progress.id["+JSON.stringify(k)+"]||{}).l")===1,'WL5 Wort ist danach Stufe 1 (auch bei falscher Antwort)');
+  ev(E,"closeSheet()");
+  ok(Object.keys(ev(E,"state.progress.id")).length===1&&!ev(E,"state.done[today()]"),'WL6 Nur dieses Wort, kein Tagesstand');
+  ok(!E.$('#vlist [data-learn="'+k+'"]'),'WL7 Gelerntes Wort ist nicht mehr antippbar');
+}
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);
 })();

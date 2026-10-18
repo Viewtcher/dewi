@@ -2095,3 +2095,11 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Technik:** `start.js`: `applyStart` teilt die Farben ab und sortiert die Kapitel, `markStart` setzt `w.st` (Platz in der Startliste) und `catCount[0]`, `inCat(w,c)`/`catWords(L,c)` (Kapitel 0 = Wörter mit `w.st`, sonst `w.cat`). Start hat selbst keine Wörter in `w.cat`. Das Kapitel wird jetzt mit **Namen** gemerkt (`state.chap[Kurs]`), `migrate()` wandelt die alten Nummern aus Version 174 um (`CAT_OLD174`). Vokabelheft: Startwörter erscheinen in der Gruppe Start (nur ohne Suche/Filter) und in ihrem Themenkapitel. Neuer Eintrag im Wörterbuch: Kleidung, Farben.
 **Tests:** CH12–CH18 neu, CH1–CH11 angepasst; alle vier Suiten grün.
 **Nur auf dem iPhone prüfbar:** wie das Vokabelheft mit doppelt gelisteten Startwörtern wirkt; dass Vitos gewähltes Kapitel nach dem Update stimmt (alte Nummer wird zum Namen).
+
+## Version 177 – Einzelnes Wort im Vokabelheft freiwillig lernen
+
+**Was:** Im Vokabelheft lässt sich ein noch nicht begonnenes Wort antippen; darunter erscheint „Jetzt lernen“. Dann folgen Kennenlernen und ein Mini-Test (Tippen oder Bausteine) nur mit diesem Wort. Danach ist das Wort immer Stufe 1, auch bei falscher Antwort im Mini-Test (Vitos Entscheidung). Nochmaliges Antippen der Zeile klappt den Knopf wieder zu; der Lautsprecher in der Zeile funktioniert wie vorher.
+**Warum:** Wer ein Wort gezielt vorziehen will, soll nicht auf die Reihenfolge warten müssen.
+**Technik:** Gleiche Rundenart `course` wie der Einsteigerkurs (Version 175), neu `startWordLearn(w)` und `showWordLearnEnd()` in `rounds.js` (`S.course.kind==='word'`). Nicht gespeichert, keine Serie, keine Hand, kein Tagesstand, ein offener Run bleibt unberührt. In `app.src.html`: `learnOpen`, Klick-Handler auf `#vlist`, Zeilen `.row.lrn` und `.learnrow`. Neue EN-Texte.
+**Tests:** WL1–WL7 neu; alle vier Suiten grün.
+**Nur auf dem iPhone prüfbar:** Tippgefühl der Zeile (Scrollen vs. Antippen), Ton und Haptik am Ende.
