@@ -463,6 +463,16 @@ function toReels(E,force=true){
     ok(!hit.$('#chk').disabled&&hit.$$('#bank button').length===hit.$$('#bank .tile').length-free.length,'P5 Alle Felder gefüllt, Prüfen frei');
     hit.click(hit.$('#chk'));
     ok(!!hit.$('.res.good'),'P6 Richtig gelöst inklusive geschenkter Wörter');
+    // Version 178: Satz verbessern
+    if(hit.$('#alopen')){
+      hit.click(hit.$('#alopen'));
+      ok(hit.$$('.alchip[data-s="a"]').length>=1&&hit.$$('.alchip[data-s="b"]').length>=1,'AL1 Editor zeigt beide Sätze Wort für Wort');
+      hit.click(hit.$('.alchip[data-s="a"]'));hit.click(hit.$('.alchip[data-s="b"]'));
+      ok(hit.$$('.alchip.g').length>=2,'AL2 Zwei angetippte Wörter bilden ein Paar (gleiche Farbe)');
+      hit.click(hit.$('#alsave'));
+      ok(ev(hit,"Object.keys(state.myalign).length")===1&&/Gespeichert/.test(hit.$('#alfix').textContent),'AL3 Zuordnung gespeichert');
+      ok(ev(hit,"(()=>{const k=Object.keys(state.myalign)[0];return !!alignFor(S.cur.w,state.myalign[k].t,sentOf(S.cur.w).plain)})()"),'AL4 alignFor nutzt die eigene Zuordnung');
+    }else ok(true,'AL (kein Satz im Beispiel, übersprungen)');
   }else ok(false,'P3 kein Beispiel mit geschenktem Wort gefunden');
 }
 // --- Reels: nur mit bekannten Wörtern
@@ -1196,6 +1206,18 @@ function toReels(E,force=true){
   ok(Object.keys(ev(E,"state.progress.id")).length===1&&!ev(E,"state.done[today()]"),'WL6 Nur dieses Wort, kein Tagesstand');
   ok(!E.$('#vlist [data-learn="'+k+'"]'),'WL7 Gelerntes Wort ist nicht mehr antippbar');
   ev(E,"window.__force=null");
+}
+// ===== Version 178: eigene Satz-Zuordnung =====
+{
+  const E=fresh();
+  ev(E,"state.lang='id';state.ui='en';");
+  const r=ev(E,`(()=>{const w=LANGS.id.words.find(x=>SENT[x.k]&&tokensOf(SENT[x.k].id).length>=2);const s=sentOf(w);const A=tokensOf(s.id),B=tokensOf(s.plain);
+    state.myalign[w.k+':en']={a:A.map((x,i)=>i===0?1:0),b:B.map((x,i)=>i===0?1:0),t:s.id};
+    const al=alignFor(w,s.id,s.plain);const m=mapIdx(al,[0],'a');
+    return {ok:!!al,m:m.join(),line:myAlignLines().split('|').length};})()`);
+  ok(r.ok&&r.m==='0'&&r.line===3,'AL5 Eigene Zuordnung greift (erstes Wort ↔ erstes Wort), Kopierzeile im align.js-Format');
+  ev(E,"state.myalign=null;migrate()");
+  ok(ev(E,"typeof state.myalign")==='object'&&ev(E,"Array.isArray(state.myalign)")===false,'AL6 Alter Spielstand bekommt myalign');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

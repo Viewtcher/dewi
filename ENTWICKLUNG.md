@@ -2103,3 +2103,11 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Technik:** Gleiche Rundenart `course` wie der Einsteigerkurs (Version 175), neu `startWordLearn(w)` und `showWordLearnEnd()` in `rounds.js` (`S.course.kind==='word'`). Nicht gespeichert, keine Serie, keine Hand, kein Tagesstand, ein offener Run bleibt unberührt. In `app.src.html`: `learnOpen`, Klick-Handler auf `#vlist`, Zeilen `.row.lrn` und `.learnrow`. Neue EN-Texte.
 **Tests:** WL1–WL7 neu; alle vier Suiten grün.
 **Nur auf dem iPhone prüfbar:** Tippgefühl der Zeile (Scrollen vs. Antippen), Ton und Haptik am Ende.
+
+## Version 178 – Satz verbessern (Wortzuordnung direkt in der App)
+
+**Was:** Nach der Antwort in **Bausteine** und **Reihenfolge** gibt es unter dem Ergebnis den Knopf „Satz verbessern“, sofern das Wort einen Beispielsatz hat. Er zeigt beide Sätze Wort für Wort. Man tippt ein Wort und dann das passende im anderen Satz; gleiche Farbe = gehört zusammen. „Keine Entsprechung“ löst ein Wort wieder. Speichern gilt ab der nächsten Karte. Auslöser war „She has two children.“: ohne geprüfte Zuordnung markiert die App nur die gelernte Vokabel („two“), „She“ blieb unmarkiert.
+**Warum:** Viele Sätze haben keine geprüfte Zuordnung in `align.js`; Vito soll sie beim Spielen selbst nachziehen können (wie „＋ Synonym“).
+**Technik:** `modules/_shared.js`: `alignFixBtn`/`alignFixBind` (Editor), `alignFor` nimmt zuerst `state.myalign[Wort:App-Sprache]` = `{a,b,t}` (gleiches Format wie `align.js`, `t` = Satztext), sonst `ALIGN`. Vorbelegung: bestehende Zuordnung, sonst die gelernte Vokabel als Paar 1. `migrate()` legt `state.myalign` an (Sicherung enthält es automatisch). Einstellungen → „Meine Ergänzungen“: Zuordnungen löschen und „Zuordnungen kopieren“ (`myAlignLines()` in `syn.js`, Zeilen im `align.js`-Format zum festen Übernehmen). Nur die Markierung, nicht der Satztext. Die Korrektur gilt je App-Sprache (Englisch/Deutsch getrennt).
+**Tests:** AL1–AL6 neu; alle vier Suiten grün.
+**Nur auf dem iPhone prüfbar:** Tippgröße und Umbruch der Wortkacheln bei langen Sätzen, Platz unter dem Ergebnis.

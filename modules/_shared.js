@@ -59,7 +59,7 @@ ALIGN_RAW.split('\n').forEach(l=>{
 });
 /* Zuordnung für das Wort w zwischen seinem Beispielsatz und der Übersetzung, oder null */
 function alignFor(w,idText,glText){
-  const e=ALIGN[w.k+':'+state.ui];
+  const e=(state.myalign&&state.myalign[w.k+':'+state.ui])||ALIGN[w.k+':'+state.ui];   // Version 178: eigene Korrektur zuerst
   if(!e)return null;
   if(e.a.length!==tokensOf(idText).length||e.b.length!==tokensOf(glText).length)return null;
   return e;
@@ -178,3 +178,47 @@ const hearts=(n,g,p)=>[0,1,2].map(i=>{
 const livesHtml=(n,g,p)=>`<div class="lives" id="tries" role="status" aria-label="${n} ${t('Leben')}">${hearts(n,g,p)}<span>${t('Leben')}</span></div>`;
 
 const setLives=(n,g)=>{const e=$('#tries');if(e){e.innerHTML=hearts(n,g,healProg())+'<span>'+t('Leben')+'</span>';e.setAttribute('aria-label',n+' '+t('Leben'));}};
+
+
+/* ===== Satz verbessern (Version 178) =====
+   Nach der Antwort in Bausteine/Reihenfolge: beide Sätze Wort für Wort, Paare antippen (Wort links, dann das passende rechts).
+   Gleiche Farbe = gehört zusammen. Gespeichert in state.myalign[Wort:App-Sprache] = {a,b} im selben Format wie align.js. */
+const AL_COL=['#ff5c9d','#ffc23d','#4fd1c5','#8a7bff','#7ed957','#ff8a3d','#5ab0ff','#f06292'];
+function alignFixOk(w,idText,glText){const s=sentOf(w);return !!(s&&s.id===idText&&s.plain===glText);}
+function alignFixBtn(w,idText,glText){
+  return alignFixOk(w,idText,glText)?`<div class="myadd" id="alfix"><button class="btn ghost" id="alopen" type="button">${t('Satz verbessern')}</button></div>`:'';
+}
+function alignFixBind(w,idText,glText){
+  const host=$('#alfix'),open=$('#alopen');if(!host||!open)return;
+  open.onclick=()=>{
+    const A=tokensOf(idText),B=tokensOf(glText);
+    const cur=alignFor(w,idText,glText);
+    let a,b;
+    if(cur){a=cur.a.slice();b=cur.b.slice();}
+    else{a=A.map(()=>0);b=B.map(()=>0);const s=sentOf(w);learnedIdx(w,s,'id').forEach(i=>{a[i]=1;});learnedIdx(w,s,'gl').forEach(i=>{if(i<b.length)b[i]=1;});}
+    let sel=null;   // {side:'a'|'b',i}
+    const draw=()=>{
+      const chip=(side,arr,toks)=>toks.map((tk,i)=>{const g=arr[i],on=sel&&sel.side===side&&sel.i===i;return `<button type="button" class="alchip${g?' g':''}${on?' on':''}" data-s="${side}" data-i="${i}" style="${g?'--ac:'+AL_COL[(g-1)%AL_COL.length]:''}">${esc(tk)}</button>`;}).join('');
+      host.innerHTML=`<div class="aled"><p class="hint">${t('Tippe ein Wort und dann das passende im anderen Satz. Gleiche Farbe = gehört zusammen.')}</p>
+        <div class="alrow" lang="${curLang().code.toLowerCase()}">${chip('a',a,A)}</div><div class="alrow" lang="${state.ui}">${chip('b',b,B)}</div>
+        <div class="btns"><button class="btn ghost" type="button" id="alnone"${sel?'':' disabled'}>${t('Keine Entsprechung')}</button><button class="btn ghost" type="button" id="alcancel">${t('Abbrechen')}</button><button class="btn primary" type="button" id="alsave">${t('Speichern')}</button></div><p class="hint" id="alfl" role="status"></p></div>`;
+      $$('.alchip',host).forEach(x=>x.onclick=()=>{
+        const side=x.dataset.s,i=+x.dataset.i;
+        if(!sel||sel.side===side){sel=sel&&sel.side===side&&sel.i===i?null:{side,i};return draw();}
+        const mine=side==='a'?a:b,other=sel.side==='a'?a:b;
+        let g=other[sel.i]||mine[i];
+        if(!g)g=Math.max(0,...a,...b)+1;
+        other[sel.i]=g;mine[i]=g;sel=null;draw();
+      });
+      $('#alnone').onclick=()=>{if(!sel)return;(sel.side==='a'?a:b)[sel.i]=0;sel=null;draw();};
+      $('#alcancel').onclick=()=>{host.innerHTML=`<button class="btn ghost" id="alopen" type="button">${t('Satz verbessern')}</button>`;alignFixBind(w,idText,glText);};
+      $('#alsave').onclick=()=>{
+        if(!a.some(Boolean)||!b.some(Boolean)){$('#alfl').textContent=t('Mindestens ein Paar nötig.');return;}
+        if(!state.myalign)state.myalign={};
+        state.myalign[w.k+':'+state.ui]={a:a.slice(),b:b.slice(),t:idText};save();
+        host.innerHTML=`<p class="hint">${t('Gespeichert. Gilt ab der nächsten Karte.')}</p>`;
+      };
+    };
+    draw();
+  };
+}

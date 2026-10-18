@@ -174,7 +174,8 @@ function showOrder(pair){
     O.classList.add(good?'good':'bad');
     $('.ordhint').hidden=true;
     $('#exfb').innerHTML=`<div class="res ${good?'good':'bad'}" role="status"><div class="rl">${good?t('Richtig'):t('Nicht ganz')}</div>
-      <div class="pair" lang="${lang}">${esc(target.join(' '))}</div></div>${resultNote(good)}`;
+      <div class="pair" lang="${lang}">${esc(target.join(' '))}</div></div>${resultNote(good)}${alignFixBtn(c.w,pair.id,pair.gl)}`;
+    alignFixBind(c.w,pair.id,pair.gl);
     chk.textContent=t('Weiter');
     try{chk.focus({preventScroll:true});}catch(x){}
     if(good)burst($('.res'),18);
