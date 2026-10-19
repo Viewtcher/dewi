@@ -1,72 +1,67 @@
-/* Modul Reels: Spielautomat. Drei Walzen tragen Wörter des Beispielsatzes (bei längeren Sätzen: das gelernte Wort und seine zwei Nachbarn).
-   Hebel ziehen, dann jede Walze antippen, wenn das richtige Wort auf der Linie steht.
+/* Modul Reels (Version 179 neu): Spielautomat mit Emojis. Oben stehen drei Emojis, unter jedem dreht eine Walze mit Wörtern der Lernsprache.
+   Hebel ziehen, dann jede Walze antippen, wenn das Wort zum Emoji auf der Linie steht.
    Richtig: Walze rastet grün ein. Falsch: Walze zuckt rot und dreht wieder an (ein Fehler ist frei, im Survival nicht).
-   Jackpot (alles beim ersten Stopp) ist nur Show und ändert nichts an Stufen oder Punkten. */
+   Jackpot (alles beim ersten Stopp) ist nur Show und ändert nichts an Stufen oder Punkten.
+   Die Emojis stehen in emoji.js. Reels kommt nur, wenn das aktuelle Wort ein Emoji hat und mindestens zwei weitere Wörter mit
+   anderem Emoji schon gelernt sind (Test-Schalter window.__rlAll: dann zählen alle Emoji-Wörter). */
 const RL_ROW=44,RL_FAST=10,RL_SLOW=2.2;   // Wörter pro Sekunde: alle rasen, nur die aktive Walze wird langsam
-/* Reels gibt es nur, wenn alle drei Walzen Wörter tragen, die schon gelernt sind (und zusammen im Satz stehen). Das Fenster aus drei Wörtern
-   weicht unbekannten Wörtern aus; findet sich keins, kommt Reels für dieses Wort nicht vor (Ersatzmodul bzw. im Solo übersprungen).
-   Es gibt keine vorgesetzten (geschenkten) Walzen: alle drei müssen selbst gestoppt werden. */
-const RL_MIN_OWN=3;
-function reelsPlan(w,s,dir){
-  const idT=tilesOf(s.id),glT=tilesOf(s.plain);
-  if(idT.length<3||glT.length<3)return null;
-  const from=dir==='gl2id'?s.plain:s.id,toks=dir==='gl2id'?idT:glT,toLang=dir==='gl2id'?'id':state.ui;
-  let idx;
-  if(dir==='gl2id'){
-    const f=normId(tokensOf(w.id)[0]||'');idx=toks.findIndex(x=>normId(x)===f);
-  }else{
-    const m=s.tpl.match(/\[([^\]]+)\]/);idx=m?tokensOf(s.tpl.slice(0,m.index)).length:-1;
-  }
-  const found=idx>=0&&idx<toks.length;   // Zielwort im Satz gefunden? (z. B. „dua belas“ steht als „kedua belas“ im Satz: nicht gefunden)
-  if(!found)idx=Math.floor(toks.length/2);
-  const known=knownTokens(w),unk=new Set();   // Positionen unbekannter Wörter in toks
-  const idUnknown=idT.filter(tk=>!isName(tk)&&!known.has(normId(tk)));
-  if(dir==='gl2id'){idT.forEach((tk,i)=>{if(!isName(tk)&&!known.has(normId(tk)))unk.add(i);});}
-  else for(const u of idUnknown){const eq=blockEquiv(u,glT);if(!eq)return null;eq.forEach(i=>unk.add(i));}
-  if(found)unk.delete(idx);
-  if(window.__rlAll)unk.clear();   // nur für Tests: alle Walzen selbst stoppen
-  let best=null;
-  for(let st=Math.max(0,idx-2);st<=Math.min(idx,toks.length-3);st++){
-    const n=[0,1,2].filter(i=>unk.has(st+i)).length;
-    if(!best||n<best.n||(n===best.n&&Math.random()<.5))best={st,n};
-  }
-  if(!best||3-best.n<RL_MIN_OWN)return null;
-  const st=best.st,right=toks.slice(st,st+3);
-  const reels=right.map((r,i)=>{
-    const words=[r].concat(distractors(toks,toLang,9).filter(x=>x.length<=9).slice(0,2));
-    const ws=shuffle(words);
-    return {words:ws,right:ws.indexOf(r)};
-  });
-  return {dir,toLang,from,toks,st,right,reels,before:toks.slice(0,st).join(' '),after:toks.slice(st+3).join(' '),full:toks.join(' '),
-    fullFrom:from};
+const RL_MIN_OWN=3,RL_MAXLEN=12;
+/* Emoji des Wortes, oder null (im Englischkurs steht die Bedeutung im Wort selbst, sonst in w.en) */
+function emojiOf(w){
+  if(!w)return null;
+  const e=String(state.lang==='en'?w.id:w.en).toLowerCase().trim();
+  return EMOJI[e]||null;
 }
-function reelsData(w){
-  const s=sentOf(w);if(!s)return null;
-  const dirs=Math.random()<.5?['gl2id','id2gl']:['id2gl','gl2id'];
-  for(const d of dirs){const p=reelsPlan(w,s,d);if(p)return p;}
-  return null;
+function reelsPlan(w){
+  const em=emojiOf(w);if(!em||w.id.length>RL_MAXLEN)return null;
+  const L=curLang(),prog=state.progress[L.id]||{},all=!!window.__rlAll;
+  const used=new Set([em]),names=new Set([normId(w.id)]),picks=[w];
+  for(const x of shuffle(L.words.slice())){
+    if(picks.length>=RL_MIN_OWN)break;
+    const e=emojiOf(x);
+    if(!e||used.has(e)||x.k===w.k||names.has(normId(x.id))||x.id.length>RL_MAXLEN)continue;
+    if(!all&&!prog[x.k])continue;   // nur Wörter, die man schon begonnen hat
+    used.add(e);names.add(normId(x.id));picks.push(x);
+  }
+  if(picks.length<RL_MIN_OWN)return null;
+  const order=shuffle(picks.slice());
+  const right=order.map(x=>x.id),toks=right.slice();
+  /* Ablenker: bevorzugt andere schon begonnene Wörter, sonst beliebige Wörter der Lernsprache (kurz genug für die Walze) */
+  const have=new Set(right.map(normId));
+  const knownIds=shuffle(L.words.filter(x=>prog[x.k]&&x.id.length<=RL_MAXLEN&&!/\s/.test(x.id)).map(x=>x.id));
+  const take=(n,max)=>{
+    const out=[];
+    for(const d of knownIds.concat(distractors(right,'id',30))){
+      const k=normId(d);if(!k||have.has(k)||d.length>max)continue;
+      have.add(k);out.push(d);if(out.length>=n)break;
+    }
+    return out;
+  };
+  const reels=order.map(x=>{
+    const ds=take(2,Math.max(9,x.id.length));
+    if(ds.length<2)return null;
+    const ws=shuffle([x.id].concat(ds));
+    return {words:ws,right:ws.indexOf(x.id),emoji:emojiOf(x)};
+  });
+  if(reels.some(r=>!r))return null;
+  return {dir:'gl2id',toLang:'id',toks,st:0,right,reels,emojis:reels.map(r=>r.emoji),full:reels.map((r,i)=>r.emoji+' '+right[i]).join('  ·  ')};
+}
+const reelsData=w=>reelsPlan(w);
+/* Schnelle Vorprüfung ohne Zufall (wird für viele Wörter aufgerufen): Emoji da und genug andere Emoji-Wörter gelernt */
+function reelsCan(w){
+  const em=emojiOf(w);if(!em||w.id.length>RL_MAXLEN)return false;
+  const L=curLang(),prog=state.progress[L.id]||{},all=!!window.__rlAll,used=new Set([em]),names=new Set([normId(w.id)]);
+  for(const x of L.words){
+    if(used.size>=RL_MIN_OWN)break;
+    if(x.k===w.k||(!all&&!prog[x.k])||x.id.length>RL_MAXLEN)continue;
+    const e=emojiOf(x);if(!e||used.has(e)||names.has(normId(x.id)))continue;
+    used.add(e);names.add(normId(x.id));
+  }
+  return used.size>=RL_MIN_OWN;
 }
 const rlMod=(a,n)=>((a%n)+n)%n;
 const rlEase=k=>{const c=1.4;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2);};
 
-/* Funktionswörter ohne eigene Entsprechung in der anderen Sprache: werden nie „geraten“ markiert */
-/* Satz oben: genau die Wörter, die den drei Walzen entsprechen (gelb).
-   Erst die sichere Zuordnung (Wörterbuch, gebeugte Formen, Ähnlichkeit); für Walzen-Wörter ohne Treffer das nächstliegende freie Wort
-   an ähnlicher Stelle im Satz (keine Funktionswörter wie der/die/das/ist). */
-function reelsMarks(w,s,D){
-  /* Version 118: Die drei Walzen decken drei Wörter ab. Welche Wörter das im anderen Satz sind,
-     steht in der Zuordnungstabelle; ohne geprüften Eintrag wird nichts markiert. */
-  const win=[D.st,D.st+1,D.st+2],gl2id=D.dir==='gl2id';
-  const txt=gl2id?s.plain:s.id,al=alignFor(w,s.id,s.plain);
-  const y=new Set(learnedIdx(w,s,gl2id?'gl':'id'));   // die gelernte Vokabel steht in den Daten, immer markiert
-  if(al)mapIdx(al,win,gl2id?'a':'b').forEach(k=>y.add(k));
-  return markTokens(txt,Array.from(y),'slot');
-}
-function reelsPrompt(w,D){
-  const s=sentOf(w);
-  if(!s)return esc(D.from);
-  return reelsMarks(w,s,D);
-}
 function showReels(w){
   const c=S.cur,L=curLang(),D=reelsData(w);
   const tries=triesFor('reels'),list=reduceMotion();
@@ -77,14 +72,15 @@ function showReels(w){
   const ctx='';   // der graue Rest des Satzes (außerhalb der drei Walzen) wird nicht mehr gezeigt: dort stehen oft noch unbekannte Wörter
   const bulbs=n=>'<i></i>'.repeat(n);
   const reelHtml=list?
-    D.reels.map((r,i)=>`<div class="rl-pick" data-i="${i}" role="group" aria-label="${t('Walze {0}',i+1)}">${r.words.map((x,k)=>`<button class="opt" data-k="${k}" lang="${D.toLang==='id'?L.code.toLowerCase():state.ui}">${esc(x)}</button>`).join('')}</div>`).join(''):
+    D.reels.map((r,i)=>`<div class="rl-pick" data-i="${i}" role="group" aria-label="${t('Walze {0}',i+1)} ${r.emoji}"><span class="emo lst">${r.emoji}</span>${r.words.map((x,k)=>`<button class="opt" data-k="${k}" lang="${D.toLang==='id'?L.code.toLowerCase():state.ui}">${esc(x)}</button>`).join('')}</div>`).join(''):
     D.reels.map((r,i)=>`<div class="reel ${fs}" data-i="${i}" aria-label="${t('Walze {0}',i+1)}" lang="${D.toLang==='id'?L.code.toLowerCase():state.ui}">${[0,1,2,3,4].map(()=>'<div class="rw"><span></span></div>').join('')}</div>`).join('');
-  sheetBody(`<div class="smain rl">${kicker(c,'reels',D.dir==='gl2id'?toIdl():toGl())}${roundLives()}
+  sheetBody(`<div class="smain rl">${kicker(c,'reels',toIdl())}${roundLives()}
     <div id="rlm" class="rl-m">${mascot('reels_ready',null,'sm')}</div>
-    <div class="sentbox hq" lang="${D.dir==='gl2id'?state.ui:L.code.toLowerCase()}">${reelsPrompt(w,D)}${helpBtn('reels')}</div>${ctx}
+    <div class="sentbox hq" lang="${state.ui}">${t('Stoppe zu jedem Emoji das passende Wort.')}${helpBtn('reels')}</div>${ctx}
     ${list?`<div class="rl-list">${reelHtml}</div>`:`<div class="cab" id="cab" data-st="idle">
       <div class="bl bt">${bulbs(11)}</div><div class="bl bb">${bulbs(11)}</div><div class="bl bl2">${bulbs(5)}</div><div class="bl br2">${bulbs(5)}</div>
       <div class="sign" id="sign">DEWI REELS</div>
+      <div class="cbody emo" aria-hidden="true"><div class="emorow">${D.reels.map(r=>`<span class="emo">${r.emoji}</span>`).join('')}</div><div class="lev"></div></div>
       <div class="cbody"><div class="win" id="win" role="button" tabindex="0" aria-label="${t('Walzen stoppen')}">${reelHtml}</div>
         <div class="lev"><div class="track"></div><div class="knob" id="knob" role="button" tabindex="0" aria-label="${t('Hebel ziehen')}"></div></div></div>
     </div>`}
@@ -260,6 +256,6 @@ function showReels(w){
   requestAnimationFrame(loop);
 }
 
-registerModule({id:'reels',name:()=>t('Reels'),desc:()=>t('Hebel ziehen, Walzen beim richtigen Wort stoppen'),tone:'t3',solo:true,fallback:'choice',
+registerModule({id:'reels',name:()=>t('Reels'),desc:()=>t('Zu jedem Emoji das passende Wort stoppen'),tone:'t3',solo:true,fallback:'choice',
   icon:'<svg width="46" height="40" viewBox="0 0 46 40" aria-hidden="true"><rect x="2" y="6" width="36" height="28" rx="6" fill="#ff4fa3" stroke="#ffcf4a" stroke-width="2.5"/><rect x="7" y="12" width="8" height="16" rx="2" fill="#fff"/><rect x="17" y="12" width="8" height="16" rx="2" fill="#fff"/><rect x="27" y="12" width="8" height="16" rx="2" fill="#fff"/><path d="M5 20h30" stroke="#e0295a" stroke-width="1.5"/><rect x="40" y="10" width="3" height="16" rx="1.5" fill="#ffcf4a"/><circle cx="41.5" cy="8" r="4" fill="#e0295a" stroke="#fff" stroke-width="1"/></svg>',
-  can:w=>!!reelsData(w),show:w=>showReels(w)});
+  can:w=>reelsCan(w),show:w=>showReels(w)});

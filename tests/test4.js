@@ -149,8 +149,14 @@ function known(E,n,d='2000-01-01'){   // n bekannte Wörter, fällig
   ev(E,`(()=>{const L=LANGS.id;state.progress.id=state.progress.id||{};L.words.slice(0,${n}).forEach(w=>{state.progress.id[w.k]={l:1,d:'${d}'}});save();render();})()`);
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const reelWords=E=>ev(E,"LANGS.id.words.filter(w=>MOD.reels.can(w)).map(w=>w.k)");
+const reelWords=E=>ev(E,"LANGS.id.words.filter(w=>MOD.reels.can(w)).map(w=>w.k)");   // Version 179: Wörter mit Emoji
+const sentWords=E=>ev(E,"LANGS.id.words.filter(w=>{const s=sentOf(w);return s&&tokensOf(s.id).length>=3&&tokensOf(s.plain).length>=3}).map(w=>w.k)");
 function knownReels(E,n){
+  const ks=Array.from(new Set(reelWords(E).slice(0,Math.min(n,8)).concat(sentWords(E).slice(0,n))));   // Emoji-Wörter für Reels plus Satzwörter für die übrigen Module
+  ev(E,`(()=>{state.progress.id=state.progress.id||{};${JSON.stringify(ks)}.forEach(k=>{state.progress.id[k]={l:1,d:'2000-01-01'}});save();render();})()`);
+  return ks;
+}
+function knownEm(E,n){   // nur Emoji-Wörter gelernt: jede Karte kann Reels sein
   const ks=reelWords(E).slice(0,n);
   ev(E,`(()=>{state.progress.id=state.progress.id||{};${JSON.stringify(ks)}.forEach(k=>{state.progress.id[k]={l:1,d:'2000-01-01'}});save();render();})()`);
   return ks;
@@ -178,7 +184,7 @@ function toReels(E,force=true){
 }
 // --- Survival Solo: Ablauf Hebel / langsam / links nach rechts
 {
-  const E=fresh();knownReels(E,8);
+  const E=fresh();knownEm(E,8);
   ev(E,'state.done[today()]=true;save();render()');
   E.w.navigator.vibrate=function(p){(E.vib=E.vib||[]).push(p);return true;};
   E.click(E.$('#gm'));E.click(E.$('#surv'));
@@ -231,7 +237,7 @@ function toReels(E,force=true){
 }
 // --- Fehler: grau, rütteln, nochmal; Reihenfolge links nach rechts
 {
-  const E=fresh();knownReels(E,8);
+  const E=fresh();knownEm(E,8);
   toReels(E);
   ok(!!E.$('#cab'),'D1 Reels erscheinen in der Daily Round');
   ev(E,'S.cur.rl.pull()');
@@ -248,7 +254,7 @@ function toReels(E,force=true){
   ok(E.d.querySelectorAll('.drain i').length>=20,'D6b Diamantenregen auch ohne Jackpot');
 }
 {
-  const E=fresh();knownReels(E,8);toReels(E);
+  const E=fresh();knownEm(E,8);toReels(E);
   ev(E,'S.cur.rl.pull()');
   act(E,'(r.right+1)%3');ev(E,'S.cur.rl.frame(.7)');
   act(E,'(r.right+2)%3');ev(E,'S.cur.rl.toss(true)');
@@ -258,7 +264,7 @@ function toReels(E,force=true){
 }
 // --- Reduzierte Bewegung: Liste
 {
-  const E=fresh();knownReels(E,8);
+  const E=fresh();knownEm(E,8);
   ev(E,'state.done[today()]=true;save();render()');
   E.w.matchMedia=()=>({matches:true,addEventListener(){},addListener(){}});
   E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
@@ -333,7 +339,7 @@ function toReels(E,force=true){
   ok(ev(E,'MUS.mode')===null,'M9 Lautstärke 0 schaltet die Musik aus');
   ev(E,"state.mvol=35;state.music=true;musTick()");
   // Reels: Synthwave
-  knownReels(E,8);ev(E,'state.done[today()]=true;save();render()');
+  knownEm(E,8);ev(E,'state.done[today()]=true;save();render()');
   E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
   ok(!!E.$('.sin #setgear')&&!E.$('.sin .musbtn'),'M10 Zahnrad statt Lautsprecher im Modul (Version 148)');
   E.click(E.$('#setgear'));
@@ -352,7 +358,7 @@ function toReels(E,force=true){
   const E=fresh();knownReels(E,8);
   ev(E,"window.__helpAuto=true");
   for(const id of ['blocks','typing','swipe','gap','choice','reels']){
-    const F=fresh();knownReels(F,id==='blocks'?300:8);
+    const F=fresh();(id==='reels'?knownEm(F,8):knownReels(F,id==='blocks'?300:8));
     ev(F,`window.__force='${id}'`);
     F.click(F.$('#start'));
     let g=0;while(!F.$('.qh')&&g++<40){if(F.$('#wtap')||F.$('.iopt')){skipIntro(F);continue;}if(F.$('#go')){F.click(F.$('#go'));continue;}if(F.$('#nx')){F.click(F.$('#nx'));continue;}if(F.$('#endnext')){F.click(F.$('#endnext'));continue;}if(F.$('#next')){F.click(F.$('#next'));continue;}if(F.$('#qf')){F.type('x');continue;}if(F.$('#chk')){F.click(F.$('#chk'));continue;}break;}
@@ -408,7 +414,7 @@ function toReels(E,force=true){
 // --- Solo-Queue ohne Ersatzmodul
 {
   for(const pm of ['blocks','gap','choice','reels']){
-    const F=fresh();knownReels(F,40);
+    const F=fresh();(pm==='reels'?knownEm(F,40):knownReels(F,40));
     F.click(F.$('#gm'));F.click(F.$('#surv'));
     const tile=F.$('[data-playmode="'+pm+'"]');
     const n=ev(F,`soloWords('${pm}').length`),tot=ev(F,'survivalWords().length');
@@ -478,28 +484,22 @@ function toReels(E,force=true){
 // --- Reels: nur mit bekannten Wörtern
 {
   const E=fresh();ev(E,'window.__rlAll=false');
-  // Ohne Gelerntes darf Reels nur dort möglich sein, wo der Satz ausschließlich aus dem Zielwort selbst (und Namen) besteht
-  const bad0=ev(E,`(()=>{const L=curLang();state.progress.id={};return L.words.filter(w=>MOD.reels.can(w)).filter(w=>{const s=sentOf(w);const own=new Set(tokensOf(w.id).map(normId));return !tokensOf(s.id).every(tk=>own.has(normId(tk))||isName(tk));}).length;})()`);
-  ok(bad0===0,'R1 Ohne gelernte Wörter keine Reels mit fremden Wörtern ('+bad0+')');
-  const bad1=ev(E,`(()=>{const L=curLang();state.progress.id={};const w=L.words.find(x=>x.id==='selamat pagi');state.progress.id[w.k]={l:1,d:'2999-01-01'};
-    return L.words.filter(x=>MOD.reels.can(x)).filter(x=>{const s=sentOf(x);const kn=knownTokens(x);return !tokensOf(s.id).every(tk=>kn.has(normId(tk))||isName(tk));}).length;})()`);
-  ok(bad1===0,'R2 Ein einzelnes gelerntes Wort schaltet keine Sätze mit Unbekanntem frei ('+bad1+')');
-  // 3 Wörter, die zusammen im Satz stehen: Reels wird möglich
-  const r=ev(E,`(()=>{const L=curLang();state.progress.id={};
-    const s=Object.keys(SENT).map(k=>({k,s:SENT[k]})).find(x=>tokensOf(x.s.id).length===3&&tokensOf(x.s.id).every(tk=>L.words.some(w=>w.id.split(' ').length===1&&normId(w.id)===normId(tk)))&&L.words.some(w=>w.k===x.k));
-    if(!s)return {skip:true};
-    tokensOf(s.s.id).forEach(tk=>{const w=L.words.find(w=>w.id.split(' ').length===1&&normId(w.id)===normId(tk));state.progress.id[w.k]={l:1,d:'2999-01-01'};});
-    const w0=L.words.find(w=>w.k===s.k),D=reelsData(w0);
-    return {id:s.s.id,can:MOD.reels.can(w0),given:D?D.reels.filter(x=>x.given).length:-1};})()`);
-  ok(r.skip||(r.can===true&&r.given===0),'R3 Satz mit 3 gelernten Wörtern: Reels möglich, nichts vorgesetzt ('+JSON.stringify(r)+')');
-  // Stichprobe: nie eine Walze mit unbekanntem Wort, nie vorgesetzt
-  const E2=fresh();ev(E2,'window.__rlAll=false');knownReels(E2,300);
-  const q=ev(E2,`(()=>{const L=curLang();let n=0,bad=0,given=0;
-    for(const w of L.words){for(let k=0;k<3;k++){const D=reelsData(w);if(!D)continue;n++;const kn=knownTokens(w);
-      if(D.reels.some(x=>x.given))given++;
-      if(D.dir==='gl2id')D.reels.forEach((x,i)=>{if(!isName(D.right[i])&&!kn.has(normId(D.right[i])))bad++;});}}
-    return {n,bad,given};})()`);
-  ok(q.bad===0&&q.given===0,'R4 Nie ein unbekanntes Wort auf einer Walze, nie eine vorgesetzte Walze ('+q.n+' Durchläufe)');
+  // Version 179: Reels mit Emojis. Ohne gelernte Emoji-Wörter gibt es kein Reels
+  ok(ev(E,"(()=>{state.progress.id={};return LANGS.id.words.filter(w=>MOD.reels.can(w)).length})()")===0,'R1 Ohne gelernte Wörter kein Reels');
+  const em=ev(E,"LANGS.id.words.filter(w=>emojiOf(w)).map(w=>w.k)");
+  ok(em.length>=100,'R1b Viele Wörter haben ein Emoji ('+em.length+')');
+  const learn=n=>ev(E,`(()=>{state.progress.id={};${JSON.stringify(em)}.slice(0,${n}).forEach(k=>{state.progress.id[k]={l:1,d:'2999-01-01'}});return LANGS.id.words.filter(w=>MOD.reels.can(w)).length})()`);
+  ok(learn(1)===0,'R2 Mit nur einem gelernten Emoji-Wort noch kein Reels (das Kartenwort zählt mit, also zu wenig)');
+  const n2=learn(2);ok(n2>=100,'R3 Mit zwei gelernten Emoji-Wörtern ist Reels für jedes weitere Emoji-Wort möglich ('+n2+')');
+  // Stichprobe: Walzen tragen die richtigen Wörter, drei verschiedene Emojis, nur gelernte Wörter
+  learn(8);
+  const q=ev(E,`(()=>{const L=curLang();let n=0,bad=0;const byId={};L.words.forEach(w=>byId[w.id]=w);
+    for(const w of L.words){if(!MOD.reels.can(w))continue;for(let k=0;k<3;k++){const D=reelsData(w);if(!D)continue;n++;
+      if(new Set(D.emojis).size!==3||D.reels.length!==3)bad++;
+      D.reels.forEach((r,i)=>{const rw=r.words[r.right];if(emojiOf(byId[rw])!==r.emoji||!state.progress.id[byId[rw].k]&&byId[rw].k!==w.k||r.words.length!==3||new Set(r.words.map(normId)).size!==3)bad++;});
+      if(!D.reels.some(r=>r.words[r.right]===w.id))bad++;}}
+    return {n,bad};})()`);
+  ok(q.n>0&&q.bad===0,'R4 Drei verschiedene Emojis, je Walze das passende Wort, nur gelernte Wörter ('+q.n+' Durchläufe, '+q.bad+' Fehler)');
   // Solo-Kachel gesperrt, solange nichts passt
   const F=fresh();ev(F,'window.__rlAll=false');ev(F,"state.progress.id={};save();render()");
   const w0=ev(F,`(()=>{const L=curLang();state.progress.id={};L.words.slice(0,3).forEach(w=>{state.progress.id[w.k]={l:1,d:'2999-01-01'}});save();render();state.done[today()]=true;save();render();return 1;})()`);
@@ -521,8 +521,8 @@ function toReels(E,force=true){
     return {none,sent:e.s.id,known:sentKnown(w0),choice:MOD.choice.can(w0),gap:MOD.gap.can(w0)};})()`);
   ok(r.none[0]===0&&r.none[1]===0,'K1 Lückensatz/Auswahl: nie ein Satz mit unbekannten Wörtern ('+r.none+')');
   ok(r.known===undefined||r.known===true&&r.choice===true,'K2 Ganz bekannter Satz ist für Auswahl möglich ('+JSON.stringify(r)+')');
-  const F=fresh();knownReels(F,300);toReels(F);
-  ok(!!F.$('#cab')&&!F.$('.rl-ctx'),'K3 Reels: kein grauer Rest des Satzes mehr');
+  const F=fresh();knownEm(F,8);toReels(F);
+  ok(!!F.$('#cab')&&!F.$('.rl-ctx')&&F.$$('.emorow .emo').length===3,'K3 Reels: drei Emojis über den Walzen, kein Satz');
 }
 // --- Englisch + Stimmung
 {
