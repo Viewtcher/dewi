@@ -2120,3 +2120,10 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Technik:** `modules/reels.js`: `emojiOf`, `reelsPlan`, schnelle Vorprüfung `reelsCan`; Walzen-Datenform (`words`, `right`, `st`) blieb gleich, daher laufen Spiellogik und Testhaken weiter. Emoji-Zeile `.cbody.emo` mit gleichem Raster wie die Walzen; bei „Bewegung reduzieren“ steht das Emoji vor jeder Auswahlzeile. Hilfe-Text, EN-Texte angepasst.
 **Tests:** R1–R4 und K3 neu, Test-Hilfen `knownEm`/`knownReels` getrennt, test5 prüft Reels nicht mehr auf Satz-Markierung; alle vier Suiten grün.
 **Nur auf dem iPhone prüfbar:** Aussehen und Größe der Emojis im Automaten (Apple-Emoji), ob die Emoji-Spalten sauber über den Walzen sitzen, Spielgefühl mit Wörtern statt Satzteilen. Die Emoji-Liste bitte beim Spielen auf Unstimmigkeiten prüfen.
+
+## Version 180 – Reels entfernt
+
+**Was:** Das Modul Reels ist komplett aus der App genommen (Vito gefiel die Emoji-Version aus Version 179 nicht). Es erscheint nicht mehr bei den Solo-Modulen, im Survival, Rush und in der Daily Round. Die Emoji-Liste (`emoji.js`) fällt mit weg, sie diente nur Reels.
+**Technik:** `modules/reels.js` und `emoji.js` gelöscht (Include und Einträge in `TRIES`/`SURV_BASE` entfernt). Wiederherstellung jederzeit aus dem Speicherpunkt `Version 179 – Reels mit Emojis` (Satz-Version: Stand bis Version 178). Ein pausierter Survival-/Rush-Lauf, der auf „Reels solo“ stand, läuft nach dem Update als „Random“ weiter (`resumeRun`). Absichtlich geblieben, weil auch Slots sie nutzt: Dewis `reels_*`-Sprüche, der Automaten-Stil (CSS) und der Synthwave-/Arpeggio-Code in der Musik (springt nur auf dem alten Reels-Bildschirm an, also jetzt nie).
+**Tests:** Reels-Blöcke aus test4 entfernt, Musik- und Hilfe-Tests ohne Reels, SL3 prüft jetzt, dass es Reels nicht mehr gibt; alle vier Suiten grün.
+**Nur auf dem iPhone prüfbar:** Solo-Auswahl und Rush/Survival enthalten kein Reels mehr; ein pausierter Lauf, falls vorhanden, lässt sich weiterspielen.

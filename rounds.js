@@ -24,7 +24,7 @@ let S=null;
 
 /* Versuche pro Modul (Daily Round): ein Fehler erlaubt = 2 Versuche, Tippen 2 Fehler = 3 Versuche, Swipe nur 1 Versuch.
    Im Survival hat jede Karte nur einen Versuch. */
-const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,reels:2,slots:2,pads:2,order:1};
+const TRIES={swipe:1,typing:3,blocks:2,gap:2,choice:2,slots:2,pads:2,order:1};
 const arcade=()=>!!S&&(S.kind==='survival'||S.kind==='rush');   // Survival und Rush: ein Versuch pro Karte
 const triesFor=id=>arcade()?1:(TRIES[id]||2);
 /* Version 123: Die Herzen stehen jetzt links in der Score-Zeile (siehe scoreRow), nicht mehr im Modul. */
@@ -37,7 +37,7 @@ window.__introMs=(typeof window.__introMs==='number')?window.__introMs:3000;   /
 /* Punkte pro richtigem Wort im Survival (intern und angezeigt gleich, z. B. 137):
    Grundpunkte je Modul (leichte weniger, schwere mehr), Perfekt-Bonus +25 % (ohne „?“, ohne Tippfehler),
    danach Serien-Multiplikator: ab 3 in Folge x1,5, ab 5 x2, ab 10 x2,5, ab 15 x3, ab 20 x4. */
-const SURV_BASE={swipe:61,choice:73,gap:88,reels:97,slots:97,pads:73,order:112,blocks:124,typing:149};
+const SURV_BASE={swipe:61,choice:73,gap:88,slots:97,pads:73,order:112,blocks:124,typing:149};
 function survMult(run){return run>=20?4:run>=15?3:run>=10?2.5:run>=5?2:run>=3?1.5:1;}
 function survPoints(mod,run,perfect){return Math.round((SURV_BASE[mod]||80)*(perfect?1.25:1)*survMult(run));}
 const bestStore=()=>{const m=state.best||(state.best={});return m[state.lang]||(m[state.lang]={});};
@@ -177,7 +177,7 @@ function resumeRun(){
   const L=curLang(),by={};L.words.forEach(w=>{by[w.k]=w;});
   S={items:r.items.map(x=>({w:by[x.k],kind:x.kind,type:x.type,ok:x.ok})),i:r.i,right:r.right,wrong:r.wrong,
      missed:(r.missed||[]).map(k=>by[k]).filter(Boolean),
-     cur:null,streak0:r.streak0,kind:r.kind,playmode:r.playmode,last:r.last,lives:r.lives,score:r.score,
+     cur:null,streak0:r.streak0,kind:r.kind,playmode:(r.playmode==='random'||MOD[r.playmode])?r.playmode:'random',last:r.last,lives:r.lives,score:r.score,   // Version 180: ein pausierter Run mit dem entfernten Modul Reels läuft als Random weiter
      shown:r.score,run:r.run,words:r.words,lost:r.lost,best:r.best,hand:r.hand||null,date:r.date||today(),
      t0:r.kind==='rush'?Date.now()-(r.el|0):0,t1:0,pen:r.pen|0,pa:0};   // Rush: Uhr läuft ab der bisherigen Spielzeit weiter
   sheet.hidden=false;document.body.style.overflow='hidden';

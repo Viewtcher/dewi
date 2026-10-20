@@ -149,129 +149,13 @@ function known(E,n,d='2000-01-01'){   // n bekannte Wörter, fällig
   ev(E,`(()=>{const L=LANGS.id;state.progress.id=state.progress.id||{};L.words.slice(0,${n}).forEach(w=>{state.progress.id[w.k]={l:1,d:'${d}'}});save();render();})()`);
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const reelWords=E=>ev(E,"LANGS.id.words.filter(w=>MOD.reels.can(w)).map(w=>w.k)");   // Version 179: Wörter mit Emoji
 const sentWords=E=>ev(E,"LANGS.id.words.filter(w=>{const s=sentOf(w);return s&&tokensOf(s.id).length>=3&&tokensOf(s.plain).length>=3}).map(w=>w.k)");
-function knownReels(E,n){
-  const ks=Array.from(new Set(reelWords(E).slice(0,Math.min(n,8)).concat(sentWords(E).slice(0,n))));   // Emoji-Wörter für Reels plus Satzwörter für die übrigen Module
+function knownReels(E,n){   // Name aus der Reels-Zeit beibehalten: lernt die ersten n Wörter mit längerem Satz
+  const ks=sentWords(E).slice(0,n);
   ev(E,`(()=>{state.progress.id=state.progress.id||{};${JSON.stringify(ks)}.forEach(k=>{state.progress.id[k]={l:1,d:'2000-01-01'}});save();render();})()`);
   return ks;
-}
-function knownEm(E,n){   // nur Emoji-Wörter gelernt: jede Karte kann Reels sein
-  const ks=reelWords(E).slice(0,n);
-  ev(E,`(()=>{state.progress.id=state.progress.id||{};${JSON.stringify(ks)}.forEach(k=>{state.progress.id[k]={l:1,d:'2000-01-01'}});save();render();})()`);
-  return ks;
-}
-const RL=E=>ev(E,'S.cur.rl');
-// aktive (linkeste offene) Walze auf Wortindex k stoppen; k=null: richtiges Wort; Hebel wird bei Bedarf gezogen
-function act(E,k){
-  ev(E,`(()=>{const R=S.cur.rl;if(R.state==='idle')R.pull();const r=R.reels.find(x=>x.st!=='ok');r.p=${k===null?'r.right':k};r.v=0;R.stopNext();R.frame(1);})()`);
-}
-const tapCab=E=>E.$('#cab').dispatchEvent(new E.w.Event('pointerdown',{bubbles:true,cancelable:true}));
-const states=E=>ev(E,'S.cur.rl.reels.map(r=>r.st).join()');
-function toReels(E,force=true){
-  if(force)ev(E,"window.__force='reels'");
-  E.click(E.$('#start'));
-  let g=0;while(!E.$('#cab')&&g++<30){if(E.$('#wtap')||E.$('.iopt')){skipIntro(E);continue;}if(E.$('#go')){E.click(E.$('#go'));continue;}if(E.$('#nx')){E.click(E.$('#nx'));continue;}if(E.$('#next')){E.click(E.$('#next'));continue;}if(E.$('#qf')){E.type('x');continue;}if(E.$('#chk')){E.click(E.$('#chk'));continue;}break;}
 }
 (async()=>{
-{
-  const E=fresh();
-  const ks=reelWords(E);
-  ok(ks.length>20,'R1 Viele Wörter mit Satz ab 3 Wörtern ('+ks.length+')');
-  ok(ev(E,"LANGS.id.words.some(w=>!MOD.reels.can(w))&&MOD.reels.fallback==='choice'"),'R2 Wörter ohne langen Satz fallen zurück');
-  ok(ev(E,"(()=>{let bad=0;LANGS.id.words.filter(x=>MOD.reels.can(x)).forEach(w=>{for(let i=0;i<4;i++){const D=reelsData(w);if(!D||D.reels.length!==3||D.reels.some((r,j)=>r.words.length!==3||r.words[r.right]!==D.right[j]||new Set(r.words.map(normId)).size!==3))bad++;}});return bad;})()")===0,'R3 Jede Walze: genau 3 Wörter, richtiges enthalten, keine Dopplungen');
-  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='reels')"),'R5 Solo-Kachel vorhanden');
-}
-// --- Survival Solo: Ablauf Hebel / langsam / links nach rechts
-{
-  const E=fresh();knownEm(E,8);
-  ev(E,'state.done[today()]=true;save();render()');
-  E.w.navigator.vibrate=function(p){(E.vib=E.vib||[]).push(p);return true;};
-  E.click(E.$('#gm'));E.click(E.$('#surv'));
-  ok(!!E.$('[data-playmode="reels"]'),'S1 Playmode Reels als Solo-Kachel');
-  E.click(E.$('[data-playmode="reels"]'));
-  ok(!!E.$('#cab')&&E.$$('.reel').length===3&&/Reels/.test(E.$('.kicker').textContent),'S2 Automat mit 3 Walzen');
-  ok(!!E.$('#rlm .dw.m-cash'),'S3 Dewi mit Dollar-Augen unter dem Automat');
-  ok(ev(E,'QUIPS.de.reels_ready').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'S4 Spruch „bereit“');
-  ok(states(E)==='fast,fast,fast'&&ev(E,'S.cur.rl.reels.every(r=>r.v>=8)'),'S5 Alle drei rasen von Anfang an');
-  E.w.__run('S.cur.rl.frame(.3)');
-  ok(ev(E,'S.cur.rl.reels.every(r=>r.p!==undefined)')&&E.$$('.reel.blur').length===3,'S5b Walzen verschwommen beim Rasen');
-  tapCab(E);ok(states(E)==='fast,fast,fast','S6 Vor dem Hebel bewirkt Tippen nichts');
-  ev(E,'S.cur.rl.pull()');
-  ok(states(E)==='slow,fast,fast','S7 Hebel macht nur die linke Walze langsam');
-  ev(E,'S.cur.rl.frame(1.5)');
-  ok(ev(E,'S.cur.rl.reels[0].v')<3.2&&ev(E,'S.cur.rl.reels[1].v')>8,'S8 Links langsam (<3,2), Rest bleibt schnell');
-  ok(E.$$('.reel')[0].classList.contains('act')&&!E.$$('.reel')[0].classList.contains('blur')&&E.$('#cab').dataset.st==='spin','S8b Aktive Walze markiert und scharf');
-  ok((E.vib||[]).length>0,'S9 Haptik beim Hebel');
-  act(E,null);
-  ok(states(E)==='ok,slow,fast'&&E.$$('.reel')[0].classList.contains('ok'),'S11 Richtig: Walze 1 grün, Walze 2 wird automatisch langsam');
-  ok(ev(E,'QUIPS.de.reels_ok').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'S12 Spruch wechselt');
-  act(E,null);ok(states(E)==='ok,ok,slow','S13 Dann Walze 3');
-  act(E,null);
-  ok(ev(E,'S.cur.rl.state')==='over'&&E.$('#cab').dataset.st==='jack'&&E.$('#sign').textContent==='JACKPOT','S14 Alles beim ersten Stopp: Jackpot');
-  ok(E.$$('.reel.gold').length===3,'S15 Walzen golden');
-  ok(!!E.$('.rl-swipe')&&!E.$('#nx')&&!E.$('.res')&&E.$('#cab').getAttribute('role')==='button','S15b Nach dem Ende: Wisch-Hinweis, noch kein Weiter-Knopf');
-  ok(E.$('.smain.rl').dataset.end==='win'&&E.$('.smain.rl').dataset.lk==='3','S15c Zustand für die Musik');
-  {const pd=new E.w.Event('pointerdown',{bubbles:true,cancelable:true});pd.clientX=200;E.$('#cab').dispatchEvent(pd);const pm=new E.w.Event('pointermove',{bubbles:true});pm.clientX=0;E.$('#cab').dispatchEvent(pm);E.$('#cab').dispatchEvent(new E.w.Event('pointerup',{bubbles:true}));}
-  ok(!E.$('.res'),'S15d Zu früh gewischt (Sperre nach dem Ende) ignoriert');
-  ev(E,'S.cur.rl.tossAt=0');
-  {const pd=new E.w.Event('pointerdown',{bubbles:true,cancelable:true});pd.clientX=200;E.$('#cab').dispatchEvent(pd);const pm=new E.w.Event('pointermove',{bubbles:true});pm.clientX=100;E.$('#cab').dispatchEvent(pm);E.$('#cab').dispatchEvent(new E.w.Event('pointerup',{bubbles:true}));}
-  ok(!E.$('.res')&&E.$('#cab').style.display!=='none','S15e Zu kurz gewischt: Automat federt zurück');
-  {const pd=new E.w.Event('pointerdown',{bubbles:true,cancelable:true});pd.clientX=300;E.$('#cab').dispatchEvent(pd);const pm=new E.w.Event('pointermove',{bubbles:true});pm.clientX=100;E.$('#cab').dispatchEvent(pm);E.$('#cab').dispatchEvent(new E.w.Event('pointerup',{bubbles:true}));}
-  ok(/translate\(-150%/.test(E.$('#cab').style.transform),'S15f Nach links gewischt: Automat fliegt weg');
-  await sleep(600);
-  ok(E.$('#cab').style.display==='none'&&!!E.$('#nx')&&!!E.$('.res.good')&&!E.$('.rl-swipe')&&E.$('.smain.rl').classList.contains('done'),'S15g Danach Ergebnis und Weiter-Knopf, Hinweis weg');
-  ok(ev(E,'QUIPS.de.reels_toss').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'S15h Spruch zum Wurf');
-  ok(!!E.$('.res.good')&&E.$('.res').getAttribute('data-snd')==='1','S16 Ergebnis richtig, kein doppelter Auto-Sound');
-  ok(!!E.d.querySelector('.drain')&&E.d.querySelectorAll('.drain i').length>=40,'S16b Diamantenregen');
-  ok(ev(E,'QUIPS.de.reels_jackpot').length>=2,'S17 Jackpot-Sprüche vorhanden');
-  ok(ev(E,'S.score')===ev(E,'survPoints("reels",1,true)')&&ev(E,'S.right')===1,'S18 Jackpot ändert nichts am Score');
-  ok(E.vib.some(p=>Array.isArray(p)&&p.length>=5),'S19 Haptik-Salve beim Jackpot');
-  E.click(E.$('#nx'));
-  ok(!!E.$('#cab'),'S20 Nächste Karte wieder Reels (Solo)');
-  act(E,'(r.right+1)%3');ev(E,'S.cur.rl.toss(true)');
-  ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.lives')===2,'S21 Survival: erster Fehler verliert das Modul und ein Leben');
-  ok(!E.$('.pay')&&!E.$('.arr'),'S21b Keine rote Linie mehr');
-  ok(E.$$('.reel.rev').length>=2&&E.$('#cab').dataset.st==='lose','S22 Lösung wird auf den Walzen gezeigt');
-  ok(ev(E,'QUIPS.de.reels_lose').length>=2&&ev(E,'QUIPS.en.reels_toss').length>=2,'S23 Verlierer- und Wurf-Sprüche (de/en)');
-}
-// --- Fehler: grau, rütteln, nochmal; Reihenfolge links nach rechts
-{
-  const E=fresh();knownEm(E,8);
-  toReels(E);
-  ok(!!E.$('#cab'),'D1 Reels erscheinen in der Daily Round');
-  ev(E,'S.cur.rl.pull()');
-  act(E,'(r.right+1)%3');
-  ok(ev(E,'S.cur.rl.miss')===1&&ev(E,'S.cur.rl.state')==='spin'&&states(E)==='no,fast,fast','D2 Fehler: Walze 1 grau und rüttelt, Rest unverändert');
-  ok(E.$$('.reel')[0].classList.contains('no'),'D2b Klasse „no“ (grau)');
-  tapCab(E);ok(states(E)==='no,fast,fast','D2c Tippen während des Rüttelns ignoriert');
-  ok(ev(E,'QUIPS.de.reels_bad').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'D3 Fehler-Spruch');
-  ev(E,'S.cur.rl.frame(.7)');
-  ok(states(E)==='slow,fast,fast'&&!E.$$('.reel')[0].classList.contains('no'),'D4 Danach ist Walze 1 wieder die aktive langsame');
-  act(E,null);act(E,null);act(E,null);ev(E,'S.cur.rl.toss(true)');
-  ok(E.$('#cab').dataset.st==='win'&&!!E.$('.res.good')&&ev(E,'S.cur.ok')===true,'D5 Gewonnen, aber kein Jackpot');
-  ok(!E.$$('.reel.gold').length,'D6 Keine goldenen Walzen ohne Jackpot');
-  ok(E.d.querySelectorAll('.drain i').length>=20,'D6b Diamantenregen auch ohne Jackpot');
-}
-{
-  const E=fresh();knownEm(E,8);toReels(E);
-  ev(E,'S.cur.rl.pull()');
-  act(E,'(r.right+1)%3');ev(E,'S.cur.rl.frame(.7)');
-  act(E,'(r.right+2)%3');ev(E,'S.cur.rl.toss(true)');
-  ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.cur.ok')===false,'D7 Zweiter Fehler: Modul verloren');
-  ok(ev(E,'S.wrong')>=1,'D8 Als Fehler gezählt');
-  ok(ev(E,"state.progress[curLang().id][S.cur.w.k].l")===0&&!/Stufe|Wiederholung/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0, aber kein geschriebener Hinweis mehr dazu (Version 149)');
-}
-// --- Reduzierte Bewegung: Liste
-{
-  const E=fresh();knownEm(E,8);
-  ev(E,'state.done[today()]=true;save();render()');
-  E.w.matchMedia=()=>({matches:true,addEventListener(){},addListener(){}});
-  E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
-  ok(E.$$('.rl-pick').length===3&&!E.$('#cab'),'L1 Bei reduzierter Bewegung eine Auswahlliste statt Automat');
-  ev(E,"(()=>{const R=S.cur.rl;R.reels.forEach((r,i)=>{document.querySelectorAll('.rl-pick')[i].querySelectorAll('.opt')[r.right].click();});})()");
-  ok(!!E.$('.res.good')&&ev(E,'S.cur.rl.state')==='over','L2 Liste: alle richtig gewinnt');
-}
 // --- Holo-Aufstieg (Version 129)
 {
   const E=fresh();
@@ -338,15 +222,15 @@ function toReels(E,force=true){
   ev(E,"state.mvol=0");ev(E,'musTick()');
   ok(ev(E,'MUS.mode')===null,'M9 Lautstärke 0 schaltet die Musik aus');
   ev(E,"state.mvol=35;state.music=true;musTick()");
-  // Reels: Synthwave
-  knownEm(E,8);ev(E,'state.done[today()]=true;save();render()');
-  E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
+  // Spiel-Zahnrad
+  knownReels(E,8);ev(E,'state.done[today()]=true;save();render()');
+  E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="choice"]'));
   ok(!!E.$('.sin #setgear')&&!E.$('.sin .musbtn'),'M10 Zahnrad statt Lautsprecher im Modul (Version 148)');
   E.click(E.$('#setgear'));
   ok(!!E.$('#setov')&&!E.$('#setov').hidden&&E.$('#setov .card .eyebrow').textContent===ev(E,"t('Sound & Musik')"),'M10b Zahnrad öffnet Einstellungen übers Spiel, Sound-Karte ganz oben');
   E.click(E.$('#setov .backbtn'));
   ok(E.$('#setov').hidden&&!!E.$('.sin.hand, .sin')&&!!E.$('#quit'),'M10c Zurück führt ins laufende Spiel zurück, nichts wurde beendet');
-  ev(E,'musTick()');ok(ev(E,'MUS.mode')==='synth','M11 In Reels spielt der Synthwave-Soundtrack');
+  ev(E,'musTick()');ok(ev(E,'MUS.mode')==='lofi','M11 Im Modul spielt weiter Lo-Fi (Synthwave gab es nur in Reels)');
   E.click(E.$('#quit'));ev(E,'musTick()');ok(ev(E,'MUS.mode')==='lofi','M12 Zurück in der App wieder Lo-Fi');
   E.click(E.$('[data-v="settings"]'));
   ok(!!E.$('#sndcard #mvol'),'M13 Einstellungen: Musik-Regler in der Sound-Kachel');
@@ -357,24 +241,24 @@ function toReels(E,force=true){
 {
   const E=fresh();knownReels(E,8);
   ev(E,"window.__helpAuto=true");
-  for(const id of ['blocks','typing','swipe','gap','choice','reels']){
-    const F=fresh();(id==='reels'?knownEm(F,8):knownReels(F,id==='blocks'?300:8));
+  for(const id of ['blocks','typing','swipe','gap','choice']){
+    const F=fresh();knownReels(F,id==='blocks'?300:8);
     ev(F,`window.__force='${id}'`);
     F.click(F.$('#start'));
     let g=0;while(!F.$('.qh')&&g++<40){if(F.$('#wtap')||F.$('.iopt')){skipIntro(F);continue;}if(F.$('#go')){F.click(F.$('#go'));continue;}if(F.$('#nx')){F.click(F.$('#nx'));continue;}if(F.$('#endnext')){F.click(F.$('#endnext'));continue;}if(F.$('#next')){F.click(F.$('#next'));continue;}if(F.$('#qf')){F.type('x');continue;}if(F.$('#chk')){F.click(F.$('#chk'));continue;}break;}
     const b=F.$('.qh');
     ok(!!b&&b.dataset.help===id&&b.textContent==='?','H1 '+id+': Fragezeichen an der Aufgabe');
     ok(!F.$$('.hint').some(h=>/Setze|Wische die Karte|Was bedeutet|Die Walzen rasen/.test(h.textContent)),'H2 '+id+': keine Beschreibung mehr im Modul');
-    const pre=id==='reels'?F.$('#rlm .bubble'):F.$('.helpm .bubble');
+    const pre=F.$('.helpm .bubble');
     ok(!!pre&&!F.$('.helpm .dw.m-sigh'),'H3a '+id+': Dewi ist von Anfang an da und hat einen Spruch');
     F.click(b);
-    const bub=id==='reels'?F.$('#rlm .bubble'):F.$('.helpm .bubble');
-    const box=id==='reels'?F.$('#rlm'):F.$('.helpm');
+    const bub=F.$('.helpm .bubble');
+    const box=F.$('.helpm');
     const txt=bub.getAttribute('aria-label'),d=ev(F,`MOD.${id}.desc()`);
     ok(!!bub&&!F.$('.helppop')&&!F.$('.helpbg')&&!!box.querySelector('.dw.m-sigh'),'H3 '+id+': Dewi seufzt in der normalen Sprechblase');
     ok(txt.includes(d)&&/seufz/.test(txt)&&!/Fragezeichen/.test(txt),'H4 '+id+': Kurzbeschreibung + Seufzer, ohne Fragezeichen-Hinweis');
     F.click(b);
-    ok(!!(id==='reels'?F.$('#rlm .bubble'):F.$('.helpm .bubble')),'H5 '+id+': Dewi bleibt nach erneutem Tippen');
+    ok(!!(F.$('.helpm .bubble')),'H5 '+id+': Dewi bleibt nach erneutem Tippen');
   }
   const F=fresh();
   const seen=new Set();for(let i=0;i<60;i++)seen.add(ev(F,"sayQuip('help_x',{d:'X'}).text"));
@@ -413,8 +297,8 @@ function toReels(E,force=true){
 }
 // --- Solo-Queue ohne Ersatzmodul
 {
-  for(const pm of ['blocks','gap','choice','reels']){
-    const F=fresh();(pm==='reels'?knownEm(F,40):knownReels(F,40));
+  for(const pm of ['blocks','gap','choice']){
+    const F=fresh();knownReels(F,40);
     F.click(F.$('#gm'));F.click(F.$('#surv'));
     const tile=F.$('[data-playmode="'+pm+'"]');
     const n=ev(F,`soloWords('${pm}').length`),tot=ev(F,'survivalWords().length');
@@ -481,32 +365,6 @@ function toReels(E,force=true){
     }else ok(true,'AL (kein Satz im Beispiel, übersprungen)');
   }else ok(false,'P3 kein Beispiel mit geschenktem Wort gefunden');
 }
-// --- Reels: nur mit bekannten Wörtern
-{
-  const E=fresh();ev(E,'window.__rlAll=false');
-  // Version 179: Reels mit Emojis. Ohne gelernte Emoji-Wörter gibt es kein Reels
-  ok(ev(E,"(()=>{state.progress.id={};return LANGS.id.words.filter(w=>MOD.reels.can(w)).length})()")===0,'R1 Ohne gelernte Wörter kein Reels');
-  const em=ev(E,"LANGS.id.words.filter(w=>emojiOf(w)).map(w=>w.k)");
-  ok(em.length>=100,'R1b Viele Wörter haben ein Emoji ('+em.length+')');
-  const learn=n=>ev(E,`(()=>{state.progress.id={};${JSON.stringify(em)}.slice(0,${n}).forEach(k=>{state.progress.id[k]={l:1,d:'2999-01-01'}});return LANGS.id.words.filter(w=>MOD.reels.can(w)).length})()`);
-  ok(learn(1)===0,'R2 Mit nur einem gelernten Emoji-Wort noch kein Reels (das Kartenwort zählt mit, also zu wenig)');
-  const n2=learn(2);ok(n2>=100,'R3 Mit zwei gelernten Emoji-Wörtern ist Reels für jedes weitere Emoji-Wort möglich ('+n2+')');
-  // Stichprobe: Walzen tragen die richtigen Wörter, drei verschiedene Emojis, nur gelernte Wörter
-  learn(8);
-  const q=ev(E,`(()=>{const L=curLang();let n=0,bad=0;const byId={};L.words.forEach(w=>byId[w.id]=w);
-    for(const w of L.words){if(!MOD.reels.can(w))continue;for(let k=0;k<3;k++){const D=reelsData(w);if(!D)continue;n++;
-      if(new Set(D.emojis).size!==3||D.reels.length!==3)bad++;
-      D.reels.forEach((r,i)=>{const rw=r.words[r.right];if(emojiOf(byId[rw])!==r.emoji||!state.progress.id[byId[rw].k]&&byId[rw].k!==w.k||r.words.length!==3||new Set(r.words.map(normId)).size!==3)bad++;});
-      if(!D.reels.some(r=>r.words[r.right]===w.id))bad++;}}
-    return {n,bad};})()`);
-  ok(q.n>0&&q.bad===0,'R4 Drei verschiedene Emojis, je Walze das passende Wort, nur gelernte Wörter ('+q.n+' Durchläufe, '+q.bad+' Fehler)');
-  // Solo-Kachel gesperrt, solange nichts passt
-  const F=fresh();ev(F,'window.__rlAll=false');ev(F,"state.progress.id={};save();render()");
-  const w0=ev(F,`(()=>{const L=curLang();state.progress.id={};L.words.slice(0,3).forEach(w=>{state.progress.id[w.k]={l:1,d:'2999-01-01'}});save();render();state.done[today()]=true;save();render();return 1;})()`);
-  F.click(F.$('#gm'));F.click(F.$('#surv'));
-  const bt=F.$('[data-playmode="reels"]');
-  ok(!!bt&&bt.disabled&&/Noch zu wenige/.test(bt.textContent),'R5 Reels-Solo bleibt gesperrt, bis genug passende Wörter gelernt sind');
-}
 // --- Auswahl/Lückensatz nur mit ganz bekannten Sätzen, Reels ohne grauen Rest
 {
   const E=fresh();ev(E,'window.__rlAll=false');
@@ -521,8 +379,6 @@ function toReels(E,force=true){
     return {none,sent:e.s.id,known:sentKnown(w0),choice:MOD.choice.can(w0),gap:MOD.gap.can(w0)};})()`);
   ok(r.none[0]===0&&r.none[1]===0,'K1 Lückensatz/Auswahl: nie ein Satz mit unbekannten Wörtern ('+r.none+')');
   ok(r.known===undefined||r.known===true&&r.choice===true,'K2 Ganz bekannter Satz ist für Auswahl möglich ('+JSON.stringify(r)+')');
-  const F=fresh();knownEm(F,8);toReels(F);
-  ok(!!F.$('#cab')&&!F.$('.rl-ctx')&&F.$$('.emorow .emo').length===3,'K3 Reels: drei Emojis über den Walzen, kein Satz');
 }
 // --- Englisch + Stimmung
 {
@@ -940,7 +796,7 @@ function toReels(E,force=true){
   const key=w=>ev(E,`slotKey(LANGS.id.words.find(x=>x.id==='${w}'))`);
   ok(key('tujuh')==='seven'&&key('jeruk')==='orange'&&key('nol')==='zero'&&key('halo')===null,'SL1 Symbolwörter erkannt (Zahlen, Früchte), andere nicht');
   ok(ev(E,"MOD.slots.can(LANGS.id.words.find(x=>x.id==='pisang'))&&!MOD.slots.can(LANGS.id.words.find(x=>x.id==='halo'))"),'SL2 Slots nur für Wörter mit Symbol');
-  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='slots')&&!!MOD.reels"),'SL3 Slots-Kachel neu, altes Reels bleibt');
+  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='slots')&&!MOD.reels"),'SL3 Slots-Kachel da, Reels ist entfernt (Version 180)');
   ok(ev(E,"LANGS.id.words.filter(w=>slotKey(w)).length")>=18,'SL4 Indonesisch: mindestens 18 Symbolwörter');
   // nur ein bekanntes Symbolwort: erzwungener Dreier, eine Frage, kein Bonus
   ev(E,"(()=>{state.progress.id={'tujuh':{l:1,d:'2000-01-01'},'halo':{l:1,d:'2000-01-01'}};save();})()");
