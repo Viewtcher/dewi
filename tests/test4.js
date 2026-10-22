@@ -590,7 +590,6 @@ function knownReels(E,n){   // Name aus der Reels-Zeit beibehalten: lernt die er
   ok(E.d.documentElement.dataset.theme==='neon'&&ev(E,'state.equip.theme')==='neon','SP14 Gekauftes Theme bleibt nach dem Schließen');
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
   ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
-  try{E.w.close();}catch(e){}
 }
 
 // --- Shop: mehr Outfits, Themes und Chip-Designs (Version 182)
@@ -612,25 +611,25 @@ function knownReels(E,n){   // Name aus der Reels-Zeit beibehalten: lernt die er
   ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('#ff4f8b'),'SX7 Stempel zeigen Dewi ohne Brille');
   E.click(E.$('[data-shop="face:none"]'));E.click(E.$('#shact'));ok(ev(E,'state.equip.face')==='none'&&!E.$('.shdewi').innerHTML.includes('#ff4f8b'),'SX8 Brille wieder abnehmen');
   E.click(E.$('.shtab[data-tab="ext"]'));
-  ok(/THEMES/.test(E.$('.shlist').textContent)&&/CHIPS/.test(E.$('.shlist').textContent)&&E.$$('.shit').length===8,'SX9 Extras: Themes und Chips (8 Artikel)');
+  ok(/THEMES/.test(E.$('.shlist').textContent)&&!/CHIPS/.test(E.$('.shlist').textContent)&&E.$$('.shit').length===4,'SX9 Extras: nur Themes (4 Artikel), keine Chip-Designs mehr (Version 183)');
   E.click(E.$('[data-shop="theme:sunset"]'));ok(E.d.documentElement.dataset.theme==='sunset','SX10 Sonnenuntergang färbt als Vorschau');
   E.click(E.$('[data-shop="theme:holo"]'));ok(E.d.documentElement.dataset.theme==='holo','SX11 Holo-Lounge färbt als Vorschau');
   ok(ev(E,"[...document.querySelectorAll('style')].some(x=>x.textContent.includes(':root[data-theme=sunset]{')&&x.textContent.includes(':root[data-theme=holo]{'))"),'SX12 Sonnenuntergang und Holo-Lounge haben eigene Farben');
-  E.click(E.$('[data-shop="chip:pixel"]'));
-  ok(E.$('.shdewi .shchips')&&E.$$('.shdewi .shchips use').length===3&&[...E.$$('.shdewi .shchips use')].every(u=>/#chp-pixel-/.test(u.getAttribute('href'))),'SX13 Chip-Anprobe zeigt drei Chips im Design');
   E.click(E.$('#shact'));
-  ok(ev(E,'state.equip.chip')==='pixel'&&ev(E,"document.getElementById('chip-pink').innerHTML.includes('polygon')"),'SX14 Retro-Pixel gekauft: Chips der ganzen App im Pixel-Design');
-  E.click(E.$('[data-shop="chip:neon"]'));E.click(E.$('#shact'));
-  ok(ev(E,'state.equip.chip')==='neon'&&ev(E,"document.getElementById('chip-gold').innerHTML.includes('#35dcd2')"),'SX15 Neon-Chips ausgerüstet');
-  E.click(E.$('[data-shop="chip:marke"]'));E.click(E.$('#shact'));
-  ok(ev(E,'state.equip.chip')==='marke'&&ev(E,"document.getElementById('chip-holo').innerHTML.includes('stroke-linecap=\"round\"')"),'SX16 Gold-Marke ausgerüstet (Perlenrand)');
-  E.click(E.$('[data-shop="chip:classic"]'));E.click(E.$('#shact'));
-  ok(ev(E,'state.equip.chip')==='classic'&&!ev(E,"document.getElementById('chip-pink').innerHTML.includes('polygon')"),'SX17 Zurück zum Dewi-Chip');
-  ok(ev(E,"CHIP_TONES.every(tn=>document.getElementById('chip-'+tn))")&&ev(E,"['pixel','neon','marke'].every(d=>['pink','gold','holo'].every(tn=>document.getElementById('chp-'+d+'-'+tn)))"),'SX18 Alle Chip-Symbole vorhanden (Bedeutung pink/gold/holo/grau bleibt)');
+  // Version 183: Scrollstand bleibt beim Antippen; Reiterwechsel beginnt oben
+  ev(E,"Object.defineProperty(Element.prototype,'scrollTop',{configurable:true,get(){return this._st||0},set(v){this._st=v}})");
+  E.click(E.$('.shtab[data-tab="cos"]'));
+  ev(E,"document.querySelector('.shlist').scrollTop=140;sheet.scrollTop=30");
+  E.click(E.$('[data-shop="face:herzbrille"]'));
+  ok(ev(E,"document.querySelector('.shlist').scrollTop")===140&&ev(E,'sheet.scrollTop')===30,'SX20 Antippen springt nicht nach oben (Scrollstand bleibt)');
+  E.click(E.$('[data-shop="fur:minze"]'));E.click(E.$('#shmine'));E.click(E.$('#shmine'));
+  ok(ev(E,"document.querySelector('.shlist').scrollTop")===140,'SX21 Auch „Nur meine“ behält die Stelle');
+  E.click(E.$('.shtab[data-tab="ext"]'));
+  ok(ev(E,"document.querySelector('.shlist').scrollTop")===0,'SX22 Reiterwechsel beginnt oben');
+  ok(ev(E,"[...document.querySelectorAll('style')].some(x=>x.textContent.includes('holospin')&&x.textContent.includes('data-theme=holo] body::after'))"),'SX23 Holo-Lounge hat den wandernden Regenbogen-Schimmer');
   E.click(E.$('#quit'));
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
-  ok(B.equip.chip==='classic'&&B.owned.includes('chip:pixel')&&B.owned.includes('fur:holo')&&B.owned.includes('head:krone'),'SX19 Sicherung enthält die neuen Artikel');
-  try{E.w.close();}catch(e){}   // Version 182: Fenster freigeben, sonst reicht der Speicher in Test 4 nicht mehr
+  ok(B.owned.includes('fur:holo')&&B.owned.includes('head:krone')&&!B.owned.some(x=>/^chip:/.test(x)),'SX19 Sicherung enthält die neuen Artikel');
 }
 // --- Startscreen mit Tab-Leiste, Shop statt Einstellungen (Version 139 entfernt sie, Version 144 bringt sie zurück)
 {

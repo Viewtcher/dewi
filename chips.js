@@ -33,34 +33,17 @@ const CHIP_EXTRA={
   haughty:''
 };
 /* Ein Symbol je Variante: Casino-Rand mit Kartensymbolen und Kronen, gestrichelter Ring, Dewi in der Mitte */
-/* Version 182: Chip-Designs aus dem Shop. Die Farbe bleibt die Bedeutung (pink = Small, gold = Big, holo = Royal Flush, grau = verloren);
-   nur Rand und Zierde ändern sich. classic = Original, pixel = Stufen-Achteck, neon = leuchtender Cyan-Rand, marke = Perlenrand. */
-const CHIP_DESIGNS=['classic','pixel','neon','marke'];
-function chipSymbol(tone,design,sid){
+function chipSymbol(tone){
   if(tone==='empty')return '<symbol id="chip-empty" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="#3a2450" fill-opacity=".35" stroke="#f566b9" stroke-width="10" stroke-dasharray="20 14"/></symbol>';
   const c=CHIP_T[tone],edge='M146.0 13.5 A98 98 0 0 1 186.5 54.0 L163.6 66.2 A72 72 0 0 0 133.8 36.4 Z',crown='M88 21 L88 10 L94 15 L100 7 L106 15 L112 10 L112 21 Z';
   const rot4=d=>[0,90,180,270].map(a=>`<path d="${d}"${a?` transform="rotate(${a} 100 100)"`:''}/>`).join('');
-  const dz=design||'classic';
-  const px=(r,k)=>[[100-r+k,100-r],[100+r-k,100-r],[100+r-k,100-r+k],[100+r,100-r+k],[100+r,100+r-k],[100+r-k,100+r-k],[100+r-k,100+r],[100-r+k,100+r],[100-r+k,100+r-k],[100-r,100+r-k],[100-r,100-r+k],[100-r+k,100-r+k]].map(q=>q.join(',')).join(' ');
-  let baseShape=`<circle cx="100" cy="100" r="98" fill="${c.base}"/>`,edgeShape=`<g fill="${dz==='neon'?'#0b1026':c.edge}">${rot4(edge)}</g>`,
-      innerShape=`<circle cx="100" cy="100" r="70" fill="${c.inner}"/>`,ringShape=`<circle cx="100" cy="100" r="66" fill="none" stroke="${dz==='neon'?'#7ff0e6':'#fff6fb'}" stroke-width="5" stroke-dasharray="7 7"/>`,extra='';
-  if(dz==='pixel'){
-    baseShape=`<polygon shape-rendering="crispEdges" points="${px(97,30)}" fill="${c.base}" stroke="${c.edge}" stroke-width="6" stroke-linejoin="miter"/>`;edgeShape='';
-    innerShape=`<polygon shape-rendering="crispEdges" points="${px(70,22)}" fill="${c.inner}"/>`;
-    ringShape=`<polygon shape-rendering="crispEdges" points="${px(66,20)}" fill="none" stroke="#fff6fb" stroke-width="5" stroke-dasharray="9 9"/>`;
-  }else if(dz==='neon'){
-    extra=`<circle cx="100" cy="100" r="96" fill="none" stroke="#35dcd2" stroke-width="5"/><circle cx="100" cy="100" r="70" fill="none" stroke="#7ff0e6" stroke-width="2.5" stroke-opacity=".8"/><circle cx="100" cy="100" r="61" fill="none" stroke="#35dcd2" stroke-width="3"/>`;
-  }else if(dz==='marke'){
-    ringShape=`<circle cx="100" cy="100" r="66" fill="none" stroke="#fff6e0" stroke-width="3"/>`;
-    extra=`<circle cx="100" cy="100" r="92" fill="none" stroke="#fff6e0" stroke-width="6" stroke-dasharray="0 14.4" stroke-linecap="round"/><circle cx="100" cy="100" r="70" fill="none" stroke="#fff6e0" stroke-width="2.5"/>`;
-  }
-  return `<symbol id="${sid||'chip-'+tone}" viewBox="0 0 200 200">
-${baseShape}
-${edgeShape}
+  return `<symbol id="chip-${tone}" viewBox="0 0 200 200">
+<circle cx="100" cy="100" r="98" fill="${c.base}"/>
+<g fill="${c.edge}">${rot4(edge)}</g>
 <g fill="#fff6fb"><path transform="translate(160 40) rotate(45) scale(1.15)" d="M0 5 C-8 -1 -6 -8 0 -4 C6 -8 8 -1 0 5Z"/><g transform="translate(160 160) rotate(135) scale(1.05)"><circle cx="0" cy="-4" r="3.2"/><circle cx="-4" cy="1.5" r="3.2"/><circle cx="4" cy="1.5" r="3.2"/><path d="M-1.4 1 L1.4 1 L2.4 7 L-2.4 7Z"/></g><path transform="translate(40 160) rotate(225) scale(1.15)" d="M0 -7 L5 0 L0 7 L-5 0Z"/><path transform="translate(40 40) rotate(315) scale(1.05)" d="M0 -7 C-7 0 -7 5 -2 4 L-3 8 H3 L2 4 C7 5 7 0 0 -7Z"/></g>
 <g fill="#fff6fb" stroke="#2a1630" stroke-width="1.2" stroke-linejoin="round">${rot4(crown)}</g>
-${innerShape}
-${ringShape}
+<circle cx="100" cy="100" r="70" fill="${c.inner}"/>
+<circle cx="100" cy="100" r="66" fill="none" stroke="#fff6fb" stroke-width="5" stroke-dasharray="7 7"/>
 <circle cx="100" cy="100" r="61" fill="${c.base}"/>
 <g clip-path="url(#chipFaceClip)" opacity="${c.faceOp}"><svg x="29" y="37" width="142" height="132" viewBox="-6 -2 212 196"><g transform="rotate(${c.rot} 100 120)">
 <path d="M26 92 Q22 30 46 16 Q58 10 96 46Z" fill="${c.hood}" stroke="#2a1630" stroke-width="4" stroke-linejoin="round"/><path d="M44 62 Q42 34 52 28 Q62 30 74 46Z" fill="${c.hoodIn}"/><path d="M174 92 Q178 30 154 16 Q142 10 104 46Z" fill="${c.hood}" stroke="#2a1630" stroke-width="4" stroke-linejoin="round"/><path d="M156 62 Q158 34 148 28 Q138 30 126 46Z" fill="${c.hoodIn}"/>
@@ -70,35 +53,24 @@ ${ringShape}
 <path d="M96 78 q-7 -6 -1 -11 q7 -2 6 4 q-1 4 -5 3" stroke="#2a1630" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M97 132 Q100 129 103 132 Q100 135 97 132Z" fill="#e0788e" stroke="#2a1630" stroke-width="1.8"/>
 ${CHIP_FACE[c.mood]}</g>${CHIP_EXTRA[c.mood]}</svg></g>
 <circle cx="100" cy="100" r="61" fill="none" stroke="${c.edge}" stroke-width="2.5" stroke-opacity=".5"/>
-<circle cx="100" cy="100" r="97" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="2"/>${extra}
+<circle cx="100" cy="100" r="97" fill="none" stroke="#000" stroke-opacity=".25" stroke-width="2"/>
 </symbol>`;
 }
 /* Einmal beim Start: unsichtbare Sammlung aller Varianten plus Verläufe und Gesichtsmaske */
-function chipSprite(rebuild){
-  let box=document.getElementById('chipsprite');
-  if(box&&!rebuild)return;
-  const dz=(typeof state!=='undefined'&&state&&state.equip&&CHIP_DESIGNS.indexOf(state.equip.chip)>=0)?state.equip.chip:'classic';   // Version 182: gewähltes Chip-Design
-  const fresh=!box;
-  if(fresh){box=document.createElement('div');box.id='chipsprite';box.setAttribute('aria-hidden','true');
-    box.style.cssText='position:absolute;width:0;height:0;overflow:hidden';}
+function chipSprite(){
+  if(document.getElementById('chipsprite'))return;
+  const box=document.createElement('div');box.id='chipsprite';box.setAttribute('aria-hidden','true');
+  box.style.cssText='position:absolute;width:0;height:0;overflow:hidden';
   box.innerHTML=`<svg width="0" height="0" focusable="false"><defs>
 <linearGradient id="chipHoloG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff92d2"/><stop offset=".3" stop-color="#a888ff"/><stop offset=".55" stop-color="#5aa9ff"/><stop offset=".78" stop-color="#35dcd2"/><stop offset="1" stop-color="#ffc23d"/></linearGradient>
 <linearGradient id="chipHoloG2" x1="1" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd1ec"/><stop offset=".4" stop-color="#c9b6ff"/><stop offset=".75" stop-color="#9fe9e3"/><stop offset="1" stop-color="#ffe08a"/></linearGradient>
 <linearGradient id="dwHoloHood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff7fd0"/><stop offset=".35" stop-color="#9d7bff"/><stop offset=".65" stop-color="#4fb6ff"/><stop offset="1" stop-color="#3fe0c8"/></linearGradient>
 <clipPath id="chipFaceClip"><circle cx="100" cy="100" r="61"/></clipPath>
-${CHIP_TONES.map(tn=>chipSymbol(tn,dz)).join('')}</defs></svg>`;
-  if(fresh)document.body.appendChild(box);
-}
-/* Vorschau im Shop: pink, gold und holo in allen Designs, einmal angelegt */
-function chipPreviewSprite(){
-  if(document.getElementById('chipsprite2'))return;
-  const box=document.createElement('div');box.id='chipsprite2';box.setAttribute('aria-hidden','true');
-  box.style.cssText='position:absolute;width:0;height:0;overflow:hidden';
-  box.innerHTML=`<svg width="0" height="0" focusable="false"><defs>${CHIP_DESIGNS.map(d=>['pink','gold','holo'].map(tn=>chipSymbol(tn,d,'chp-'+d+'-'+tn)).join('')).join('')}</defs></svg>`;
+${CHIP_TONES.map(chipSymbol).join('')}</defs></svg>`;
   document.body.appendChild(box);
 }
 /* Ein Chip zum Einsetzen: chipSvg('gold','big') */
-const chipSvg=(tone,cls,design)=>{const tn=(CHIP_T[tone]||tone==='empty')?tone:'pink';return `<svg class="dchip${cls?' '+cls:''}" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><use href="#${design&&tn!=='empty'&&tn!=='grey'?'chp-'+design+'-'+tn:'chip-'+tn}"/></svg>`;};
+const chipSvg=(tone,cls)=>`<svg class="dchip${cls?' '+cls:''}" viewBox="0 0 200 200" aria-hidden="true" focusable="false"><use href="#chip-${(CHIP_T[tone]||tone==='empty')?tone:'pink'}"/></svg>`;
 /* Rückseite für den Münz-Flip bei der Blind-Auswahl (Version 143): schlichte Prägung, kein Dewi-Gesicht */
 function chipBackSvg(tone){
   const c=CHIP_T[tone]||CHIP_T.pink;

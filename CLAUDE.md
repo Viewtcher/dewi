@@ -50,7 +50,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 182)
+## Offene Punkte (Stand Version 183)
 
 - **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
@@ -87,7 +87,8 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - 179: Reels mit drei Emojis oben, Walzen mit Wörtern der Lernsprache (`emoji.js`, `reelsPlan`), ersetzt die Satz-Version ✓ (noch nicht live; 178 live)
 - 180: Modul Reels komplett entfernt (`reels.js`, `emoji.js` gelöscht; Rückweg: Speicherpunkt Version 179), Slots bleibt der Automat ✓ (noch nicht live; 178 live)
 - 181: Big Blind = 2 neue Wörter + 8 Wiederholungen (10 gewertete Module), Small bleibt 1 + 4; zweites Wort notfalls aus dem nächsten Kapitel; Unterschied steht im Dewi-Spruch der Blind-Wahl (`plan('big')`, `dailyCards(blind)`) ✓ (noch nicht live; 178 live, 179 verworfen/180 entfernt). Nach 1–2 Wochen Spielen entscheiden, ob eine Extra-Belohnung nötig ist.
-- 182: Shop: Fell Minze/Holo, Krone, neuer Platz „Gesicht“ (Herzbrille), Themes Sonnenuntergang/Holo-Lounge, Chip-Designs Retro-Pixel/Neon/Gold-Marke; Preise 3.500 / 8.000 / 20.000; Tests mit `--max-old-space-size=4096` ✓ (noch nicht live; 178 live). Weitere Artikel später.
+- 182: Shop: Fell Minze/Holo, Krone, neuer Platz „Gesicht“ (Herzbrille), Themes Sonnenuntergang/Holo-Lounge; Preise 3.500 / 8.000 / 20.000; Tests mit `--max-old-space-size=4096` ✓ (noch nicht live; 178 live). Chip-Designs (in 182 gebaut) in 183 wieder entfernt; Rückweg: Speicherpunkt Version 182.
+- 183: Shop springt beim Antippen nicht mehr nach oben, Chip-Designs raus, Holo-Lounge mit kräftigem Verlauf und langsam wanderndem Regenbogen-Schimmer auf dem Startscreen ✓ (noch nicht live)
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.
