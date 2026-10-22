@@ -627,6 +627,7 @@ function knownReels(E,n){   // Name aus der Reels-Zeit beibehalten: lernt die er
   E.click(E.$('.shtab[data-tab="ext"]'));
   ok(ev(E,"document.querySelector('.shlist').scrollTop")===0,'SX22 Reiterwechsel beginnt oben');
   ok(ev(E,"[...document.querySelectorAll('style')].some(x=>x.textContent.includes('holospin')&&x.textContent.includes('data-theme=holo] body::after'))"),'SX23 Holo-Lounge hat den wandernden Regenbogen-Schimmer');
+  ok(ev(E,"(()=>{const c=[...document.querySelectorAll('style')].map(x=>x.textContent).join('');return c.includes('.sheet.shop-open .sin.shop{padding-bottom:calc(81px + env(safe-area-inset-bottom,0px))}')&&c.includes('.shtab{height:29px')&&c.includes('.shdewi{width:102px;height:102px')&&c.includes('.shart{width:46px;height:46px')&&c.includes('.sin.shop .actbtn{min-height:45px')&&!/[;{]\\s*zoom\\s*:/.test(c.slice(c.indexOf('.sin.shop{gap:10px'),c.indexOf('.sin.shop{gap:10px')+3500))})()"),'SX24 Shop auf 80 % (Größen ohne zoom), 16 px Abstand zwischen Knopf und Tab-Leiste');
   E.click(E.$('#quit'));
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
   ok(B.owned.includes('fur:holo')&&B.owned.includes('head:krone')&&!B.owned.some(x=>/^chip:/.test(x)),'SX19 Sicherung enthält die neuen Artikel');

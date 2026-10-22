@@ -502,7 +502,7 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 
 .sheet{position:fixed;inset:0;z-index:30;background:var(--wash),var(--bg);overflow-y:auto;overscroll-behavior:contain}
 .sheet.shop-open{z-index:5}   /* Version 146: im Shop bleibt die Tab-Leiste sichtbar, sie liegt dafür über dem Sheet statt darunter */
-.sheet.shop-open .sin.shop{padding-bottom:104px}
+.sheet.shop-open .sin.shop{padding-bottom:calc(81px + env(safe-area-inset-bottom,0px))}   /* Version 184: Tab-Leiste (65 px + Home-Leiste) plus 16 px Abstand zum Knopf */
 .setov{position:fixed;inset:0;z-index:35;background:var(--bg);overflow-y:auto;overscroll-behavior:contain}   /* Version 148: Einstellungen als Ebene übers laufende Spiel */
 .sin{max-width:480px;min-height:100%;margin:0 auto;display:flex;flex-direction:column;gap:18px;padding:max(14px,env(safe-area-inset-top,0px)) 16px max(24px,env(safe-area-inset-bottom,0px))}
 .shead{display:flex;align-items:center;gap:14px}
@@ -654,38 +654,41 @@ ol.steps{margin:10px 0 0;padding-left:20px;display:grid;gap:6px;color:var(--mute
 
 button.chippill{font:inherit;cursor:pointer}
 /* Shop-Screen (Version 138) */
-.sin.shop{gap:12px;height:100%;min-height:0;box-sizing:border-box}
-@media (max-height:700px){.sin.shop{gap:10px}.shdewi{width:100px;height:100px}.shdewi .dw{width:94px}}
-.shtitle{flex:1;text-align:center;font:800 13px/1 var(--display);letter-spacing:.14em;color:var(--muted)}
-.shroom{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:24px;background:var(--surface);border:1px solid var(--line)}
-.shdewi{width:128px;height:128px;flex:none;display:grid;place-items:center;border-radius:20px;background:radial-gradient(circle at 50% 60%,rgba(255,255,255,.1),transparent 70%)}
-.shdewi .dw{width:120px}
+.sin.shop{gap:10px;height:100%;min-height:0;box-sizing:border-box}   /* Version 184: Shop auf 80 % der bisherigen Größe (ohne zoom: das hat das iPhone schon einmal zerlegt) */
+@media (max-height:700px){.sin.shop{gap:8px}.shdewi{width:80px;height:80px}.shdewi .dw{width:75px}}
+.sin.shop .shead{gap:11px}.sin.shop .iconbtn{width:35px;height:35px}.sin.shop .iconbtn svg{width:14px;height:14px}
+.sin.shop .chippill{min-height:29px;gap:4px;padding:0 10px 0 3px}.sin.shop .chippill .chipwrap{width:22px;height:22px}.sin.shop .chippill b{font-size:14px}
+.sin.shop .actbtn{min-height:45px;font-size:13px;border-radius:10px}
+.shtitle{flex:1;text-align:center;font:800 10.5px/1 var(--display);letter-spacing:.14em;color:var(--muted)}
+.shroom{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:19px;background:var(--surface);border:1px solid var(--line)}
+.shdewi{width:102px;height:102px;flex:none;display:grid;place-items:center;border-radius:16px;background:radial-gradient(circle at 50% 60%,rgba(255,255,255,.1),transparent 70%)}
+.shdewi .dw{width:96px}
 
-.shsay{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-.shb{margin-top:0;padding:10px 12px;font-size:14px;line-height:1.35;border-radius:6px 18px 18px 18px;color:#2a1630}
-.shinfo{font-size:12px;color:var(--muted)}
-.shtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:4px;border-radius:16px;background:var(--surface);border:1px solid var(--line)}
-.shtab{height:36px;border-radius:12px;border:0;background:transparent;color:var(--muted);font:800 13px/1 var(--display)}
+.shsay{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px}
+.shb{margin-top:0;padding:8px 10px;font-size:11.5px;line-height:1.35;border-radius:5px 14px 14px 14px;color:#2a1630}
+.shinfo{font-size:10px;color:var(--muted)}
+.shtabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:3px;border-radius:13px;background:var(--surface);border:1px solid var(--line)}
+.shtab{height:29px;border-radius:10px;border:0;background:transparent;color:var(--muted);font:800 10.5px/1 var(--display)}
 .shtab.on{background:var(--accent);color:var(--accent-ink)}
-.shmine{display:flex;align-items:center;justify-content:flex-end;gap:8px;font-size:13px;color:var(--muted)}
-.shsw2{width:44px;height:26px;border-radius:999px;border:0;padding:3px;background:var(--line-soft);display:flex}
-.shsw2 i{width:20px;height:20px;border-radius:50%;background:#fff;display:block;transition:transform .2s}
-.shsw2.on{background:var(--accent)}.shsw2.on i{transform:translateX(18px)}
-.shlist{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding:3px 3px 6px;margin:0 -3px}
-.shsec{display:flex;flex-direction:column;gap:8px}
-.shsect{font:700 12px/1 var(--display);letter-spacing:.14em;color:var(--faint)}
-.shgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
-.shit{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 4px 8px;border-radius:18px;border:2px solid var(--line);background:var(--surface);color:var(--text);box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.shmine{display:flex;align-items:center;justify-content:flex-end;gap:6px;font-size:10.5px;color:var(--muted)}
+.shsw2{width:35px;height:21px;border-radius:999px;border:0;padding:2.5px;background:var(--line-soft);display:flex}
+.shsw2 i{width:16px;height:16px;border-radius:50%;background:#fff;display:block;transition:transform .2s}
+.shsw2.on{background:var(--accent)}.shsw2.on i{transform:translateX(14px)}
+.shlist{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:3px 3px 5px;margin:0 -3px}
+.shsec{display:flex;flex-direction:column;gap:6px}
+.shsect{font:700 10px/1 var(--display);letter-spacing:.14em;color:var(--faint)}
+.shgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.shit{display:flex;flex-direction:column;align-items:center;gap:5px;padding:8px 3px 6px;border-radius:14px;border:2px solid var(--line);background:var(--surface);color:var(--text);box-shadow:0 3px 0 rgba(0,0,0,.35)}
 .shit.r-common{border-color:#5aa9ff}.shit.r-rare{border-color:#a888ff}.shit.r-legendary{border-color:#ffc23d}.shit.r-shield{border-color:#8fd8ff}
 .shit.on{box-shadow:0 0 0 3px var(--accent)}
-.shart{width:58px;height:58px;display:grid;place-items:center}
-.shart .dw{width:58px}
-.shsw{width:52px;height:52px;border-radius:14px;overflow:hidden;display:grid;grid-template-rows:2fr 1fr 1fr;border:2px solid #2a1630}
-.shshield svg{width:52px;height:52px;display:block}
-.shn{font:700 12px/1.1 var(--display);text-align:center}
-.sht{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#ffc23d}
+.shart{width:46px;height:46px;display:grid;place-items:center}
+.shart .dw{width:46px}
+.shsw{width:42px;height:42px;border-radius:11px;overflow:hidden;display:grid;grid-template-rows:2fr 1fr 1fr;border:2px solid #2a1630}
+.shshield svg{width:42px;height:42px;display:block}
+.shn{font:700 10px/1.1 var(--display);text-align:center}
+.sht{display:flex;align-items:center;gap:3px;font-size:9px;font-weight:700;color:#ffc23d}
 .shit.own .sht{color:var(--muted)}.shit.eq .sht{color:var(--c-cyan)}
-.shc{width:14px;height:14px;display:block}
+.shc{width:11px;height:11px;display:block}
 #shact[aria-disabled=true]{background:var(--surface);color:var(--faint);box-shadow:none}
 .gmmain:active{transform:translateY(1px)}
 .gmcard .cq{margin-left:0;top:0;border-color:rgba(255,255,255,.55);background:rgba(255,255,255,.14);color:#fff}
