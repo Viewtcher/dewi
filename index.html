@@ -7947,8 +7947,8 @@ function fallenWords(){   // Wörter auf Stufe 0, am längsten wartende zuerst
 const curLang=()=>LANGS[state.lang];
 
 /* Plan der nächsten Daily Round (Version 131, ohne Fehlerliste):
-   fresh  = das eine neue Wort (erstes noch ungesehenes) oder null
-   review = 4 bekannte Wörter (ohne neues Wort 5):
+   fresh  = das eine neue Wort (erstes noch ungesehenes) oder null; fresh2 = beim Big Blind (plan('big')) das zweite neue Wort
+   review = 4 bekannte Wörter (ohne neues Wort 5; beim Big Blind 8, ohne neue Wörter 10):
             1. Vorrang: fällige Wörter auf Stufe 0 (verlorenes Modul), am längsten wartende zuerst
             2. dann wie bisher: die 2 am längsten überfälligen + zufällige weitere fällige
             3. aufgefüllt mit noch nicht fälligen (früheste Fälligkeit zuerst)
@@ -7967,11 +7967,17 @@ function needsPick(L){
   const prog=state.progress[L.id]||{},c=catIdx(L,state.chap&&state.chap[L.id]);
   return c>=0&&!hasUnseen(L,prog,c)&&L.words.some(w=>!prog[w.k]);
 }
-function plan(){
+function plan(blind){
   const L=curLang(),t=today(),prog=state.progress[L.id]||{};
   const ac=activeCat(L);
   const fresh=(ac>=0?catWords(L,ac):[]).find(w=>!prog[w.k])||null;
-  const want=fresh?4:5;
+  /* Version 181: Big Blind = zwei neue Wörter. Das zweite kommt aus dem aktiven Kapitel, sonst aus dem nächsten Kapitel mit ungesehenen Wörtern. */
+  let fresh2=null;
+  if(blind==='big'&&fresh){
+    fresh2=catWords(L,ac).find(w=>!prog[w.k]&&w.k!==fresh.k)||null;
+    for(let j=1;!fresh2&&j<L.cats.length;j++)fresh2=catWords(L,(ac+j)%L.cats.length).find(w=>!prog[w.k]&&w.k!==fresh.k)||null;
+  }
+  const want=blind==='big'?10-(fresh?1:0)-(fresh2?1:0):fresh?4:5;   // Big: immer 10 gewertete Module (8 Wiederholungen + 2 Abschlusstests)
   const known=L.words.filter(w=>prog[w.k]);
   const byD=(a,b)=>prog[a.k].d<prog[b.k].d?-1:prog[a.k].d>prog[b.k].d?1:(a.k<b.k?-1:1);
   const due=known.filter(w=>prog[w.k].d<=t).sort(byD);
@@ -7981,7 +7987,7 @@ function plan(){
   pick=pick.concat(over);
   pick=pick.concat(shuffle(rest.slice(over.length)).slice(0,want-pick.length));
   if(pick.length<want)pick=pick.concat(known.filter(w=>pick.indexOf(w)<0).sort(byD).slice(0,want-pick.length));
-  return {fresh,review:shuffle(pick)};
+  return {fresh,fresh2,review:shuffle(pick)};
 }
 function streak(){   // Version 137: geschützte Tage (Streak-Schutz) überbrücken die Serie, zählen aber nicht mit
   const t=today(),sh=state.shielded||{};let d=state.done[t]?t:addDays(t,-1),n=0;
@@ -8232,10 +8238,10 @@ lvl_hold:["Stufe gehalten. Solide. Langweilig, aber solide.","Gehalten. Mehr wil
 end_perfect:["Alles richtig. Okay, das war schon slay. Sag keinem, dass ich das gesagt hab.","Fehlerfrei. Wer bist du und was hast du mit meinem Schüler gemacht?"],
 end_good:["Ganz ordentlich. Ich habe schon cringere Runs gesehen.","Solide. Morgen darfst du mich gern überraschen."],
 end_bad:["Naja. Aus Fehlern lernt man. Du lernst heute sehr viel.","Das war… ein Versuch. Morgen nochmal, aber mit Gehirn."],
-blind_dewi:["Small Blind geht heute aufs Haus. Gewöhn dich nicht dran.","Der Small Blind ist geschenkt. Der Big Blind ist Charakter."],
-blind_self:["Dein Geld, deine Entscheidung. Ich würde Big nehmen. Aber ich mach ja auch keine Fehler.","Einsatz bitte. Das Haus wartet nicht gern."],
-blind_rescue:["Pleite? Süß. Den Small Blind übernehme ich. Einmal.","Ich leih dir was. Zinsen zahlst du in Respekt."],
-blind_none:["Keine Chips, keine Rettung mehr. Spiel trotzdem, für die Ehre.","Heute spielst du um nichts. Lernen tust du trotzdem."],
+blind_dewi:["Small Blind geht heute aufs Haus: ein neues Wort. Gewöhn dich nicht dran. Big kostet, bringt aber zwei.","Small ist geschenkt: ein neues Wort. Big ist Charakter: zwei neue Wörter."],
+blind_self:["Dein Geld, deine Entscheidung. Small bringt ein neues Wort, Big zwei. Ich würde Big nehmen. Aber ich mach ja auch keine Fehler.","Einsatz bitte. Small: ein neues Wort. Big: zwei. Das Haus wartet nicht gern."],
+blind_rescue:["Pleite? Süß. Den Small Blind übernehme ich. Einmal. Zwei neue Wörter gibt es nur beim Big.","Ich leih dir was. Zinsen zahlst du in Respekt. Big mit zwei neuen Wörtern wartet auf bessere Zeiten."],
+blind_none:["Keine Chips, keine Rettung mehr. Spiel trotzdem, für die Ehre. Zwei neue Wörter gibt es nur beim Big.","Heute spielst du um nichts. Lernen tust du trotzdem, ein neues Wort."],
 pay_rf:["Okay. Respekt. Für genau drei Sekunden.","Royal Flush. Ich tu so, als hätte ich's kommen sehen."],
 pay_good:["{n} von {m}. Für deine Verhältnisse fast elegant.","Solide Hand. Das Haus zahlt. Zähneknirschend."],
 pay_low:["Gewonnen ist gewonnen. Knapp ist auch eine Kunstform.","Das reicht für ein Trinkgeld. An mich."],
@@ -8277,10 +8283,10 @@ lvl_hold:["Level held. Solid. Boring, but solid.","Held. I don't want more. Okay
 end_perfect:["All correct. Okay, that was kind of slay. Tell nobody I said that.","Flawless. Who are you and what did you do with my student?"],
 end_good:["Pretty decent. I've seen cringier runs.","Solid. Feel free to surprise me tomorrow."],
 end_bad:["Well. You learn from mistakes. Today you're learning a lot.","That was… an attempt. Again tomorrow, but with a brain."],
-blind_dewi:["Small Blind is on the house today. Don't get used to it.","The Small Blind is a gift. The Big Blind is character."],
-blind_self:["Your money, your call. I'd go Big. But then again, I don't make mistakes.","Place your bet. The house doesn't like waiting."],
-blind_rescue:["Broke? Cute. I'll cover the Small Blind. Once.","I'll lend you some. You pay the interest in respect."],
-blind_none:["No chips, no more rescues. Play anyway, for honour.","Today you play for nothing. You still learn, though."],
+blind_dewi:["Small Blind is on the house today: one new word. Don't get used to it. Big costs, but brings two.","Small is a gift: one new word. Big is character: two new words."],
+blind_self:["Your money, your call. Small brings one new word, Big two. I'd go Big. But then again, I don't make mistakes.","Place your bet. Small: one new word. Big: two. The house doesn't like waiting."],
+blind_rescue:["Broke? Cute. I'll cover the Small Blind. Once. Two new words only come with the Big.","I'll lend you some. You pay the interest in respect. Big with two new words can wait for better days."],
+blind_none:["No chips, no more rescues. Play anyway, for honour. Two new words only come with the Big.","Today you play for nothing. You still learn, though: one new word."],
 pay_rf:["Okay. Respect. For exactly three seconds.","Royal Flush. I'll pretend I saw it coming."],
 pay_good:["{n} of {m}. Almost elegant, by your standards.","Solid hand. The house pays. Through gritted teeth."],
 pay_low:["A win is a win. Barely is an art form too.","That's enough for a tip. For me."],
@@ -9976,11 +9982,12 @@ function scoreTick(){
   step();
 }
 
-function dailyCards(){
-  const p=plan(),cards=[];
-  if(p.fresh)cards.push({w:p.fresh,kind:'intro',type:'new'});
+/* Version 181: Big Blind = zwei neue Wörter. Erst beide Kennenlernen, dann die Wiederholungen, zuletzt beide Abschlusstests. */
+function dailyCards(blind){
+  const p=plan(blind),cards=[],fr=[p.fresh,p.fresh2].filter(Boolean);
+  fr.forEach(w=>cards.push({w,kind:'intro',type:'new'}));
   p.review.forEach(w=>cards.push({w,kind:'review',type:'review'}));
-  if(p.fresh)cards.push({w:p.fresh,kind:'final',type:'new'});
+  fr.forEach(w=>cards.push({w,kind:'final',type:'new'}));
   return cards;
 }
 function survivalWords(){
@@ -10066,7 +10073,7 @@ function startRound(kind,opt){
   const pool=solo?soloWords(o.playmode):survivalWords();
   if(solo&&pool.length<SOLO_MIN)return;
   if(kind==='rush'&&survivalWords().length<RUSH_MIN)return;
-  const items=kind==='rush'?rushItems(pool):kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards();
+  const items=kind==='rush'?rushItems(pool):kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards(o.blind==='big'&&blindOffer().big.ok?'big':'small');
   if(!items.length)return;
   S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak(),kind:kind||'daily',playmode:o.playmode||'random',
      last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:kind==='survival'?bestFor(o.playmode||'random'):kind==='rush'?bestFor('rush:'+(o.playmode||'random')):0,

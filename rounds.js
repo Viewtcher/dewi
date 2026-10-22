@@ -123,11 +123,12 @@ function scoreTick(){
   step();
 }
 
-function dailyCards(){
-  const p=plan(),cards=[];
-  if(p.fresh)cards.push({w:p.fresh,kind:'intro',type:'new'});
+/* Version 181: Big Blind = zwei neue Wörter. Erst beide Kennenlernen, dann die Wiederholungen, zuletzt beide Abschlusstests. */
+function dailyCards(blind){
+  const p=plan(blind),cards=[],fr=[p.fresh,p.fresh2].filter(Boolean);
+  fr.forEach(w=>cards.push({w,kind:'intro',type:'new'}));
   p.review.forEach(w=>cards.push({w,kind:'review',type:'review'}));
-  if(p.fresh)cards.push({w:p.fresh,kind:'final',type:'new'});
+  fr.forEach(w=>cards.push({w,kind:'final',type:'new'}));
   return cards;
 }
 function survivalWords(){
@@ -213,7 +214,7 @@ function startRound(kind,opt){
   const pool=solo?soloWords(o.playmode):survivalWords();
   if(solo&&pool.length<SOLO_MIN)return;
   if(kind==='rush'&&survivalWords().length<RUSH_MIN)return;
-  const items=kind==='rush'?rushItems(pool):kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards();
+  const items=kind==='rush'?rushItems(pool):kind==='survival'?shuffle(pool).map(w=>({w,kind:'surv',type:'review'})):dailyCards(o.blind==='big'&&blindOffer().big.ok?'big':'small');
   if(!items.length)return;
   S={items,i:0,right:0,wrong:0,missed:[],cur:null,streak0:streak(),kind:kind||'daily',playmode:o.playmode||'random',
      last:null,lives:3,score:0,shown:0,run:0,words:0,lost:0,best:kind==='survival'?bestFor(o.playmode||'random'):kind==='rush'?bestFor('rush:'+(o.playmode||'random')):0,
