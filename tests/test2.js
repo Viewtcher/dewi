@@ -290,7 +290,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(/Big Blind 300/.test(E.$('#pkrow').textContent)&&ev(E,'state.chips')===700,'P12 Kopfzeile zeigt die Hand, Einsatz abgebucht');
   ok(E.play({failSent:true,failType:true}),'P13 Hand mit lauter Fehlern läuft durch');
   ok(ev(E,'state.chips')===700&&/×0/.test(E.$('#epay').textContent)&&/Einsatz weg/.test(E.$('#epay').textContent)&&!!E.$('#egem.zero')&&E.$('#egn').textContent==='0'&&!E.$('#ertitle'),'P14 ×0: graue 0, keine Auszahlung, Einsatz weg (für Screenreader)');
-  ok(ev(E,'QUIPS.de.pay_zero').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&E.$$('.porow .pochip use[href="#chip-grey"]').length===5,'P14b ×0: bissiger Spruch, fünf graue Ergebnis-Chips');
+  ok(ev(E,'QUIPS.de.pay_zero').includes(E.$('#dzbody .bubble').getAttribute('aria-label'))&&E.$$('.porow .pochip use[href="#chip-grey"]').length===ev(E,'S.items.filter(x=>x.kind!=="intro").length'),'P14b ×0: bissiger Spruch, graue Ergebnis-Chips für alle Module');
   E.click(E.$('#fin'));
   // Pausieren, keine Verwerfen-Möglichkeit, Verfallen um Mitternacht
   ev(E,"window.__autoBlind='small'");nextDay(E);
@@ -343,7 +343,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   const E=fresh();known(E,6);
   const right=()=>{const w=T(E.$('.bigword')),idGl=!!E.$('.bigword[lang="id"]'),D=DICT.de;E.type(idGl?D.get(w.toLowerCase()).gl.split(' / ')[0].replace(/\(.*?\)/g,'').trim():[...D.values()].find(x=>x.gl===w).id);};
   ev(E,"state.chips=1000;state.chipShown=1000;save();render();window.__autoBlind='big';window.__force='typing'");
-  E.click(E.$('#start'));skipIntro(E);
+  E.click(E.$('#start'));skipIntro(E);skipIntro(E);   // Version 181: Big Blind hat zwei Kennenlernen
   ok(!!E.$('.ctrack .dchip.now')&&!E.$('.ctrack .sh'),'Q1 Aktuelles Modul: gestrichelter Chip');
   right();
   ok(E.$('#pkmult').classList.contains('up')&&E.$('#pkmult .n').textContent==='1','Q2 Geschafft: Multiplikator springt auf ×1');
@@ -489,6 +489,32 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
   ok(!!F.$('.smain')&&!F.$('.askbox'),'R9 Weiterspielen fragt nicht nach');
   ok(F.play(),'R10 Fortgesetzter Run läuft durch');
   ok(!F.st().run,'R11 Am Ende ist der offene Run gelöscht');
+}
+
+// --- V) Version 181: Big Blind = 2 neue Wörter + 8 Wiederholungen (Small bleibt 1 + 4)
+{
+  const E=fresh();known(E,14);
+  const sm=ev(E,'(()=>{const p=plan();return p.review.length+"|"+(p.fresh?1:0)+"|"+(p.fresh2?1:0)})()');
+  ok(sm==='4|1|0','V1 Small: 4 Wiederholungen + 1 neues Wort, kein zweites ('+sm+')');
+  const bg=ev(E,'(()=>{const p=plan("big");return p.review.length+"|"+(p.fresh&&p.fresh2&&p.fresh.k!==p.fresh2.k?1:0)})()');
+  ok(bg==='8|1','V2 Big: 8 Wiederholungen + 2 verschiedene neue Wörter ('+bg+')');
+  const ord=ev(E,'(()=>{const c=dailyCards("big");return c.map(x=>x.kind[0]).join("")})()');
+  ok(ord==='iirrrrrrrrff','V3 Big-Reihenfolge: 2 Kennenlernen, 8 Wiederholungen, 2 Abschlusstests ('+ord+')');
+  ok(ev(E,'(()=>{const c=dailyCards("big");return c[0].w.k===c[10].w.k&&c[1].w.k===c[11].w.k})()'),'V4 Abschlusstests gehören zu den beiden neuen Wörtern');
+  ev(E,`state.chips=1000;state.chipShown=1000;save();render();window.__autoBlind='big'`);
+  E.click(E.$('#start'));
+  ok(ev(E,'S.hand.blind')==='big'&&ev(E,'S.items.length')===12&&ev(E,'S.items.filter(x=>x.kind!=="intro").length')===10,'V5 Echte Big-Hand: 12 Karten, davon 10 gewertet');
+  ok(E.play(),'V6 Big-Hand läuft durch');
+  const s=E.st(),np=ev(E,'(()=>{const p=Object.values(state.progress.id);return p.length})()');
+  ok(np===16&&ev(E,'Object.values(state.progress.id).filter(q=>q.l>=1).length')===16,'V7 Beide neuen Wörter gelernt: 16 Wörter begonnen ('+np+')');
+  ev(E,"window.__autoBlind='small'");
+  // Kapitelrand: im aktiven Kapitel nur noch 1 neues Wort → zweites aus dem nächsten Kapitel
+  const F=fresh();
+  const r=ev(F,`(()=>{const L=LANGS.id,pr=state.progress.id=state.progress.id||{};const ac=activeCat(L);const cw=catWords(L,ac);cw.slice(0,cw.length-1).forEach(w=>pr[w.k]={l:1,d:'2000-01-01'});const p=plan('big');return [p.fresh.k===cw[cw.length-1].k,!!p.fresh2&&p.fresh2.k!==p.fresh.k&&!cw.some(w=>w.k===p.fresh2.k)].join()})()`);
+  ok(r==='true,true','V8 Nur noch 1 neues Wort im Kapitel: das zweite kommt aus dem nächsten Kapitel ('+r+')');
+  const none=ev(F,`(()=>{const L=LANGS.id,pr=state.progress.id;L.words.forEach(w=>pr[w.k]={l:1,d:'2000-01-01'});const p=plan('big');return p.review.length+"|"+(p.fresh?1:0)+"|"+(p.fresh2?1:0)})()`);
+  ok(none==='10|0|0','V9 Keine neuen Wörter mehr: Big hat 10 Wiederholungen ('+none+')');
+  ok(['blind_dewi','blind_self','blind_rescue','blind_none'].every(k=>ev(F,`QUIPS.de.${k}.every(q=>/zwei|Zwei|ein neues Wort/.test(q))`)&&ev(F,`QUIPS.en.${k}.every(q=>/two|Two|one new word/.test(q))`)),'V10 Alle Blind-Sprüche nennen die Zahl der neuen Wörter');
 }
 console.log(fails?('\n'+fails+' FEHLER'):'\nALLES OK');
 setTimeout(()=>process.exit(fails?1:0),400);

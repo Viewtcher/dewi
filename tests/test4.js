@@ -149,123 +149,13 @@ function known(E,n,d='2000-01-01'){   // n bekannte Wörter, fällig
   ev(E,`(()=>{const L=LANGS.id;state.progress.id=state.progress.id||{};L.words.slice(0,${n}).forEach(w=>{state.progress.id[w.k]={l:1,d:'${d}'}});save();render();})()`);
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
-const reelWords=E=>ev(E,"LANGS.id.words.filter(w=>MOD.reels.can(w)).map(w=>w.k)");
-function knownReels(E,n){
-  const ks=reelWords(E).slice(0,n);
+const sentWords=E=>ev(E,"LANGS.id.words.filter(w=>{const s=sentOf(w);return s&&tokensOf(s.id).length>=3&&tokensOf(s.plain).length>=3}).map(w=>w.k)");
+function knownReels(E,n){   // Name aus der Reels-Zeit beibehalten: lernt die ersten n Wörter mit längerem Satz
+  const ks=sentWords(E).slice(0,n);
   ev(E,`(()=>{state.progress.id=state.progress.id||{};${JSON.stringify(ks)}.forEach(k=>{state.progress.id[k]={l:1,d:'2000-01-01'}});save();render();})()`);
   return ks;
 }
-const RL=E=>ev(E,'S.cur.rl');
-// aktive (linkeste offene) Walze auf Wortindex k stoppen; k=null: richtiges Wort; Hebel wird bei Bedarf gezogen
-function act(E,k){
-  ev(E,`(()=>{const R=S.cur.rl;if(R.state==='idle')R.pull();const r=R.reels.find(x=>x.st!=='ok');r.p=${k===null?'r.right':k};r.v=0;R.stopNext();R.frame(1);})()`);
-}
-const tapCab=E=>E.$('#cab').dispatchEvent(new E.w.Event('pointerdown',{bubbles:true,cancelable:true}));
-const states=E=>ev(E,'S.cur.rl.reels.map(r=>r.st).join()');
-function toReels(E,force=true){
-  if(force)ev(E,"window.__force='reels'");
-  E.click(E.$('#start'));
-  let g=0;while(!E.$('#cab')&&g++<30){if(E.$('#wtap')||E.$('.iopt')){skipIntro(E);continue;}if(E.$('#go')){E.click(E.$('#go'));continue;}if(E.$('#nx')){E.click(E.$('#nx'));continue;}if(E.$('#next')){E.click(E.$('#next'));continue;}if(E.$('#qf')){E.type('x');continue;}if(E.$('#chk')){E.click(E.$('#chk'));continue;}break;}
-}
 (async()=>{
-{
-  const E=fresh();
-  const ks=reelWords(E);
-  ok(ks.length>20,'R1 Viele Wörter mit Satz ab 3 Wörtern ('+ks.length+')');
-  ok(ev(E,"LANGS.id.words.some(w=>!MOD.reels.can(w))&&MOD.reels.fallback==='choice'"),'R2 Wörter ohne langen Satz fallen zurück');
-  ok(ev(E,"(()=>{let bad=0;LANGS.id.words.filter(x=>MOD.reels.can(x)).forEach(w=>{for(let i=0;i<4;i++){const D=reelsData(w);if(!D||D.reels.length!==3||D.reels.some((r,j)=>r.words.length!==3||r.words[r.right]!==D.right[j]||new Set(r.words.map(normId)).size!==3))bad++;}});return bad;})()")===0,'R3 Jede Walze: genau 3 Wörter, richtiges enthalten, keine Dopplungen');
-  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='reels')"),'R5 Solo-Kachel vorhanden');
-}
-// --- Survival Solo: Ablauf Hebel / langsam / links nach rechts
-{
-  const E=fresh();knownReels(E,8);
-  ev(E,'state.done[today()]=true;save();render()');
-  E.w.navigator.vibrate=function(p){(E.vib=E.vib||[]).push(p);return true;};
-  E.click(E.$('#gm'));E.click(E.$('#surv'));
-  ok(!!E.$('[data-playmode="reels"]'),'S1 Playmode Reels als Solo-Kachel');
-  E.click(E.$('[data-playmode="reels"]'));
-  ok(!!E.$('#cab')&&E.$$('.reel').length===3&&/Reels/.test(E.$('.kicker').textContent),'S2 Automat mit 3 Walzen');
-  ok(!!E.$('#rlm .dw.m-cash'),'S3 Dewi mit Dollar-Augen unter dem Automat');
-  ok(ev(E,'QUIPS.de.reels_ready').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'S4 Spruch „bereit“');
-  ok(states(E)==='fast,fast,fast'&&ev(E,'S.cur.rl.reels.every(r=>r.v>=8)'),'S5 Alle drei rasen von Anfang an');
-  E.w.__run('S.cur.rl.frame(.3)');
-  ok(ev(E,'S.cur.rl.reels.every(r=>r.p!==undefined)')&&E.$$('.reel.blur').length===3,'S5b Walzen verschwommen beim Rasen');
-  tapCab(E);ok(states(E)==='fast,fast,fast','S6 Vor dem Hebel bewirkt Tippen nichts');
-  ev(E,'S.cur.rl.pull()');
-  ok(states(E)==='slow,fast,fast','S7 Hebel macht nur die linke Walze langsam');
-  ev(E,'S.cur.rl.frame(1.5)');
-  ok(ev(E,'S.cur.rl.reels[0].v')<3.2&&ev(E,'S.cur.rl.reels[1].v')>8,'S8 Links langsam (<3,2), Rest bleibt schnell');
-  ok(E.$$('.reel')[0].classList.contains('act')&&!E.$$('.reel')[0].classList.contains('blur')&&E.$('#cab').dataset.st==='spin','S8b Aktive Walze markiert und scharf');
-  ok((E.vib||[]).length>0,'S9 Haptik beim Hebel');
-  act(E,null);
-  ok(states(E)==='ok,slow,fast'&&E.$$('.reel')[0].classList.contains('ok'),'S11 Richtig: Walze 1 grün, Walze 2 wird automatisch langsam');
-  ok(ev(E,'QUIPS.de.reels_ok').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'S12 Spruch wechselt');
-  act(E,null);ok(states(E)==='ok,ok,slow','S13 Dann Walze 3');
-  act(E,null);
-  ok(ev(E,'S.cur.rl.state')==='over'&&E.$('#cab').dataset.st==='jack'&&E.$('#sign').textContent==='JACKPOT','S14 Alles beim ersten Stopp: Jackpot');
-  ok(E.$$('.reel.gold').length===3,'S15 Walzen golden');
-  ok(!!E.$('.rl-swipe')&&!E.$('#nx')&&!E.$('.res')&&E.$('#cab').getAttribute('role')==='button','S15b Nach dem Ende: Wisch-Hinweis, noch kein Weiter-Knopf');
-  ok(E.$('.smain.rl').dataset.end==='win'&&E.$('.smain.rl').dataset.lk==='3','S15c Zustand für die Musik');
-  {const pd=new E.w.Event('pointerdown',{bubbles:true,cancelable:true});pd.clientX=200;E.$('#cab').dispatchEvent(pd);const pm=new E.w.Event('pointermove',{bubbles:true});pm.clientX=0;E.$('#cab').dispatchEvent(pm);E.$('#cab').dispatchEvent(new E.w.Event('pointerup',{bubbles:true}));}
-  ok(!E.$('.res'),'S15d Zu früh gewischt (Sperre nach dem Ende) ignoriert');
-  ev(E,'S.cur.rl.tossAt=0');
-  {const pd=new E.w.Event('pointerdown',{bubbles:true,cancelable:true});pd.clientX=200;E.$('#cab').dispatchEvent(pd);const pm=new E.w.Event('pointermove',{bubbles:true});pm.clientX=100;E.$('#cab').dispatchEvent(pm);E.$('#cab').dispatchEvent(new E.w.Event('pointerup',{bubbles:true}));}
-  ok(!E.$('.res')&&E.$('#cab').style.display!=='none','S15e Zu kurz gewischt: Automat federt zurück');
-  {const pd=new E.w.Event('pointerdown',{bubbles:true,cancelable:true});pd.clientX=300;E.$('#cab').dispatchEvent(pd);const pm=new E.w.Event('pointermove',{bubbles:true});pm.clientX=100;E.$('#cab').dispatchEvent(pm);E.$('#cab').dispatchEvent(new E.w.Event('pointerup',{bubbles:true}));}
-  ok(/translate\(-150%/.test(E.$('#cab').style.transform),'S15f Nach links gewischt: Automat fliegt weg');
-  await sleep(600);
-  ok(E.$('#cab').style.display==='none'&&!!E.$('#nx')&&!!E.$('.res.good')&&!E.$('.rl-swipe')&&E.$('.smain.rl').classList.contains('done'),'S15g Danach Ergebnis und Weiter-Knopf, Hinweis weg');
-  ok(ev(E,'QUIPS.de.reels_toss').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'S15h Spruch zum Wurf');
-  ok(!!E.$('.res.good')&&E.$('.res').getAttribute('data-snd')==='1','S16 Ergebnis richtig, kein doppelter Auto-Sound');
-  ok(!!E.d.querySelector('.drain')&&E.d.querySelectorAll('.drain i').length>=40,'S16b Diamantenregen');
-  ok(ev(E,'QUIPS.de.reels_jackpot').length>=2,'S17 Jackpot-Sprüche vorhanden');
-  ok(ev(E,'S.score')===ev(E,'survPoints("reels",1,true)')&&ev(E,'S.right')===1,'S18 Jackpot ändert nichts am Score');
-  ok(E.vib.some(p=>Array.isArray(p)&&p.length>=5),'S19 Haptik-Salve beim Jackpot');
-  E.click(E.$('#nx'));
-  ok(!!E.$('#cab'),'S20 Nächste Karte wieder Reels (Solo)');
-  act(E,'(r.right+1)%3');ev(E,'S.cur.rl.toss(true)');
-  ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.lives')===2,'S21 Survival: erster Fehler verliert das Modul und ein Leben');
-  ok(!E.$('.pay')&&!E.$('.arr'),'S21b Keine rote Linie mehr');
-  ok(E.$$('.reel.rev').length>=2&&E.$('#cab').dataset.st==='lose','S22 Lösung wird auf den Walzen gezeigt');
-  ok(ev(E,'QUIPS.de.reels_lose').length>=2&&ev(E,'QUIPS.en.reels_toss').length>=2,'S23 Verlierer- und Wurf-Sprüche (de/en)');
-}
-// --- Fehler: grau, rütteln, nochmal; Reihenfolge links nach rechts
-{
-  const E=fresh();knownReels(E,8);
-  toReels(E);
-  ok(!!E.$('#cab'),'D1 Reels erscheinen in der Daily Round');
-  ev(E,'S.cur.rl.pull()');
-  act(E,'(r.right+1)%3');
-  ok(ev(E,'S.cur.rl.miss')===1&&ev(E,'S.cur.rl.state')==='spin'&&states(E)==='no,fast,fast','D2 Fehler: Walze 1 grau und rüttelt, Rest unverändert');
-  ok(E.$$('.reel')[0].classList.contains('no'),'D2b Klasse „no“ (grau)');
-  tapCab(E);ok(states(E)==='no,fast,fast','D2c Tippen während des Rüttelns ignoriert');
-  ok(ev(E,'QUIPS.de.reels_bad').includes(E.$('#rlm .bubble').getAttribute('aria-label')),'D3 Fehler-Spruch');
-  ev(E,'S.cur.rl.frame(.7)');
-  ok(states(E)==='slow,fast,fast'&&!E.$$('.reel')[0].classList.contains('no'),'D4 Danach ist Walze 1 wieder die aktive langsame');
-  act(E,null);act(E,null);act(E,null);ev(E,'S.cur.rl.toss(true)');
-  ok(E.$('#cab').dataset.st==='win'&&!!E.$('.res.good')&&ev(E,'S.cur.ok')===true,'D5 Gewonnen, aber kein Jackpot');
-  ok(!E.$$('.reel.gold').length,'D6 Keine goldenen Walzen ohne Jackpot');
-  ok(E.d.querySelectorAll('.drain i').length>=20,'D6b Diamantenregen auch ohne Jackpot');
-}
-{
-  const E=fresh();knownReels(E,8);toReels(E);
-  ev(E,'S.cur.rl.pull()');
-  act(E,'(r.right+1)%3');ev(E,'S.cur.rl.frame(.7)');
-  act(E,'(r.right+2)%3');ev(E,'S.cur.rl.toss(true)');
-  ok(ev(E,'S.cur.rl.state')==='over'&&!!E.$('.res.bad')&&ev(E,'S.cur.ok')===false,'D7 Zweiter Fehler: Modul verloren');
-  ok(ev(E,'S.wrong')>=1,'D8 Als Fehler gezählt');
-  ok(ev(E,"state.progress[curLang().id][S.cur.w.k].l")===0&&!/Stufe|Wiederholung/.test(E.$('.smain').textContent),'D9 Wort fällt auf Stufe 0, aber kein geschriebener Hinweis mehr dazu (Version 149)');
-}
-// --- Reduzierte Bewegung: Liste
-{
-  const E=fresh();knownReels(E,8);
-  ev(E,'state.done[today()]=true;save();render()');
-  E.w.matchMedia=()=>({matches:true,addEventListener(){},addListener(){}});
-  E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
-  ok(E.$$('.rl-pick').length===3&&!E.$('#cab'),'L1 Bei reduzierter Bewegung eine Auswahlliste statt Automat');
-  ev(E,"(()=>{const R=S.cur.rl;R.reels.forEach((r,i)=>{document.querySelectorAll('.rl-pick')[i].querySelectorAll('.opt')[r.right].click();});})()");
-  ok(!!E.$('.res.good')&&ev(E,'S.cur.rl.state')==='over','L2 Liste: alle richtig gewinnt');
-}
 // --- Holo-Aufstieg (Version 129)
 {
   const E=fresh();
@@ -332,15 +222,15 @@ function toReels(E,force=true){
   ev(E,"state.mvol=0");ev(E,'musTick()');
   ok(ev(E,'MUS.mode')===null,'M9 Lautstärke 0 schaltet die Musik aus');
   ev(E,"state.mvol=35;state.music=true;musTick()");
-  // Reels: Synthwave
+  // Spiel-Zahnrad
   knownReels(E,8);ev(E,'state.done[today()]=true;save();render()');
-  E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="reels"]'));
+  E.click(E.$('#gm'));E.click(E.$('#surv'));E.click(E.$('[data-playmode="choice"]'));
   ok(!!E.$('.sin #setgear')&&!E.$('.sin .musbtn'),'M10 Zahnrad statt Lautsprecher im Modul (Version 148)');
   E.click(E.$('#setgear'));
   ok(!!E.$('#setov')&&!E.$('#setov').hidden&&E.$('#setov .card .eyebrow').textContent===ev(E,"t('Sound & Musik')"),'M10b Zahnrad öffnet Einstellungen übers Spiel, Sound-Karte ganz oben');
   E.click(E.$('#setov .backbtn'));
   ok(E.$('#setov').hidden&&!!E.$('.sin.hand, .sin')&&!!E.$('#quit'),'M10c Zurück führt ins laufende Spiel zurück, nichts wurde beendet');
-  ev(E,'musTick()');ok(ev(E,'MUS.mode')==='synth','M11 In Reels spielt der Synthwave-Soundtrack');
+  ev(E,'musTick()');ok(ev(E,'MUS.mode')==='lofi','M11 Im Modul spielt weiter Lo-Fi (Synthwave gab es nur in Reels)');
   E.click(E.$('#quit'));ev(E,'musTick()');ok(ev(E,'MUS.mode')==='lofi','M12 Zurück in der App wieder Lo-Fi');
   E.click(E.$('[data-v="settings"]'));
   ok(!!E.$('#sndcard #mvol'),'M13 Einstellungen: Musik-Regler in der Sound-Kachel');
@@ -351,7 +241,7 @@ function toReels(E,force=true){
 {
   const E=fresh();knownReels(E,8);
   ev(E,"window.__helpAuto=true");
-  for(const id of ['blocks','typing','swipe','gap','choice','reels']){
+  for(const id of ['blocks','typing','swipe','gap','choice']){
     const F=fresh();knownReels(F,id==='blocks'?300:8);
     ev(F,`window.__force='${id}'`);
     F.click(F.$('#start'));
@@ -359,16 +249,16 @@ function toReels(E,force=true){
     const b=F.$('.qh');
     ok(!!b&&b.dataset.help===id&&b.textContent==='?','H1 '+id+': Fragezeichen an der Aufgabe');
     ok(!F.$$('.hint').some(h=>/Setze|Wische die Karte|Was bedeutet|Die Walzen rasen/.test(h.textContent)),'H2 '+id+': keine Beschreibung mehr im Modul');
-    const pre=id==='reels'?F.$('#rlm .bubble'):F.$('.helpm .bubble');
+    const pre=F.$('.helpm .bubble');
     ok(!!pre&&!F.$('.helpm .dw.m-sigh'),'H3a '+id+': Dewi ist von Anfang an da und hat einen Spruch');
     F.click(b);
-    const bub=id==='reels'?F.$('#rlm .bubble'):F.$('.helpm .bubble');
-    const box=id==='reels'?F.$('#rlm'):F.$('.helpm');
+    const bub=F.$('.helpm .bubble');
+    const box=F.$('.helpm');
     const txt=bub.getAttribute('aria-label'),d=ev(F,`MOD.${id}.desc()`);
     ok(!!bub&&!F.$('.helppop')&&!F.$('.helpbg')&&!!box.querySelector('.dw.m-sigh'),'H3 '+id+': Dewi seufzt in der normalen Sprechblase');
     ok(txt.includes(d)&&/seufz/.test(txt)&&!/Fragezeichen/.test(txt),'H4 '+id+': Kurzbeschreibung + Seufzer, ohne Fragezeichen-Hinweis');
     F.click(b);
-    ok(!!(id==='reels'?F.$('#rlm .bubble'):F.$('.helpm .bubble')),'H5 '+id+': Dewi bleibt nach erneutem Tippen');
+    ok(!!(F.$('.helpm .bubble')),'H5 '+id+': Dewi bleibt nach erneutem Tippen');
   }
   const F=fresh();
   const seen=new Set();for(let i=0;i<60;i++)seen.add(ev(F,"sayQuip('help_x',{d:'X'}).text"));
@@ -407,7 +297,7 @@ function toReels(E,force=true){
 }
 // --- Solo-Queue ohne Ersatzmodul
 {
-  for(const pm of ['blocks','gap','choice','reels']){
+  for(const pm of ['blocks','gap','choice']){
     const F=fresh();knownReels(F,40);
     F.click(F.$('#gm'));F.click(F.$('#surv'));
     const tile=F.$('[data-playmode="'+pm+'"]');
@@ -475,38 +365,6 @@ function toReels(E,force=true){
     }else ok(true,'AL (kein Satz im Beispiel, übersprungen)');
   }else ok(false,'P3 kein Beispiel mit geschenktem Wort gefunden');
 }
-// --- Reels: nur mit bekannten Wörtern
-{
-  const E=fresh();ev(E,'window.__rlAll=false');
-  // Ohne Gelerntes darf Reels nur dort möglich sein, wo der Satz ausschließlich aus dem Zielwort selbst (und Namen) besteht
-  const bad0=ev(E,`(()=>{const L=curLang();state.progress.id={};return L.words.filter(w=>MOD.reels.can(w)).filter(w=>{const s=sentOf(w);const own=new Set(tokensOf(w.id).map(normId));return !tokensOf(s.id).every(tk=>own.has(normId(tk))||isName(tk));}).length;})()`);
-  ok(bad0===0,'R1 Ohne gelernte Wörter keine Reels mit fremden Wörtern ('+bad0+')');
-  const bad1=ev(E,`(()=>{const L=curLang();state.progress.id={};const w=L.words.find(x=>x.id==='selamat pagi');state.progress.id[w.k]={l:1,d:'2999-01-01'};
-    return L.words.filter(x=>MOD.reels.can(x)).filter(x=>{const s=sentOf(x);const kn=knownTokens(x);return !tokensOf(s.id).every(tk=>kn.has(normId(tk))||isName(tk));}).length;})()`);
-  ok(bad1===0,'R2 Ein einzelnes gelerntes Wort schaltet keine Sätze mit Unbekanntem frei ('+bad1+')');
-  // 3 Wörter, die zusammen im Satz stehen: Reels wird möglich
-  const r=ev(E,`(()=>{const L=curLang();state.progress.id={};
-    const s=Object.keys(SENT).map(k=>({k,s:SENT[k]})).find(x=>tokensOf(x.s.id).length===3&&tokensOf(x.s.id).every(tk=>L.words.some(w=>w.id.split(' ').length===1&&normId(w.id)===normId(tk)))&&L.words.some(w=>w.k===x.k));
-    if(!s)return {skip:true};
-    tokensOf(s.s.id).forEach(tk=>{const w=L.words.find(w=>w.id.split(' ').length===1&&normId(w.id)===normId(tk));state.progress.id[w.k]={l:1,d:'2999-01-01'};});
-    const w0=L.words.find(w=>w.k===s.k),D=reelsData(w0);
-    return {id:s.s.id,can:MOD.reels.can(w0),given:D?D.reels.filter(x=>x.given).length:-1};})()`);
-  ok(r.skip||(r.can===true&&r.given===0),'R3 Satz mit 3 gelernten Wörtern: Reels möglich, nichts vorgesetzt ('+JSON.stringify(r)+')');
-  // Stichprobe: nie eine Walze mit unbekanntem Wort, nie vorgesetzt
-  const E2=fresh();ev(E2,'window.__rlAll=false');knownReels(E2,300);
-  const q=ev(E2,`(()=>{const L=curLang();let n=0,bad=0,given=0;
-    for(const w of L.words){for(let k=0;k<3;k++){const D=reelsData(w);if(!D)continue;n++;const kn=knownTokens(w);
-      if(D.reels.some(x=>x.given))given++;
-      if(D.dir==='gl2id')D.reels.forEach((x,i)=>{if(!isName(D.right[i])&&!kn.has(normId(D.right[i])))bad++;});}}
-    return {n,bad,given};})()`);
-  ok(q.bad===0&&q.given===0,'R4 Nie ein unbekanntes Wort auf einer Walze, nie eine vorgesetzte Walze ('+q.n+' Durchläufe)');
-  // Solo-Kachel gesperrt, solange nichts passt
-  const F=fresh();ev(F,'window.__rlAll=false');ev(F,"state.progress.id={};save();render()");
-  const w0=ev(F,`(()=>{const L=curLang();state.progress.id={};L.words.slice(0,3).forEach(w=>{state.progress.id[w.k]={l:1,d:'2999-01-01'}});save();render();state.done[today()]=true;save();render();return 1;})()`);
-  F.click(F.$('#gm'));F.click(F.$('#surv'));
-  const bt=F.$('[data-playmode="reels"]');
-  ok(!!bt&&bt.disabled&&/Noch zu wenige/.test(bt.textContent),'R5 Reels-Solo bleibt gesperrt, bis genug passende Wörter gelernt sind');
-}
 // --- Auswahl/Lückensatz nur mit ganz bekannten Sätzen, Reels ohne grauen Rest
 {
   const E=fresh();ev(E,'window.__rlAll=false');
@@ -521,8 +379,6 @@ function toReels(E,force=true){
     return {none,sent:e.s.id,known:sentKnown(w0),choice:MOD.choice.can(w0),gap:MOD.gap.can(w0)};})()`);
   ok(r.none[0]===0&&r.none[1]===0,'K1 Lückensatz/Auswahl: nie ein Satz mit unbekannten Wörtern ('+r.none+')');
   ok(r.known===undefined||r.known===true&&r.choice===true,'K2 Ganz bekannter Satz ist für Auswahl möglich ('+JSON.stringify(r)+')');
-  const F=fresh();knownReels(F,300);toReels(F);
-  ok(!!F.$('#cab')&&!F.$('.rl-ctx'),'K3 Reels: kein grauer Rest des Satzes mehr');
 }
 // --- Englisch + Stimmung
 {
@@ -705,34 +561,75 @@ function toReels(E,force=true){
 // --- Shop (Version 138)
 {
   const E=fresh();
-  ev(E,"state.chips=10000;state.chipShown=10000;state.shields=0;state.owned=[];state.equip={};save();render()");
+  ev(E,"state.chips=20000;state.chipShown=20000;state.shields=0;state.owned=[];state.equip={};save();render()");
   const cards=E.$$('#app .gmcard');
   ok(cards.length===1&&!!cards[0].querySelector('#gm')&&!E.$('.shopcard')&&!!E.$('.bookcard'),'SP1 Hauptmenü: nur Gamemodes als Kachel, kein Shop-Kachel mehr (Version 140)');
   E.click(E.$('#chippill'));ok(!!E.$('#shop.sin.shop'),'SP2 Chip-Pille öffnet den Shop');
-  ok(E.$$('.shit').length===4&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell und Kopf, Aktion erst nach Antippen');
+  ok(E.$$('.shit').length===9&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&/GESICHT/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell, Kopf und Gesicht (Version 182), Aktion erst nach Antippen');
   E.click(E.$('[data-shop="fur:mitternacht"]'));
-  ok(/Kaufen · 6\.000/.test(E.$('#shact').textContent)&&E.$('.shdewi').innerHTML.includes('#5b4bb0')&&/Anprobe/.test(E.$('.shinfo').textContent),'SP4 Anprobe: Dewi trägt Mitternacht, Kaufen 6.000');
+  ok(/Kaufen · 8\.000/.test(E.$('#shact').textContent)&&E.$('.shdewi').innerHTML.includes('#5b4bb0')&&/Anprobe/.test(E.$('.shinfo').textContent),'SP4 Anprobe: Dewi trägt Mitternacht, Kaufen 8.000 (Version 182)');
   E.click(E.$('#shact'));
-  ok(ev(E,'state.chips')===4000&&ev(E,"state.owned.indexOf('fur:mitternacht')>=0")&&ev(E,'state.equip.fur')==='mitternacht'&&/Ausgerüstet/.test(E.$('#shact').textContent),'SP5 Gekauft und ausgerüstet, 6.000 abgezogen');
+  ok(ev(E,'state.chips')===12000&&ev(E,"state.owned.indexOf('fur:mitternacht')>=0")&&ev(E,'state.equip.fur')==='mitternacht'&&/Ausgerüstet/.test(E.$('#shact').textContent),'SP5 Gekauft und ausgerüstet, 8.000 abgezogen');
   E.click(E.$('[data-shop="head:schleife"]'));E.click(E.$('#shact'));
-  ok(ev(E,'state.chips')===1500&&ev(E,'state.equip.head')==='schleife'&&E.$('.shdewi').innerHTML.includes('translate(132 40) rotate(18)'),'SP6 Schleife gekauft (2.500) und auf dem Kopf');
+  ok(ev(E,'state.chips')===8500&&ev(E,'state.equip.head')==='schleife'&&E.$('.shdewi').innerHTML.includes('translate(132 40) rotate(18)'),'SP6 Schleife gekauft (3.500) und auf dem Kopf');
   E.click(E.$('[data-shop="fur:classic"]'));
   ok(/Ausrüsten/.test(E.$('#shact').textContent),'SP7 Gratis-Fell: Ausrüsten');
   E.click(E.$('#shact'));ok(ev(E,'state.equip.fur')==='classic','SP7b Zurück auf Classic');
+  ev(E,'state.chips=3000;state.chipShown=3000;save()');
   E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));
-  ok(E.d.documentElement.dataset.theme==='neon'&&/Noch 4\.500 Chips/.test(E.$('#shact').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP8 Theme als Vorschau, zu wenig Chips');
+  ok(E.d.documentElement.dataset.theme==='neon'&&/Noch 5\.000 Chips/.test(E.$('#shact').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP8 Theme als Vorschau, zu wenig Chips');
   E.click(E.$('#shmine'));ok(!E.$('[data-shop="theme:neon"]')&&!!E.$('[data-shop="theme:classic"]'),'SP9 „Nur meine“ zeigt nur Gekauftes');
   E.click(E.$('#shmine'));
   E.click(E.$('.shtab[data-tab="con"]'));E.click(E.$('[data-shop="shield"]'));E.click(E.$('#shact'));
-  ok(ev(E,'state.shields')===1&&ev(E,'state.chips')===500&&/Vorrat 1\/2/.test(E.$('.shlist').textContent),'SP10 Streak-Schutz gekauft (1.000), Vorrat 1/2');
+  ok(ev(E,'state.shields')===1&&ev(E,'state.chips')===2000&&/Vorrat 1\/2/.test(E.$('.shlist').textContent),'SP10 Streak-Schutz gekauft (1.000), Vorrat 1/2');
   E.click(E.$('#quit'));
   ok(!E.d.documentElement.dataset.theme&&!E.$('#shop')&&E.$('#app .mascot .dw').outerHTML.includes('translate(132 40)'),'SP11 Schließen: Theme-Vorschau weg, Dewi trägt die Schleife auch auf dem Startscreen');
   ok(ev(E,"Object.keys(DWM).every(m=>dwSvg(m).includes('translate(132 40) rotate(18)'))")&&ev(E,"Object.keys(DWM).every(m=>{const s=dwSvg(m),r=s.indexOf('rotate('),i=s.indexOf('translate(132 40)');return r>=0&&i>r;})"),'SP12 Schleife in allen Stimmungen in der gedrehten Kopf-Gruppe');
   ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('translate(132 40)')&&!ev(E,"stampSvg0('sly',0)").includes('#ff4f6d'),'SP13 Stempel zeigen Dewi im Original');
-  ev(E,"state.chips=7000;state.equip.theme='classic';save()");E.click(E.$('#chippill'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
+  ev(E,"state.chips=9000;state.equip.theme='classic';save()");E.click(E.$('#chippill'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
   ok(E.d.documentElement.dataset.theme==='neon'&&ev(E,'state.equip.theme')==='neon','SP14 Gekauftes Theme bleibt nach dem Schließen');
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
   ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
+}
+
+// --- Shop: mehr Outfits, Themes und Chip-Designs (Version 182)
+{
+  const E=fresh();
+  ev(E,"state.chips=100000;state.chipShown=100000;state.shields=0;state.owned=[];state.equip={};save();render()");
+  E.click(E.$('#chippill'));
+  ok(ev(E,"priceOf(SHOP_ITEMS.find(x=>x.id==='fur:minze'))")===3500&&ev(E,"priceOf(SHOP_ITEMS.find(x=>x.id==='head:krone'))")===8000&&ev(E,"priceOf(SHOP_ITEMS.find(x=>x.id==='fur:holo'))")===20000,'SX1 Preise: gewöhnlich 3.500, selten 8.000, legendär 20.000');
+  E.click(E.$('[data-shop="fur:minze"]'));ok(E.$('.shdewi').innerHTML.includes('#7fdcc0'),'SX2 Minze-Fell in der Anprobe');
+  E.click(E.$('[data-shop="fur:holo"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.fur')==='holo'&&ev(E,'state.chips')===80000&&E.$('.shdewi').innerHTML.includes('url(#dwHoloHood)'),'SX3 Holo-Fell gekauft und getragen');
+  E.click(E.$('[data-shop="head:krone"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.head')==='krone'&&ev(E,"Object.keys(DWM).every(m=>dwSvg(m).includes('translate(100 44) rotate(-5)'))"),'SX4 Krone in allen Stimmungen auf dem Kopf');
+  E.click(E.$('[data-shop="face:herzbrille"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.face')==='herzbrille'&&ev(E,'state.equip.head')==='krone'&&E.$('.shdewi').innerHTML.includes('#ff4f8b'),'SX5 Herzbrille neben der Krone (eigener Platz Gesicht)');
+  const hid=ev(E,"['shades','cash','sleep','superior','content'].map(m=>dwSvg(m).includes('#ff4f8b')).join()");
+  const shw=ev(E,"['haughty','bored','annoyed','sly','sad','surprised'].map(m=>dwSvg(m).includes('#ff4f8b')).join()");
+  ok(hid==='false,false,false,false,false'&&shw==='true,true,true,true,true,true','SX6 Brille weg bei Sonnenbrille, Dollar-Augen, Maske, geschlossenen Augen ('+hid+' | '+shw+')');
+  ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('#ff4f8b'),'SX7 Stempel zeigen Dewi ohne Brille');
+  E.click(E.$('[data-shop="face:none"]'));E.click(E.$('#shact'));ok(ev(E,'state.equip.face')==='none'&&!E.$('.shdewi').innerHTML.includes('#ff4f8b'),'SX8 Brille wieder abnehmen');
+  E.click(E.$('.shtab[data-tab="ext"]'));
+  ok(/THEMES/.test(E.$('.shlist').textContent)&&!/CHIPS/.test(E.$('.shlist').textContent)&&E.$$('.shit').length===4,'SX9 Extras: nur Themes (4 Artikel), keine Chip-Designs mehr (Version 183)');
+  E.click(E.$('[data-shop="theme:sunset"]'));ok(E.d.documentElement.dataset.theme==='sunset','SX10 Sonnenuntergang färbt als Vorschau');
+  E.click(E.$('[data-shop="theme:holo"]'));ok(E.d.documentElement.dataset.theme==='holo','SX11 Holo-Lounge färbt als Vorschau');
+  ok(ev(E,"[...document.querySelectorAll('style')].some(x=>x.textContent.includes(':root[data-theme=sunset]{')&&x.textContent.includes(':root[data-theme=holo]{'))"),'SX12 Sonnenuntergang und Holo-Lounge haben eigene Farben');
+  E.click(E.$('#shact'));
+  // Version 183: Scrollstand bleibt beim Antippen; Reiterwechsel beginnt oben
+  ev(E,"Object.defineProperty(Element.prototype,'scrollTop',{configurable:true,get(){return this._st||0},set(v){this._st=v}})");
+  E.click(E.$('.shtab[data-tab="cos"]'));
+  ev(E,"document.querySelector('.shlist').scrollTop=140;sheet.scrollTop=30");
+  E.click(E.$('[data-shop="face:herzbrille"]'));
+  ok(ev(E,"document.querySelector('.shlist').scrollTop")===140&&ev(E,'sheet.scrollTop')===30,'SX20 Antippen springt nicht nach oben (Scrollstand bleibt)');
+  E.click(E.$('[data-shop="fur:minze"]'));E.click(E.$('#shmine'));E.click(E.$('#shmine'));
+  ok(ev(E,"document.querySelector('.shlist').scrollTop")===140,'SX21 Auch „Nur meine“ behält die Stelle');
+  E.click(E.$('.shtab[data-tab="ext"]'));
+  ok(ev(E,"document.querySelector('.shlist').scrollTop")===0,'SX22 Reiterwechsel beginnt oben');
+  ok(ev(E,"[...document.querySelectorAll('style')].some(x=>x.textContent.includes('holospin')&&x.textContent.includes('data-theme=holo] body::after'))"),'SX23 Holo-Lounge hat den wandernden Regenbogen-Schimmer');
+  E.click(E.$('#quit'));
+  const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
+  ok(B.owned.includes('fur:holo')&&B.owned.includes('head:krone')&&!B.owned.some(x=>/^chip:/.test(x)),'SX19 Sicherung enthält die neuen Artikel');
 }
 // --- Startscreen mit Tab-Leiste, Shop statt Einstellungen (Version 139 entfernt sie, Version 144 bringt sie zurück)
 {
@@ -940,7 +837,7 @@ function toReels(E,force=true){
   const key=w=>ev(E,`slotKey(LANGS.id.words.find(x=>x.id==='${w}'))`);
   ok(key('tujuh')==='seven'&&key('jeruk')==='orange'&&key('nol')==='zero'&&key('halo')===null,'SL1 Symbolwörter erkannt (Zahlen, Früchte), andere nicht');
   ok(ev(E,"MOD.slots.can(LANGS.id.words.find(x=>x.id==='pisang'))&&!MOD.slots.can(LANGS.id.words.find(x=>x.id==='halo'))"),'SL2 Slots nur für Wörter mit Symbol');
-  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='slots')&&!!MOD.reels"),'SL3 Slots-Kachel neu, altes Reels bleibt');
+  ok(ev(E,"MODULES.filter(m=>m.solo).some(m=>m.id==='slots')&&!MOD.reels"),'SL3 Slots-Kachel da, Reels ist entfernt (Version 180)');
   ok(ev(E,"LANGS.id.words.filter(w=>slotKey(w)).length")>=18,'SL4 Indonesisch: mindestens 18 Symbolwörter');
   // nur ein bekanntes Symbolwort: erzwungener Dreier, eine Frage, kein Bonus
   ev(E,"(()=>{state.progress.id={'tujuh':{l:1,d:'2000-01-01'},'halo':{l:1,d:'2000-01-01'}};save();})()");

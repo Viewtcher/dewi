@@ -3,13 +3,13 @@
    Inventar im Zustand:  state.shields  Streak-Schutze im Vorrat (0 bis SHIELD_MAX)
                          state.shielded {Tag:true} Tage, die ein Schutz gerettet hat (eisblauer Stempel)
                          state.owned    gekaufte Artikel (ids), ab Version 139
-                         state.equip    aktuelle Auswahl {fur, head, theme}, ab Version 139
+                         state.equip    aktuelle Auswahl {fur, head, face, theme}, ab Version 139 (face ab Version 182)
 
    STREAK-SCHUTZ   schützt genau einen verpassten Tag und wird automatisch eingesetzt (applyShields beim Öffnen).
                    Er wird nur eingesetzt, wenn er die Serie wirklich rettet: Fehlen mehr Tage, als Schutze da sind,
                    bleiben alle im Vorrat. Der geschützte Tag zählt nicht mit (die Serienzahl bleibt stehen, auch für die
                    Bonus-Stufen), unterbricht die Serie aber nicht. */
-const SHOP_PRICE={shield:1000,common:2500,rare:6000,legendary:15000};
+const SHOP_PRICE={shield:1000,common:3500,rare:8000,legendary:20000};   // Version 182: etwas teurer (vorher 2.500 / 6.000 / 15.000)
 const SHIELD_MAX=2;
 
 /* Verpasste Tage seit der letzten gespielten Daily Round (ohne heute), die noch nicht geschützt sind */
@@ -58,22 +58,32 @@ function backupData(){const d={};Object.keys(state).forEach(k=>{if(BACKUP_SKIP.i
 const SHOP_ITEMS=[
   {id:'fur:classic',slot:'fur',val:'classic',name:'Classic',rar:'free'},
   {id:'fur:mitternacht',slot:'fur',val:'mitternacht',name:'Mitternacht',rar:'rare'},
+  {id:'fur:minze',slot:'fur',val:'minze',name:'Minze',rar:'common'},
+  {id:'fur:holo',slot:'fur',val:'holo',name:'Holo',rar:'legendary'},
   {id:'head:none',slot:'head',val:'none',name:'Nichts',rar:'free'},
   {id:'head:schleife',slot:'head',val:'schleife',name:'Schleife',rar:'common'},
+  {id:'head:krone',slot:'head',val:'krone',name:'Krone',rar:'rare'},
+  {id:'face:none',slot:'face',val:'none',name:'Nichts',rar:'free'},
+  {id:'face:herzbrille',slot:'face',val:'herzbrille',name:'Herzbrille',rar:'common'},
   {id:'theme:classic',slot:'theme',val:'classic',name:'Dewi Classic',rar:'free'},
   {id:'theme:neon',slot:'theme',val:'neon',name:'Neon-Nacht',rar:'rare'},
+  {id:'theme:sunset',slot:'theme',val:'sunset',name:'Sonnenuntergang',rar:'rare'},
+  {id:'theme:holo',slot:'theme',val:'holo',name:'Holo-Lounge',rar:'legendary'},
   {id:'shield',slot:'shield',val:'shield',name:'Streak-Schutz',rar:'shield'}
 ];
-const SHOP_TABS=[['cos','Cosmetics',['fur','head']],['ext','Extras',['theme']],['con','Consumables',['shield']]];
-const SHOP_SECT={fur:'FELL',head:'KOPF',theme:'THEMES',shield:'STREAK-SCHUTZ'};
+const SHOP_TABS=[['cos','Cosmetics',['fur','head','face']],['ext','Extras',['theme']],['con','Consumables',['shield']]];
+const SHOP_SECT={fur:'FELL',head:'KOPF',face:'GESICHT',theme:'THEMES',shield:'STREAK-SCHUTZ'};
 const SHOP_RAR={free:'Gratis',common:'Gewöhnlich',rare:'Selten',legendary:'Legendär',shield:'Verbrauch'};
 const SHOP_Q={'fur:classic':'Das Original. Zeitlos, wie ich.','fur:mitternacht':'Mitternacht mit Sternen. Endlich versteht mich jemand.',
   'head:none':'Ohne alles. Mutig.','head:schleife':'Die Schleife. Süß, aber gefährlich.',
+  'fur:minze':'Minze. Frisch, aber nicht aufdringlich.','fur:holo':'Holo. Ich schimmere, also bin ich.',
+  'head:krone':'Eine Krone. Endlich macht es jemand offiziell.','face:none':'Ohne Brille. Mein Blick reicht.','face:herzbrille':'Herzbrille. Ich sehe nur noch Chips.',
+  'theme:sunset':'Sonnenuntergang. Mein Licht, mein Auftritt.','theme:holo':'Holo-Lounge. Hier schimmert sogar die Luft.',
   'theme:classic':'Mein Wohnzimmer. Gemütlich dunkel.','theme:neon':'Neon-Nacht. Fühlt sich teuer an.',
   shield:'Ein Tag frei, ohne dass ich es merke. Fast.'};
 const priceOf=it=>it.rar==='free'?0:it.rar==='shield'?SHOP_PRICE.shield:SHOP_PRICE[it.rar];
 const ownsItem=it=>it.rar==='free'||(state.owned||[]).indexOf(it.id)>=0;
-const equipOf=slot=>(state.equip&&state.equip[slot])||(slot==='head'?'none':'classic');
+const equipOf=slot=>(state.equip&&state.equip[slot])||(slot==='head'||slot==='face'?'none':'classic');
 const isEquipped=it=>it.slot!=='shield'&&equipOf(it.slot)===it.val;
 function applyTheme(id){try{const r=document.documentElement;if(id&&id!=='classic')r.dataset.theme=id;else delete r.dataset.theme;}catch(e){}}
 let SHOP=null;   // {tab, sel, mine} solange der Shop offen ist
@@ -86,16 +96,19 @@ function openShop(){
 }
 function closeShop(){SHOP=null;applyTheme(equipOf('theme'));closeSheet();}
 function shopItemArt(it,size){
-  if(it.slot==='fur'||it.slot==='head')return dwSvg('haughty',{fur:it.slot==='fur'?it.val:'classic',head:it.slot==='head'?it.val:'none'});
-  if(it.slot==='theme'){const c=it.val==='neon'?['#0b1026','#141c3d','#35dcd2']:['#1a0f24','#251634','#f566b9'];
+  if(it.slot==='fur'||it.slot==='head'||it.slot==='face')return dwSvg('haughty',{fur:it.slot==='fur'?it.val:'classic',head:it.slot==='head'?it.val:'none',face:it.slot==='face'?it.val:'none'});
+  if(it.slot==='theme'){const c={neon:['#0b1026','#141c3d','#35dcd2'],sunset:['#2b1020','#4d2236','#ff9a4d'],holo:['#141225','#272350','linear-gradient(135deg,#ff92d2,#a888ff 45%,#35dcd2)']}[it.val]||['#1a0f24','#251634','#f566b9'];
     return `<span class="shsw" aria-hidden="true"><span style="background:${c[0]}"></span><span style="background:${c[1]}"></span><span style="background:${c[2]}"></span></span>`;}
   return `<span class="shshield">${SHIELD_SVG}</span>`;
 }
 function renderShop(){
   if(!SHOP)return;
+  /* Version 183: Scrollstand merken. Antippen baut den Shop neu auf; ohne das sprang die Liste nach oben. Beim Reiterwechsel startet sie oben. */
+  const oldList=$('.shlist',sheet),keepTop=oldList&&SHOP.shown===SHOP.tab?oldList.scrollTop:0,keepSheet=oldList&&SHOP.shown===SHOP.tab?sheet.scrollTop:0;
+  SHOP.shown=SHOP.tab;
   const sel=SHOP.sel,tab=SHOP_TABS.find(x=>x[0]===SHOP.tab);
   applyTheme(sel&&sel.slot==='theme'?sel.val:equipOf('theme'));   // Theme als Vorschau
-  const look={fur:sel&&sel.slot==='fur'?sel.val:equipOf('fur'),head:sel&&sel.slot==='head'?sel.val:equipOf('head')};
+  const look={fur:sel&&sel.slot==='fur'?sel.val:equipOf('fur'),head:sel&&sel.slot==='head'?sel.val:equipOf('head'),face:sel&&sel.slot==='face'?sel.val:equipOf('face')};
   const quip=sel?t(SHOP_Q[sel.id]):t('Probier ruhig an. Anfassen kostet nichts. Noch.');
   const info=sel?(ownsItem(sel)||sel.slot==='shield'?t(SHOP_RAR[sel.rar]):t('Anprobe')+' · '+t(SHOP_RAR[sel.rar])):'';
   const sections=tab[2].map(slot=>{
@@ -126,6 +139,7 @@ function renderShop(){
     <div class="shmine"><span id="shminel">${t('Nur meine')}</span><button type="button" role="switch" class="shsw2${SHOP.mine?' on':''}" id="shmine" aria-checked="${SHOP.mine}" aria-labelledby="shminel"><i></i></button></div>
     <div class="shlist">${sections}</div>
     <button class="btn primary block actbtn" id="shact" type="button"${off?' aria-disabled="true"':''} data-act="${act}">${esc(label)}</button></div>`;
+  const nl=$('.shlist',sheet);if(nl){nl.scrollTop=keepTop;}sheet.scrollTop=keepSheet;
   $('#quit').onclick=closeShop;
   $$('.shtab',sheet).forEach(b=>b.onclick=()=>{SHOP.tab=b.dataset.tab;SHOP.sel=null;renderShop();});
   $('#shmine').onclick=()=>{SHOP.mine=!SHOP.mine;renderShop();};

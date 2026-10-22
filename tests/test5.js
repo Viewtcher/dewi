@@ -197,7 +197,7 @@ const Q=(E,c)=>E.w.__run(c);
  for(let tr=0;tr<10;tr++){
   const E=env({ui:'de',lang:'en',progress:{en:prog},list:{},daily:{},done:{},form:{}},'de');
   E.click(E.$('#start'));let g=0;
-  const check=()=>{const k=(E.$('.kicker')||{}).textContent||'';const mod=/Bausteine/.test(k)?'blocks':/Reels/.test(k)?'reels':/Reihenfolge/.test(k)?'order':/Lückensatz/.test(k)?'gap':/Auswahl/.test(k)?'choice':null;
+  const check=()=>{const k=(E.$('.kicker')||{}).textContent||'';const mod=/Bausteine/.test(k)?'blocks':/Reihenfolge/.test(k)?'order':/Lückensatz/.test(k)?'gap':/Auswahl/.test(k)?'choice':null;
     if(!mod)return;const sb=E.$('.sentbox');if(!sb)return;
     const key=mod+':'+sb.textContent;if(seenMod[key])return;seenMod[key]=1;
     const marked=sb.querySelectorAll('.slot,b').length;

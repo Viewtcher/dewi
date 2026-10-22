@@ -7,7 +7,7 @@
    - Drei gleiche Symbole: nur eine Frage. Echter Dreier (ab 3 bekannten) = Jackpot-Show.
    - Alle richtig: im Survival doppelte Punkte (nicht beim erzwungenen Dreier).
    - Falsche Antwort-Option: ein Wort, das man schon kennt (bevorzugt ein anderes Symbolwort).
-   Das alte Modul Reels bleibt unverändert daneben bestehen. */
+   (Das frühere Modul Reels wurde in Version 180 entfernt; seine Sprüche `reels_*` und der Automaten-Stil sind geblieben.) */
 
 const SL_NUM=['zero','one','two','three','four','five','six','seven','eight','nine','ten'];
 const SL_FRUIT=['apple','banana','orange','lemon','mango','pineapple','watermelon','coconut'];
