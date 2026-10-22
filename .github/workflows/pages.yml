@@ -53,13 +53,13 @@ jobs:
         run: npm ci
 
       - name: Test 2
-        run: node tests/test2.js
+        run: node --max-old-space-size=4096 tests/test2.js
       - name: Test 3
-        run: node tests/test3.js
+        run: node --max-old-space-size=4096 tests/test3.js
       - name: Test 4
-        run: node tests/test4.js
+        run: node --max-old-space-size=4096 tests/test4.js
       - name: Test 5
-        run: node tests/test5.js
+        run: node --max-old-space-size=4096 tests/test5.js
 
       - name: Webseite zusammenstellen (nur index.html und icon.png)
         run: |

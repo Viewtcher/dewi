@@ -561,34 +561,76 @@ function knownReels(E,n){   // Name aus der Reels-Zeit beibehalten: lernt die er
 // --- Shop (Version 138)
 {
   const E=fresh();
-  ev(E,"state.chips=10000;state.chipShown=10000;state.shields=0;state.owned=[];state.equip={};save();render()");
+  ev(E,"state.chips=20000;state.chipShown=20000;state.shields=0;state.owned=[];state.equip={};save();render()");
   const cards=E.$$('#app .gmcard');
   ok(cards.length===1&&!!cards[0].querySelector('#gm')&&!E.$('.shopcard')&&!!E.$('.bookcard'),'SP1 Hauptmenü: nur Gamemodes als Kachel, kein Shop-Kachel mehr (Version 140)');
   E.click(E.$('#chippill'));ok(!!E.$('#shop.sin.shop'),'SP2 Chip-Pille öffnet den Shop');
-  ok(E.$$('.shit').length===4&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell und Kopf, Aktion erst nach Antippen');
+  ok(E.$$('.shit').length===9&&/FELL/.test(E.$('.shlist').textContent)&&/KOPF/.test(E.$('.shlist').textContent)&&/GESICHT/.test(E.$('.shlist').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP3 Cosmetics: Fell, Kopf und Gesicht (Version 182), Aktion erst nach Antippen');
   E.click(E.$('[data-shop="fur:mitternacht"]'));
-  ok(/Kaufen · 6\.000/.test(E.$('#shact').textContent)&&E.$('.shdewi').innerHTML.includes('#5b4bb0')&&/Anprobe/.test(E.$('.shinfo').textContent),'SP4 Anprobe: Dewi trägt Mitternacht, Kaufen 6.000');
+  ok(/Kaufen · 8\.000/.test(E.$('#shact').textContent)&&E.$('.shdewi').innerHTML.includes('#5b4bb0')&&/Anprobe/.test(E.$('.shinfo').textContent),'SP4 Anprobe: Dewi trägt Mitternacht, Kaufen 8.000 (Version 182)');
   E.click(E.$('#shact'));
-  ok(ev(E,'state.chips')===4000&&ev(E,"state.owned.indexOf('fur:mitternacht')>=0")&&ev(E,'state.equip.fur')==='mitternacht'&&/Ausgerüstet/.test(E.$('#shact').textContent),'SP5 Gekauft und ausgerüstet, 6.000 abgezogen');
+  ok(ev(E,'state.chips')===12000&&ev(E,"state.owned.indexOf('fur:mitternacht')>=0")&&ev(E,'state.equip.fur')==='mitternacht'&&/Ausgerüstet/.test(E.$('#shact').textContent),'SP5 Gekauft und ausgerüstet, 8.000 abgezogen');
   E.click(E.$('[data-shop="head:schleife"]'));E.click(E.$('#shact'));
-  ok(ev(E,'state.chips')===1500&&ev(E,'state.equip.head')==='schleife'&&E.$('.shdewi').innerHTML.includes('translate(132 40) rotate(18)'),'SP6 Schleife gekauft (2.500) und auf dem Kopf');
+  ok(ev(E,'state.chips')===8500&&ev(E,'state.equip.head')==='schleife'&&E.$('.shdewi').innerHTML.includes('translate(132 40) rotate(18)'),'SP6 Schleife gekauft (3.500) und auf dem Kopf');
   E.click(E.$('[data-shop="fur:classic"]'));
   ok(/Ausrüsten/.test(E.$('#shact').textContent),'SP7 Gratis-Fell: Ausrüsten');
   E.click(E.$('#shact'));ok(ev(E,'state.equip.fur')==='classic','SP7b Zurück auf Classic');
+  ev(E,'state.chips=3000;state.chipShown=3000;save()');
   E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));
-  ok(E.d.documentElement.dataset.theme==='neon'&&/Noch 4\.500 Chips/.test(E.$('#shact').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP8 Theme als Vorschau, zu wenig Chips');
+  ok(E.d.documentElement.dataset.theme==='neon'&&/Noch 5\.000 Chips/.test(E.$('#shact').textContent)&&E.$('#shact').getAttribute('aria-disabled')==='true','SP8 Theme als Vorschau, zu wenig Chips');
   E.click(E.$('#shmine'));ok(!E.$('[data-shop="theme:neon"]')&&!!E.$('[data-shop="theme:classic"]'),'SP9 „Nur meine“ zeigt nur Gekauftes');
   E.click(E.$('#shmine'));
   E.click(E.$('.shtab[data-tab="con"]'));E.click(E.$('[data-shop="shield"]'));E.click(E.$('#shact'));
-  ok(ev(E,'state.shields')===1&&ev(E,'state.chips')===500&&/Vorrat 1\/2/.test(E.$('.shlist').textContent),'SP10 Streak-Schutz gekauft (1.000), Vorrat 1/2');
+  ok(ev(E,'state.shields')===1&&ev(E,'state.chips')===2000&&/Vorrat 1\/2/.test(E.$('.shlist').textContent),'SP10 Streak-Schutz gekauft (1.000), Vorrat 1/2');
   E.click(E.$('#quit'));
   ok(!E.d.documentElement.dataset.theme&&!E.$('#shop')&&E.$('#app .mascot .dw').outerHTML.includes('translate(132 40)'),'SP11 Schließen: Theme-Vorschau weg, Dewi trägt die Schleife auch auf dem Startscreen');
   ok(ev(E,"Object.keys(DWM).every(m=>dwSvg(m).includes('translate(132 40) rotate(18)'))")&&ev(E,"Object.keys(DWM).every(m=>{const s=dwSvg(m),r=s.indexOf('rotate('),i=s.indexOf('translate(132 40)');return r>=0&&i>r;})"),'SP12 Schleife in allen Stimmungen in der gedrehten Kopf-Gruppe');
   ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('translate(132 40)')&&!ev(E,"stampSvg0('sly',0)").includes('#ff4f6d'),'SP13 Stempel zeigen Dewi im Original');
-  ev(E,"state.chips=7000;state.equip.theme='classic';save()");E.click(E.$('#chippill'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
+  ev(E,"state.chips=9000;state.equip.theme='classic';save()");E.click(E.$('#chippill'));E.click(E.$('.shtab[data-tab="ext"]'));E.click(E.$('[data-shop="theme:neon"]'));E.click(E.$('#shact'));E.click(E.$('#quit'));
   ok(E.d.documentElement.dataset.theme==='neon'&&ev(E,'state.equip.theme')==='neon','SP14 Gekauftes Theme bleibt nach dem Schließen');
   const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
   ok(B.owned.length===3&&B.equip.theme==='neon'&&B.shields===1,'SP15 Sicherung enthält Käufe und Auswahl');
+  try{E.w.close();}catch(e){}
+}
+
+// --- Shop: mehr Outfits, Themes und Chip-Designs (Version 182)
+{
+  const E=fresh();
+  ev(E,"state.chips=100000;state.chipShown=100000;state.shields=0;state.owned=[];state.equip={};save();render()");
+  E.click(E.$('#chippill'));
+  ok(ev(E,"priceOf(SHOP_ITEMS.find(x=>x.id==='fur:minze'))")===3500&&ev(E,"priceOf(SHOP_ITEMS.find(x=>x.id==='head:krone'))")===8000&&ev(E,"priceOf(SHOP_ITEMS.find(x=>x.id==='fur:holo'))")===20000,'SX1 Preise: gewöhnlich 3.500, selten 8.000, legendär 20.000');
+  E.click(E.$('[data-shop="fur:minze"]'));ok(E.$('.shdewi').innerHTML.includes('#7fdcc0'),'SX2 Minze-Fell in der Anprobe');
+  E.click(E.$('[data-shop="fur:holo"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.fur')==='holo'&&ev(E,'state.chips')===80000&&E.$('.shdewi').innerHTML.includes('url(#dwHoloHood)'),'SX3 Holo-Fell gekauft und getragen');
+  E.click(E.$('[data-shop="head:krone"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.head')==='krone'&&ev(E,"Object.keys(DWM).every(m=>dwSvg(m).includes('translate(100 44) rotate(-5)'))"),'SX4 Krone in allen Stimmungen auf dem Kopf');
+  E.click(E.$('[data-shop="face:herzbrille"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.face')==='herzbrille'&&ev(E,'state.equip.head')==='krone'&&E.$('.shdewi').innerHTML.includes('#ff4f8b'),'SX5 Herzbrille neben der Krone (eigener Platz Gesicht)');
+  const hid=ev(E,"['shades','cash','sleep','superior','content'].map(m=>dwSvg(m).includes('#ff4f8b')).join()");
+  const shw=ev(E,"['haughty','bored','annoyed','sly','sad','surprised'].map(m=>dwSvg(m).includes('#ff4f8b')).join()");
+  ok(hid==='false,false,false,false,false'&&shw==='true,true,true,true,true,true','SX6 Brille weg bei Sonnenbrille, Dollar-Augen, Maske, geschlossenen Augen ('+hid+' | '+shw+')');
+  ok(!ev(E,"dwSvg('haughty',DW_PLAIN)").includes('#ff4f8b'),'SX7 Stempel zeigen Dewi ohne Brille');
+  E.click(E.$('[data-shop="face:none"]'));E.click(E.$('#shact'));ok(ev(E,'state.equip.face')==='none'&&!E.$('.shdewi').innerHTML.includes('#ff4f8b'),'SX8 Brille wieder abnehmen');
+  E.click(E.$('.shtab[data-tab="ext"]'));
+  ok(/THEMES/.test(E.$('.shlist').textContent)&&/CHIPS/.test(E.$('.shlist').textContent)&&E.$$('.shit').length===8,'SX9 Extras: Themes und Chips (8 Artikel)');
+  E.click(E.$('[data-shop="theme:sunset"]'));ok(E.d.documentElement.dataset.theme==='sunset','SX10 Sonnenuntergang färbt als Vorschau');
+  E.click(E.$('[data-shop="theme:holo"]'));ok(E.d.documentElement.dataset.theme==='holo','SX11 Holo-Lounge färbt als Vorschau');
+  ok(ev(E,"[...document.querySelectorAll('style')].some(x=>x.textContent.includes(':root[data-theme=sunset]{')&&x.textContent.includes(':root[data-theme=holo]{'))"),'SX12 Sonnenuntergang und Holo-Lounge haben eigene Farben');
+  E.click(E.$('[data-shop="chip:pixel"]'));
+  ok(E.$('.shdewi .shchips')&&E.$$('.shdewi .shchips use').length===3&&[...E.$$('.shdewi .shchips use')].every(u=>/#chp-pixel-/.test(u.getAttribute('href'))),'SX13 Chip-Anprobe zeigt drei Chips im Design');
+  E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.chip')==='pixel'&&ev(E,"document.getElementById('chip-pink').innerHTML.includes('polygon')"),'SX14 Retro-Pixel gekauft: Chips der ganzen App im Pixel-Design');
+  E.click(E.$('[data-shop="chip:neon"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.chip')==='neon'&&ev(E,"document.getElementById('chip-gold').innerHTML.includes('#35dcd2')"),'SX15 Neon-Chips ausgerüstet');
+  E.click(E.$('[data-shop="chip:marke"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.chip')==='marke'&&ev(E,"document.getElementById('chip-holo').innerHTML.includes('stroke-linecap=\"round\"')"),'SX16 Gold-Marke ausgerüstet (Perlenrand)');
+  E.click(E.$('[data-shop="chip:classic"]'));E.click(E.$('#shact'));
+  ok(ev(E,'state.equip.chip')==='classic'&&!ev(E,"document.getElementById('chip-pink').innerHTML.includes('polygon')"),'SX17 Zurück zum Dewi-Chip');
+  ok(ev(E,"CHIP_TONES.every(tn=>document.getElementById('chip-'+tn))")&&ev(E,"['pixel','neon','marke'].every(d=>['pink','gold','holo'].every(tn=>document.getElementById('chp-'+d+'-'+tn)))"),'SX18 Alle Chip-Symbole vorhanden (Bedeutung pink/gold/holo/grau bleibt)');
+  E.click(E.$('#quit'));
+  const B=JSON.parse(ev(E,'JSON.stringify(backupData())'));
+  ok(B.equip.chip==='classic'&&B.owned.includes('chip:pixel')&&B.owned.includes('fur:holo')&&B.owned.includes('head:krone'),'SX19 Sicherung enthält die neuen Artikel');
+  try{E.w.close();}catch(e){}   // Version 182: Fenster freigeben, sonst reicht der Speicher in Test 4 nicht mehr
 }
 // --- Startscreen mit Tab-Leiste, Shop statt Einstellungen (Version 139 entfernt sie, Version 144 bringt sie zurück)
 {
