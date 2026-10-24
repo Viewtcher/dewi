@@ -2166,3 +2166,21 @@ Tests 2–5 grün (Test 2 und 4 an den neuen Wortlaut angepasst). Nicht auf eine
 **Technik:** Nur CSS in `app.src.html`, bewusst **ohne** `zoom` oder `transform: scale` (Version 172 hat gezeigt, dass `zoom` auf Vitos iPhone kaputt geht): alle Maße einzeln auf 80 % gerechnet, Dewi in der Umkleide 128 → 102 px, Kacheln 58 → 46 px, Schrift 12–14 → 10–11,5 px, Reiter 36 → 29 px, Knopf 56 → 45 px, Kopfzeile (Schließen-Knopf 35 px, Chip-Pille 29 px) nur im Shop. Abstand: `padding-bottom: calc(81px + env(safe-area-inset-bottom))` für `.sheet.shop-open .sin.shop` (Tab-Leiste 65 px + 16 px); vorher fest 104 px, was auf dem iPhone mit Home-Leiste nur etwa 6 px Luft ließ.
 **Tests:** SX24 prüft die neuen Werte im Stylesheet und dass im Shop-Block kein `zoom` steht; alle vier Suiten grün.
 **Nur auf dem iPhone prüfbar:** Wie die kleinere Schrift (10 px) auf dem Display wirkt, ob die Kacheln noch gut treffbar sind, ob der Abstand über der Tab-Leiste mit der Home-Leiste passt. Nicht auf einem echten iPhone getestet.
+
+## Version 185 – Weniger Rechenlast durch teure Dauer-Animationen
+
+**Was:** Optisch unverändert. Der pulsierende Ring am „Play now“-Knopf und der wandernde Verlauf der Daily-Round-, Random- und Weiterspielen-Karte laufen jetzt als eigene Ebene. Alle Dauer-Animationen pausieren, wenn die App im Hintergrund ist oder eine Runde über dem Screen liegt.
+
+**Warum:** Vito meldet teils nur etwa 10 fps in Safari, die dann auch so bleiben (typisch für Hitze-Drosselung). Statt zu raten, wurde in Chromium mit 4-fach gebremster CPU gemessen und jede Animation einzeln abgeschaltet. Auf dem Startscreen kostete allein `planpulse` (animierter `box-shadow`) etwa 70 % der Rechenzeit, `mrflow` (animierte `background-position`) weitere 10–15 %. Beide zwingen zum Neuzeichnen in jedem Bild, bei 3-facher Pixeldichte teuer.
+
+**Technik:**
+- `.plan::before` / `.mrand::before`: 400 % breite Ebene mit dem Verlauf (Kachel 75 % = 3 Kartenbreiten, wie vorher `background-size:300%`), `translateX(-75%)`, Keyframes `mrflowx`. Farben/Dauer pro Karte über `--flow` und `--flowt`. Streifen liegen mit in der Ebene (waagerecht, ändern sich beim Schieben nicht).
+- `.btn.primary.pulse::after`: gefüllte Ebene hinter dem Knopf, `transform: scale(--rx, --ry)` und `opacity` (Keyframes `ringpulse`, Zeitverlauf wie vorher). `glow` und `planpulse` entfernt.
+- Pause: `.apppaused` (gesetzt bei `visibilitychange`) und `body:has(#sheet:not([hidden])) #app` setzen `animation-play-state:paused`.
+- Nicht geändert: `iwshine` (Wort-Glanz im Intro) läuft nur 1,1 s einmalig, Dewis Animationen, Holo-Schimmer (Vitos Entscheidung).
+
+**Messung (Chromium, 4× gebremst, Startscreen):** Hauptthread 290 → ca. 50 ms pro Sekunde. In Chromium laufen beide Zustände mit 60 fps, die Wirkung auf dem iPhone ist deshalb nicht gemessen.
+
+**Tests:** alle vier Suiten grün (test2/test4 „ALLES OK“, test3/test5 „Alle Tests bestanden“).
+
+**Nur auf dem iPhone prüfbar:** ob die fps auf dem Startscreen und in Modulen jetzt stabil bleiben, ob das iPhone weniger warm wird, ob der Ring am Knopf und der Verlauf gleich aussehen.
