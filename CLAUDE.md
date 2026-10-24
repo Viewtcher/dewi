@@ -50,7 +50,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - Deutsch, mittel ausführlich, mit kurzem „Warum“. Einfache Lösung vor der optimierten zeigen.
 - Kein Fachjargon ohne Erklärung. Git-Schritte in einfachen Worten benennen (Speicherpunkt = Commit, hochladen = Push).
 
-## Offene Punkte (Stand Version 184)
+## Offene Punkte (Stand Version 185)
 
 - **Poker Phase 1 live** (Versionen 131–135, veröffentlicht am 16.10.2026; Rückweg: Zweig `stand-v130`). Version 136 (kleine Poker-Zeile) auf `entwicklung`. Danach spielt Vito 1–2 Wochen; seine Erfahrungen fließen in Phase 2 (Shop) ein.
 - Offen aus Phase 1: Designsystem auf den Rest der App übertragen (Startscreen, Module, Survival, Einstellungen), große Flamme im neuen Stil, Sicherung inkl. Chips (Konzept Abschnitt 9, mit dem Shop).
@@ -90,6 +90,7 @@ Vito kann nicht programmieren und trifft alle Entscheidungen selbst.
 - 182: Shop: Fell Minze/Holo, Krone, neuer Platz „Gesicht“ (Herzbrille), Themes Sonnenuntergang/Holo-Lounge; Preise 3.500 / 8.000 / 20.000; Tests mit `--max-old-space-size=4096` ✓ (noch nicht live; 178 live). Chip-Designs (in 182 gebaut) in 183 wieder entfernt; Rückweg: Speicherpunkt Version 182.
 - 183: Shop springt beim Antippen nicht mehr nach oben, Chip-Designs raus, Holo-Lounge mit kräftigem Verlauf und langsam wanderndem Regenbogen-Schimmer auf dem Startscreen ✓ (noch nicht live)
 - 184: Shop auf 80 % der Größe (nur CSS, kein zoom), 16 px Abstand zwischen Knopf und Tab-Leiste ✓ (noch nicht live; 183 live)
+- 185: Rechenlast gesenkt: Pulsring am Start-Knopf und wandernder Verlauf der Karten als Ebene (transform/opacity), Dauer-Animationen pausieren im Hintergrund und unter einer Runde; Startscreen 290 → ca. 50 ms/s im Chromium-Test ✓ (noch nicht live; 184 live). Wirkung auf dem iPhone offen.
 - Zuordnungen prüfen: `data/align/review_en_de.txt` (offene en→de-Paare). Indonesisch noch offen.
 - Auf dem iPhone prüfen: Haptik, Sound, Musik (Checkliste aus Claudios Übergabe, Abschnitt 5), Stimmen.
 - Grenzfälle mit Klammern: „Tut es weh?“, „Wie geht es dir heute?“.
